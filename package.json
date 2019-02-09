@@ -18,6 +18,22 @@
         "lodash": "^4.17.4",
         "popper.js": "^1.12",
         "tailwindcss": "^0.7.4",
-        "vue": "^2.6.4"
+        "vue": "^2.6.4",
+        "vue-router": "^3.0.1"
+    },
+    "dependencies": {
+        "@turf/turf": "^5.1.6",
+        "bootstrap-datepicker": "^1.8.0",
+        "bootstrap-vue": "^2.0.0-rc.11",
+        "npm": "^6.4.1",
+        "simplebar": "^3.0.0-beta.4",
+        "validate.js": "^0.12.0",
+        "vue-good-wizard": "^1.4.1",
+        "vue-grecaptcha": "^1.0.1",
+        "vue-popperjs": "^1.5.0",
+        "vue-recaptcha": "^1.1.1",
+        "vue-router-middleware": "^0.2.1",
+        "vue2-google-maps": "^0.10.2",
+        "vuex": "^3.0.1"
     }
 }
