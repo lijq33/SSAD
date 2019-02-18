@@ -12,7 +12,7 @@
                                 Login ID
                                 <popper trigger="hover" :options = "{placement: 'bottom'}">
                                     <div class="popper tw-font-hairline tw-text-grey-dark">
-                                        Your login ID is your NRICtest
+                                        Your login ID is your NRIC
                                     </div>
                                     <button slot="reference">   
                                         <i class="fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"></i>
