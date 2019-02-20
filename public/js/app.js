@@ -59846,8 +59846,12 @@ module.exports = Component.exports
 
 /***/ }),
 /* 120 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_ImageGallery__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_ImageGallery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_ImageGallery__);
 //
 //
 //
@@ -59891,17 +59895,17 @@ module.exports = Component.exports
 // import HealthTip from './../components/HealthTip';
 // import NewsFeed from './../components/NewsFeed';
 // import ButtonGroup from './../components/ButtonGroup';
-// import ImageGallery from './../components/ImageGallery';
 
-// export default {
-//      components:{
-//         'health-tip' : HealthTip,
-//         'news-feed' : NewsFeed,
-//         'button-group' : ButtonGroup,
-//         'image-gallery': ImageGallery
-//     },
 
-// }
+/* harmony default export */ __webpack_exports__["default"] = ({
+   components: {
+      // 'health-tip' : HealthTip,
+      // 'news-feed' : NewsFeed,
+      // 'button-group' : ButtonGroup,
+      'image-gallery': __WEBPACK_IMPORTED_MODULE_0__components_ImageGallery___default.a
+   }
+
+});
 
 /***/ }),
 /* 121 */
@@ -59911,53 +59915,53 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("div", { staticClass: "tw-py-2 xl:tw-pb-16" }, [_c("image-gallery")], 1),
+    _vm._v(" "),
+    _vm._m(0)
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("div", { staticClass: "tw-py-2 xl:tw-pb-16" }),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass:
-            "\n        tw-flex-col\n        xl:tw-flex-row xl:tw-mx-16 xl:tw-py-16\n        tw-flex tw-justify-between"
-        },
-        [
-          _c(
-            "div",
-            {
-              staticClass:
-                "\n            tw-w-full\n            xl:tw-w-2/5 xl:tw--ml-16 \n            tw-flex tw-justify-center"
-            },
-            [
-              _c("div", { staticClass: "tw-flex tw-flex-col" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "\n                    tw-text-xl\n                    xl:tw-text-3xl \n                    tw-font-bold tw-py-8 tw-text-center"
-                  },
-                  [
-                    _vm._v("\n                    Popular Services "),
-                    _c("i", { staticClass: "fas fa-fire" })
-                  ]
-                )
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c("div", {
+    return _c(
+      "div",
+      {
+        staticClass:
+          "\n        tw-flex-col\n        xl:tw-flex-row xl:tw-mx-16 xl:tw-py-16\n        tw-flex tw-justify-between"
+      },
+      [
+        _c(
+          "div",
+          {
             staticClass:
-              "\n            tw-w-full\n            xl:tw-w-3/5 xl:tw--mr-16 xl:tw-mb-8\n            tw-border tw-shadow\n            "
-          })
-        ]
-      )
-    ])
+              "\n            tw-w-full\n            xl:tw-w-2/5 xl:tw--ml-16 \n            tw-flex tw-justify-center"
+          },
+          [
+            _c("div", { staticClass: "tw-flex tw-flex-col" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "\n                    tw-text-xl\n                    xl:tw-text-3xl \n                    tw-font-bold tw-py-8 tw-text-center"
+                },
+                [
+                  _vm._v("\n                    Popular Services "),
+                  _c("i", { staticClass: "fas fa-fire" })
+                ]
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass:
+            "\n            tw-w-full\n            xl:tw-w-3/5 xl:tw--mr-16 xl:tw-mb-8\n            tw-border tw-shadow\n            "
+        })
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -74971,6 +74975,296 @@ exports.push([module.i, ".fade-enter-active, .fade-leave-active {\n    transitio
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 289 */,
+/* 290 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(7)
+/* script */
+var __vue_script__ = __webpack_require__(291)
+/* template */
+var __vue_template__ = __webpack_require__(292)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/ImageGallery.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4557b7ae", Component.options)
+  } else {
+    hotAPI.reload("data-v-4557b7ae", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 291 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bootstrap_vue_es_components__ = __webpack_require__(172);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	mounted: function mounted() {
+		var _this = this;
+
+		axios.get('https://api.data.gov.sg/v1/environment/uv-index?date=' + this.date).then(function (res) {
+			_this.uv_result = res.data.api_info.status;
+		});
+
+		axios.get('https://api.data.gov.sg/v1/environment/psi').then(function (res) {
+			_this.psi_status = res.data.api_info.status;
+			_this.psi_result = res.data.items[0].readings.psi_twenty_four_hourly.national;
+		});
+
+		axios.get('https://data.gov.sg/api/action/datastore_search?resource_id=d68321b6-c438-425d-b9f4-d5777eee9e77&q=alcohol').then(function (res) {
+			_this.accident = res.data.result.records;
+		});
+	},
+	data: function data() {
+		return {
+			slide: 0,
+			sliding: null,
+			access_token: '',
+			uv_result: '',
+			psi_status: '',
+			psi_result: '',
+			accident: [],
+			no_of_accidents: 0
+		};
+	},
+
+
+	computed: {
+		date: function date() {
+			var myDate = new Date();
+			var month = ('0' + (myDate.getMonth() + 1)).slice(-2);
+			var date = ('0' + myDate.getDate()).slice(-2);
+			var year = myDate.getFullYear();
+			return year + '-' + month + '-' + date;
+		}
+	},
+
+	watch: {
+		accident: function accident() {
+			var _this2 = this;
+
+			this.accident.forEach(function (item, index, array) {
+				_this2.no_of_accidents += parseInt(item.number_of_accidents);
+			});
+		}
+	},
+
+	methods: {
+		onSlideStart: function onSlideStart(slide) {
+			this.sliding = true;
+		},
+		onSlideEnd: function onSlideEnd(slide) {
+			this.sliding = false;
+		}
+	}
+});
+
+/***/ }),
+/* 292 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "b-carousel",
+        {
+          staticStyle: { "text-shadow": "1px 1px 2px #333" },
+          attrs: {
+            id: "carousel1",
+            controls: "",
+            indicators: "",
+            background: "#ababab",
+            interval: 4000,
+            "img-width": "1024",
+            "img-height": "480"
+          },
+          on: {
+            "sliding-start": _vm.onSlideStart,
+            "sliding-end": _vm.onSlideEnd
+          },
+          model: {
+            value: _vm.slide,
+            callback: function($$v) {
+              _vm.slide = $$v
+            },
+            expression: "slide"
+          }
+        },
+        [
+          _c("b-carousel-slide", [
+            _c("img", {
+              staticClass: "d-block img-fluid w-100",
+              attrs: {
+                slot: "img",
+                width: "1024",
+                height: "480",
+                src: "/assets/img/drinkdrive.jpg",
+                alt: "image slot"
+              },
+              slot: "img"
+            }),
+            _vm._v(
+              "\n\t\t\tBetween 2012 and 2016, " +
+                _vm._s(this.no_of_accidents) +
+                " accidents occured due to influence of alcohol \n\t\t"
+            )
+          ]),
+          _vm._v(" "),
+          _c("b-carousel-slide", {
+            attrs: { "img-src": "/assets/img/blood.jpg" }
+          }),
+          _vm._v(" "),
+          _c("b-carousel-slide", {
+            attrs: { "img-src": "/assets/img/dental.jpg" }
+          }),
+          _vm._v(" "),
+          _c("b-carousel-slide", {
+            attrs: { "img-src": "/assets/img/healtheir choice.jpg" }
+          }),
+          _vm._v(" "),
+          _c("b-carousel-slide", {
+            attrs: { "img-src": "/assets/img/veg.jpg" }
+          }),
+          _vm._v(" "),
+          _c(
+            "b-carousel-slide",
+            { attrs: { "img-src": "/assets/img/Heat-stroke.jpg" } },
+            [
+              _c("h1", {}, [
+                _vm._v(
+                  "\n\t\t\t\t\t\tUV Status : " +
+                    _vm._s(this.uv_result) +
+                    "\n\t\t\t"
+                )
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c("b-carousel-slide", {
+            attrs: {
+              caption: "QuitLine 1800 438 2000",
+              "img-src": "/assets/img/smoke.jpg"
+            }
+          })
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-4557b7ae", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
