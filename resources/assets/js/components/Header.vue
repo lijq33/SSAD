@@ -3,7 +3,7 @@
         <div class="container">
             <router-link class="navbar-brand" to="/">
                 <img src = "/assets/img/TL.jpg" class = "tw-w-10">
-                TeamLost
+                Team 10
             </router-link>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -14,11 +14,13 @@
                     <!-- EVERYONE CAN SEE -->
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
-                            SOMETHING HERE
+                            Crisis Information
                             <!--<span class="caret"></span> -->
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <router-link to="/newcrisis" class="nav-link">New Crisis</router-link>
+                             <router-link to="/viewcrisis" class="nav-link">View Crisis</router-link>
                             <!-- <router-link to="/HealthServices/Hospital" class="nav-link">Hospital</router-link>
                             <router-link to="/HealthServices/Polyclinic" class="nav-link">Polyclinic</router-link>
                             <router-link to="/HealthServices/Pharmacy" class="nav-link">Pharmacy</router-link>
@@ -35,6 +37,7 @@
                         <li>
                             <router-link to="/register" class="nav-link">Register</router-link>
                         </li>
+                         
                     </template>
 
                     <template v-else>

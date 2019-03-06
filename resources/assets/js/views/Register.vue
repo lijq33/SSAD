@@ -188,6 +188,7 @@
     import Popper from 'vue-popperjs';
     
     export default {
+        name: "Register",
         components: {
             'popper': Popper
         },

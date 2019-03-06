@@ -3,7 +3,7 @@
 export const routes = [
     {
         path : '/',
-        component: require('./views/Home')
+        component: require('./views/Home.vue')
     },
     {
         path : '/login',
@@ -11,8 +11,16 @@ export const routes = [
     },
     {
         path : '/register',
-        component: require('./views/Register')
+        component: require('./views/Register.vue')
     },    
+    {
+        path : '/newcrisis',
+        component: require('./views/NewCrisis.vue')
+    },
+    {
+        path : '/viewcrisis',
+        component: require('./views/ViewCrisis.vue')
+    } 
     // {
     //     path : '/HealthServices/Hospital',
     //     component: require('./views/HealthServices/Hospital'),
