@@ -59918,30 +59918,6 @@ var routes = [{
 }, {
     path: '/viewcrisis',
     component: __webpack_require__(240)
-    // {
-    //     path : '/HealthServices/Hospital',
-    //     component: require('./views/HealthServices/Hospital'),
-    // },
-    // {
-    //     path : '/HealthServices/Polyclinic',
-    //     component: require('./views/HealthServices/Polyclinic'),
-    // },
-    // {
-    //     path : '/HealthServices/Dental',
-    //     component: require('./views/HealthServices/Dental'),
-    // },   
-    // {
-    //     path : '/HealthServices/ChasClinic',
-    //     component: require('./views/HealthServices/ChasClinic'),
-    // },
-    // {
-    //     path : '/HealthServices/Pharmacy',
-    //     component: require('./views/HealthServices/Pharmacy'),
-    // },
-    // {
-    //     path : '/Map',
-    //     component: require('./views/Map'),
-    // },
 
     // //requires login
     // {
@@ -70220,16 +70196,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -70268,9 +70234,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.$store.commit("loginFailed", { error: error });
                 _this.isLoading = false;
             });
-        },
-        register: function register() {
-            this.$router.push({ path: '/register' });
         }
     },
 
@@ -70488,26 +70451,6 @@ var render = function() {
                     ])
               ])
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "tw-px-8 tw-pb-8" }, [
-            _vm._v(" \n                    No account? \n                    "),
-            _c(
-              "span",
-              {
-                staticClass: "tw-underline tw-text-blue tw-cursor-pointer",
-                on: {
-                  click: function($event) {
-                    return _vm.register()
-                  }
-                }
-              },
-              [
-                _vm._v(
-                  "\n                        You can create your account here.\n                    "
-                )
-              ]
-            )
           ])
         ])
       ])

@@ -21,30 +21,6 @@ export const routes = [
         path : '/viewcrisis',
         component: require('./views/ViewCrisis.vue')
     } 
-    // {
-    //     path : '/HealthServices/Hospital',
-    //     component: require('./views/HealthServices/Hospital'),
-    // },
-    // {
-    //     path : '/HealthServices/Polyclinic',
-    //     component: require('./views/HealthServices/Polyclinic'),
-    // },
-    // {
-    //     path : '/HealthServices/Dental',
-    //     component: require('./views/HealthServices/Dental'),
-    // },   
-    // {
-    //     path : '/HealthServices/ChasClinic',
-    //     component: require('./views/HealthServices/ChasClinic'),
-    // },
-    // {
-    //     path : '/HealthServices/Pharmacy',
-    //     component: require('./views/HealthServices/Pharmacy'),
-    // },
-    // {
-    //     path : '/Map',
-    //     component: require('./views/Map'),
-    // },
 
     // //requires login
     // {

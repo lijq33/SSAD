@@ -73,16 +73,6 @@
                         </div>
                         
                     </div>
-
-                    <div class = "tw-px-8 tw-pb-8"> 
-                        No account? 
-                        <span class = "tw-underline tw-text-blue tw-cursor-pointer"
-                            @click = "register()"
-                        >
-                            You can create your account here.
-                        </span>
-                    </div>
-                
                 </div>
             </div>
         </div>
@@ -127,10 +117,6 @@
                     this.$store.commit("loginFailed", {error});
                     this.isLoading = false;
                 });
-            },
-
-            register() {
-                this.$router.push({path: '/register'});
             },
         },
 
