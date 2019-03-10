@@ -72459,15 +72459,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'app-header',
@@ -72593,21 +72584,6 @@ var render = function() {
                             )
                           ],
                           1
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "li",
-                          [
-                            _c(
-                              "router-link",
-                              {
-                                staticClass: "nav-link",
-                                attrs: { to: "/register" }
-                              },
-                              [_vm._v("Register")]
-                            )
-                          ],
-                          1
                         )
                       ]
                     : [
@@ -72722,9 +72698,9 @@ var render = function() {
                               "router-link",
                               {
                                 staticClass: "nav-link",
-                                attrs: { to: "/feedback/show" }
+                                attrs: { to: "/register" }
                               },
-                              [_vm._v("View Feedbacks")]
+                              [_vm._v("Register")]
                             )
                           ],
                           1

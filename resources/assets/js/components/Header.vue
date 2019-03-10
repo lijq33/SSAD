@@ -21,11 +21,6 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <router-link to="/newcrisis" class="nav-link">New Crisis</router-link>
                              <router-link to="/viewcrisis" class="nav-link">View Crisis</router-link>
-                            <!-- <router-link to="/HealthServices/Hospital" class="nav-link">Hospital</router-link>
-                            <router-link to="/HealthServices/Polyclinic" class="nav-link">Polyclinic</router-link>
-                            <router-link to="/HealthServices/Pharmacy" class="nav-link">Pharmacy</router-link>
-                            <router-link to="/HealthServices/Chas Clinic" class="nav-link">Chas Clinic</router-link>
-                            <router-link to="/HealthServices/Dental" class="nav-link">Dentals</router-link> -->
                         </div>
                     </li>
 
@@ -34,10 +29,6 @@
                         <li>
                             <router-link to="/login" class="nav-link">Login</router-link>
                         </li>
-                        <li>
-                            <router-link to="/register" class="nav-link">Register</router-link>
-                        </li>
-                         
                     </template>
 
                     <template v-else>
@@ -73,7 +64,7 @@
                     <!-- For admin -->
                     <template v-if = "isAdmin">
                         <li>
-                            <router-link to="/feedback/show" class="nav-link">View Feedbacks</router-link>
+                            <router-link to="/register" class="nav-link">Register</router-link>
                         </li>
                     </template>
                     
