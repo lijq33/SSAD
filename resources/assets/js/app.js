@@ -1,7 +1,5 @@
 // import router from './routes';
 
-// Vue.component('flash', require('./components/flash'));
-
 require('./bootstrap');
 import Vue from 'vue';
 import VueRouter from 'vue-router';
@@ -30,10 +28,13 @@ Vue.use(Vuex);
 // });
 
 // Vue.component('GRecaptcha', require('./components/GRecaptcha'));
-// Vue.component('DatePicker', require('./components/DatePicker'));
-// Vue.component('TimePicker', require('./components/TimePicker'));
+Vue.component('flash', require('./components/flash'));
+
 // Vue.component('BaseMap', require('./components/BaseMap'));
 // Vue.component('GoogleMap', require('./components/GoogleMap'));
+
+Vue.component('DatePicker', require('./components/DatePicker'));
+Vue.component('TimePicker', require('./components/TimePicker'));
 
 
 const store = new Vuex.Store(StoreData);

@@ -119,18 +119,23 @@
 
                                 <!-- Date -->
                                 <div class="form-group row">
-                                    <label for="login_id" class="col-md-4 col-form-label">
-                                        Date &amp; Time:
+                                    <label for="date" class="col-md-4 col-form-label">
+                                        Date:
                                     </label>
-                                        <div class="col-md-6">
-                                        <input type = "text"
-                                            class="tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey"
-                                            style="font-style:italic;" 
-                                            placeholder = "2/06/19 1300hrs"
-                                            required autofocus>
+                                    <div class="tw-w-1/2">
+                                        <date-picker v-model = "form.date" required = "required"> </date-picker>
                                     </div>
                                 </div>
+
+                                <div class="form-group row">
+                                    <label for="time" class="col-md-4 col-form-label">
+                                        Time:
+                                    </label>
+                                    <div class="tw-w-1/2">
+                                        <time-picker id = "time" v-model = "form.time" required = "required" :useContainer = "true"> </time-picker>
+                                    </div>
                                 </div>
+                            </div>
                                 </div>
                                  </div>
                                   <!-- end of location column -->
@@ -161,7 +166,7 @@
                         <!-- button group -->
                           <div class="form-group row tw-my-6">
                             <div class="col-md-6 offset-md-5">
-                                    <button type="submit" class="btn btn-primary" style="margin-right:5px;">
+                                    <button type="submit" class="btn btn-primary" style="margin-right:5px;" @click = "submitCrisis">
                                         Submit
                                     </button>
                                      <button type="submit" class="btn btn-primary" >
@@ -188,11 +193,28 @@
         },
         
         data() {
-            
+            return{
+                message: '',
+
+                form: {
+                    date:'',
+                    time:'',
+                }
+            }
         },
 
         methods: {
-            
+            submitCrisis() {
+                this.isLoading = true;
+                axios.post('/crisis', this.form)
+                .then(response => {
+                    this.message = response.data.message
+                })
+                .catch((error) => {
+                    this.error = error.response.data.errors;
+                    this.isLoading = false;
+                });
+            },
         },
 
         computed: {
