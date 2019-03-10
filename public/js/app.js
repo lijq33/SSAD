@@ -71523,6 +71523,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -71550,130 +71574,142 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8" }, [
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-xl" }, [
         _c("div", { staticClass: "card" }, [
           _c("div", { staticClass: "card-header tw-text-grey-darker" }, [
             _vm._v("Register a New Crisis")
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "card-header tw-text-grey-darker" }, [
-              _vm._v(" Personal Particulars\n                    "),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group row" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-md-4 col-form-label text-md-right",
-                    attrs: { for: "login_id" }
-                  },
-                  [
-                    _vm._v(
-                      "\n                            Name:\n                            "
-                    ),
-                    _c(
-                      "popper",
-                      {
-                        attrs: {
-                          trigger: "hover",
-                          options: { placement: "bottom" }
-                        }
-                      },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "popper tw-font-hairline tw-text-grey-dark"
-                          },
-                          [
-                            _vm._v(
-                              "\n                                    Name of Crisis Reporter\n                                "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          { attrs: { slot: "reference" }, slot: "reference" },
-                          [
-                            _c("i", {
-                              staticClass:
-                                "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
-                            })
-                          ]
-                        )
-                      ]
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _vm._m(0)
+            _c("div", { staticClass: "form-group row" }, [
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("h5", { staticClass: "card-title" }, [
+                      _vm._v("Personal Particulars")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-md-4 col-form-label",
+                          attrs: { for: "login_id" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                            Name:\n                            "
+                          ),
+                          _c(
+                            "popper",
+                            {
+                              attrs: {
+                                trigger: "hover",
+                                options: { placement: "bottom" }
+                              }
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "popper tw-font-hairline tw-text-grey-dark"
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                    Name of Crisis Reporter\n                                "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  attrs: { slot: "reference" },
+                                  slot: "reference"
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass:
+                                      "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
+                                  })
+                                ]
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _vm._m(0)
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-md-4 col-form-label",
+                          attrs: { for: "login_id" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                            Mobile Number:\n                            "
+                          ),
+                          _c(
+                            "popper",
+                            {
+                              attrs: {
+                                trigger: "hover",
+                                options: { placement: "bottom" }
+                              }
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "popper tw-font-hairline tw-text-grey-dark"
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                    Phone/Mobile No.\n                                "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  attrs: { slot: "reference" },
+                                  slot: "reference"
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass:
+                                      "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
+                                  })
+                                ]
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _vm._m(1)
+                    ])
+                  ])
+                ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group row" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass: "col-md-4 col-form-label text-md-right",
-                    attrs: { for: "login_id" }
-                  },
-                  [
-                    _vm._v(
-                      "\n                            Mobile Number:\n                            "
-                    ),
-                    _c(
-                      "popper",
-                      {
-                        attrs: {
-                          trigger: "hover",
-                          options: { placement: "bottom" }
-                        }
-                      },
-                      [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "popper tw-font-hairline tw-text-grey-dark"
-                          },
-                          [
-                            _vm._v(
-                              "\n                                    Phone/Mobile No.\n                                "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          { attrs: { slot: "reference" }, slot: "reference" },
-                          [
-                            _c("i", {
-                              staticClass:
-                                "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
-                            })
-                          ]
-                        )
-                      ]
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _vm._m(1)
-              ])
+              _vm._m(2)
             ]),
-            _vm._v(" "),
-            _vm._m(2),
             _vm._v(" "),
             _vm._m(3),
             _vm._v(" "),
-            _vm._m(4),
-            _vm._v(" "),
-            _vm._m(5)
+            _vm._m(4)
           ])
         ])
       ])
@@ -71719,251 +71755,252 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "card-header tw-text-grey-darker",
-        staticStyle: { "margin-top": "10px" }
-      },
-      [
-        _vm._v(" Location \n                          "),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c(
-            "label",
-            {
-              staticClass: "col-md-4 col-form-label text-md-right",
-              attrs: { for: "login_id" }
-            },
-            [
-              _vm._v(
-                "\n                            Postal Code:\n                        "
-              )
-            ]
-          ),
+    return _c("div", { staticClass: "col-md-6" }, [
+      _c("div", { staticClass: "card" }, [
+        _c("div", { staticClass: "card-body" }, [
+          _c("h5", { staticClass: "card-title" }, [
+            _vm._v("Assistance Required:")
+          ]),
           _vm._v(" "),
-          _c("div", { staticClass: "col-md-6" }, [
+          _c("div", { staticClass: "form-check" }, [
             _c("input", {
-              staticClass:
-                "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
-              staticStyle: { "font-style": "italic" },
-              attrs: {
-                type: "text",
-                placeholder: "520894",
-                required: "",
-                autofocus: ""
-              }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c(
-            "label",
-            {
-              staticClass: "col-md-4 col-form-label text-md-right",
-              attrs: { for: "login_id" }
-            },
-            [
-              _vm._v(
-                "\n                            Address:\n                        "
-              )
-            ]
-          ),
+              staticClass: "form-check-input",
+              attrs: { type: "checkbox", id: "checkbox1", value: "option1" }
+            }),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "form-check-label",
+                attrs: { for: "inlineCheckbox1" }
+              },
+              [_vm._v("Emergency Ambulance")]
+            )
+          ]),
           _vm._v(" "),
-          _c("div", { staticClass: "col-md-6" }, [
+          _c("div", { staticClass: "form-check" }, [
             _c("input", {
-              staticClass:
-                "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
-              staticStyle: { "font-style": "italic" },
-              attrs: {
-                type: "text",
-                placeholder: "Blk 35 Woodlands St 45",
-                required: "",
-                autofocus: ""
-              }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group row" }, [
-          _c(
-            "label",
-            {
-              staticClass: "col-md-4 col-form-label text-md-right",
-              attrs: { for: "login_id" }
-            },
-            [
-              _vm._v(
-                "\n                            Date & Time:\n                        "
-              )
-            ]
-          ),
+              staticClass: "form-check-input",
+              attrs: { type: "checkbox", id: "checkbox2", value: "option2" }
+            }),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "form-check-label",
+                attrs: { for: "inlineCheckbox2" }
+              },
+              [_vm._v("Fire-Fighting")]
+            )
+          ]),
           _vm._v(" "),
-          _c("div", { staticClass: "col-md-6" }, [
+          _c("div", { staticClass: "form-check" }, [
             _c("input", {
-              staticClass:
-                "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
-              staticStyle: { "font-style": "italic" },
-              attrs: {
-                type: "text",
-                placeholder: "2/06/19 1300hrs",
-                required: "",
-                autofocus: ""
-              }
-            })
+              staticClass: "form-check-input",
+              attrs: { type: "checkbox", id: "checkbox3", value: "option3" }
+            }),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "form-check-label",
+                attrs: { for: "inlineCheckbox3" }
+              },
+              [_vm._v("Rescue & Evac")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-check" }, [
+            _c("input", {
+              staticClass: "form-check-input",
+              attrs: { type: "checkbox", id: "checkbox4", value: "option4" }
+            }),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "form-check-label",
+                attrs: { for: "inlineCheckbox4" }
+              },
+              [_vm._v("Gas Leak Control")]
+            )
           ])
         ])
-      ]
-    )
+      ])
+    ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "card-header tw-text-grey-darker",
-        staticStyle: { "margin-top": "10px" }
-      },
-      [
-        _vm._v(" \n                         Type of Assistance Required: "),
-        _c("br"),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-check form-check-inline" }, [
-          _c("input", {
-            staticClass: "form-check-input",
-            attrs: { type: "checkbox", id: "inlineCheckbox1", value: "option1" }
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "form-check-label",
-              attrs: { for: "inlineCheckbox1" }
-            },
-            [_vm._v("Emergency Ambulance")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-check form-check-inline" }, [
-          _c("input", {
-            staticClass: "form-check-input",
-            attrs: { type: "checkbox", id: "inlineCheckbox2", value: "option2" }
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "form-check-label",
-              attrs: { for: "inlineCheckbox2" }
-            },
-            [_vm._v("Fire-Fighting")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-check form-check-inline" }, [
-          _c("input", {
-            staticClass: "form-check-input",
-            attrs: { type: "checkbox", id: "inlineCheckbox3", value: "option3" }
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "form-check-label",
-              attrs: { for: "inlineCheckbox3" }
-            },
-            [_vm._v("Rescue & Evac")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-check form-check-inline" }, [
-          _c("input", {
-            staticClass: "form-check-input",
-            attrs: { type: "checkbox", id: "inlineCheckbox4", value: "option4" }
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "form-check-label",
-              attrs: { for: "inlineCheckbox4" }
-            },
-            [_vm._v("Gas Leak Control")]
-          )
-        ])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "card-header tw-text-grey-darker",
-        staticStyle: { "margin-top": "10px" }
-      },
-      [
-        _vm._v(
-          " \n                         Type of Crisis:\n                         "
-        ),
-        _c("div", { staticClass: "dropdown" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-secondary dropdown-toggle",
-              attrs: {
-                type: "button",
-                id: "dropdownMenuButton",
-                "data-toggle": "dropdown",
-                "aria-haspopup": "true",
-                "aria-expanded": "false"
-              }
-            },
-            [
-              _vm._v(
-                "\n                            Dropdown button\n                        "
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "dropdown-menu",
-              attrs: { "aria-labelledby": "dropdownMenuButton" }
-            },
-            [
-              _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-                _vm._v("Action")
-              ]),
+    return _c("div", { staticClass: "form-group row" }, [
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-body" }, [
+            _c("h5", { staticClass: "card-title" }, [_vm._v("Location")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 col-form-label",
+                  attrs: { for: "login_id" }
+                },
+                [
+                  _vm._v(
+                    "\n                            Postal Code:\n                            "
+                  )
+                ]
+              ),
               _vm._v(" "),
-              _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-                _vm._v("Another action")
-              ]),
-              _vm._v(" "),
-              _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-                _vm._v("Something else here")
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("input", {
+                  staticClass:
+                    "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+                  staticStyle: { "font-style": "italic" },
+                  attrs: {
+                    type: "text",
+                    placeholder: "520894",
+                    required: "",
+                    autofocus: ""
+                  }
+                })
               ])
-            ]
-          )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 col-form-label",
+                  attrs: { for: "login_id" }
+                },
+                [
+                  _vm._v(
+                    "\n                                    Address:\n                                "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("input", {
+                  staticClass:
+                    "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+                  staticStyle: { "font-style": "italic" },
+                  attrs: {
+                    type: "text",
+                    placeholder: "Blk 35 Woodlands St 45",
+                    required: "",
+                    autofocus: ""
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 col-form-label",
+                  attrs: { for: "login_id" }
+                },
+                [
+                  _vm._v(
+                    "\n                                    Date & Time:\n                                "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("input", {
+                  staticClass:
+                    "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+                  staticStyle: { "font-style": "italic" },
+                  attrs: {
+                    type: "text",
+                    placeholder: "2/06/19 1300hrs",
+                    required: "",
+                    autofocus: ""
+                  }
+                })
+              ])
+            ])
+          ])
         ])
-      ]
-    )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-body" }, [
+            _c("h5", { staticClass: "card-title" }, [
+              _vm._v(" Type of Crisis:")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "dropdown" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary dropdown-toggle",
+                  attrs: {
+                    type: "button",
+                    id: "dropdownMenuButton",
+                    "data-toggle": "dropdown",
+                    "aria-haspopup": "true",
+                    "aria-expanded": "false"
+                  }
+                },
+                [
+                  _vm._v(
+                    "\n                                        Please select\n                                    "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "dropdown-menu",
+                  attrs: { "aria-labelledby": "dropdownMenuButton" }
+                },
+                [
+                  _c(
+                    "a",
+                    { staticClass: "dropdown-item", attrs: { href: "#" } },
+                    [_vm._v("Fire Outbreak")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    { staticClass: "dropdown-item", attrs: { href: "#" } },
+                    [_vm._v("Dengue")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    { staticClass: "dropdown-item", attrs: { href: "#" } },
+                    [_vm._v("Gas Leak")]
+                  )
+                ]
+              )
+            ])
+          ])
+        ])
+      ])
+    ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group row tw-my-6" }, [
-      _c("div", { staticClass: "col-md-6 offset-md-4" }, [
+      _c("div", { staticClass: "col-md-6 offset-md-5" }, [
         _c(
           "button",
-          { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+          {
+            staticClass: "btn btn-primary",
+            staticStyle: { "margin-right": "5px" },
+            attrs: { type: "submit" }
+          },
           [
             _vm._v(
               "\n                                    Submit\n                                "
