@@ -23,11 +23,10 @@ class CreateCrisesTable extends Migration
             $table->integer('postal_code');
             $table->date('date');
             $table->time('time');
+            
             $table->string('address');
             $table->string('crisis_type');
-            // $table->string('assistance_required');
-
-            // 'assistance_required'
+            $table->string('assistance_required');
             $table->timestamps();
         });
     }

@@ -1,5 +1,5 @@
 <template>
-    <div class = "container-fluid">
+    <div class = "container-fluid" id="myForm">
         <div class = "row">
             <div class = "col-xl">
                 <div class = "card">
@@ -208,13 +208,20 @@
 
                         <!-- button group -->
                         <div class = "form-group row tw-my-6">
-                            <div class = "col-md-6 offset-md-5">
-                                <button type = "submit" class = "btn btn-primary" style = "margin-right:5px;" @click = "submitCrisis">
-                                    Submit
-                                </button>
-                                <button type = "submit" class = "btn btn-primary" >
-                                    Cancel
-                                </button>
+                            <div class = "tw-w-full">
+                                <div class = "tw-flex tw-justify-center">
+                                    <div v-if = "!isLoading">
+                                        <button type = "submit" class = "btn btn-primary" style = "margin-right:5px;" @click = "submitCrisis">
+                                            Submit
+                                        </button>
+                                        <button type = "submit" class = "btn btn-primary" @click = "resetFields()">
+                                            Reset
+                                        </button>
+                                    </div>
+                                    <div v-else>
+                                        <img src = "/assets/img/loader.gif" alt = "Loading...">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -246,8 +253,8 @@
                     { value: 'Dengue', text: 'Dengue' },
                     { value: 'Gas Leak', text: 'Gas Leak' }
                 ],
-                message: '',
-
+                message: '',    
+                isLoading: false,
                 error: [],
 
                 form: {
@@ -265,23 +272,36 @@
 
         methods: {
             submitCrisis() {
-                this.message = "";
                 this.isLoading = true;
+                this.message = "";
+                this.error = "";
+
                 axios.post('/api/crisis', this.form)
                 .then(response => {
+                    $('html, body').animate({ scrollTop: 0 }, 'slow');
                     this.message = response.data.message;
-                    this.error = "";
+                    this.isLoading = false;
+                    this.resetFields();
                 })
                 .catch((error) => {
                     this.error = error.response.data.errors;
                     this.isLoading = false;
+                    this.resetFields();
                 });
             },
-        },
 
-        computed: {
-            
-        }
+            resetFields() {
+                var scope = this; 
+
+                Object.keys(this.form).forEach(function(key,index) {
+                    scope.form[key] = '';
+                });
+
+                this.form.crisisType= null;
+                this.form.assistanceRequired= [];
+            }
+
+        },
     }
 </script>
                 

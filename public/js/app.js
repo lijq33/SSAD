@@ -76718,13 +76718,22 @@ var routes = [{
     component: __webpack_require__(358)
 }, {
     path: '/register',
-    component: __webpack_require__(362)
+    component: __webpack_require__(362),
+    meta: {
+        requiresAuth: true
+    }
 }, {
     path: '/newcrisis',
-    component: __webpack_require__(365)
+    component: __webpack_require__(365),
+    meta: {
+        requiresAuth: true
+    }
 }, {
     path: '/viewcrisis',
-    component: __webpack_require__(369)
+    component: __webpack_require__(369),
+    meta: {
+        requiresAuth: true
+    }
 
     // //requires login
     // {
@@ -88404,6 +88413,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -88422,7 +88438,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             options: [{ value: null, text: 'Please select an option' }, { value: 'Fire Outbreak', text: 'Fire Outbreak' }, { value: 'Dengue', text: 'Dengue' }, { value: 'Gas Leak', text: 'Gas Leak' }],
             message: '',
-
+            isLoading: false,
             error: [],
 
             form: {
@@ -88443,19 +88459,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         submitCrisis: function submitCrisis() {
             var _this = this;
 
-            this.message = "";
             this.isLoading = true;
+            this.message = "";
+            this.error = "";
+
             axios.post('/api/crisis', this.form).then(function (response) {
+                $('html, body').animate({ scrollTop: 0 }, 'slow');
                 _this.message = response.data.message;
-                _this.error = "";
+                _this.isLoading = false;
+                _this.resetFields();
             }).catch(function (error) {
                 _this.error = error.response.data.errors;
                 _this.isLoading = false;
+                _this.resetFields();
             });
-        }
-    },
+        },
+        resetFields: function resetFields() {
+            var scope = this;
 
-    computed: {}
+            Object.keys(this.form).forEach(function (key, index) {
+                scope.form[key] = '';
+            });
+
+            this.form.crisisType = null;
+            this.form.assistanceRequired = [];
+        }
+    }
 });
 
 /***/ }),
@@ -88742,844 +88771,886 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container-fluid" }, [
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-xl" }, [
-        _c(
-          "div",
-          { staticClass: "card" },
-          [
-            _c("flash", { attrs: { message: _vm.message } }),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-header tw-text-grey-darker" }, [
-              _vm._v(
-                "\n                    Register a New Crisis\n                "
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _c("div", { staticClass: "form-group row" }, [
-                _c("div", { staticClass: "col-md-6" }, [
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", { staticClass: "card-body" }, [
-                      _c("h5", { staticClass: "card-title" }, [
-                        _vm._v("Personal Particulars")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-md-4 col-form-label",
-                            attrs: { for: "name" }
-                          },
-                          [
-                            _vm._v(
-                              "\n                                            Name:\n                                            "
-                            ),
-                            _c(
-                              "popper",
-                              {
-                                attrs: {
-                                  trigger: "hover",
-                                  options: { placement: "bottom" }
-                                }
-                              },
-                              [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "popper tw-font-hairline tw-text-grey-dark"
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                                                    Name of Crisis Reporter\n                                                "
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "button",
-                                  {
-                                    attrs: { slot: "reference" },
-                                    slot: "reference"
-                                  },
-                                  [
-                                    _c("i", {
-                                      staticClass:
-                                        "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
-                                    })
-                                  ]
-                                )
-                              ]
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-6" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.name,
-                                expression: "form.name"
-                              }
-                            ],
-                            staticClass:
-                              "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic",
-                            class: {
-                              "tw-border-red-light":
-                                _vm.error["name"] != undefined
-                            },
-                            attrs: {
-                              type: "text",
-                              id: "name",
-                              placeholder: "John Doe",
-                              required: "",
-                              autofocus: ""
-                            },
-                            domProps: { value: _vm.form.name },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(_vm.form, "name", $event.target.value)
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.error["name"] != undefined
-                            ? _c("div", { staticClass: "tw-text-red" }, [
-                                _c("span", [
-                                  _vm._v(
-                                    " " +
-                                      _vm._s(this.error["name"].toString()) +
-                                      " "
-                                  )
-                                ])
-                              ])
-                            : _vm._e()
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-md-4 col-form-label",
-                            attrs: { for: "Mobile Number" }
-                          },
-                          [
-                            _vm._v(
-                              "\n                                            Mobile Number:\n                                            "
-                            ),
-                            _c(
-                              "popper",
-                              {
-                                attrs: {
-                                  trigger: "hover",
-                                  options: { placement: "bottom" }
-                                }
-                              },
-                              [
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "popper tw-font-hairline tw-text-grey-dark"
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                                                    Phone/Mobile No.\n                                                "
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "button",
-                                  {
-                                    attrs: { slot: "reference" },
-                                    slot: "reference"
-                                  },
-                                  [
-                                    _c("i", {
-                                      staticClass:
-                                        "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
-                                    })
-                                  ]
-                                )
-                              ]
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-6" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.telephoneNumber,
-                                expression: "form.telephoneNumber"
-                              }
-                            ],
-                            staticClass:
-                              "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey ty-italic",
-                            class: {
-                              "tw-border-red-light":
-                                _vm.error["telephoneNumber"] != undefined
-                            },
-                            attrs: {
-                              type: "text",
-                              id: "Mobile Number",
-                              placeholder: "98765654",
-                              required: "",
-                              autofocus: ""
-                            },
-                            domProps: { value: _vm.form.telephoneNumber },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.form,
-                                  "telephoneNumber",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.error["telephoneNumber"] != undefined
-                            ? _c("div", { staticClass: "tw-text-red" }, [
-                                _c("span", [
-                                  _vm._v(
-                                    " " +
-                                      _vm._s(
-                                        this.error["telephoneNumber"].toString()
-                                      ) +
-                                      " "
-                                  )
-                                ])
-                              ])
-                            : _vm._e()
-                        ])
-                      ])
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-6" }, [
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", { staticClass: "card-body" }, [
-                      _c("h5", { staticClass: "card-title" }, [
-                        _vm._v("Assistance Required:")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-check" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.assistanceRequired,
-                              expression: "form.assistanceRequired"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "checkbox",
-                            id: "Emergency Ambulance",
-                            value: "Emergency Ambulance"
-                          },
-                          domProps: {
-                            checked: Array.isArray(_vm.form.assistanceRequired)
-                              ? _vm._i(
-                                  _vm.form.assistanceRequired,
-                                  "Emergency Ambulance"
-                                ) > -1
-                              : _vm.form.assistanceRequired
-                          },
-                          on: {
-                            change: function($event) {
-                              var $$a = _vm.form.assistanceRequired,
-                                $$el = $event.target,
-                                $$c = $$el.checked ? true : false
-                              if (Array.isArray($$a)) {
-                                var $$v = "Emergency Ambulance",
-                                  $$i = _vm._i($$a, $$v)
-                                if ($$el.checked) {
-                                  $$i < 0 &&
-                                    _vm.$set(
-                                      _vm.form,
-                                      "assistanceRequired",
-                                      $$a.concat([$$v])
-                                    )
-                                } else {
-                                  $$i > -1 &&
-                                    _vm.$set(
-                                      _vm.form,
-                                      "assistanceRequired",
-                                      $$a
-                                        .slice(0, $$i)
-                                        .concat($$a.slice($$i + 1))
-                                    )
-                                }
-                              } else {
-                                _vm.$set(_vm.form, "assistanceRequired", $$c)
-                              }
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "Emergency Ambulance" }
-                          },
-                          [_vm._v("Emergency Ambulance")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-check" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.assistanceRequired,
-                              expression: "form.assistanceRequired"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "checkbox",
-                            id: "Fire-Fighting",
-                            value: "Fire-Fighting"
-                          },
-                          domProps: {
-                            checked: Array.isArray(_vm.form.assistanceRequired)
-                              ? _vm._i(
-                                  _vm.form.assistanceRequired,
-                                  "Fire-Fighting"
-                                ) > -1
-                              : _vm.form.assistanceRequired
-                          },
-                          on: {
-                            change: function($event) {
-                              var $$a = _vm.form.assistanceRequired,
-                                $$el = $event.target,
-                                $$c = $$el.checked ? true : false
-                              if (Array.isArray($$a)) {
-                                var $$v = "Fire-Fighting",
-                                  $$i = _vm._i($$a, $$v)
-                                if ($$el.checked) {
-                                  $$i < 0 &&
-                                    _vm.$set(
-                                      _vm.form,
-                                      "assistanceRequired",
-                                      $$a.concat([$$v])
-                                    )
-                                } else {
-                                  $$i > -1 &&
-                                    _vm.$set(
-                                      _vm.form,
-                                      "assistanceRequired",
-                                      $$a
-                                        .slice(0, $$i)
-                                        .concat($$a.slice($$i + 1))
-                                    )
-                                }
-                              } else {
-                                _vm.$set(_vm.form, "assistanceRequired", $$c)
-                              }
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "Fire-Fighting" }
-                          },
-                          [_vm._v("Fire-Fighting")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-check" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.assistanceRequired,
-                              expression: "form.assistanceRequired"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "checkbox",
-                            id: "Rescue",
-                            value: "Rescue & Evac"
-                          },
-                          domProps: {
-                            checked: Array.isArray(_vm.form.assistanceRequired)
-                              ? _vm._i(
-                                  _vm.form.assistanceRequired,
-                                  "Rescue & Evac"
-                                ) > -1
-                              : _vm.form.assistanceRequired
-                          },
-                          on: {
-                            change: function($event) {
-                              var $$a = _vm.form.assistanceRequired,
-                                $$el = $event.target,
-                                $$c = $$el.checked ? true : false
-                              if (Array.isArray($$a)) {
-                                var $$v = "Rescue & Evac",
-                                  $$i = _vm._i($$a, $$v)
-                                if ($$el.checked) {
-                                  $$i < 0 &&
-                                    _vm.$set(
-                                      _vm.form,
-                                      "assistanceRequired",
-                                      $$a.concat([$$v])
-                                    )
-                                } else {
-                                  $$i > -1 &&
-                                    _vm.$set(
-                                      _vm.form,
-                                      "assistanceRequired",
-                                      $$a
-                                        .slice(0, $$i)
-                                        .concat($$a.slice($$i + 1))
-                                    )
-                                }
-                              } else {
-                                _vm.$set(_vm.form, "assistanceRequired", $$c)
-                              }
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "Rescue" }
-                          },
-                          [_vm._v("Rescue & Evac")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-check" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.assistanceRequired,
-                              expression: "form.assistanceRequired"
-                            }
-                          ],
-                          staticClass: "form-check-input",
-                          attrs: {
-                            type: "checkbox",
-                            id: "GasLeak",
-                            value: "Gas Leak Control"
-                          },
-                          domProps: {
-                            checked: Array.isArray(_vm.form.assistanceRequired)
-                              ? _vm._i(
-                                  _vm.form.assistanceRequired,
-                                  "Gas Leak Control"
-                                ) > -1
-                              : _vm.form.assistanceRequired
-                          },
-                          on: {
-                            change: function($event) {
-                              var $$a = _vm.form.assistanceRequired,
-                                $$el = $event.target,
-                                $$c = $$el.checked ? true : false
-                              if (Array.isArray($$a)) {
-                                var $$v = "Gas Leak Control",
-                                  $$i = _vm._i($$a, $$v)
-                                if ($$el.checked) {
-                                  $$i < 0 &&
-                                    _vm.$set(
-                                      _vm.form,
-                                      "assistanceRequired",
-                                      $$a.concat([$$v])
-                                    )
-                                } else {
-                                  $$i > -1 &&
-                                    _vm.$set(
-                                      _vm.form,
-                                      "assistanceRequired",
-                                      $$a
-                                        .slice(0, $$i)
-                                        .concat($$a.slice($$i + 1))
-                                    )
-                                }
-                              } else {
-                                _vm.$set(_vm.form, "assistanceRequired", $$c)
-                              }
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "label",
-                          {
-                            staticClass: "form-check-label",
-                            attrs: { for: "GasLeak" }
-                          },
-                          [_vm._v("Gas Leak Control")]
-                        )
-                      ])
-                    ])
-                  ])
-                ])
+  return _c(
+    "div",
+    { staticClass: "container-fluid", attrs: { id: "myForm" } },
+    [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-xl" }, [
+          _c(
+            "div",
+            { staticClass: "card" },
+            [
+              _c("flash", { attrs: { message: _vm.message } }),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-header tw-text-grey-darker" }, [
+                _vm._v(
+                  "\n                    Register a New Crisis\n                "
+                )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "form-group row" }, [
-                _c("div", { staticClass: "col-md-6" }, [
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", { staticClass: "card-body" }, [
-                      _c("h5", { staticClass: "card-title" }, [
-                        _vm._v("Location")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-md-4 col-form-label",
-                            attrs: { for: "Postal Code" }
-                          },
-                          [
-                            _vm._v(
-                              "\n                                            Postal Code:\n                                        "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-6" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.postalCode,
-                                expression: "form.postalCode"
-                              }
-                            ],
-                            staticClass:
-                              "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic",
-                            class: {
-                              "tw-border-red-light":
-                                _vm.error["postalCode"] != undefined
-                            },
-                            attrs: {
-                              type: "text",
-                              id: "Postal Code",
-                              placeholder: "520894",
-                              required: "",
-                              autofocus: ""
-                            },
-                            domProps: { value: _vm.form.postalCode },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.form,
-                                  "postalCode",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.error["postalCode"] != undefined
-                            ? _c("div", { staticClass: "tw-text-red" }, [
-                                _c("span", [
-                                  _vm._v(
-                                    " " +
-                                      _vm._s(
-                                        this.error["postalCode"].toString()
-                                      ) +
-                                      " "
-                                  )
-                                ])
-                              ])
-                            : _vm._e()
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-md-4 col-form-label",
-                            attrs: { for: "Address" }
-                          },
-                          [
-                            _vm._v(
-                              "\n                                            Address:\n                                        "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md-6" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.address,
-                                expression: "form.address"
-                              }
-                            ],
-                            staticClass:
-                              "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic",
-                            class: {
-                              "tw-border-red-light":
-                                _vm.error["address"] != undefined
-                            },
-                            attrs: {
-                              type: "text",
-                              id: "Address",
-                              placeholder: "Blk 35 Woodlands St 45",
-                              required: "",
-                              autofocus: ""
-                            },
-                            domProps: { value: _vm.form.address },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.form,
-                                  "address",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _vm.error["address"] != undefined
-                            ? _c("div", { staticClass: "tw-text-red" }, [
-                                _c("span", [
-                                  _vm._v(
-                                    " " +
-                                      _vm._s(this.error["address"].toString()) +
-                                      " "
-                                  )
-                                ])
-                              ])
-                            : _vm._e()
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-md-4 col-form-label",
-                            attrs: { for: "date" }
-                          },
-                          [
-                            _vm._v(
-                              "\n                                            Date:\n                                        "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "tw-w-1/2" },
-                          [
-                            _c("date-picker", {
-                              class: {
-                                "tw-border-red-light":
-                                  _vm.error["date"] != undefined
-                              },
-                              attrs: { required: "required", date: _vm.date },
-                              model: {
-                                value: _vm.form.date,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.form, "date", $$v)
-                                },
-                                expression: "form.date"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _vm.error["date"] != undefined
-                              ? _c("div", { staticClass: "tw-text-red" }, [
-                                  _c("span", [
-                                    _vm._v(
-                                      " " +
-                                        _vm._s(this.error["date"].toString()) +
-                                        " "
-                                    )
-                                  ])
-                                ])
-                              : _vm._e()
-                          ],
-                          1
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group row" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "col-md-4 col-form-label",
-                            attrs: { for: "time" }
-                          },
-                          [
-                            _vm._v(
-                              "\n                                            Time:\n                                        "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "tw-w-1/2" },
-                          [
-                            _c("time-picker", {
-                              class: {
-                                "tw-border-red-light":
-                                  _vm.error["time"] != undefined
-                              },
-                              attrs: {
-                                id: "time",
-                                required: "required",
-                                useContainer: true
-                              },
-                              model: {
-                                value: _vm.form.time,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.form, "time", $$v)
-                                },
-                                expression: "form.time"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _vm.error["time"] != undefined
-                              ? _c("div", { staticClass: "tw-text-red" }, [
-                                  _c("span", [
-                                    _vm._v(
-                                      " " +
-                                        _vm._s(this.error["time"].toString()) +
-                                        " "
-                                    )
-                                  ])
-                                ])
-                              : _vm._e()
-                          ],
-                          1
-                        )
-                      ])
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-6" }, [
-                  _c("div", { staticClass: "card" }, [
-                    _c(
-                      "div",
-                      { staticClass: "card-body" },
-                      [
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "form-group row" }, [
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _c("div", { staticClass: "card" }, [
+                      _c("div", { staticClass: "card-body" }, [
                         _c("h5", { staticClass: "card-title" }, [
-                          _vm._v(" Type of Crisis:")
+                          _vm._v("Personal Particulars")
                         ]),
                         _vm._v(" "),
-                        _c("b-form-select", {
-                          class: {
-                            "tw-border-red-light":
-                              _vm.error["crisisType"] != undefined
-                          },
-                          attrs: { options: _vm.options },
-                          model: {
-                            value: _vm.form.crisisType,
-                            callback: function($$v) {
-                              _vm.$set(_vm.form, "crisisType", $$v)
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-md-4 col-form-label",
+                              attrs: { for: "name" }
                             },
-                            expression: "form.crisisType"
-                          }
-                        }),
+                            [
+                              _vm._v(
+                                "\n                                            Name:\n                                            "
+                              ),
+                              _c(
+                                "popper",
+                                {
+                                  attrs: {
+                                    trigger: "hover",
+                                    options: { placement: "bottom" }
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "popper tw-font-hairline tw-text-grey-dark"
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                                    Name of Crisis Reporter\n                                                "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "button",
+                                    {
+                                      attrs: { slot: "reference" },
+                                      slot: "reference"
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass:
+                                          "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
+                                      })
+                                    ]
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-md-6" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.name,
+                                  expression: "form.name"
+                                }
+                              ],
+                              staticClass:
+                                "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic",
+                              class: {
+                                "tw-border-red-light":
+                                  _vm.error["name"] != undefined
+                              },
+                              attrs: {
+                                type: "text",
+                                id: "name",
+                                placeholder: "John Doe",
+                                required: "",
+                                autofocus: ""
+                              },
+                              domProps: { value: _vm.form.name },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "name",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.error["name"] != undefined
+                              ? _c("div", { staticClass: "tw-text-red" }, [
+                                  _c("span", [
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(this.error["name"].toString()) +
+                                        " "
+                                    )
+                                  ])
+                                ])
+                              : _vm._e()
+                          ])
+                        ]),
                         _vm._v(" "),
-                        _vm.error["crisisType"] != undefined
-                          ? _c("div", { staticClass: "tw-text-red" }, [
-                              _c("span", [
-                                _vm._v(
-                                  " " +
-                                    _vm._s(
-                                      this.error["crisisType"].toString()
-                                    ) +
-                                    " "
-                                )
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-md-4 col-form-label",
+                              attrs: { for: "Mobile Number" }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                            Mobile Number:\n                                            "
+                              ),
+                              _c(
+                                "popper",
+                                {
+                                  attrs: {
+                                    trigger: "hover",
+                                    options: { placement: "bottom" }
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "popper tw-font-hairline tw-text-grey-dark"
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                                    Phone/Mobile No.\n                                                "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "button",
+                                    {
+                                      attrs: { slot: "reference" },
+                                      slot: "reference"
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass:
+                                          "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
+                                      })
+                                    ]
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-md-6" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.telephoneNumber,
+                                  expression: "form.telephoneNumber"
+                                }
+                              ],
+                              staticClass:
+                                "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey ty-italic",
+                              class: {
+                                "tw-border-red-light":
+                                  _vm.error["telephoneNumber"] != undefined
+                              },
+                              attrs: {
+                                type: "text",
+                                id: "Mobile Number",
+                                placeholder: "98765654",
+                                required: "",
+                                autofocus: ""
+                              },
+                              domProps: { value: _vm.form.telephoneNumber },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "telephoneNumber",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.error["telephoneNumber"] != undefined
+                              ? _c("div", { staticClass: "tw-text-red" }, [
+                                  _c("span", [
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(
+                                          this.error[
+                                            "telephoneNumber"
+                                          ].toString()
+                                        ) +
+                                        " "
+                                    )
+                                  ])
+                                ])
+                              : _vm._e()
+                          ])
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _c("div", { staticClass: "card" }, [
+                      _c("div", { staticClass: "card-body" }, [
+                        _c("h5", { staticClass: "card-title" }, [
+                          _vm._v("Assistance Required:")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-check" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.assistanceRequired,
+                                expression: "form.assistanceRequired"
+                              }
+                            ],
+                            staticClass: "form-check-input",
+                            attrs: {
+                              type: "checkbox",
+                              id: "Emergency Ambulance",
+                              value: "Emergency Ambulance"
+                            },
+                            domProps: {
+                              checked: Array.isArray(
+                                _vm.form.assistanceRequired
+                              )
+                                ? _vm._i(
+                                    _vm.form.assistanceRequired,
+                                    "Emergency Ambulance"
+                                  ) > -1
+                                : _vm.form.assistanceRequired
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.form.assistanceRequired,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = "Emergency Ambulance",
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(
+                                        _vm.form,
+                                        "assistanceRequired",
+                                        $$a.concat([$$v])
+                                      )
+                                  } else {
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        _vm.form,
+                                        "assistanceRequired",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
+                                  }
+                                } else {
+                                  _vm.$set(_vm.form, "assistanceRequired", $$c)
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "form-check-label",
+                              attrs: { for: "Emergency Ambulance" }
+                            },
+                            [_vm._v("Emergency Ambulance")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-check" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.assistanceRequired,
+                                expression: "form.assistanceRequired"
+                              }
+                            ],
+                            staticClass: "form-check-input",
+                            attrs: {
+                              type: "checkbox",
+                              id: "Fire-Fighting",
+                              value: "Fire-Fighting"
+                            },
+                            domProps: {
+                              checked: Array.isArray(
+                                _vm.form.assistanceRequired
+                              )
+                                ? _vm._i(
+                                    _vm.form.assistanceRequired,
+                                    "Fire-Fighting"
+                                  ) > -1
+                                : _vm.form.assistanceRequired
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.form.assistanceRequired,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = "Fire-Fighting",
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(
+                                        _vm.form,
+                                        "assistanceRequired",
+                                        $$a.concat([$$v])
+                                      )
+                                  } else {
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        _vm.form,
+                                        "assistanceRequired",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
+                                  }
+                                } else {
+                                  _vm.$set(_vm.form, "assistanceRequired", $$c)
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "form-check-label",
+                              attrs: { for: "Fire-Fighting" }
+                            },
+                            [_vm._v("Fire-Fighting")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-check" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.assistanceRequired,
+                                expression: "form.assistanceRequired"
+                              }
+                            ],
+                            staticClass: "form-check-input",
+                            attrs: {
+                              type: "checkbox",
+                              id: "Rescue",
+                              value: "Rescue & Evac"
+                            },
+                            domProps: {
+                              checked: Array.isArray(
+                                _vm.form.assistanceRequired
+                              )
+                                ? _vm._i(
+                                    _vm.form.assistanceRequired,
+                                    "Rescue & Evac"
+                                  ) > -1
+                                : _vm.form.assistanceRequired
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.form.assistanceRequired,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = "Rescue & Evac",
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(
+                                        _vm.form,
+                                        "assistanceRequired",
+                                        $$a.concat([$$v])
+                                      )
+                                  } else {
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        _vm.form,
+                                        "assistanceRequired",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
+                                  }
+                                } else {
+                                  _vm.$set(_vm.form, "assistanceRequired", $$c)
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "form-check-label",
+                              attrs: { for: "Rescue" }
+                            },
+                            [_vm._v("Rescue & Evac")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-check" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.assistanceRequired,
+                                expression: "form.assistanceRequired"
+                              }
+                            ],
+                            staticClass: "form-check-input",
+                            attrs: {
+                              type: "checkbox",
+                              id: "GasLeak",
+                              value: "Gas Leak Control"
+                            },
+                            domProps: {
+                              checked: Array.isArray(
+                                _vm.form.assistanceRequired
+                              )
+                                ? _vm._i(
+                                    _vm.form.assistanceRequired,
+                                    "Gas Leak Control"
+                                  ) > -1
+                                : _vm.form.assistanceRequired
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.form.assistanceRequired,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = "Gas Leak Control",
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(
+                                        _vm.form,
+                                        "assistanceRequired",
+                                        $$a.concat([$$v])
+                                      )
+                                  } else {
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        _vm.form,
+                                        "assistanceRequired",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
+                                  }
+                                } else {
+                                  _vm.$set(_vm.form, "assistanceRequired", $$c)
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "form-check-label",
+                              attrs: { for: "GasLeak" }
+                            },
+                            [_vm._v("Gas Leak Control")]
+                          )
+                        ])
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _c("div", { staticClass: "card" }, [
+                      _c("div", { staticClass: "card-body" }, [
+                        _c("h5", { staticClass: "card-title" }, [
+                          _vm._v("Location")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-md-4 col-form-label",
+                              attrs: { for: "Postal Code" }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                            Postal Code:\n                                        "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-md-6" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.postalCode,
+                                  expression: "form.postalCode"
+                                }
+                              ],
+                              staticClass:
+                                "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic",
+                              class: {
+                                "tw-border-red-light":
+                                  _vm.error["postalCode"] != undefined
+                              },
+                              attrs: {
+                                type: "text",
+                                id: "Postal Code",
+                                placeholder: "520894",
+                                required: "",
+                                autofocus: ""
+                              },
+                              domProps: { value: _vm.form.postalCode },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "postalCode",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.error["postalCode"] != undefined
+                              ? _c("div", { staticClass: "tw-text-red" }, [
+                                  _c("span", [
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(
+                                          this.error["postalCode"].toString()
+                                        ) +
+                                        " "
+                                    )
+                                  ])
+                                ])
+                              : _vm._e()
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-md-4 col-form-label",
+                              attrs: { for: "Address" }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                            Address:\n                                        "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-md-6" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.address,
+                                  expression: "form.address"
+                                }
+                              ],
+                              staticClass:
+                                "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic",
+                              class: {
+                                "tw-border-red-light":
+                                  _vm.error["address"] != undefined
+                              },
+                              attrs: {
+                                type: "text",
+                                id: "Address",
+                                placeholder: "Blk 35 Woodlands St 45",
+                                required: "",
+                                autofocus: ""
+                              },
+                              domProps: { value: _vm.form.address },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "address",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.error["address"] != undefined
+                              ? _c("div", { staticClass: "tw-text-red" }, [
+                                  _c("span", [
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(
+                                          this.error["address"].toString()
+                                        ) +
+                                        " "
+                                    )
+                                  ])
+                                ])
+                              : _vm._e()
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-md-4 col-form-label",
+                              attrs: { for: "date" }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                            Date:\n                                        "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "tw-w-1/2" },
+                            [
+                              _c("date-picker", {
+                                class: {
+                                  "tw-border-red-light":
+                                    _vm.error["date"] != undefined
+                                },
+                                attrs: { required: "required", date: _vm.date },
+                                model: {
+                                  value: _vm.form.date,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "date", $$v)
+                                  },
+                                  expression: "form.date"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _vm.error["date"] != undefined
+                                ? _c("div", { staticClass: "tw-text-red" }, [
+                                    _c("span", [
+                                      _vm._v(
+                                        " " +
+                                          _vm._s(
+                                            this.error["date"].toString()
+                                          ) +
+                                          " "
+                                      )
+                                    ])
+                                  ])
+                                : _vm._e()
+                            ],
+                            1
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-md-4 col-form-label",
+                              attrs: { for: "time" }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                            Time:\n                                        "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "tw-w-1/2" },
+                            [
+                              _c("time-picker", {
+                                class: {
+                                  "tw-border-red-light":
+                                    _vm.error["time"] != undefined
+                                },
+                                attrs: {
+                                  id: "time",
+                                  required: "required",
+                                  useContainer: true
+                                },
+                                model: {
+                                  value: _vm.form.time,
+                                  callback: function($$v) {
+                                    _vm.$set(_vm.form, "time", $$v)
+                                  },
+                                  expression: "form.time"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _vm.error["time"] != undefined
+                                ? _c("div", { staticClass: "tw-text-red" }, [
+                                    _c("span", [
+                                      _vm._v(
+                                        " " +
+                                          _vm._s(
+                                            this.error["time"].toString()
+                                          ) +
+                                          " "
+                                      )
+                                    ])
+                                  ])
+                                : _vm._e()
+                            ],
+                            1
+                          )
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _c("div", { staticClass: "card" }, [
+                      _c(
+                        "div",
+                        { staticClass: "card-body" },
+                        [
+                          _c("h5", { staticClass: "card-title" }, [
+                            _vm._v(" Type of Crisis:")
+                          ]),
+                          _vm._v(" "),
+                          _c("b-form-select", {
+                            class: {
+                              "tw-border-red-light":
+                                _vm.error["crisisType"] != undefined
+                            },
+                            attrs: { options: _vm.options },
+                            model: {
+                              value: _vm.form.crisisType,
+                              callback: function($$v) {
+                                _vm.$set(_vm.form, "crisisType", $$v)
+                              },
+                              expression: "form.crisisType"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _vm.error["crisisType"] != undefined
+                            ? _c("div", { staticClass: "tw-text-red" }, [
+                                _c("span", [
+                                  _vm._v(
+                                    " " +
+                                      _vm._s(
+                                        this.error["crisisType"].toString()
+                                      ) +
+                                      " "
+                                  )
+                                ])
                               ])
-                            ])
-                          : _vm._e()
-                      ],
-                      1
-                    )
+                            : _vm._e()
+                        ],
+                        1
+                      )
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group row tw-my-6" }, [
+                  _c("div", { staticClass: "tw-w-full" }, [
+                    _c("div", { staticClass: "tw-flex tw-justify-center" }, [
+                      !_vm.isLoading
+                        ? _c("div", [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary",
+                                staticStyle: { "margin-right": "5px" },
+                                attrs: { type: "submit" },
+                                on: { click: _vm.submitCrisis }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                        Submit\n                                    "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary",
+                                attrs: { type: "submit" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.resetFields()
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                        Reset\n                                    "
+                                )
+                              ]
+                            )
+                          ])
+                        : _c("div", [
+                            _c("img", {
+                              attrs: {
+                                src: "/assets/img/loader.gif",
+                                alt: "Loading..."
+                              }
+                            })
+                          ])
+                    ])
                   ])
                 ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group row tw-my-6" }, [
-                _c("div", { staticClass: "col-md-6 offset-md-5" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary",
-                      staticStyle: { "margin-right": "5px" },
-                      attrs: { type: "submit" },
-                      on: { click: _vm.submitCrisis }
-                    },
-                    [
-                      _vm._v(
-                        "\n                                Submit\n                            "
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary",
-                      attrs: { type: "submit" }
-                    },
-                    [
-                      _vm._v(
-                        "\n                                Cancel\n                            "
-                      )
-                    ]
-                  )
-                ])
               ])
-            ])
-          ],
-          1
-        )
+            ],
+            1
+          )
+        ])
       ])
-    ])
-  ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

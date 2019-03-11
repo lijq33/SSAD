@@ -11,15 +11,24 @@ export const routes = [
     },
     {
         path : '/register',
-        component: require('./views/Register.vue')
+        component: require('./views/Register.vue'),
+        meta: {
+            requiresAuth: true
+        }
     },    
     {
         path : '/newcrisis',
-        component: require('./views/NewCrisis.vue')
+        component: require('./views/NewCrisis.vue'),
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path : '/viewcrisis',
-        component: require('./views/ViewCrisis.vue')
+        component: require('./views/ViewCrisis.vue'),
+        meta: {
+            requiresAuth: true
+        }
     } 
 
     // //requires login

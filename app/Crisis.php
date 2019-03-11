@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Crisis extends Model
 {
@@ -29,56 +30,22 @@ class Crisis extends Model
 
     public static function newCrisis($data){
 
-        // array(9) {
-        //     ["name"]=>
-        //     string(10) "Li JinQuan"
-        //     ["telephoneNumber"]=>
-        //     string(8) "12341212"
-        //     ["date"]=>
-        //     object(Carbon\Carbon)#749 (3) {
-        //       ["date"]=>
-        //       string(26) "2019-03-11 01:55:15.000000"
-        //       ["timezone_type"]=>
-        //       int(3)
-        //       ["timezone"]=>
-        //       string(3) "UTC"
-        //     }
-        //     ["time"]=>
-        //     object(Carbon\Carbon)#752 (3) {
-        //       ["date"]=>
-        //       string(26) "2019-03-11 10:15:00.000000"
-        //       ["timezone_type"]=>
-        //       int(3)
-        //       ["timezone"]=>
-        //       string(3) "UTC"
-        //     }
-        //     ["address"]=>
-        //     string(4) "1234"
-        //     ["postalCode"]=>
-        //     string(6) "123412"
-        //     ["assistanceRequired"]=>
-        //     array(4) {
-        //       [0]=>
-        //       string(19) "Emergency Ambulance"
-        //       [1]=>
-        //       string(13) "Fire-Fighting"
-        //       [2]=>
-        //       string(13) "Rescue & Evac"
-        //       [3]=>
-        //       string(16) "Gas Leak Control"
-        //     }
-        //   }
+        $data['date'] = (Carbon::parse($data['date'])->format('Y/m/d'));
+        $data['time'] = (Carbon::parse($data['time'])->format('H:i:s'));
+
+        $assistance = implode(", ", $data['assistanceRequired']);
 
         Crisis::create([
-            'user_id' => $data(['name']),
-            'name' => $data(['name']),
-            'telephone_number' => $data(['name']),
-            'postal_code' => $data(['name']),
-            'date' => $data(['name']),
-            'time' => $data(['name']),
-            'address' => $data(['name']),
-            'crisis_type' => $data(['name']),
-            'assistance_required' => $data(['name']),
+            'name' => $data['name'],
+            'user_id' => $data['id'],
+            'telephone_number' => $data['telephoneNumber'],
+            'postal_code' => $data['postalCode'],
+            'address' => $data['address'],
+
+            'crisis_type' => $data['name'],
+            'date' => $data['date'],
+            'time' => $data['time'],
+            'assistance_required' => $assistance,
         ]);
     }
 
