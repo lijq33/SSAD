@@ -17,15 +17,15 @@ export const routes = [
         }
     },    
     {
-        path : '/newcrisis',
+        path : '/crisis/new',
         component: require('./views/NewCrisis.vue'),
         meta: {
             requiresAuth: true
         }
     },
     {
-        path : '/viewcrisis',
-        component: require('./views/ViewCrisis.vue'),
+        path : '/crisis/manage',
+        component: require('./views/ManageCrisis.vue'),
         meta: {
             requiresAuth: true
         }

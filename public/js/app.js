@@ -76723,13 +76723,13 @@ var routes = [{
         requiresAuth: true
     }
 }, {
-    path: '/newcrisis',
+    path: '/crisis/new',
     component: __webpack_require__(365),
     meta: {
         requiresAuth: true
     }
 }, {
-    path: '/viewcrisis',
+    path: '/crisis/manage',
     component: __webpack_require__(369),
     meta: {
         requiresAuth: true
@@ -89688,7 +89688,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/views/ViewCrisis.vue"
+Component.options.__file = "resources/assets/js/views/ManageCrisis.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -89697,9 +89697,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4ecd944a", Component.options)
+    hotAPI.createRecord("data-v-4371944a", Component.options)
   } else {
-    hotAPI.reload("data-v-4ecd944a", Component.options)
+    hotAPI.reload("data-v-4371944a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -89753,23 +89753,118 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: "ViewCrisis",
-
     components: {
-        'popper': __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default.a
+        'popper': __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default.a,
+        'edit-crisis': Edit
     },
 
-    data: function data() {},
+    mounted: function mounted() {
+        this.getCrisis();
+
+        setTimeout(function () {
+            $("#crisis").DataTable();
+        }, 2000);
+    },
+    data: function data() {
+        return {
+            error: '',
+            message: '',
+
+            confirmDelete: false,
+            modalShow: false,
+
+            crisis: [],
+            editCrisis: ''
+        };
+    },
 
 
-    methods: {},
+    methods: {
+        archive: function archive(crisis) {
+            this.modalShow = true;
+            var scope = this;
 
-    computed: {}
+            var promise = new Promise(function (resolve, reject) {
+                var deleteButton = document.getElementById('deleteButton');
+                deleteButton.addEventListener("click", function () {
+                    scope.modalShow = false;
+                    resolve();
+                });
+                var dontDeleteButton = document.getElementById('dontDeleteButton');
+                dontDeleteButton.addEventListener("click", function () {
+                    scope.modalShow = false;
+                    reject();
+                });
+            });
+
+            promise.then(function () {
+                axios.post('/api/crisis/delete', {
+                    crisis_id: crisis.id,
+                    health_service_type: crisis.health_service_type.split(" ").join("")
+                }).then(function (res) {
+                    scope.message = "We've successfully cancel your crisis!";
+                    scope.crisis = [];
+                    scope.getcrisis();
+                }).catch(function (error) {
+                    scope.error = error.response;
+                });
+            });
+        },
+        update: function update(crisis) {
+            this.$refs.myModalRef.show();
+            this.editcrisis = crisis;
+        },
+        hideModal: function hideModal() {
+            this.$refs.myModalRef.hide();
+        },
+        updateSuccess: function updateSuccess() {
+            this.message = "We've successfully update your crisis details!";
+            this.hideModal();
+            this.getCrisis();
+            this.crisis = [];
+        },
+        getCrisis: function getCrisis() {
+            var _this = this;
+
+            axios.get('/api/crisis/get').then(function (res) {
+                _this.crisis = res.data.crisis;
+            }).catch(function (error) {
+                _this.error = error.response;
+            });
+        }
+    }
 });
 
 /***/ }),
@@ -89780,22 +89875,18 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-header tw-text-grey-darker" }, [
-              _vm._v("View Crisis")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-8" }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-header tw-text-grey-darker" }, [
+            _vm._v("View Crisis")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "card-body" },
+            [
               _c(
                 "table",
                 {
@@ -89804,38 +89895,174 @@ var staticRenderFns = [
                   attrs: { id: "example" }
                 },
                 [
-                  _c("thead", [
-                    _c("tr", [
-                      _c("th", [_vm._v("Date & Time")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Event Type")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Description")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Assistance Requested")]),
-                      _vm._v(" "),
-                      _c("th", [_vm._v("Status")])
-                    ])
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.chasCliniccrisiss, function(crisis, index) {
+                      return _c(
+                        "tr",
+                        { key: index + crisis.health_service_type },
+                        [
+                          _c("td", [
+                            _vm._v(_vm._s(crisis.health_service_type))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(crisis.crisis_date))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(crisis.crisis_time))]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "tw-capitalize" }, [
+                            _vm._v(_vm._s(crisis.status))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            crisis.status === "booked"
+                              ? _c(
+                                  "span",
+                                  {
+                                    staticClass:
+                                      "tw-flex tw-justify-around tw-items-center"
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass:
+                                        "fas fa-trash-alt tw-cursor-pointer",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.deletes(crisis)
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("i", {
+                                      staticClass:
+                                        "fas fa-pencil-alt tw-cursor-pointer",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.update(crisis)
+                                        }
+                                      }
+                                    })
+                                  ]
+                                )
+                              : _vm._e()
+                          ])
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-modal",
+                {
+                  attrs: {
+                    title: "Alert",
+                    "hide-footer": "",
+                    "header-bg-variant": "warning"
+                  },
+                  model: {
+                    value: _vm.modalShow,
+                    callback: function($$v) {
+                      _vm.modalShow = $$v
+                    },
+                    expression: "modalShow"
+                  }
+                },
+                [
+                  _c("div", { staticClass: "tw-w-full" }, [
+                    _vm._v(
+                      "\n                            This action cannot be "
+                    ),
+                    _c("span", { staticClass: "tw-font-bold" }, [
+                      _vm._v("reverse")
+                    ]),
+                    _vm._v(". \n                        ")
                   ]),
                   _vm._v(" "),
-                  _c("tbody", [
-                    _c("tr", [
-                      _c("td", [_vm._v("20/12/18; 10:00AM")]),
+                  _c("div", { staticClass: "tw-w-full" }, [
+                    _vm._v(
+                      "\n                            Are you sure that you would like to cancel the crisis?\n                        "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "tw-border-t tw-pt-4 tw-mt-4 tw-flex tw-justify-end tw-w-full"
+                    },
+                    [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "tw-mr-2 btn btn-secondary",
+                          attrs: { id: "dontDeleteButton" }
+                        },
+                        [_vm._v("Cancel")]
+                      ),
                       _vm._v(" "),
-                      _c("td", [_vm._v("Fire Outbreak")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("Woodlands St 91")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("Fire-fighting, Ambulance")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v("Unattended")])
-                    ])
-                  ])
+                      _c(
+                        "button",
+                        {
+                          staticClass: "tw-ml-2 btn btn-primary",
+                          attrs: { id: "deleteButton" }
+                        },
+                        [_vm._v("Delete")]
+                      )
+                    ]
+                  )
                 ]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-modal",
+                {
+                  ref: "myModalRef",
+                  attrs: {
+                    size: "lg",
+                    "hide-footer": "",
+                    title: "Current crisis Details:"
+                  }
+                },
+                [
+                  _c("edit-crisis", {
+                    attrs: { crisis: _vm.editcrisis },
+                    on: {
+                      hideModal: _vm.hideModal,
+                      updateSuccess: _vm.updateSuccess
+                    }
+                  })
+                ],
+                1
               )
-            ])
-          ])
+            ],
+            1
+          )
         ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Date & Time")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Event Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Description")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Assistance Requested")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Status")])
       ])
     ])
   }
@@ -89845,7 +90072,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4ecd944a", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-4371944a", module.exports)
   }
 }
 
