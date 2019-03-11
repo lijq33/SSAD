@@ -5,6 +5,7 @@ namespace App;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Providers\Auth\Illuminate;
 use App\Feedback;
 
 class User extends Authenticatable implements JWTSubject
@@ -48,6 +49,17 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * Fetch the Individual Or Company 
+     * 
+     */
+    public function fetchUser()
+    {
+        $user = (new Illuminate(\Auth::Guard('api')))->user();
+        
+        return $user;
     }
 
 }

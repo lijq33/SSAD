@@ -5,18 +5,20 @@
 <link rel = "stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link rel = 'stylesheet' href = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" type = 'text/css' media = 'all' />
 <link rel = 'stylesheet' href = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css" type = 'text/css' media = 'all' />
-<link rel = 'stylesheet' href = "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" type = 'text/css' media = 'all' />
-<link rel = 'stylesheet' href = "https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" type = 'text/css' media = 'all' />
+
 {{-- font awesome stylesheet CDN --}}
 <link rel = "stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
 {{-- tailwind stylesheet --}}
 <link href = '{{asset("css")}}/app.css' rel="stylesheet" type="text/css" media='all' />
 
-{{-- google recaptcha --}}
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <style>
+    
+	.gm-style > div > div > div > div > div > div > div > div {
+		top: -20px !important;
+	}
+
     .bootstrap-timepicker-widget {
         z-index : 2048;
         top     : inherit !important;
@@ -76,6 +78,17 @@
     
     .time-picker > div > table > tbody > tr > td {
         border : 0 !important;
+    }
+
+    .gm-style > div > div > div > div > div > div > div > div {
+        top: -20px !important;
+    }
+
+    .custom-checkbox .custom-control-label::before {
+        top: 10px !important
+    }
+    .custom-checkbox .custom-control-label::after {
+        top: 10px !important
     }
     </style>
 

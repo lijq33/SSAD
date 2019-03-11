@@ -35,6 +35,10 @@ class test extends Controller
     public function store(Request $request)
     {
         //
+
+        //SMS
+        // $content = "You have made a " . $data['health_service_type'] ." appointment with "
+        //             .$data['health_service_name'] . " at " .$data['appointment_time']. ", " . $data['appointment_date'];
     }
 
     /**

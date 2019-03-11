@@ -65,8 +65,10 @@ export default {
                 format: this.dateFormat,
                 todayHighlight: true,
                 autoclose: true,
-                startDate: "+6d",
                 container: '#'+this.containerName,
+                startDate: "-50d",
+                endDate: "0",
+                todayBtn: "linked"
             });
 
             el.datepicker().on('changeDate.datepicker', function(e) {

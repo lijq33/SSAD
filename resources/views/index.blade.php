@@ -13,8 +13,8 @@
     <body>
         <div id="app">
             
-            <main-app 
-                datakey = {{config('services.google.recaptcha.site_key')}}>
+            <main-app>
+                {{-- datakey = {{config('services.google.recaptcha.site_key')}}> --}}
             </main-app>
 
         </div>
