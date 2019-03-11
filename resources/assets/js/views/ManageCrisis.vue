@@ -8,18 +8,24 @@
                         <table id="example" class="table table-striped table-bordered" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Date &amp; Time</th>
+                                    <th>Date</th> 
+                                    <th>Time</th>
                                     <th>Event Type</th>
                                     <th>Description</th>
                                     <th>Assistance Requested</th>
                                     <th>Status</th>
+                                    <th>Reported By</th>
+                                    <th>Submitted By</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            <tr v-for = "(crisis, index) in chasCliniccrisiss" :key = "index + crisis.health_service_type">
-                                    <td>{{crisis.health_service_type}}</td>
-                                    <td>{{crisis.crisis_date}}</td>
-                                    <td>{{crisis.crisis_time}}</td>
+                                'user_id', 'name', 'date', 'time', 
+                                'address', 'postal_code', 
+                            'assistance_required'
+                            <tr v-for = "(crisis, index) in crises" :key = "index + crisis.health_service_type">
+                                    <td>{{crisis.date}}</td>
+                                    <td>{{crisis.time}}</td>
+                                    <td>{{crisis.crisis_type}}</td>
                                     <td class = "tw-capitalize">{{crisis.status}}</td>
                                     <td> 
                                         <span class = "tw-flex tw-justify-around tw-items-center" v-if = "crisis.status === 'booked'">
@@ -76,23 +82,38 @@
             setTimeout(function() { 
                 $("#crisis").DataTable(); 
             }, 2000);
-        
         },
 
         data() {
             return {
+                crises: [],
+    
                 error: '',
                 message:'',
 
                 confirmDelete:false,
                 modalShow: false,
 
-                crisis: [],
                 updateCrisis: '',
             }
         },
 
         methods: {
+            getCrisis() {
+                axios.get('/api/crisis')
+                .then((res) => {
+                    this.crises = res.data.crises;
+                })
+                .catch((error) => {
+                    this.error = error.response;
+                })
+            },
+
+
+
+
+
+
             archive(crisis) {
                 this.modalShow = true;
                 var scope = this;
@@ -142,16 +163,7 @@
                 this.getCrisis();
                 this.crisis = [];
             },
-            
-            getCrisis() {
-                axios.get('/api/crisis/get')
-                .then((res) => {
-                    this.crisis = res.data.crisis;
-                })
-                .catch((error) => {
-                    this.error = error.response;
-                })
-            },
+         
 
         }
     }

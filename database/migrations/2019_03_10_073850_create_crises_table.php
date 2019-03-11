@@ -24,6 +24,7 @@ class CreateCrisesTable extends Migration
             $table->date('date');
             $table->time('time');
             
+            $table->string('status');
             $table->string('address');
             $table->string('crisis_type');
             $table->string('assistance_required');

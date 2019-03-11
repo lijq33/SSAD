@@ -9,12 +9,26 @@ use App\User;
 
 class CrisisController extends Controller
 {
-     /**
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function index()
+    {
+        $crises = Crisis::all();
+
+        return response()->json([
+            'crises' => $crises,
+        ], 200);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     */
+    */
     public function store(Request $request)
     {
         $data = request()->all();
@@ -34,9 +48,6 @@ class CrisisController extends Controller
         $data['time'] = \Carbon\Carbon::createFromFormat('g:i A', $data['time']);
      
         Crisis::newCrisis($data);
-
-        // $appointment_class->sendSMS($telephone,  $content);
-        // social media here? Or perhaps at event
 
         return response()->json([
             'message' => 'You have successfully registered a new crisis!',

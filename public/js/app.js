@@ -89782,6 +89782,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -89802,19 +89808,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     data: function data() {
         return {
+            crises: [],
+
             error: '',
             message: '',
 
             confirmDelete: false,
             modalShow: false,
 
-            crisis: [],
             updateCrisis: ''
         };
     },
 
 
     methods: {
+        getCrisis: function getCrisis() {
+            var _this = this;
+
+            axios.get('/api/crisis').then(function (res) {
+                _this.crises = res.data.crises;
+            }).catch(function (error) {
+                _this.error = error.response;
+            });
+        },
         archive: function archive(crisis) {
             this.modalShow = true;
             var scope = this;
@@ -89857,15 +89873,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.hideModal();
             this.getCrisis();
             this.crisis = [];
-        },
-        getCrisis: function getCrisis() {
-            var _this = this;
-
-            axios.get('/api/crisis/get').then(function (res) {
-                _this.crisis = res.data.crisis;
-            }).catch(function (error) {
-                _this.error = error.response;
-            });
         }
     }
 });
@@ -89902,59 +89909,62 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "tbody",
-                    _vm._l(_vm.chasCliniccrisiss, function(crisis, index) {
-                      return _c(
-                        "tr",
-                        { key: index + crisis.health_service_type },
-                        [
-                          _c("td", [
-                            _vm._v(_vm._s(crisis.health_service_type))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(crisis.crisis_date))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(crisis.crisis_time))]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "tw-capitalize" }, [
-                            _vm._v(_vm._s(crisis.status))
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            crisis.status === "booked"
-                              ? _c(
-                                  "span",
-                                  {
-                                    staticClass:
-                                      "tw-flex tw-justify-around tw-items-center"
-                                  },
-                                  [
-                                    _c("i", {
+                    [
+                      _vm._v(
+                        "\n                            'user_id', 'name', 'date', 'time', \n                            'address', 'postal_code', \n                        'assistance_required'\n                        "
+                      ),
+                      _vm._l(_vm.crises, function(crisis, index) {
+                        return _c(
+                          "tr",
+                          { key: index + crisis.health_service_type },
+                          [
+                            _c("td", [_vm._v(_vm._s(crisis.date))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(crisis.time))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(crisis.crisis_type))]),
+                            _vm._v(" "),
+                            _c("td", { staticClass: "tw-capitalize" }, [
+                              _vm._v(_vm._s(crisis.status))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              crisis.status === "booked"
+                                ? _c(
+                                    "span",
+                                    {
                                       staticClass:
-                                        "fas fa-trash-alt tw-cursor-pointer",
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.deletes(crisis)
+                                        "tw-flex tw-justify-around tw-items-center"
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass:
+                                          "fas fa-trash-alt tw-cursor-pointer",
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.deletes(crisis)
+                                          }
                                         }
-                                      }
-                                    }),
-                                    _vm._v(" "),
-                                    _c("i", {
-                                      staticClass:
-                                        "fas fa-pencil-alt tw-cursor-pointer",
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.update(crisis)
+                                      }),
+                                      _vm._v(" "),
+                                      _c("i", {
+                                        staticClass:
+                                          "fas fa-pencil-alt tw-cursor-pointer",
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.update(crisis)
+                                          }
                                         }
-                                      }
-                                    })
-                                  ]
-                                )
-                              : _vm._e()
-                          ])
-                        ]
-                      )
-                    }),
-                    0
+                                      })
+                                    ]
+                                  )
+                                : _vm._e()
+                            ])
+                          ]
+                        )
+                      })
+                    ],
+                    2
                   )
                 ]
               ),
@@ -90057,7 +90067,9 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", [_vm._v("Date & Time")]),
+        _c("th", [_vm._v("Date")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Time")]),
         _vm._v(" "),
         _c("th", [_vm._v("Event Type")]),
         _vm._v(" "),
@@ -90065,7 +90077,11 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Assistance Requested")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Status")])
+        _c("th", [_vm._v("Status")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Reported By")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Submitted By")])
       ])
     ])
   }
@@ -90450,7 +90466,7 @@ var render = function() {
                           "router-link",
                           {
                             staticClass: "nav-link",
-                            attrs: { to: "/newcrisis" }
+                            attrs: { to: "/crisis/new" }
                           },
                           [_vm._v("New Crisis")]
                         ),
@@ -90459,9 +90475,9 @@ var render = function() {
                           "router-link",
                           {
                             staticClass: "nav-link",
-                            attrs: { to: "/viewcrisis" }
+                            attrs: { to: "/crisis/manage" }
                           },
-                          [_vm._v("View Crisis")]
+                          [_vm._v("Manage Crisis")]
                         )
                       ],
                       1

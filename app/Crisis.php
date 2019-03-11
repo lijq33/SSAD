@@ -27,7 +27,6 @@ class Crisis extends Model
     protected $fillable = [ 'user_id', 'name', 'telephone_number', 'postal_code', 'date', 'time', 'address', 
                             'assistance_required', 'crisis_type'];
 
-
     public static function newCrisis($data){
 
         $data['date'] = (Carbon::parse($data['date'])->format('Y/m/d'));
@@ -42,7 +41,7 @@ class Crisis extends Model
             'postal_code' => $data['postalCode'],
             'address' => $data['address'],
 
-            'crisis_type' => $data['name'],
+            'crisis_type' => $data['crisisType'],
             'date' => $data['date'],
             'time' => $data['time'],
             'assistance_required' => $assistance,

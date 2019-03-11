@@ -19,8 +19,8 @@
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <router-link to="/newcrisis" class="nav-link">New Crisis</router-link>
-                             <router-link to="/viewcrisis" class="nav-link">View Crisis</router-link>
+                            <router-link to="/crisis/new" class="nav-link">New Crisis</router-link>
+                             <router-link to="/crisis/manage" class="nav-link">Manage Crisis</router-link>
                         </div>
                     </li>
 
