@@ -45,11 +45,11 @@
                         </b-modal>
 
                         <b-modal ref="myModalRef" size="lg" hide-footer title = "Current crisis Details:">
-                            <edit-crisis :crisis = "editcrisis"
+                            <update-crisis :crisis = "updatecrisis"
                                 @hideModal = "hideModal"
                                 @updateSuccess = "updateSuccess"
                             >
-                            </edit-crisis>
+                            </update-crisis>
                         
                         </b-modal>
                     </div>
@@ -62,11 +62,12 @@
 <script>
     import 'vue-popperjs/dist/css/vue-popper.css';
     import Popper from 'vue-popperjs';
+    import UpdateCrisis from './UpdateCrisis';
     
     export default {
             components: {
             'popper': Popper,
-            'edit-crisis' : Edit
+            'update-crisis' : UpdateCrisis
         },
 
         mounted() {
@@ -87,7 +88,7 @@
                 modalShow: false,
 
                 crisis: [],
-                editCrisis: '',
+                updateCrisis: '',
             }
         },
 

@@ -89719,6 +89719,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_popperjs__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_popperjs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__UpdateCrisis__ = __webpack_require__(441);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__UpdateCrisis___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__UpdateCrisis__);
 //
 //
 //
@@ -89780,6 +89782,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
@@ -89787,7 +89790,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: {
         'popper': __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default.a,
-        'edit-crisis': Edit
+        'update-crisis': __WEBPACK_IMPORTED_MODULE_2__UpdateCrisis___default.a
     },
 
     mounted: function mounted() {
@@ -89806,7 +89809,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             modalShow: false,
 
             crisis: [],
-            editCrisis: ''
+            updateCrisis: ''
         };
     },
 
@@ -90029,8 +90032,8 @@ var render = function() {
                   }
                 },
                 [
-                  _c("edit-crisis", {
-                    attrs: { crisis: _vm.editcrisis },
+                  _c("update-crisis", {
+                    attrs: { crisis: _vm.updatecrisis },
                     on: {
                       hideModal: _vm.hideModal,
                       updateSuccess: _vm.updateSuccess
@@ -94652,6 +94655,646 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 440 */,
+/* 441 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(5)
+/* script */
+var __vue_script__ = __webpack_require__(442)
+/* template */
+var __vue_template__ = __webpack_require__(443)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/UpdateCrisis.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7fe63782", Component.options)
+  } else {
+    hotAPI.reload("data-v-7fe63782", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 442 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['appointment'],
+
+    data: function data() {
+        return {
+            editAppointment: '',
+
+            referal: '',
+            condition: '',
+            department: '',
+            service: '',
+            prefer_practitioner: '',
+            appointment_date: '',
+            appointment_time: '',
+            allDentalServices: ['Bonding', 'Braces', 'Bridges and Implants', 'Crowns and Caps', 'Dentures', 'Extractions', 'Fillngs and Repairs', 'Gum Surgery', 'Oral Cancer Examinations', 'Root Canals', 'Sealants', 'Teeth Whitening', 'Veneers'],
+
+            allDepartments: ['Anaesthesiology', 'Cardiology - NHCS', 'Cardiothoracic Surgery - NHCS', 'Colorectal Surgery ', 'Dermatology', 'Diagnostic Radiology', 'Emergency Medicine', 'Endocrinology', 'Family Medicine Continuing Care', 'Gastroenterology & Hepatology', 'General Surgery', 'Geriatric Medicine', 'Haematology', 'Hand Surgery', 'Hepato-pancreato-biliary and Transplant Surgery', 'Infectious Diseases', 'Internal Medicine', 'Neonatal & Developmental Medicine', 'Neurology', 'Neurosurgery', 'Nuclear Medicine and Molecular Imaging', 'Medical Oncology - NCCS', 'Obstetrics and Gynaecology', 'Occupational and Environmental Medicine', 'Opthalmology - SNEC', 'Oral & Maxillofacial - NDCS', 'Orthopaedic Surgery', 'Otolaryngology (ENT)', 'Palliative Medicine - NCCS', 'Pathology', 'Plastic, Reconstructive & Aesthetic Surgery', 'Psychiatry', 'Radiation Oncology - NCCS', 'Rehabilitation Medicine', 'Renal Medicine', 'Respiratory & Critical Care Medicine', 'Rheumatology & Immunology', 'Upper GastrointestinaI & Bariatric Surgery', 'Urology', 'Vascular Surgery', 'Allergy Centre', 'Ambulatory Surgery Centre', 'Ambulatory Endoscopy Centre', 'Autoimmunity & Rheumatology Centre (ARC)', 'Blood Cancer Centre', 'Breast Centre', 'Burns Centre', 'Centre for Assisted Reproduction (CARE)', 'Centre for Digestive and Liver Diseases (CDLD)', 'Diabetes & Metabolism Centre (DMC)', 'Eating Disorder Programme', 'ENT (Ear, Nose & Throat) Centre', 'Gastrointestinal Function Unit', 'Haematology Centre', 'Haemodialysis Centre', 'Head & Neck Centre', 'Health Assessment Centre', 'Hearing and Ear Implants', 'Hyperbaric & Diving Medicine Centre', 'Inflammatory Bowel Disease Centre', 'LIFE Centre: Lifestyle Improvement and Fitness Enhancement', 'Lung Centre', 'Obstetrics and Gynaecology (O&G) Centre', 'Orthopaedic Sports and Joint Centre', 'Pain Management Centre', 'Pelvic Floor Disorder', 'Peritoneal Dialysis Centre', 'Rehabilitation Centre', 'Sleep Disorders', 'Transplant Centre', 'Travel Clinic', 'Urology Centre', 'Allied Health Departments / Units', 'Allied Health Corporate Wellness Services', 'Dietetics', 'Medical Social Service', 'Music & Creative Therapy Unit', 'Occupational Therapy', 'Pharmacy', 'Physiotherapy', 'Podiatry', 'Speech Therapy', 'Nursing', 'Specialist Nursing Services']
+        };
+    },
+
+
+    watch: {
+        appointment: function appointment() {
+            this.editAppointment = this.appointment;
+
+            this.appointment_date = this.editAppointment.appointment_date;
+            this.appointment_time = this.editAppointment.appointment_time;
+            this.referal = this.appointment.referal;
+            this.department = this.appointment.department;
+            this.condition = this.appointment.condition;
+            this.service = this.appointment.service;
+            this.prefer_practitioner = this.Practitioner;
+        }
+    },
+
+    computed: {
+        clinic: function clinic() {
+            if (this.editAppointment.health_service_type === "Chas Clinic") {
+                return this.editAppointment.chas_clinic;
+            }
+            if (this.editAppointment.health_service_type === "Dental") {
+                return this.editAppointment.dental;
+            }
+            if (this.editAppointment.health_service_type === "Polyclinic") {
+                return this.editAppointment.polyclinic;
+            }
+            if (this.editAppointment.health_service_type === "Hospital") {
+                return this.editAppointment.hospital;
+            }
+        },
+        Role: function Role() {
+            if (this.editAppointment.health_service_type === "Dental") {
+                return "Preferred Dentist";
+            }
+            return "Preferred Doctor";
+        },
+        Practitioner: function Practitioner() {
+            if (this.editAppointment.health_service_type === "Dental") {
+                return this.editAppointment.prefer_dentist;
+            }
+            return this.editAppointment.prefer_doctor;
+        },
+        isDental: function isDental() {
+            return this.editAppointment.health_service_type === 'Dental';
+        },
+        isChasclinic: function isChasclinic() {
+            return this.editAppointment.health_service_type === 'Chas Clinic';
+        },
+        isHospital: function isHospital() {
+            return this.editAppointment.health_service_type === 'Hospital';
+        },
+        isPolyclinic: function isPolyclinic() {
+            return this.editAppointment.health_service_type === 'Polyclinic';
+        }
+    },
+
+    methods: {
+        updateAppointment: function updateAppointment() {
+            var _this = this;
+
+            axios.post('/api/appointment/update', {
+                id: this.appointment.id,
+
+                health_service_type: this.editAppointment.health_service_type.split(" ").join(""),
+                department: this.department,
+                service: this.service,
+
+                condition: this.condition,
+                prefer_doctor: this.prefer_practitioner,
+                prefer_dentist: this.prefer_practitioner,
+
+                referal: this.referal,
+                appointment_date: this.appointment_date,
+                appointment_time: this.appointment_time
+            }).then(function (res) {
+                _this.$emit('updateSuccess');
+            }).catch(function (error) {
+                _this.error = error.response;
+            });
+        },
+        hideModal: function hideModal() {
+            this.$emit('hideModal');
+        }
+    }
+
+});
+
+/***/ }),
+/* 443 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", [
+      _c("div", { staticClass: "form-group row tw-flex tw-justify-center" }, [
+        _c("label", { staticClass: "col-md-4 col-form-label text-md-right" }, [
+          _vm._v("\r\n                Appointment Type :\r\n            ")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          staticClass:
+            "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-bg-grey-light",
+          attrs: { type: "text", disabled: "" },
+          domProps: { value: _vm.editAppointment.health_service_type }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row tw-flex tw-justify-center" }, [
+        _c("label", { staticClass: "col-md-4 col-form-label text-md-right" }, [
+          _vm._v("\r\n                Location :\r\n            ")
+        ]),
+        _vm._v(" "),
+        _c("textarea", {
+          staticClass:
+            "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-bg-grey-light tw-py-2",
+          attrs: { disabled: "" },
+          domProps: { value: _vm.editAppointment.location }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row tw-flex tw-justify-center" }, [
+        _c("label", { staticClass: "col-md-4 col-form-label text-md-right" }, [
+          _vm._v(
+            "\r\n                " +
+              _vm._s(this.editAppointment.health_service_type) +
+              " : \r\n            "
+          )
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          staticClass:
+            "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-bg-grey-light",
+          attrs: { type: "text", disabled: "" },
+          domProps: { value: _vm.clinic }
+        })
+      ]),
+      _vm._v(" "),
+      !_vm.isChasclinic
+        ? _c(
+            "div",
+            { staticClass: "form-group row tw-flex tw-justify-center" },
+            [
+              _c(
+                "label",
+                { staticClass: "col-md-4 col-form-label text-md-right" },
+                [
+                  _vm._v(
+                    "\r\n                " +
+                      _vm._s(this.Role) +
+                      " : \r\n            "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.prefer_practitioner,
+                    expression: "prefer_practitioner"
+                  }
+                ],
+                staticClass:
+                  "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-border",
+                attrs: { type: "text" },
+                domProps: { value: _vm.prefer_practitioner },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.prefer_practitioner = $event.target.value
+                  }
+                }
+              })
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.isDental
+        ? _c(
+            "div",
+            { staticClass: "form-group row tw-flex tw-justify-center" },
+            [
+              _c(
+                "label",
+                { staticClass: "col-md-4 col-form-label text-md-right" },
+                [_vm._v("\r\n                Services :\r\n            ")]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "tw-w-1/2" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.service,
+                        expression: "service "
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { required: "" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.service = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  _vm._l(_vm.allDentalServices, function(service, index) {
+                    return _c("option", { key: index }, [
+                      _vm._v(_vm._s(service))
+                    ])
+                  }),
+                  0
+                )
+              ])
+            ]
+          )
+        : _c(
+            "div",
+            { staticClass: "form-group row tw-flex tw-justify-center" },
+            [
+              _c(
+                "label",
+                { staticClass: "col-md-4 col-form-label text-md-right" },
+                [_vm._v("\r\n                Condition :\r\n            ")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.condition,
+                    expression: "condition"
+                  }
+                ],
+                staticClass:
+                  "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-border",
+                attrs: { type: "text" },
+                domProps: { value: _vm.condition },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.condition = $event.target.value
+                  }
+                }
+              })
+            ]
+          ),
+      _vm._v(" "),
+      _vm.isHospital || _vm.isPolyclinic
+        ? _c(
+            "div",
+            { staticClass: "form-group row tw-flex tw-justify-center" },
+            [
+              _c(
+                "label",
+                { staticClass: "col-md-4 col-form-label text-md-right" },
+                [_vm._v("\r\n                Department :\r\n            ")]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "tw-w-1/2" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.department,
+                        expression: "department"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { required: "" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.department = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  _vm._l(_vm.allDepartments, function(department, index) {
+                    return _c("option", { key: index }, [
+                      _vm._v(_vm._s(department))
+                    ])
+                  }),
+                  0
+                )
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.isHospital
+        ? _c(
+            "div",
+            { staticClass: "form-group row tw-flex tw-justify-center" },
+            [
+              _c(
+                "label",
+                { staticClass: "col-md-4 col-form-label text-md-right" },
+                [_vm._v("\r\n                Referral :\r\n            ")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.referal,
+                    expression: "referal"
+                  }
+                ],
+                staticClass:
+                  "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-border",
+                attrs: { type: "text" },
+                domProps: { value: _vm.referal },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.referal = $event.target.value
+                  }
+                }
+              })
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row tw-flex tw-justify-center" }, [
+        _c("label", { staticClass: "col-md-4 col-form-label text-md-right" }, [
+          _vm._v("\r\n                Appointment Date :\r\n            ")
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "tw-w-1/2" },
+          [
+            _c("date-picker", {
+              attrs: { required: "required" },
+              model: {
+                value: _vm.appointment_date,
+                callback: function($$v) {
+                  _vm.appointment_date = $$v
+                },
+                expression: "appointment_date"
+              }
+            })
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row tw-flex tw-justify-center" }, [
+        _c("label", { staticClass: "col-md-4 col-form-label text-md-right" }, [
+          _vm._v("\r\n                Appointment Time :\r\n            ")
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "tw-w-1/2" },
+          [
+            _c("time-picker", {
+              attrs: { required: "required", useContainer: true },
+              model: {
+                value: _vm.appointment_time,
+                callback: function($$v) {
+                  _vm.appointment_time = $$v
+                },
+                expression: "appointment_time"
+              }
+            })
+          ],
+          1
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass:
+          "tw-flex tw-justify-end tw-m-4 tw-border-t tw-border-grey tw-pt-4"
+      },
+      [
+        _c(
+          "button",
+          {
+            staticClass: "tw-mr-2 btn btn-secondary",
+            on: {
+              click: function($event) {
+                return _vm.hideModal()
+              }
+            }
+          },
+          [_vm._v("Cancel")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "tw-ml-2 btn btn-primary",
+            on: {
+              click: function($event) {
+                return _vm.updateAppointment()
+              }
+            }
+          },
+          [_vm._v("Update")]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7fe63782", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
