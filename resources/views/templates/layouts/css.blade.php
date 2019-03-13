@@ -103,7 +103,7 @@
     let TeamLost = {
         token: '{{csrf_token()}}',
     }
-    </script>
+</script>
 
 <script>
     function scrollToContent(c) {

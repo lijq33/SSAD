@@ -20,7 +20,7 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
-var instance = axios.create();
-delete instance.defaults.headers.common['X-CSRF-TOKEN'];
-delete instance.defaults.headers.common['X-Requested-With'];
+// var instance = axios.create();
+// delete instance.defaults.headers.common['X-CSRF-TOKEN'];
+// delete instance.defaults.headers.common['X-Requested-With'];
 

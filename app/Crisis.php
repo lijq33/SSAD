@@ -7,6 +7,14 @@ use Carbon\Carbon;
 
 class Crisis extends Model
 {
+
+    /**
+     * Get the user that submitted the crisis.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
    
     // Add your validation rules here
     public static $rules = [
@@ -25,7 +33,7 @@ class Crisis extends Model
      * @var array
     */
     protected $fillable = [ 'user_id', 'name', 'telephone_number', 'postal_code', 'date', 'time', 'address', 
-                            'assistance_required', 'crisis_type'];
+                            'assistance_required', 'crisis_type', 'status', 'description'];
 
     public static function newCrisis($data){
 
@@ -40,11 +48,14 @@ class Crisis extends Model
             'telephone_number' => $data['telephoneNumber'],
             'postal_code' => $data['postalCode'],
             'address' => $data['address'],
-
+            
             'crisis_type' => $data['crisisType'],
             'date' => $data['date'],
             'time' => $data['time'],
             'assistance_required' => $assistance,
+            
+            'status' => 'registered',
+            'description' => $data['description'],
         ]);
     }
 

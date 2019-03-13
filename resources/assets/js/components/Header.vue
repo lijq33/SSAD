@@ -12,27 +12,31 @@
                 <ul class="navbar-nav ml-auto">
                     
                     <!-- EVERYONE CAN SEE -->
-                    <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
-                            Crisis Information
-                            <!--<span class="caret"></span> -->
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <router-link to="/crisis/new" class="nav-link">New Crisis</router-link>
-                             <router-link to="/crisis/manage" class="nav-link">Manage Crisis</router-link>
-                        </div>
-                    </li>
+                   
 
                     <!-- Only when not logged in -->
                     <template v-if = "!currentUser">
                         <li>
                             <router-link to="/login" class="nav-link">Login</router-link>
                         </li>
+                        <li>
+                            <router-link to="/Subscribe" class="nav-link">Subscribe</router-link>
+                        </li>
                     </template>
 
                     <template v-else>
-                         <li class="nav-item dropdown">
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+                                Crisis Information
+                                <!--<span class="caret"></span> -->
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <router-link to="/crisis/new" class="nav-link">New Crisis</router-link>
+                                <router-link to="/crisis/manage" class="nav-link">Manage Crisis</router-link>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="tw-capitalize nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
                                 {{ currentUser.name }} <span class="caret"></span>
                             </a>
@@ -44,25 +48,14 @@
                     </template>
 
                     <!-- Only for non-admin user-->
-                    <template v-if = "!isAdmin && currentUser">
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
-                                Appointment <span class="caret"></span>
-                            </a>
-
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <router-link to="/Appointment/Create" class="nav-link">Book Appointment</router-link>
-                                <router-link to="/Appointment/Manage" class="nav-link">Manage Appointment</router-link>
-                            </div>
-                        </li>
-                       
+                    <template v-if = "currentUser">
                         <li>
                             <router-link to="/help" class="nav-link">Help</router-link>
                         </li>
                     </template>
 
                     <!-- For admin -->
-                    <template v-if = "isAdmin">
+                    <template v-if = "isSuperAdmin">
                         <li>
                             <router-link to="/register" class="nav-link">Register</router-link>
                         </li>
@@ -87,8 +80,8 @@
             currentUser() {
                 return this.$store.getters.currentUser
             },
-            isAdmin() {
-                return this.$store.getters.isAdmin
+            isSuperAdmin() {
+                return this.$store.getters.isSuperAdmin
             }
         }
     }

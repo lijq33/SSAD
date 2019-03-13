@@ -16,7 +16,7 @@ class CrisisController extends Controller
     */
     public function index()
     {
-        $crises = Crisis::all();
+        $crises = Crisis::with('user:id,name')->get();
 
         return response()->json([
             'crises' => $crises,

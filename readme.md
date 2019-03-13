@@ -21,9 +21,67 @@ the email and phone number will be required for some functionality.
 $user = App\User::create([ 'name' => 'XXXXX', 'nric'=>'XNNNNNNNX', 'email' => 'X@X.com', 'password' => \Illuminate\Support\Facades\Hash::make('xxxxxx'), 'telephone_number' => 'xxxxxxxx' , 'roles' => 'SuperAdmin' ]);
 
 
+##Type of user
+level = 1 Call Center Operator - able to create and update crisis
+level = 2 Admin - able to archive crisis
+level = 3 Super Admin - able to do what level 1 & level 2 are able to do, additionally, it may add register new lvl 1-2 acc
+
+
 ##THINGS TO DO
 
 
 
 ##Completed Functionalities
 
+
+
+#Non-Functional Requirement - Security
+#CSRF TOKEN
+token: '{{csrf_token()}}'
+google XSS, CSRF
+
+#Password 
+Hash::make($data['password']) -> one way hashing of password 
+Example
+123123 => hash => $2y$10$ei.Tqu7.zDbDZDi/W06sCOlveVOTTF.LVB/k/lqfs98PP9c/SDoGW
+
+#Database
+protected $fillable = [....]; Only variable in fillable can be stored into database. The other variables are ignored.
+For instance $fillable = ['user_name'], but client pass in user_name = "abc" password = "123", password will be ignored
+
+#Data Validation
+Laravel Validator (use Illuminate\Support\Facades\Validator;)
+This is basically a backend validation to ensure that we receive what is legitimate. 
+For instance, The rule stats that 
+
+    public static $rules = [
+        'name' => 'bail|required',
+        'telephoneNumber' => 'bail|required|integer|digits:8',
+        'postalCode' => 'bail|required|integer|digits:6',
+        'date' => 'bail|required|date_format:d/m/Y|before:tomorrow',
+        'time' => 'required',
+        'address' => 'required',
+        'crisisType' => 'required',
+    ];
+. This means that if anything or anyone tries to perform some malicious actions such as man-in-the-middle attack, we ensure that the damage is reduce to the minimum. For instance the legitimate request date is 12/3/2019 but some hacker change it to 14/3/2019. We know that this is not possible as we would not know if a crisis happen tomorrow. Hence, this safeguard our backend by adding one additional layer of security.
+
+#JWT Token
+Secure method to transmit JSON as it is digitally signed
+Read https://jwt.io/introduction/ for more detail
+
+#Permission Level
+level = 1 Call Center Operator - able to create and update crisis
+level = 2 Admin - able to archive crisis
+level = 3 CD Admin - able to keep track which CD shelter is in-charge of the crisis, and the status of the CD shelter. 
+        CD Admin must also be able to check which other CD shelter is available to assist in resolving the crisis. 
+level = 3 Super Admin - able to do what level 1 & level 2 are able to do, additionally, it may add register new lvl 1-2 acc
+
+#middleware - Together with Permission level (Think of middleware as backend security guard)
+Before the request reaches the API, It will 1st go through a layer call middleware. In This layer, middleware, it will check the user's permission before allowing access.
+
+#Minimum user Input.
+Rather than trusting 100% what the current user is telling us, we minimize the information that the user pass to us.
+Example. 
+The current user has an id of 1 - Call center Ops. However when he post the data to the server, he stat that he has an id of 2 - SuperAdmin. Hence, we shouldn't trust user input. Thus, we always fetch the current user at the backend, where user input is not required.         
+$user = new User();
+$data['id'] = $user->fetchUser()['id'];

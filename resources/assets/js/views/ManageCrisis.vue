@@ -1,67 +1,76 @@
 <template>
-    <div class="container">
-         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header tw-text-grey-darker">View Crisis</div>
-                    <div class="card-body">
-                        <table id="example" class="table table-striped table-bordered" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Date</th> 
-                                    <th>Time</th>
-                                    <th>Event Type</th>
-                                    <th>Description</th>
-                                    <th>Assistance Requested</th>
-                                    <th>Status</th>
-                                    <th>Reported By</th>
-                                    <th>Submitted By</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                'user_id', 'name', 'date', 'time', 
-                                'address', 'postal_code', 
-                            'assistance_required'
-                            <tr v-for = "(crisis, index) in crises" :key = "index + crisis.health_service_type">
-                                    <td>{{crisis.date}}</td>
-                                    <td>{{crisis.time}}</td>
-                                    <td>{{crisis.crisis_type}}</td>
-                                    <td class = "tw-capitalize">{{crisis.status}}</td>
-                                    <td> 
-                                        <span class = "tw-flex tw-justify-around tw-items-center" v-if = "crisis.status === 'booked'">
-                                            <i class="fas fa-trash-alt tw-cursor-pointer"  @click = "deletes(crisis)"></i>
-                                            <i class="fas fa-pencil-alt tw-cursor-pointer" @click = "update(crisis)"></i>
-                                        </span>
-                                    </td>
-                                </tr>  
-                            </tbody>
-                        </table>
+    <div>
+        <flash :message = "message"></flash>
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Date</th> 
+                    <th>Time</th>
+                    <th>Crisis Type</th>
+                    <th>Description</th>
+                    <th>Assistance Requested</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Reported By</th>
+                    <th>Submitted By</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for = "(crisis, index) in crises" :key = "index + crisis.health_service_type">
+                    <td>{{crisis.date}}</td>
+                    <td>{{crisis.time}}</td>
+                    <td>{{crisis.crisis_type}}</td>
+                    <td>{{crisis.description}}</td>
+                    <td>{{crisis.assistance_required}}</td>
+                    <td>{{crisis.address}} {{crisis.postal_code}}</td>
+                    <td class = "tw-capitalize">{{crisis.status}}</td>
+                    <td>{{crisis.name}}</td>
+                    <td>{{crisis.user.name}}</td>
+                    <td> 
+                        <span class = "tw-flex tw-justify-around tw-items-center" v-if = "crisis.status === 'registered'">
+                            <popper v-if = "isAdmin" trigger="hover" :options = "{placement: 'bottom'}">
+                                <div class="popper tw-font-hairline tw-text-grey-dark">
+                                    archive the crisis
+                                </div>
+                                <button slot="reference">   
+                                    <i class="fas fa-archive tw-cursor-pointer"  @click = "archive(crisis)"></i>
+                                </button>
+                            </popper>
 
-                        <b-modal title="Alert" v-model = "modalShow" hide-footer header-bg-variant="warning">
-                            <div class = "tw-w-full">
-                                This action cannot be <span class ="tw-font-bold">reverse</span>. 
-                            </div>
-                            <div class = "tw-w-full">
-                                Are you sure that you would like to cancel the crisis?
-                            </div>
-                            <div class = "tw-border-t tw-pt-4 tw-mt-4 tw-flex tw-justify-end tw-w-full">
-                                <button class = "tw-mr-2 btn btn-secondary" id='dontDeleteButton'>Cancel</button>
-                                <button class = "tw-ml-2 btn btn-primary" id='deleteButton'>Delete</button>
-                            </div>
-                        </b-modal>
+                            <popper trigger="hover" :options = "{placement: 'bottom'}">
+                                <div class="popper tw-font-hairline tw-text-grey-dark">
+                                    Update the crisis
+                                </div>
+                                <button slot="reference">   
+                                    <i class="fas fa-pencil-alt tw-cursor-pointer" @click = "update(crisis)"></i>
+                                </button>
+                            </popper>
+                        </span>
+                    </td>
+                </tr>  
+            </tbody>
+        </table>
 
-                        <b-modal ref="myModalRef" size="lg" hide-footer title = "Current crisis Details:">
-                            <update-crisis :crisis = "updatecrisis"
-                                @hideModal = "hideModal"
-                                @updateSuccess = "updateSuccess"
-                            >
-                            </update-crisis>
-                        
-                        </b-modal>
-                    </div>
-                </div>
+        <!-- Archive -->
+        <b-modal title="Alert" v-model = "modalShow" hide-footer header-bg-variant="warning">
+            <div class = "tw-w-full">
+                Are you sure that you would like to archive the crisis?
             </div>
-         </div>
+            <div class = "tw-border-t tw-pt-4 tw-mt-4 tw-flex tw-justify-end tw-w-full">
+                <button class = "tw-mr-2 btn btn-secondary" id='dontArchiveButton'>Cancel</button>
+                <button class = "tw-ml-2 btn btn-primary" id='archiveButton'>Archive</button>
+            </div>
+        </b-modal>
+
+        <!-- Update -->
+        <b-modal ref="myModalRef" size="lg" hide-footer title = "Current crisis Details:">
+            <update-crisis :crisis = "updateCrisis"
+                @hideModal = "hideModal"
+                @updateSuccess = "updateSuccess"
+            >
+            </update-crisis>
+        </b-modal>
     </div>
 </template>
 
@@ -87,13 +96,11 @@
         data() {
             return {
                 crises: [],
-    
-                error: '',
-                message:'',
 
-                confirmDelete:false,
                 modalShow: false,
 
+                message:'',
+                error: '',
                 updateCrisis: '',
             }
         },
@@ -109,23 +116,18 @@
                 })
             },
 
-
-
-
-
-
             archive(crisis) {
                 this.modalShow = true;
                 var scope = this;
                 
                 let promise = new Promise(function(resolve, reject) {
-                    let deleteButton = document.getElementById('deleteButton');
-                    deleteButton.addEventListener("click",function(){
+                    let archiveButton = document.getElementById('archiveButton');
+                    archiveButton.addEventListener("click",function(){
                         scope.modalShow = false;
                         resolve();
                     });
-                    let dontDeleteButton = document.getElementById('dontDeleteButton');
-                    dontDeleteButton.addEventListener("click",function(){
+                    let dontArchiveButton = document.getElementById('dontArchiveButton');
+                    dontArchiveButton.addEventListener("click",function(){
                         scope.modalShow = false;
                         reject();
                     });
@@ -133,12 +135,11 @@
                 });
                 
                 promise.then(function() { 
-                    axios.post('/api/crisis/delete', {
-                        crisis_id: crisis.id,
-                        health_service_type: crisis.health_service_type.split(" ").join("")
+                    axios.post('/api/crisis/archive', {
+                        id: crisis.id,
                     })
                     .then((res) => {
-                        scope.message = "We've successfully cancel your crisis!";
+                        scope.message = "We've successfully archive the crisis!";
                         scope.crisis = [];
                         scope.getcrisis();
                     })
@@ -150,20 +151,20 @@
 
             update(crisis) {
                 this.$refs.myModalRef.show()
-                this.editcrisis = crisis;
+                this.updateCrisis = crisis;
             },
 
-            hideModal() {
-                this.$refs.myModalRef.hide()
-            },
 
             updateSuccess(){
-                this.message = "We've successfully update your crisis details!";
+                this.message = "We've successfully update the crisis details!";
                 this.hideModal();
                 this.getCrisis();
                 this.crisis = [];
             },
          
+            hideModal() {
+                this.$refs.myModalRef.hide()
+            },
 
         }
     }

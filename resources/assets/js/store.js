@@ -22,9 +22,9 @@ export default {
         authError(state) {
             return state.auth_error;
         },
-        isAdmin(state) {
+        isSuperAdmin(state) {
             if (state.currentUser !==null)
-                return state.currentUser.roles === 'admin' ? true : false ;
+                return state.currentUser.roles === 'SuperAdmin' ? true : false ;
             return false;
         }
     },

@@ -10198,7 +10198,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(396)
+var listToStyles = __webpack_require__(399)
 
 /*
 type StyleObject = {
@@ -12520,9 +12520,9 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
-var instance = axios.create();
-delete instance.defaults.headers.common['X-CSRF-TOKEN'];
-delete instance.defaults.headers.common['X-Requested-With'];
+// var instance = axios.create();
+// delete instance.defaults.headers.common['X-CSRF-TOKEN'];
+// delete instance.defaults.headers.common['X-Requested-With'];
 
 /***/ }),
 /* 47 */
@@ -38629,7 +38629,7 @@ exports.default = function (input) {
 
 __webpack_require__(219);
 __webpack_require__(46);
-module.exports = __webpack_require__(439);
+module.exports = __webpack_require__(442);
 
 
 /***/ }),
@@ -38643,16 +38643,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(245);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(246);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__routes__ = __webpack_require__(247);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__store__ = __webpack_require__(372);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_MainApp_vue__ = __webpack_require__(373);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__store__ = __webpack_require__(375);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_MainApp_vue__ = __webpack_require__(376);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_MainApp_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_MainApp_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__helpers_general__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue2_google_maps__ = __webpack_require__(381);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue2_google_maps__ = __webpack_require__(384);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_vue2_google_maps___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_vue2_google_maps__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_bootstrap_vue__ = __webpack_require__(413);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_bootstrap_dist_css_bootstrap_css__ = __webpack_require__(422);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_bootstrap_vue__ = __webpack_require__(416);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_bootstrap_dist_css_bootstrap_css__ = __webpack_require__(425);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_bootstrap_dist_css_bootstrap_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_bootstrap_dist_css_bootstrap_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_bootstrap_vue_dist_bootstrap_vue_css__ = __webpack_require__(424);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_bootstrap_vue_dist_bootstrap_vue_css__ = __webpack_require__(427);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_bootstrap_vue_dist_bootstrap_vue_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_bootstrap_vue_dist_bootstrap_vue_css__);
 // import router from './routes';
 
@@ -38684,13 +38684,13 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vuex
 // });
 
 // Vue.component('GRecaptcha', require('./components/GRecaptcha'));
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('flash', __webpack_require__(426));
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('flash', __webpack_require__(429));
 
 // Vue.component('BaseMap', require('./components/BaseMap'));
 // Vue.component('GoogleMap', require('./components/GoogleMap'));
 
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('DatePicker', __webpack_require__(431));
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('TimePicker', __webpack_require__(434));
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('DatePicker', __webpack_require__(434));
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('TimePicker', __webpack_require__(437));
 
 var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store(__WEBPACK_IMPORTED_MODULE_4__store__["a" /* default */]);
 
@@ -88420,6 +88420,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -88448,6 +88462,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 time: '',
                 address: '',
                 postalCode: '',
+                description: '',
                 assistanceRequired: [],
                 crisisType: null
             }
@@ -88471,7 +88486,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 _this.error = error.response.data.errors;
                 _this.isLoading = false;
-                _this.resetFields();
             });
         },
         resetFields: function resetFields() {
@@ -89550,7 +89564,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-md-6" }, [
-                    _c("div", { staticClass: "card" }, [
+                    _c("div", { staticClass: "card tw-mb-6" }, [
                       _c(
                         "div",
                         { staticClass: "card-body" },
@@ -89590,6 +89604,59 @@ var render = function() {
                         ],
                         1
                       )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card" }, [
+                      _c("div", { staticClass: "card-body" }, [
+                        _c("h5", { staticClass: "card-title" }, [
+                          _vm._v(" Description:")
+                        ]),
+                        _vm._v(" "),
+                        _c("textarea", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.description,
+                              expression: "form.description"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "tw-border-red-light":
+                              _vm.error["description"] != undefined
+                          },
+                          staticStyle: { "max-width": "100%" },
+                          attrs: { rows: "3" },
+                          domProps: { value: _vm.form.description },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "description",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.error["description"] != undefined
+                          ? _c("div", { staticClass: "tw-text-red" }, [
+                              _c("span", [
+                                _vm._v(
+                                  " " +
+                                    _vm._s(
+                                      this.error["description"].toString()
+                                    ) +
+                                    " "
+                                )
+                              ])
+                            ])
+                          : _vm._e()
+                      ])
                     ])
                   ])
                 ]),
@@ -89671,7 +89738,7 @@ var normalizeComponent = __webpack_require__(5)
 /* script */
 var __vue_script__ = __webpack_require__(370)
 /* template */
-var __vue_template__ = __webpack_require__(371)
+var __vue_template__ = __webpack_require__(374)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -89719,8 +89786,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_popperjs__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_popperjs__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__UpdateCrisis__ = __webpack_require__(441);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__UpdateCrisis__ = __webpack_require__(371);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__UpdateCrisis___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__UpdateCrisis__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -89810,12 +89886,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             crises: [],
 
-            error: '',
-            message: '',
-
-            confirmDelete: false,
             modalShow: false,
 
+            message: '',
+            error: '',
             updateCrisis: ''
         };
     },
@@ -89836,24 +89910,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var scope = this;
 
             var promise = new Promise(function (resolve, reject) {
-                var deleteButton = document.getElementById('deleteButton');
-                deleteButton.addEventListener("click", function () {
+                var archiveButton = document.getElementById('archiveButton');
+                archiveButton.addEventListener("click", function () {
                     scope.modalShow = false;
                     resolve();
                 });
-                var dontDeleteButton = document.getElementById('dontDeleteButton');
-                dontDeleteButton.addEventListener("click", function () {
+                var dontArchiveButton = document.getElementById('dontArchiveButton');
+                dontArchiveButton.addEventListener("click", function () {
                     scope.modalShow = false;
                     reject();
                 });
             });
 
             promise.then(function () {
-                axios.post('/api/crisis/delete', {
-                    crisis_id: crisis.id,
-                    health_service_type: crisis.health_service_type.split(" ").join("")
+                axios.post('/api/crisis/archive', {
+                    id: crisis.id
                 }).then(function (res) {
-                    scope.message = "We've successfully cancel your crisis!";
+                    scope.message = "We've successfully archive the crisis!";
                     scope.crisis = [];
                     scope.getcrisis();
                 }).catch(function (error) {
@@ -89863,16 +89936,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         update: function update(crisis) {
             this.$refs.myModalRef.show();
-            this.editcrisis = crisis;
-        },
-        hideModal: function hideModal() {
-            this.$refs.myModalRef.hide();
+            this.updateCrisis = crisis;
         },
         updateSuccess: function updateSuccess() {
-            this.message = "We've successfully update your crisis details!";
+            this.message = "We've successfully update the crisis details!";
             this.hideModal();
             this.getCrisis();
             this.crisis = [];
+        },
+        hideModal: function hideModal() {
+            this.$refs.myModalRef.hide();
         }
     }
 });
@@ -89881,184 +89954,873 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 371 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var disposed = false
+var normalizeComponent = __webpack_require__(5)
+/* script */
+var __vue_script__ = __webpack_require__(372)
+/* template */
+var __vue_template__ = __webpack_require__(373)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/UpdateCrisis.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7fe63782", Component.options)
+  } else {
+    hotAPI.reload("data-v-7fe63782", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 372 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['appointment'],
+
+    data: function data() {
+        return {
+            editAppointment: '',
+
+            referal: '',
+            condition: '',
+            department: '',
+            service: '',
+            prefer_practitioner: '',
+            appointment_date: '',
+            appointment_time: '',
+            allDentalServices: ['Bonding', 'Braces', 'Bridges and Implants', 'Crowns and Caps', 'Dentures', 'Extractions', 'Fillngs and Repairs', 'Gum Surgery', 'Oral Cancer Examinations', 'Root Canals', 'Sealants', 'Teeth Whitening', 'Veneers'],
+
+            allDepartments: ['Anaesthesiology', 'Cardiology - NHCS', 'Cardiothoracic Surgery - NHCS', 'Colorectal Surgery ', 'Dermatology', 'Diagnostic Radiology', 'Emergency Medicine', 'Endocrinology', 'Family Medicine Continuing Care', 'Gastroenterology & Hepatology', 'General Surgery', 'Geriatric Medicine', 'Haematology', 'Hand Surgery', 'Hepato-pancreato-biliary and Transplant Surgery', 'Infectious Diseases', 'Internal Medicine', 'Neonatal & Developmental Medicine', 'Neurology', 'Neurosurgery', 'Nuclear Medicine and Molecular Imaging', 'Medical Oncology - NCCS', 'Obstetrics and Gynaecology', 'Occupational and Environmental Medicine', 'Opthalmology - SNEC', 'Oral & Maxillofacial - NDCS', 'Orthopaedic Surgery', 'Otolaryngology (ENT)', 'Palliative Medicine - NCCS', 'Pathology', 'Plastic, Reconstructive & Aesthetic Surgery', 'Psychiatry', 'Radiation Oncology - NCCS', 'Rehabilitation Medicine', 'Renal Medicine', 'Respiratory & Critical Care Medicine', 'Rheumatology & Immunology', 'Upper GastrointestinaI & Bariatric Surgery', 'Urology', 'Vascular Surgery', 'Allergy Centre', 'Ambulatory Surgery Centre', 'Ambulatory Endoscopy Centre', 'Autoimmunity & Rheumatology Centre (ARC)', 'Blood Cancer Centre', 'Breast Centre', 'Burns Centre', 'Centre for Assisted Reproduction (CARE)', 'Centre for Digestive and Liver Diseases (CDLD)', 'Diabetes & Metabolism Centre (DMC)', 'Eating Disorder Programme', 'ENT (Ear, Nose & Throat) Centre', 'Gastrointestinal Function Unit', 'Haematology Centre', 'Haemodialysis Centre', 'Head & Neck Centre', 'Health Assessment Centre', 'Hearing and Ear Implants', 'Hyperbaric & Diving Medicine Centre', 'Inflammatory Bowel Disease Centre', 'LIFE Centre: Lifestyle Improvement and Fitness Enhancement', 'Lung Centre', 'Obstetrics and Gynaecology (O&G) Centre', 'Orthopaedic Sports and Joint Centre', 'Pain Management Centre', 'Pelvic Floor Disorder', 'Peritoneal Dialysis Centre', 'Rehabilitation Centre', 'Sleep Disorders', 'Transplant Centre', 'Travel Clinic', 'Urology Centre', 'Allied Health Departments / Units', 'Allied Health Corporate Wellness Services', 'Dietetics', 'Medical Social Service', 'Music & Creative Therapy Unit', 'Occupational Therapy', 'Pharmacy', 'Physiotherapy', 'Podiatry', 'Speech Therapy', 'Nursing', 'Specialist Nursing Services']
+        };
+    },
+
+
+    watch: {
+        appointment: function appointment() {
+            this.editAppointment = this.appointment;
+
+            this.appointment_date = this.editAppointment.appointment_date;
+            this.appointment_time = this.editAppointment.appointment_time;
+            this.referal = this.appointment.referal;
+            this.department = this.appointment.department;
+            this.condition = this.appointment.condition;
+            this.service = this.appointment.service;
+            this.prefer_practitioner = this.Practitioner;
+        }
+    },
+
+    computed: {
+        clinic: function clinic() {
+            if (this.editAppointment.health_service_type === "Chas Clinic") {
+                return this.editAppointment.chas_clinic;
+            }
+            if (this.editAppointment.health_service_type === "Dental") {
+                return this.editAppointment.dental;
+            }
+            if (this.editAppointment.health_service_type === "Polyclinic") {
+                return this.editAppointment.polyclinic;
+            }
+            if (this.editAppointment.health_service_type === "Hospital") {
+                return this.editAppointment.hospital;
+            }
+        },
+        Role: function Role() {
+            if (this.editAppointment.health_service_type === "Dental") {
+                return "Preferred Dentist";
+            }
+            return "Preferred Doctor";
+        },
+        Practitioner: function Practitioner() {
+            if (this.editAppointment.health_service_type === "Dental") {
+                return this.editAppointment.prefer_dentist;
+            }
+            return this.editAppointment.prefer_doctor;
+        },
+        isDental: function isDental() {
+            return this.editAppointment.health_service_type === 'Dental';
+        },
+        isChasclinic: function isChasclinic() {
+            return this.editAppointment.health_service_type === 'Chas Clinic';
+        },
+        isHospital: function isHospital() {
+            return this.editAppointment.health_service_type === 'Hospital';
+        },
+        isPolyclinic: function isPolyclinic() {
+            return this.editAppointment.health_service_type === 'Polyclinic';
+        }
+    },
+
+    methods: {
+        updateAppointment: function updateAppointment() {
+            var _this = this;
+
+            axios.post('/api/appointment/update', {
+                id: this.appointment.id,
+
+                health_service_type: this.editAppointment.health_service_type.split(" ").join(""),
+                department: this.department,
+                service: this.service,
+
+                condition: this.condition,
+                prefer_doctor: this.prefer_practitioner,
+                prefer_dentist: this.prefer_practitioner,
+
+                referal: this.referal,
+                appointment_date: this.appointment_date,
+                appointment_time: this.appointment_time
+            }).then(function (res) {
+                _this.$emit('updateSuccess');
+            }).catch(function (error) {
+                _this.error = error.response;
+            });
+        },
+        hideModal: function hideModal() {
+            this.$emit('hideModal');
+        }
+    }
+
+});
+
+/***/ }),
+/* 373 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header tw-text-grey-darker" }, [
-            _vm._v("View Crisis")
-          ]),
-          _vm._v(" "),
-          _c(
+  return _c("div", [
+    _c("div", [
+      _c("div", { staticClass: "form-group row tw-flex tw-justify-center" }, [
+        _c("label", { staticClass: "col-md-4 col-form-label text-md-right" }, [
+          _vm._v("\r\n                Appointment Type :\r\n            ")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          staticClass:
+            "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-bg-grey-light",
+          attrs: { type: "text", disabled: "" },
+          domProps: { value: _vm.editAppointment.health_service_type }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row tw-flex tw-justify-center" }, [
+        _c("label", { staticClass: "col-md-4 col-form-label text-md-right" }, [
+          _vm._v("\r\n                Location :\r\n            ")
+        ]),
+        _vm._v(" "),
+        _c("textarea", {
+          staticClass:
+            "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-bg-grey-light tw-py-2",
+          attrs: { disabled: "" },
+          domProps: { value: _vm.editAppointment.location }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row tw-flex tw-justify-center" }, [
+        _c("label", { staticClass: "col-md-4 col-form-label text-md-right" }, [
+          _vm._v(
+            "\r\n                " +
+              _vm._s(this.editAppointment.health_service_type) +
+              " : \r\n            "
+          )
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          staticClass:
+            "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-bg-grey-light",
+          attrs: { type: "text", disabled: "" },
+          domProps: { value: _vm.clinic }
+        })
+      ]),
+      _vm._v(" "),
+      !_vm.isChasclinic
+        ? _c(
             "div",
-            { staticClass: "card-body" },
+            { staticClass: "form-group row tw-flex tw-justify-center" },
             [
               _c(
-                "table",
-                {
-                  staticClass: "table table-striped table-bordered",
-                  staticStyle: { width: "100%" },
-                  attrs: { id: "example" }
-                },
+                "label",
+                { staticClass: "col-md-4 col-form-label text-md-right" },
                 [
-                  _vm._m(0),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    [
-                      _vm._v(
-                        "\n                            'user_id', 'name', 'date', 'time', \n                            'address', 'postal_code', \n                        'assistance_required'\n                        "
-                      ),
-                      _vm._l(_vm.crises, function(crisis, index) {
-                        return _c(
-                          "tr",
-                          { key: index + crisis.health_service_type },
-                          [
-                            _c("td", [_vm._v(_vm._s(crisis.date))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(crisis.time))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(crisis.crisis_type))]),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "tw-capitalize" }, [
-                              _vm._v(_vm._s(crisis.status))
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              crisis.status === "booked"
-                                ? _c(
-                                    "span",
+                  _vm._v(
+                    "\r\n                " +
+                      _vm._s(this.Role) +
+                      " : \r\n            "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.prefer_practitioner,
+                    expression: "prefer_practitioner"
+                  }
+                ],
+                staticClass:
+                  "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-border",
+                attrs: { type: "text" },
+                domProps: { value: _vm.prefer_practitioner },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.prefer_practitioner = $event.target.value
+                  }
+                }
+              })
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.isDental
+        ? _c(
+            "div",
+            { staticClass: "form-group row tw-flex tw-justify-center" },
+            [
+              _c(
+                "label",
+                { staticClass: "col-md-4 col-form-label text-md-right" },
+                [_vm._v("\r\n                Services :\r\n            ")]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "tw-w-1/2" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.service,
+                        expression: "service "
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { required: "" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.service = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  _vm._l(_vm.allDentalServices, function(service, index) {
+                    return _c("option", { key: index }, [
+                      _vm._v(_vm._s(service))
+                    ])
+                  }),
+                  0
+                )
+              ])
+            ]
+          )
+        : _c(
+            "div",
+            { staticClass: "form-group row tw-flex tw-justify-center" },
+            [
+              _c(
+                "label",
+                { staticClass: "col-md-4 col-form-label text-md-right" },
+                [_vm._v("\r\n                Condition :\r\n            ")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.condition,
+                    expression: "condition"
+                  }
+                ],
+                staticClass:
+                  "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-border",
+                attrs: { type: "text" },
+                domProps: { value: _vm.condition },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.condition = $event.target.value
+                  }
+                }
+              })
+            ]
+          ),
+      _vm._v(" "),
+      _vm.isHospital || _vm.isPolyclinic
+        ? _c(
+            "div",
+            { staticClass: "form-group row tw-flex tw-justify-center" },
+            [
+              _c(
+                "label",
+                { staticClass: "col-md-4 col-form-label text-md-right" },
+                [_vm._v("\r\n                Department :\r\n            ")]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "tw-w-1/2" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.department,
+                        expression: "department"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { required: "" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.department = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  _vm._l(_vm.allDepartments, function(department, index) {
+                    return _c("option", { key: index }, [
+                      _vm._v(_vm._s(department))
+                    ])
+                  }),
+                  0
+                )
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.isHospital
+        ? _c(
+            "div",
+            { staticClass: "form-group row tw-flex tw-justify-center" },
+            [
+              _c(
+                "label",
+                { staticClass: "col-md-4 col-form-label text-md-right" },
+                [_vm._v("\r\n                Referral :\r\n            ")]
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.referal,
+                    expression: "referal"
+                  }
+                ],
+                staticClass:
+                  "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-border",
+                attrs: { type: "text" },
+                domProps: { value: _vm.referal },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.referal = $event.target.value
+                  }
+                }
+              })
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row tw-flex tw-justify-center" }, [
+        _c("label", { staticClass: "col-md-4 col-form-label text-md-right" }, [
+          _vm._v("\r\n                Appointment Date :\r\n            ")
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "tw-w-1/2" },
+          [
+            _c("date-picker", {
+              attrs: { required: "required" },
+              model: {
+                value: _vm.appointment_date,
+                callback: function($$v) {
+                  _vm.appointment_date = $$v
+                },
+                expression: "appointment_date"
+              }
+            })
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group row tw-flex tw-justify-center" }, [
+        _c("label", { staticClass: "col-md-4 col-form-label text-md-right" }, [
+          _vm._v("\r\n                Appointment Time :\r\n            ")
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "tw-w-1/2" },
+          [
+            _c("time-picker", {
+              attrs: { required: "required", useContainer: true },
+              model: {
+                value: _vm.appointment_time,
+                callback: function($$v) {
+                  _vm.appointment_time = $$v
+                },
+                expression: "appointment_time"
+              }
+            })
+          ],
+          1
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass:
+          "tw-flex tw-justify-end tw-m-4 tw-border-t tw-border-grey tw-pt-4"
+      },
+      [
+        _c(
+          "button",
+          {
+            staticClass: "tw-mr-2 btn btn-secondary",
+            on: {
+              click: function($event) {
+                return _vm.hideModal()
+              }
+            }
+          },
+          [_vm._v("Cancel")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "tw-ml-2 btn btn-primary",
+            on: {
+              click: function($event) {
+                return _vm.updateAppointment()
+              }
+            }
+          },
+          [_vm._v("Update")]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7fe63782", module.exports)
+  }
+}
+
+/***/ }),
+/* 374 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("flash", { attrs: { message: _vm.message } }),
+      _vm._v(" "),
+      _c(
+        "table",
+        {
+          staticClass: "table table-striped table-bordered",
+          staticStyle: { width: "100%" },
+          attrs: { id: "example" }
+        },
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.crises, function(crisis, index) {
+              return _c("tr", { key: index + crisis.health_service_type }, [
+                _c("td", [_vm._v(_vm._s(crisis.date))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(crisis.time))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(crisis.crisis_type))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(crisis.description))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(crisis.assistance_required))]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    _vm._s(crisis.address) + " " + _vm._s(crisis.postal_code)
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "tw-capitalize" }, [
+                  _vm._v(_vm._s(crisis.status))
+                ]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(crisis.name))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(crisis.user.name))]),
+                _vm._v(" "),
+                _c("td", [
+                  crisis.status === "registered"
+                    ? _c(
+                        "span",
+                        {
+                          staticClass:
+                            "tw-flex tw-justify-around tw-items-center"
+                        },
+                        [
+                          _vm.isAdmin
+                            ? _c(
+                                "popper",
+                                {
+                                  attrs: {
+                                    trigger: "hover",
+                                    options: { placement: "bottom" }
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "div",
                                     {
                                       staticClass:
-                                        "tw-flex tw-justify-around tw-items-center"
+                                        "popper tw-font-hairline tw-text-grey-dark"
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                archive the crisis\n                            "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "button",
+                                    {
+                                      attrs: { slot: "reference" },
+                                      slot: "reference"
                                     },
                                     [
                                       _c("i", {
                                         staticClass:
-                                          "fas fa-trash-alt tw-cursor-pointer",
+                                          "fas fa-archive tw-cursor-pointer",
                                         on: {
                                           click: function($event) {
-                                            return _vm.deletes(crisis)
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("i", {
-                                        staticClass:
-                                          "fas fa-pencil-alt tw-cursor-pointer",
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.update(crisis)
+                                            return _vm.archive(crisis)
                                           }
                                         }
                                       })
                                     ]
                                   )
-                                : _vm._e()
-                            ])
-                          ]
-                        )
-                      })
-                    ],
-                    2
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "b-modal",
-                {
-                  attrs: {
-                    title: "Alert",
-                    "hide-footer": "",
-                    "header-bg-variant": "warning"
-                  },
-                  model: {
-                    value: _vm.modalShow,
-                    callback: function($$v) {
-                      _vm.modalShow = $$v
-                    },
-                    expression: "modalShow"
-                  }
-                },
-                [
-                  _c("div", { staticClass: "tw-w-full" }, [
-                    _vm._v(
-                      "\n                            This action cannot be "
-                    ),
-                    _c("span", { staticClass: "tw-font-bold" }, [
-                      _vm._v("reverse")
-                    ]),
-                    _vm._v(". \n                        ")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "tw-w-full" }, [
-                    _vm._v(
-                      "\n                            Are you sure that you would like to cancel the crisis?\n                        "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "tw-border-t tw-pt-4 tw-mt-4 tw-flex tw-justify-end tw-w-full"
-                    },
-                    [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "tw-mr-2 btn btn-secondary",
-                          attrs: { id: "dontDeleteButton" }
-                        },
-                        [_vm._v("Cancel")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "tw-ml-2 btn btn-primary",
-                          attrs: { id: "deleteButton" }
-                        },
-                        [_vm._v("Delete")]
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "popper",
+                            {
+                              attrs: {
+                                trigger: "hover",
+                                options: { placement: "bottom" }
+                              }
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "popper tw-font-hairline tw-text-grey-dark"
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                Update the crisis\n                            "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  attrs: { slot: "reference" },
+                                  slot: "reference"
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass:
+                                      "fas fa-pencil-alt tw-cursor-pointer",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.update(crisis)
+                                      }
+                                    }
+                                  })
+                                ]
+                              )
+                            ]
+                          )
+                        ],
+                        1
                       )
-                    ]
-                  )
-                ]
+                    : _vm._e()
+                ])
+              ])
+            }),
+            0
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          attrs: {
+            title: "Alert",
+            "hide-footer": "",
+            "header-bg-variant": "warning"
+          },
+          model: {
+            value: _vm.modalShow,
+            callback: function($$v) {
+              _vm.modalShow = $$v
+            },
+            expression: "modalShow"
+          }
+        },
+        [
+          _c("div", { staticClass: "tw-w-full" }, [
+            _vm._v(
+              "\n            Are you sure that you would like to archive the crisis?\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "tw-border-t tw-pt-4 tw-mt-4 tw-flex tw-justify-end tw-w-full"
+            },
+            [
+              _c(
+                "button",
+                {
+                  staticClass: "tw-mr-2 btn btn-secondary",
+                  attrs: { id: "dontArchiveButton" }
+                },
+                [_vm._v("Cancel")]
               ),
               _vm._v(" "),
               _c(
-                "b-modal",
+                "button",
                 {
-                  ref: "myModalRef",
-                  attrs: {
-                    size: "lg",
-                    "hide-footer": "",
-                    title: "Current crisis Details:"
-                  }
+                  staticClass: "tw-ml-2 btn btn-primary",
+                  attrs: { id: "archiveButton" }
                 },
-                [
-                  _c("update-crisis", {
-                    attrs: { crisis: _vm.updatecrisis },
-                    on: {
-                      hideModal: _vm.hideModal,
-                      updateSuccess: _vm.updateSuccess
-                    }
-                  })
-                ],
-                1
+                [_vm._v("Archive")]
               )
-            ],
-            1
+            ]
           )
-        ])
-      ])
-    ])
-  ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "myModalRef",
+          attrs: {
+            size: "lg",
+            "hide-footer": "",
+            title: "Current crisis Details:"
+          }
+        },
+        [
+          _c("update-crisis", {
+            attrs: { crisis: _vm.updateCrisis },
+            on: { hideModal: _vm.hideModal, updateSuccess: _vm.updateSuccess }
+          })
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -90071,17 +90833,21 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Time")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Event Type")]),
+        _c("th", [_vm._v("Crisis Type")]),
         _vm._v(" "),
         _c("th", [_vm._v("Description")]),
         _vm._v(" "),
         _c("th", [_vm._v("Assistance Requested")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Location")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Status")]),
         _vm._v(" "),
         _c("th", [_vm._v("Reported By")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Submitted By")])
+        _c("th", [_vm._v("Submitted By")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Action")])
       ])
     ])
   }
@@ -90096,7 +90862,7 @@ if (false) {
 }
 
 /***/ }),
-/* 372 */
+/* 375 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -90125,8 +90891,8 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__helpers_auth__["a" /* getLocalUse
         authError: function authError(state) {
             return state.auth_error;
         },
-        isAdmin: function isAdmin(state) {
-            if (state.currentUser !== null) return state.currentUser.roles === 'admin' ? true : false;
+        isSuperAdmin: function isSuperAdmin(state) {
+            if (state.currentUser !== null) return state.currentUser.roles === 'SuperAdmin' ? true : false;
             return false;
         }
     },
@@ -90161,15 +90927,15 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__helpers_auth__["a" /* getLocalUse
 });
 
 /***/ }),
-/* 373 */
+/* 376 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(5)
 /* script */
-var __vue_script__ = __webpack_require__(374)
+var __vue_script__ = __webpack_require__(377)
 /* template */
-var __vue_template__ = __webpack_require__(380)
+var __vue_template__ = __webpack_require__(383)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -90208,14 +90974,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 374 */
+/* 377 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Header_vue__ = __webpack_require__(375);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Header_vue__ = __webpack_require__(378);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Header_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Header_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Footer_vue__ = __webpack_require__(378);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Footer_vue__ = __webpack_require__(381);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Footer_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Footer_vue__);
 //
 //
@@ -90246,15 +91012,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 375 */
+/* 378 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(5)
 /* script */
-var __vue_script__ = __webpack_require__(376)
+var __vue_script__ = __webpack_require__(379)
 /* template */
-var __vue_template__ = __webpack_require__(377)
+var __vue_template__ = __webpack_require__(380)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -90293,18 +91059,11 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 376 */
+/* 379 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -90387,14 +91146,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         currentUser: function currentUser() {
             return this.$store.getters.currentUser;
         },
-        isAdmin: function isAdmin() {
-            return this.$store.getters.isAdmin;
+        isSuperAdmin: function isSuperAdmin() {
+            return this.$store.getters.isSuperAdmin;
         }
     }
 });
 
 /***/ }),
-/* 377 */
+/* 380 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -90434,56 +91193,6 @@ var render = function() {
                 "ul",
                 { staticClass: "navbar-nav ml-auto" },
                 [
-                  _c("li", { staticClass: "nav-item dropdown" }, [
-                    _c(
-                      "a",
-                      {
-                        staticClass: "nav-link dropdown-toggle",
-                        attrs: {
-                          id: "navbarDropdown",
-                          href: "#",
-                          role: "button",
-                          "data-toggle": "dropdown",
-                          "aria-expanded": "false",
-                          "aria-haspopup": "true"
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                        Crisis Information\n                        "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "dropdown-menu",
-                        attrs: { "aria-labelledby": "navbarDropdown" }
-                      },
-                      [
-                        _c(
-                          "router-link",
-                          {
-                            staticClass: "nav-link",
-                            attrs: { to: "/crisis/new" }
-                          },
-                          [_vm._v("New Crisis")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "router-link",
-                          {
-                            staticClass: "nav-link",
-                            attrs: { to: "/crisis/manage" }
-                          },
-                          [_vm._v("Manage Crisis")]
-                        )
-                      ],
-                      1
-                    )
-                  ]),
-                  _vm._v(" "),
                   !_vm.currentUser
                     ? [
                         _c(
@@ -90499,9 +91208,74 @@ var render = function() {
                             )
                           ],
                           1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "li",
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "nav-link",
+                                attrs: { to: "/Subscribe" }
+                              },
+                              [_vm._v("Subscribe")]
+                            )
+                          ],
+                          1
                         )
                       ]
                     : [
+                        _c("li", { staticClass: "nav-item dropdown" }, [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "nav-link dropdown-toggle",
+                              attrs: {
+                                id: "navbarDropdown",
+                                href: "#",
+                                role: "button",
+                                "data-toggle": "dropdown",
+                                "aria-expanded": "false",
+                                "aria-haspopup": "true"
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                            Crisis Information\n                            "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "dropdown-menu",
+                              attrs: { "aria-labelledby": "navbarDropdown" }
+                            },
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "nav-link",
+                                  attrs: { to: "/crisis/new" }
+                                },
+                                [_vm._v("New Crisis")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "nav-link",
+                                  attrs: { to: "/crisis/manage" }
+                                },
+                                [_vm._v("Manage Crisis")]
+                              )
+                            ],
+                            1
+                          )
+                        ]),
+                        _vm._v(" "),
                         _c("li", { staticClass: "nav-item dropdown" }, [
                           _c(
                             "a",
@@ -90553,40 +91327,8 @@ var render = function() {
                         ])
                       ],
                   _vm._v(" "),
-                  !_vm.isAdmin && _vm.currentUser
+                  _vm.currentUser
                     ? [
-                        _c("li", { staticClass: "nav-item dropdown" }, [
-                          _vm._m(1),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass: "dropdown-menu",
-                              attrs: { "aria-labelledby": "navbarDropdown" }
-                            },
-                            [
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "nav-link",
-                                  attrs: { to: "/Appointment/Create" }
-                                },
-                                [_vm._v("Book Appointment")]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "router-link",
-                                {
-                                  staticClass: "nav-link",
-                                  attrs: { to: "/Appointment/Manage" }
-                                },
-                                [_vm._v("Manage Appointment")]
-                              )
-                            ],
-                            1
-                          )
-                        ]),
-                        _vm._v(" "),
                         _c(
                           "li",
                           [
@@ -90604,7 +91346,7 @@ var render = function() {
                       ]
                     : _vm._e(),
                   _vm._v(" "),
-                  _vm.isAdmin
+                  _vm.isSuperAdmin
                     ? [
                         _c(
                           "li",
@@ -90653,29 +91395,6 @@ var staticRenderFns = [
       },
       [_c("span", { staticClass: "navbar-toggler-icon" })]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "nav-link dropdown-toggle",
-        attrs: {
-          id: "navbarDropdown",
-          href: "#",
-          role: "button",
-          "data-toggle": "dropdown",
-          "aria-expanded": "false",
-          "aria-haspopup": "true"
-        }
-      },
-      [
-        _vm._v("\n                            Appointment "),
-        _c("span", { staticClass: "caret" })
-      ]
-    )
   }
 ]
 render._withStripped = true
@@ -90688,7 +91407,7 @@ if (false) {
 }
 
 /***/ }),
-/* 378 */
+/* 381 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
@@ -90696,7 +91415,7 @@ var normalizeComponent = __webpack_require__(5)
 /* script */
 var __vue_script__ = null
 /* template */
-var __vue_template__ = __webpack_require__(379)
+var __vue_template__ = __webpack_require__(382)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -90735,7 +91454,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 379 */
+/* 382 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -90815,7 +91534,7 @@ if (false) {
 }
 
 /***/ }),
-/* 380 */
+/* 383 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -90851,7 +91570,7 @@ if (false) {
 }
 
 /***/ }),
-/* 381 */
+/* 384 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90870,49 +91589,49 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 exports.install = install;
 exports.gmapApi = gmapApi;
 
-var _lazyValue = __webpack_require__(382);
+var _lazyValue = __webpack_require__(385);
 
 var _lazyValue2 = _interopRequireDefault(_lazyValue);
 
-var _manager = __webpack_require__(383);
+var _manager = __webpack_require__(386);
 
-var _marker = __webpack_require__(384);
+var _marker = __webpack_require__(387);
 
 var _marker2 = _interopRequireDefault(_marker);
 
-var _polyline = __webpack_require__(385);
+var _polyline = __webpack_require__(388);
 
 var _polyline2 = _interopRequireDefault(_polyline);
 
-var _polygon = __webpack_require__(386);
+var _polygon = __webpack_require__(389);
 
 var _polygon2 = _interopRequireDefault(_polygon);
 
-var _circle = __webpack_require__(387);
+var _circle = __webpack_require__(390);
 
 var _circle2 = _interopRequireDefault(_circle);
 
-var _rectangle = __webpack_require__(388);
+var _rectangle = __webpack_require__(391);
 
 var _rectangle2 = _interopRequireDefault(_rectangle);
 
-var _infoWindow = __webpack_require__(389);
+var _infoWindow = __webpack_require__(392);
 
 var _infoWindow2 = _interopRequireDefault(_infoWindow);
 
-var _map = __webpack_require__(393);
+var _map = __webpack_require__(396);
 
 var _map2 = _interopRequireDefault(_map);
 
-var _streetViewPanorama = __webpack_require__(400);
+var _streetViewPanorama = __webpack_require__(403);
 
 var _streetViewPanorama2 = _interopRequireDefault(_streetViewPanorama);
 
-var _placeInput = __webpack_require__(406);
+var _placeInput = __webpack_require__(409);
 
 var _placeInput2 = _interopRequireDefault(_placeInput);
 
-var _autocomplete = __webpack_require__(409);
+var _autocomplete = __webpack_require__(412);
 
 var _autocomplete2 = _interopRequireDefault(_autocomplete);
 
@@ -91049,7 +91768,7 @@ function gmapApi() {
 }
 
 /***/ }),
-/* 382 */
+/* 385 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91077,7 +91796,7 @@ exports.default = function (fn) {
 };
 
 /***/ }),
-/* 383 */
+/* 386 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91163,7 +91882,7 @@ var loadGmapApi = exports.loadGmapApi = function (options, loadCn) {
 };
 
 /***/ }),
-/* 384 */
+/* 387 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91307,7 +92026,7 @@ exports.default = (0, _mapElementFactory2.default)({
 });
 
 /***/ }),
-/* 385 */
+/* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91401,7 +92120,7 @@ exports.default = (0, _mapElementFactory2.default)({
 });
 
 /***/ }),
-/* 386 */
+/* 389 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91544,7 +92263,7 @@ exports.default = (0, _mapElementFactory2.default)({
 });
 
 /***/ }),
-/* 387 */
+/* 390 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91596,7 +92315,7 @@ exports.default = (0, _mapElementFactory2.default)({
 });
 
 /***/ }),
-/* 388 */
+/* 391 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91643,15 +92362,15 @@ exports.default = (0, _mapElementFactory2.default)({
 });
 
 /***/ }),
-/* 389 */
+/* 392 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(5)
 /* script */
-var __vue_script__ = __webpack_require__(390)
+var __vue_script__ = __webpack_require__(393)
 /* template */
-var __vue_template__ = __webpack_require__(392)
+var __vue_template__ = __webpack_require__(395)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -91690,7 +92409,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 390 */
+/* 393 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -91709,10 +92428,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ((function (x) {
   return x.default || x;
-})(__webpack_require__(391)));
+})(__webpack_require__(394)));
 
 /***/ }),
-/* 391 */
+/* 394 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91812,7 +92531,7 @@ exports.default = (0, _mapElementFactory2.default)({
 });
 
 /***/ }),
-/* 392 */
+/* 395 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -91832,19 +92551,19 @@ if (false) {
 }
 
 /***/ }),
-/* 393 */
+/* 396 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(394)
+  __webpack_require__(397)
 }
 var normalizeComponent = __webpack_require__(5)
 /* script */
-var __vue_script__ = __webpack_require__(397)
+var __vue_script__ = __webpack_require__(400)
 /* template */
-var __vue_template__ = __webpack_require__(399)
+var __vue_template__ = __webpack_require__(402)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -91883,13 +92602,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 394 */
+/* 397 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(395);
+var content = __webpack_require__(398);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -91909,7 +92628,7 @@ if(false) {
 }
 
 /***/ }),
-/* 395 */
+/* 398 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(9)(false);
@@ -91923,7 +92642,7 @@ exports.push([module.i, "\n.vue-map-container {\n  position: relative;\n}\n.vue-
 
 
 /***/ }),
-/* 396 */
+/* 399 */
 /***/ (function(module, exports) {
 
 /**
@@ -91956,7 +92675,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 397 */
+/* 400 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -91974,10 +92693,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ((function (x) {
   return x.default || x;
-})(__webpack_require__(398)));
+})(__webpack_require__(401)));
 
 /***/ }),
-/* 398 */
+/* 401 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92168,7 +92887,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 399 */
+/* 402 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -92199,19 +92918,19 @@ if (false) {
 }
 
 /***/ }),
-/* 400 */
+/* 403 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(401)
+  __webpack_require__(404)
 }
 var normalizeComponent = __webpack_require__(5)
 /* script */
-var __vue_script__ = __webpack_require__(403)
+var __vue_script__ = __webpack_require__(406)
 /* template */
-var __vue_template__ = __webpack_require__(405)
+var __vue_template__ = __webpack_require__(408)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -92250,13 +92969,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 401 */
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(402);
+var content = __webpack_require__(405);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -92276,7 +92995,7 @@ if(false) {
 }
 
 /***/ }),
-/* 402 */
+/* 405 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(9)(false);
@@ -92290,7 +93009,7 @@ exports.push([module.i, "\n.vue-street-view-pano-container {\n  position: relati
 
 
 /***/ }),
-/* 403 */
+/* 406 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -92305,10 +93024,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ((function (x) {
   return x.default || x;
-})(__webpack_require__(404)));
+})(__webpack_require__(407)));
 
 /***/ }),
-/* 404 */
+/* 407 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92475,7 +93194,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 405 */
+/* 408 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -92507,15 +93226,15 @@ if (false) {
 }
 
 /***/ }),
-/* 406 */
+/* 409 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(5)
 /* script */
-var __vue_script__ = __webpack_require__(407)
+var __vue_script__ = __webpack_require__(410)
 /* template */
-var __vue_template__ = __webpack_require__(408)
+var __vue_template__ = __webpack_require__(411)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -92554,7 +93273,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 407 */
+/* 410 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92666,7 +93385,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 408 */
+/* 411 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -92694,15 +93413,15 @@ if (false) {
 }
 
 /***/ }),
-/* 409 */
+/* 412 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(5)
 /* script */
-var __vue_script__ = __webpack_require__(410)
+var __vue_script__ = __webpack_require__(413)
 /* template */
-var __vue_template__ = __webpack_require__(412)
+var __vue_template__ = __webpack_require__(415)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -92741,7 +93460,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 410 */
+/* 413 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -92757,10 +93476,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ((function (x) {
   return x.default || x;
-})(__webpack_require__(411)));
+})(__webpack_require__(414)));
 
 /***/ }),
-/* 411 */
+/* 414 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -92848,7 +93567,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 412 */
+/* 415 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -92871,12 +93590,12 @@ if (false) {
 }
 
 /***/ }),
-/* 413 */
+/* 416 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__directives__ = __webpack_require__(414);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__directives__ = __webpack_require__(417);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_plugins__ = __webpack_require__(2);
 
 
@@ -92907,16 +93626,16 @@ Object(__WEBPACK_IMPORTED_MODULE_2__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony default export */ __webpack_exports__["a"] = (VuePlugin);
 
 /***/ }),
-/* 414 */
+/* 417 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toggle__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modal__ = __webpack_require__(80);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scrollspy__ = __webpack_require__(415);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tooltip__ = __webpack_require__(418);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__popover__ = __webpack_require__(420);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scrollspy__ = __webpack_require__(418);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tooltip__ = __webpack_require__(421);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__popover__ = __webpack_require__(423);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Toggle", function() { return __WEBPACK_IMPORTED_MODULE_0__toggle__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Modal", function() { return __WEBPACK_IMPORTED_MODULE_1__modal__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Scrollspy", function() { return __WEBPACK_IMPORTED_MODULE_2__scrollspy__["a"]; });
@@ -92931,11 +93650,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /***/ }),
-/* 415 */
+/* 418 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scrollspy__ = __webpack_require__(416);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scrollspy__ = __webpack_require__(419);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_plugins__ = __webpack_require__(2);
 
 
@@ -92955,11 +93674,11 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony default export */ __webpack_exports__["a"] = (VuePlugin);
 
 /***/ }),
-/* 416 */
+/* 419 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scrollspy_class__ = __webpack_require__(417);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scrollspy_class__ = __webpack_require__(420);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_object__ = __webpack_require__(3);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -93068,7 +93787,7 @@ function removeBVSS(el) {
 });
 
 /***/ }),
-/* 417 */
+/* 420 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -93557,11 +94276,11 @@ var ScrollSpy = function () {
 /* harmony default export */ __webpack_exports__["a"] = (ScrollSpy);
 
 /***/ }),
-/* 418 */
+/* 421 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tooltip__ = __webpack_require__(419);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tooltip__ = __webpack_require__(422);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_plugins__ = __webpack_require__(2);
 
 
@@ -93581,7 +94300,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony default export */ __webpack_exports__["a"] = (VuePlugin);
 
 /***/ }),
-/* 419 */
+/* 422 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -93756,11 +94475,11 @@ function removeBVTT(el) {
 });
 
 /***/ }),
-/* 420 */
+/* 423 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__popover__ = __webpack_require__(421);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__popover__ = __webpack_require__(424);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_plugins__ = __webpack_require__(2);
 
 
@@ -93780,7 +94499,7 @@ Object(__WEBPACK_IMPORTED_MODULE_1__utils_plugins__["c" /* vueUse */])(VuePlugin
 /* harmony default export */ __webpack_exports__["a"] = (VuePlugin);
 
 /***/ }),
-/* 421 */
+/* 424 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -93955,13 +94674,13 @@ function removeBVPO(el) {
 });
 
 /***/ }),
-/* 422 */
+/* 425 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(423);
+var content = __webpack_require__(426);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -93986,7 +94705,7 @@ if(false) {
 }
 
 /***/ }),
-/* 423 */
+/* 426 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(9)(false);
@@ -94000,13 +94719,13 @@ exports.push([module.i, "/*!\n * Bootstrap v4.2.1 (https://getbootstrap.com/)\n 
 
 
 /***/ }),
-/* 424 */
+/* 427 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(425);
+var content = __webpack_require__(428);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -94031,7 +94750,7 @@ if(false) {
 }
 
 /***/ }),
-/* 425 */
+/* 428 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(9)(false);
@@ -94045,19 +94764,19 @@ exports.push([module.i, ".fade-enter-active, .fade-leave-active {\n    transitio
 
 
 /***/ }),
-/* 426 */
+/* 429 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(427)
+  __webpack_require__(430)
 }
 var normalizeComponent = __webpack_require__(5)
 /* script */
-var __vue_script__ = __webpack_require__(429)
+var __vue_script__ = __webpack_require__(432)
 /* template */
-var __vue_template__ = __webpack_require__(430)
+var __vue_template__ = __webpack_require__(433)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -94096,13 +94815,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 427 */
+/* 430 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(428);
+var content = __webpack_require__(431);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -94122,7 +94841,7 @@ if(false) {
 }
 
 /***/ }),
-/* 428 */
+/* 431 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(9)(false);
@@ -94136,7 +94855,7 @@ exports.push([module.i, "\n.notification {\n  position: fixed;\n  right: 15px;\n
 
 
 /***/ }),
-/* 429 */
+/* 432 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -94189,7 +94908,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 430 */
+/* 433 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -94213,15 +94932,15 @@ if (false) {
 }
 
 /***/ }),
-/* 431 */
+/* 434 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(5)
 /* script */
-var __vue_script__ = __webpack_require__(432)
+var __vue_script__ = __webpack_require__(435)
 /* template */
-var __vue_template__ = __webpack_require__(433)
+var __vue_template__ = __webpack_require__(436)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -94260,7 +94979,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 432 */
+/* 435 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -94349,7 +95068,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 433 */
+/* 436 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -94422,19 +95141,19 @@ if (false) {
 }
 
 /***/ }),
-/* 434 */
+/* 437 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(435)
+  __webpack_require__(438)
 }
 var normalizeComponent = __webpack_require__(5)
 /* script */
-var __vue_script__ = __webpack_require__(437)
+var __vue_script__ = __webpack_require__(440)
 /* template */
-var __vue_template__ = __webpack_require__(438)
+var __vue_template__ = __webpack_require__(441)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -94473,13 +95192,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 435 */
+/* 438 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(436);
+var content = __webpack_require__(439);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -94499,7 +95218,7 @@ if(false) {
 }
 
 /***/ }),
-/* 436 */
+/* 439 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(9)(false);
@@ -94513,7 +95232,7 @@ exports.push([module.i, "\n.glyphicon-chevron-down {\n  width: 100px;\n  display
 
 
 /***/ }),
-/* 437 */
+/* 440 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -94602,7 +95321,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 438 */
+/* 441 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -94667,650 +95386,10 @@ if (false) {
 }
 
 /***/ }),
-/* 439 */
+/* 442 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 440 */,
-/* 441 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(5)
-/* script */
-var __vue_script__ = __webpack_require__(442)
-/* template */
-var __vue_template__ = __webpack_require__(443)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/views/UpdateCrisis.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7fe63782", Component.options)
-  } else {
-    hotAPI.reload("data-v-7fe63782", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 442 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['appointment'],
-
-    data: function data() {
-        return {
-            editAppointment: '',
-
-            referal: '',
-            condition: '',
-            department: '',
-            service: '',
-            prefer_practitioner: '',
-            appointment_date: '',
-            appointment_time: '',
-            allDentalServices: ['Bonding', 'Braces', 'Bridges and Implants', 'Crowns and Caps', 'Dentures', 'Extractions', 'Fillngs and Repairs', 'Gum Surgery', 'Oral Cancer Examinations', 'Root Canals', 'Sealants', 'Teeth Whitening', 'Veneers'],
-
-            allDepartments: ['Anaesthesiology', 'Cardiology - NHCS', 'Cardiothoracic Surgery - NHCS', 'Colorectal Surgery ', 'Dermatology', 'Diagnostic Radiology', 'Emergency Medicine', 'Endocrinology', 'Family Medicine Continuing Care', 'Gastroenterology & Hepatology', 'General Surgery', 'Geriatric Medicine', 'Haematology', 'Hand Surgery', 'Hepato-pancreato-biliary and Transplant Surgery', 'Infectious Diseases', 'Internal Medicine', 'Neonatal & Developmental Medicine', 'Neurology', 'Neurosurgery', 'Nuclear Medicine and Molecular Imaging', 'Medical Oncology - NCCS', 'Obstetrics and Gynaecology', 'Occupational and Environmental Medicine', 'Opthalmology - SNEC', 'Oral & Maxillofacial - NDCS', 'Orthopaedic Surgery', 'Otolaryngology (ENT)', 'Palliative Medicine - NCCS', 'Pathology', 'Plastic, Reconstructive & Aesthetic Surgery', 'Psychiatry', 'Radiation Oncology - NCCS', 'Rehabilitation Medicine', 'Renal Medicine', 'Respiratory & Critical Care Medicine', 'Rheumatology & Immunology', 'Upper GastrointestinaI & Bariatric Surgery', 'Urology', 'Vascular Surgery', 'Allergy Centre', 'Ambulatory Surgery Centre', 'Ambulatory Endoscopy Centre', 'Autoimmunity & Rheumatology Centre (ARC)', 'Blood Cancer Centre', 'Breast Centre', 'Burns Centre', 'Centre for Assisted Reproduction (CARE)', 'Centre for Digestive and Liver Diseases (CDLD)', 'Diabetes & Metabolism Centre (DMC)', 'Eating Disorder Programme', 'ENT (Ear, Nose & Throat) Centre', 'Gastrointestinal Function Unit', 'Haematology Centre', 'Haemodialysis Centre', 'Head & Neck Centre', 'Health Assessment Centre', 'Hearing and Ear Implants', 'Hyperbaric & Diving Medicine Centre', 'Inflammatory Bowel Disease Centre', 'LIFE Centre: Lifestyle Improvement and Fitness Enhancement', 'Lung Centre', 'Obstetrics and Gynaecology (O&G) Centre', 'Orthopaedic Sports and Joint Centre', 'Pain Management Centre', 'Pelvic Floor Disorder', 'Peritoneal Dialysis Centre', 'Rehabilitation Centre', 'Sleep Disorders', 'Transplant Centre', 'Travel Clinic', 'Urology Centre', 'Allied Health Departments / Units', 'Allied Health Corporate Wellness Services', 'Dietetics', 'Medical Social Service', 'Music & Creative Therapy Unit', 'Occupational Therapy', 'Pharmacy', 'Physiotherapy', 'Podiatry', 'Speech Therapy', 'Nursing', 'Specialist Nursing Services']
-        };
-    },
-
-
-    watch: {
-        appointment: function appointment() {
-            this.editAppointment = this.appointment;
-
-            this.appointment_date = this.editAppointment.appointment_date;
-            this.appointment_time = this.editAppointment.appointment_time;
-            this.referal = this.appointment.referal;
-            this.department = this.appointment.department;
-            this.condition = this.appointment.condition;
-            this.service = this.appointment.service;
-            this.prefer_practitioner = this.Practitioner;
-        }
-    },
-
-    computed: {
-        clinic: function clinic() {
-            if (this.editAppointment.health_service_type === "Chas Clinic") {
-                return this.editAppointment.chas_clinic;
-            }
-            if (this.editAppointment.health_service_type === "Dental") {
-                return this.editAppointment.dental;
-            }
-            if (this.editAppointment.health_service_type === "Polyclinic") {
-                return this.editAppointment.polyclinic;
-            }
-            if (this.editAppointment.health_service_type === "Hospital") {
-                return this.editAppointment.hospital;
-            }
-        },
-        Role: function Role() {
-            if (this.editAppointment.health_service_type === "Dental") {
-                return "Preferred Dentist";
-            }
-            return "Preferred Doctor";
-        },
-        Practitioner: function Practitioner() {
-            if (this.editAppointment.health_service_type === "Dental") {
-                return this.editAppointment.prefer_dentist;
-            }
-            return this.editAppointment.prefer_doctor;
-        },
-        isDental: function isDental() {
-            return this.editAppointment.health_service_type === 'Dental';
-        },
-        isChasclinic: function isChasclinic() {
-            return this.editAppointment.health_service_type === 'Chas Clinic';
-        },
-        isHospital: function isHospital() {
-            return this.editAppointment.health_service_type === 'Hospital';
-        },
-        isPolyclinic: function isPolyclinic() {
-            return this.editAppointment.health_service_type === 'Polyclinic';
-        }
-    },
-
-    methods: {
-        updateAppointment: function updateAppointment() {
-            var _this = this;
-
-            axios.post('/api/appointment/update', {
-                id: this.appointment.id,
-
-                health_service_type: this.editAppointment.health_service_type.split(" ").join(""),
-                department: this.department,
-                service: this.service,
-
-                condition: this.condition,
-                prefer_doctor: this.prefer_practitioner,
-                prefer_dentist: this.prefer_practitioner,
-
-                referal: this.referal,
-                appointment_date: this.appointment_date,
-                appointment_time: this.appointment_time
-            }).then(function (res) {
-                _this.$emit('updateSuccess');
-            }).catch(function (error) {
-                _this.error = error.response;
-            });
-        },
-        hideModal: function hideModal() {
-            this.$emit('hideModal');
-        }
-    }
-
-});
-
-/***/ }),
-/* 443 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", [
-      _c("div", { staticClass: "form-group row tw-flex tw-justify-center" }, [
-        _c("label", { staticClass: "col-md-4 col-form-label text-md-right" }, [
-          _vm._v("\r\n                Appointment Type :\r\n            ")
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass:
-            "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-bg-grey-light",
-          attrs: { type: "text", disabled: "" },
-          domProps: { value: _vm.editAppointment.health_service_type }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group row tw-flex tw-justify-center" }, [
-        _c("label", { staticClass: "col-md-4 col-form-label text-md-right" }, [
-          _vm._v("\r\n                Location :\r\n            ")
-        ]),
-        _vm._v(" "),
-        _c("textarea", {
-          staticClass:
-            "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-bg-grey-light tw-py-2",
-          attrs: { disabled: "" },
-          domProps: { value: _vm.editAppointment.location }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group row tw-flex tw-justify-center" }, [
-        _c("label", { staticClass: "col-md-4 col-form-label text-md-right" }, [
-          _vm._v(
-            "\r\n                " +
-              _vm._s(this.editAppointment.health_service_type) +
-              " : \r\n            "
-          )
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass:
-            "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-bg-grey-light",
-          attrs: { type: "text", disabled: "" },
-          domProps: { value: _vm.clinic }
-        })
-      ]),
-      _vm._v(" "),
-      !_vm.isChasclinic
-        ? _c(
-            "div",
-            { staticClass: "form-group row tw-flex tw-justify-center" },
-            [
-              _c(
-                "label",
-                { staticClass: "col-md-4 col-form-label text-md-right" },
-                [
-                  _vm._v(
-                    "\r\n                " +
-                      _vm._s(this.Role) +
-                      " : \r\n            "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.prefer_practitioner,
-                    expression: "prefer_practitioner"
-                  }
-                ],
-                staticClass:
-                  "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-border",
-                attrs: { type: "text" },
-                domProps: { value: _vm.prefer_practitioner },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.prefer_practitioner = $event.target.value
-                  }
-                }
-              })
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.isDental
-        ? _c(
-            "div",
-            { staticClass: "form-group row tw-flex tw-justify-center" },
-            [
-              _c(
-                "label",
-                { staticClass: "col-md-4 col-form-label text-md-right" },
-                [_vm._v("\r\n                Services :\r\n            ")]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "tw-w-1/2" }, [
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.service,
-                        expression: "service "
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { required: "" },
-                    on: {
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.service = $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      }
-                    }
-                  },
-                  _vm._l(_vm.allDentalServices, function(service, index) {
-                    return _c("option", { key: index }, [
-                      _vm._v(_vm._s(service))
-                    ])
-                  }),
-                  0
-                )
-              ])
-            ]
-          )
-        : _c(
-            "div",
-            { staticClass: "form-group row tw-flex tw-justify-center" },
-            [
-              _c(
-                "label",
-                { staticClass: "col-md-4 col-form-label text-md-right" },
-                [_vm._v("\r\n                Condition :\r\n            ")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.condition,
-                    expression: "condition"
-                  }
-                ],
-                staticClass:
-                  "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-border",
-                attrs: { type: "text" },
-                domProps: { value: _vm.condition },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.condition = $event.target.value
-                  }
-                }
-              })
-            ]
-          ),
-      _vm._v(" "),
-      _vm.isHospital || _vm.isPolyclinic
-        ? _c(
-            "div",
-            { staticClass: "form-group row tw-flex tw-justify-center" },
-            [
-              _c(
-                "label",
-                { staticClass: "col-md-4 col-form-label text-md-right" },
-                [_vm._v("\r\n                Department :\r\n            ")]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "tw-w-1/2" }, [
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.department,
-                        expression: "department"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { required: "" },
-                    on: {
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.department = $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      }
-                    }
-                  },
-                  _vm._l(_vm.allDepartments, function(department, index) {
-                    return _c("option", { key: index }, [
-                      _vm._v(_vm._s(department))
-                    ])
-                  }),
-                  0
-                )
-              ])
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.isHospital
-        ? _c(
-            "div",
-            { staticClass: "form-group row tw-flex tw-justify-center" },
-            [
-              _c(
-                "label",
-                { staticClass: "col-md-4 col-form-label text-md-right" },
-                [_vm._v("\r\n                Referral :\r\n            ")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.referal,
-                    expression: "referal"
-                  }
-                ],
-                staticClass:
-                  "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-border",
-                attrs: { type: "text" },
-                domProps: { value: _vm.referal },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.referal = $event.target.value
-                  }
-                }
-              })
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group row tw-flex tw-justify-center" }, [
-        _c("label", { staticClass: "col-md-4 col-form-label text-md-right" }, [
-          _vm._v("\r\n                Appointment Date :\r\n            ")
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "tw-w-1/2" },
-          [
-            _c("date-picker", {
-              attrs: { required: "required" },
-              model: {
-                value: _vm.appointment_date,
-                callback: function($$v) {
-                  _vm.appointment_date = $$v
-                },
-                expression: "appointment_date"
-              }
-            })
-          ],
-          1
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group row tw-flex tw-justify-center" }, [
-        _c("label", { staticClass: "col-md-4 col-form-label text-md-right" }, [
-          _vm._v("\r\n                Appointment Time :\r\n            ")
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "tw-w-1/2" },
-          [
-            _c("time-picker", {
-              attrs: { required: "required", useContainer: true },
-              model: {
-                value: _vm.appointment_time,
-                callback: function($$v) {
-                  _vm.appointment_time = $$v
-                },
-                expression: "appointment_time"
-              }
-            })
-          ],
-          1
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass:
-          "tw-flex tw-justify-end tw-m-4 tw-border-t tw-border-grey tw-pt-4"
-      },
-      [
-        _c(
-          "button",
-          {
-            staticClass: "tw-mr-2 btn btn-secondary",
-            on: {
-              click: function($event) {
-                return _vm.hideModal()
-              }
-            }
-          },
-          [_vm._v("Cancel")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "tw-ml-2 btn btn-primary",
-            on: {
-              click: function($event) {
-                return _vm.updateAppointment()
-              }
-            }
-          },
-          [_vm._v("Update")]
-        )
-      ]
-    )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7fe63782", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);

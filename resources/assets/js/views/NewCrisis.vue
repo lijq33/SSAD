@@ -191,7 +191,7 @@
                             <!-- beginning of crisis type column -->
                             <div class = "col-md-6">
                                 <!-- Crisis Type dropdown -->
-                                <div class = "card">
+                                <div class = "card tw-mb-6">
                                     <div class = "card-body">
                                         <h5 class = "card-title"> Type of Crisis:</h5>
                                         <b-form-select v-model = "form.crisisType" :options = "options" 
@@ -202,7 +202,21 @@
                                         </div>
                                     </div>
                                 </div>
-                                    
+
+                                <!-- Crisis Type dropdown -->
+                                <div class = "card">
+                                    <div class = "card-body">
+                                        <h5 class = "card-title"> Description:</h5>
+                                        <textarea v-model = "form.description"
+                                            class = "form-control" rows = "3" style = "max-width:100%"
+                                            :class = "{ 'tw-border-red-light' : error['description'] != undefined}"
+                                        />
+                                        <div class = "tw-text-red" v-if = "error['description'] != undefined">
+                                            <span> {{this.error['description'].toString()}} </span>   
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
 
@@ -264,6 +278,7 @@
                     time:'',
                     address:'',
                     postalCode:'',
+                    description: '',
                     assistanceRequired: [],
                     crisisType: null,
                 }
@@ -286,7 +301,6 @@
                 .catch((error) => {
                     this.error = error.response.data.errors;
                     this.isLoading = false;
-                    this.resetFields();
                 });
             },
 
