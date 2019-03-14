@@ -22,9 +22,10 @@ $user = App\User::create([ 'name' => 'XXXXX', 'nric'=>'XNNNNNNNX', 'email' => 'X
 
 
 ##Type of user
-level = 1 Call Center Operator - able to create and update crisis
-level = 2 Admin - able to archive crisis
-level = 3 Super Admin - able to do what level 1 & level 2 are able to do, additionally, it may add register new lvl 1-2 acc
+role 1 - Call Center Operator - able to register a new crisis
+role 2 - Crisis Manager - able to update and archive crisis
+role 3 - Civil Defences Admin - able to keep track which CD shelter is in-charge of the crisis. The status of the CD shelter
+role 4 - Admin Manager - able to register and remove new account
 
 
 ##THINGS TO DO
