@@ -12,20 +12,15 @@ php artisan serve
 #Webpages
 127.0.0.1:8000
 
-#Creating a User
-php artisan tinker
-
-replace X and N accordingly - try to use legitimate information as we will 
-the email and phone number will be required for some functionality.
-
-$user = App\User::create([ 'name' => 'XXXXX', 'nric'=>'XNNNNNNNX', 'email' => 'X@X.com', 'password' => \Illuminate\Support\Facades\Hash::make('xxxxxx'), 'telephone_number' => 'xxxxxxxx' , 'roles' => 'SuperAdmin' ]);
+#Creating all User
+php artisan db:seed --class=UserTableSeeder
 
 
 ##Type of user
 role 1 - Call Center Operator - able to register a new crisis
 role 2 - Crisis Manager - able to update and archive crisis
 role 3 - Civil Defences Admin - able to keep track which CD shelter is in-charge of the crisis. The status of the CD shelter
-role 4 - Admin Manager - able to register and remove new account
+role 4 - Account Manager - able to register and remove new account
 
 
 ##THINGS TO DO

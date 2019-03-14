@@ -29,6 +29,10 @@ class CreateCrisesTable extends Migration
             $table->string('address');
             $table->string('crisis_type');
             $table->string('assistance_required');
+
+            $table->integer('twitter_post_id');
+            $table->integer('facebook_post_id');
+
             $table->timestamps();
         });
     }

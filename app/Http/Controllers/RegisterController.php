@@ -32,6 +32,23 @@ class RegisterController extends Controller
 
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $users = User::all();
+
+        return response()->json([
+            'users' => $users,
+        ], 200);
+    }
+
+
+
+
+    /**
      * Create a new user instance after a valid registration.
      *
      * @param  User  $data
@@ -85,4 +102,10 @@ class RegisterController extends Controller
             'user' => $user,
         ], 200);
     }
+
+
+
+
+
+
 }
