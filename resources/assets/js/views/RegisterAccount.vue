@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <flash :message = "message"></flash>
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -23,7 +24,7 @@
                             <div class="col-md-6">
                                 <input type = "text"
                                     id="nric" 
-                                    v-model = "nric"
+                                    v-model = "form.nric"
                                     class="tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey" 
                                     :class = "{ 'tw-border-red-light' : error['nric'] != undefined}"
                                     placeholder = "S4123451E"
@@ -53,7 +54,7 @@
                             <div class="col-md-6">
                                 <input type = "text"
                                     id="name" 
-                                    v-model = "name"
+                                    v-model = "form.name"
                                     class="tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey" 
                                     :class = "{ 'tw-border-red-light' : error['name'] != undefined}"
                                     placeholder = "John Doe"
@@ -83,7 +84,7 @@
                             <div class="col-md-6">
                                 <input type = "password"
                                     id="password" 
-                                    v-model = "password"
+                                    v-model = "form.password"
                                     class="tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey" 
                                     :class = "{ 'tw-border-red-light' : error['password'] != undefined}"
                                     oncopy="return false" oncut="return false" onpaste="return false"
@@ -103,7 +104,7 @@
                             <div class="col-md-6">
                                 <input type = "password"
                                     id="password_confirmation" 
-                                    v-model = "password_confirmation"
+                                    v-model = "form.password_confirmation"
                                     class="tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey" 
                                     oncopy="return false" oncut="return false" onpaste="return false"
                                     required autofocus
@@ -118,7 +119,7 @@
                             <div class="col-md-6">
                                 <input type = "text"
                                     id="email" 
-                                    v-model = "email"
+                                    v-model = "form.email"
                                     class="tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey" 
                                     :class = "{ 'tw-border-red-light' : error['email'] != undefined}"
                                     placeholder = "JohnDoe@gmail.com"
@@ -148,7 +149,7 @@
                             <div class="col-md-6">
                                 <input type = "text"
                                     id="telephone_number" 
-                                    v-model = "telephone_number"
+                                    v-model = "form.telephone_number"
                                     class="tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey" 
                                     :class = "{ 'tw-border-red-light' : error['telephone_number'] != undefined}"
                                     placeholder = "9512 2314"
@@ -161,7 +162,20 @@
                             </div>
                         </div>
 
-                        <g-recaptcha></g-recaptcha>
+                        <!-- Roles -->
+                        <div class="form-group row">
+                            <label for="roles" class="col-md-4 col-form-label text-md-right">
+                                Roles
+                            </label>
+                            <div class="col-md-6">
+                                <b-form-select v-model = "form.roles" :options = "options" 
+                                    :class = "{ 'tw-border-red-light' : error['roles'] != undefined}"
+                                />
+                                <div class = "tw-text-red" v-if = "error['roles'] != undefined">
+                                    <span> {{this.error['roles'].toString()}} </span>   
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="form-group row tw-my-6">
                             <div class="col-md-6 offset-md-4">
@@ -195,37 +209,58 @@
 
         data() {
             return {
-                name: '',
-                nric: '',
-                password: '',
-                password_confirmation: '',
-                email: '',
-                telephone_number: '',
+                options: [
+                    { value: null, text: 'Please select an option' },
+                    { value: 'CallCenterOperator', text: 'Call Center Operator' },
+                    { value: 'CrisisManager', text: 'Crisis Manager' },
+                    { value: 'CivilDefencesAdmin', text: 'Civil Defences Admin' },
+                    { value: 'AccountManager', text: 'Account Manager' }
+                ],
+
+                form:{
+                    name: '',
+                    nric: '',
+                    password: '',
+                    password_confirmation: '',
+                    email: '',
+                    telephone_number: '',
+                    roles: null,
+                },
+
+                message: '',
+
                 error: [],
                 isLoading: false,
-                wrongPassword:'',
             }
         }, 
 
         methods: {
             register() {
+                var scope = this;
                 this.isLoading = true;
-                axios.post("/User/signup", {
-                    name: this.name,
-                    email: this.email,
-                    password: this.password,
-                    password_confirmation: this.password_confirmation,
-                    nric: this.nric,
-                    telephone_number: this.telephone_number,
-                })
+                this.error = [],
+                axios.post("/api/register",this.form)
                 .then(response => {
-                   this.$router.replace( "/login");
+                    this.message = response.data.message;
+                    $('html, body').animate({ scrollTop: 0 }, 'slow');
+                    this.isLoading = false;
+                    scope.resetFields();
                 })
                 .catch((error) => {
                     this.error = error.response.data.errors;
                     this.isLoading = false;
                 });
             },
+        },
+
+        resetFields() {
+            var scope = this; 
+
+            Object.keys(this.form).forEach(function(key,index) {
+                scope.form[key] = '';
+            });
+
+            this.form.roles= null;
         }
     }
 </script>

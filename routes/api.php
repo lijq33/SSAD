@@ -28,7 +28,7 @@ Route::group(['middleware' => 'auth.ccoperator'], function ($router) {
     Route::resource('crisis', 'CrisisController', ['except' => ['create', 'edit']]);
 });
 
-Route::group(['middleware' => 'auth.ccoperator'], function ($router) {
+Route::group(['middleware' => 'auth.accountmanager'], function ($router) {
     Route::resource('register', 'RegisterController', ['except' => ['create', 'edit']]);
 });
 

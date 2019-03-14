@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class = "tw-py-2 xl:tw-pb-16" >
-            <image-gallery></image-gallery>
+            <!-- <image-gallery></image-gallery> -->
             <!-- <health-tip></health-tip> -->
         </div>
 
@@ -41,14 +41,14 @@
     // import HealthTip from './../components/HealthTip';
     // import NewsFeed from './../components/NewsFeed';
     // import ButtonGroup from './../components/ButtonGroup';
-    import ImageGallery from './../components/ImageGallery';
+    // import ImageGallery from './../components/ImageGallery';
 
     export default {
          components:{
             // 'health-tip' : HealthTip,
             // 'news-feed' : NewsFeed,
             // 'button-group' : ButtonGroup,
-            'image-gallery': ImageGallery
+            // 'image-gallery': ImageGallery
         },
                        
     }
