@@ -52,6 +52,10 @@
                         <li>
                             <router-link to="/help" class="nav-link">Help</router-link>
                         </li>
+                          <li>
+                            <router-link to="/basemap" class="nav-link">Map</router-link>
+                        </li>
+
                     </template>
 
                     <!-- For admin -->
