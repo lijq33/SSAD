@@ -4,6 +4,9 @@ Composer Update
 npm install
 Open mysql, create a schema name 'ssad'
 
+#JWT
+php artisan jwt:secret
+
 #starting the services
 run mysql service using XAMPP 
 npm run watch

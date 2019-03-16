@@ -90126,11 +90126,11 @@ var render = function() {
             "router-link",
             { staticClass: "navbar-brand", attrs: { to: "/" } },
             [
+              _vm._v("\n            Team \n            "),
               _c("img", {
                 staticClass: "tw-w-10",
                 attrs: { src: "/assets/img/TL.jpg" }
-              }),
-              _vm._v("\n            Team 10\n        ")
+              })
             ]
           ),
           _vm._v(" "),
@@ -90578,7 +90578,7 @@ var staticRenderFns = [
       ),
       _vm._v(" "),
       _c("div", { staticClass: "tw-w-full tw-bg-grey tw-p-8 tw-text-white" }, [
-        _vm._v("\n        © 2018 TeamLost, Inc. All rights reserved.\n    ")
+        _vm._v("\n        © 2018 TeamTen, Inc. All rights reserved.\n    ")
       ])
     ])
   }

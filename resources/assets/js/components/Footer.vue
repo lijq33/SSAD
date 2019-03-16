@@ -24,7 +24,7 @@
         </div>
 
         <div class = "tw-w-full tw-bg-grey tw-p-8 tw-text-white">
-            © 2018 TeamLost, Inc. All rights reserved.
+            © 2018 TeamTen, Inc. All rights reserved.
         </div>
     </div>
 </template>
