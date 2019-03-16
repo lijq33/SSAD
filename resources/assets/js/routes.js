@@ -29,6 +29,13 @@ export const routes = [
         meta: {
             requiresAuth: true
         }
+    },
+    {
+        path : '/basemap',
+        component: require('./views/BaseMap.vue'),
+        meta: {
+            requiresAuth: false
+        }
     } 
 
     // //requires login
