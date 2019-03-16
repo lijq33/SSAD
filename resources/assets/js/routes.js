@@ -39,6 +39,13 @@ export const routes = [
         meta: {
             requiresAuthCrisisManager: true
         }
+    },
+    {
+        path : '/basemap',
+        component: require('./views/BaseMap.vue'),
+        meta: {
+            requiresAuth: false
+        }
     } 
 
 

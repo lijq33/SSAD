@@ -20,12 +20,12 @@ Vue.use(BootstrapVue);
 Vue.use(VueRouter);
 Vue.use(Vuex);
 
-// Vue.use(VueGoogleMaps, {
-//   load: {
-//     key: 'AIzaSyCSX-pplGo7Lrq8jbsNNa5Az0sZFzNunno',
-//     libraries: 'places',
-//   },
-// });
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyAIAkiam90N9R-_Nh72fL6MpGJpKUBDWgQ',
+    libraries: 'places',
+  },
+});
 
 // Vue.component('GRecaptcha', require('./components/GRecaptcha'));
 Vue.component('flash', require('./components/flash'));
