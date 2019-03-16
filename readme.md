@@ -15,7 +15,7 @@ php artisan serve
 #Webpages
 127.0.0.1:8000
 
-#Commands to try before approaching me if there are any issues
+#Commands to try if there are any issues
 php artisan cache:clear
 php artisan config:clear
 composer dump-autoload
@@ -23,7 +23,7 @@ Check for the existance of .env
 Start Mysql Service
 
 #Creating all UserType.
-php artisan db:seed --class=UserTableSeeder
+php artisan db:seed --class=UsersTableSeeder
 look at UserTableSeeder for more details
 
 ##Type of user
