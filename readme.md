@@ -12,9 +12,10 @@ php artisan serve
 #Webpages
 127.0.0.1:8000
 
-#Creating all User
+#Creating all UserType.
+composer dump-autoload
 php artisan db:seed --class=UserTableSeeder
-
+look at UserTableSeeder for more details
 
 ##Type of user
 role 1 - Call Center Operator - able to register a new crisis
@@ -24,6 +25,10 @@ role 4 - Account Manager - able to register and remove new account
 
 
 ##THINGS TO DO
+Twitter Interface
+Facebook Interface
+Email Automation
+Subscriber
 
 
 
