@@ -21,7 +21,7 @@
                             <router-link to="/login" class="nav-link">Login</router-link>
                         </li>
                         <li>
-                            <router-link to="/Subscribe" class="nav-link">Subscribe</router-link>
+                            <router-link to="/subscribe" class="nav-link">Subscribe</router-link>
                         </li>
                     </template>
 

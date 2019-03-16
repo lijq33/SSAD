@@ -1,11 +1,17 @@
+##Brief
+emergency situations can arise due to dengue outbreak, haze, bird, flu outbreak, earthquake, aftershocks, tsunami’s, terrorist activities or accidents within crowded, confined areas.
+
 ##SETUP
 #COMPOSER AND NPM
 Composer Update
 npm install
 Open mysql, create a schema name 'ssad'
 
-#JWT
-php artisan jwt:secret
+##.env
+add:
+NEXMO_API_KEY=6e2a812f
+NEXMO_API_SECRET=bWjtpcyA22k3yjlq
+run php artisan jwt:secret
 
 #starting the services
 run mysql service using XAMPP 
@@ -34,18 +40,59 @@ role 4 - Account Manager - able to register and remove new account
 
 
 ##THINGS TO DO
-Twitter Interface
-Facebook Interface
-Email Automation
-Subscriber
+1)Real time status update on a map of singapore integrated with weather conditions, dengue hot spot, haze information and so on.
+    - PERFORM AJAX/AXIOS request to data.gov.sg. Those information can be then displayed on our maps.
 
+The Prime Minister’s Office shall receive a status report summarizing key indicators and trends over email every 30 minutes.
+    - Mailswift & ????
+
+The CMS shall provide useful information such as location of Civil Defence shelters and updates to the public through social media periodically.
+    - Every 30min?
+
+The CMS shall serve as a command-and-control platform to respond quickly to needs and dangerous conditions,such as gas leaks, hazardous air condition and fires
+
+The input of the CMS may come from different sources. The main one is from call center. 
+The public may call call center hotline for assistance and incident reporting. Call center operators 
+will request the following information from members of the public:
+    • Name
+    • Mobile number
+    • Location (postal code and building unit number, if applicable)
+    • Type of assistance requested
+        o Emergency Ambulance 
+        o Rescue and Evacuation 
+        o Fire-Fighting
+        o Gas Leak Control
+
+Call center operators shall enter the information provided into the CMS via a user interface (either web or desktop application). 
+Requests are immediately updated on the map and dispatched using SMS to the relevant agencies:
+o Emergency Ambulance – Singapore Civil Defence Force (SCDF)
+o Rescue and Evacuation - SCDF
+o Fire-Fighting - SCDF
+o Gas Leak Control – Singapore Power
+Other possible courses could be weather forecast API (http://developer.yahoo.com/weather/), PSI 
+reading for air pollution (http://www.nea.gov.sg/psi/). 
 
 
 ##Completed Functionalities
 
+##Tools
+SMS - Nexmo
+Database - MySQL
+MapUI - Google Maps API
+
+Facebook - Facebook API
+Twitter - Twitter API
+
+Reporting - JasperReports
+Central Processing Unit 
+CallCentreUI
+Weather - Yahoo! Weather RSS Feed
+Email - Apache Commons Email
 
 
-#Non-Functional Requirement - Security
+
+
+##Non-Functional Requirement - Security
 #CSRF TOKEN
 token: '{{csrf_token()}}'
 google XSS, CSRF
