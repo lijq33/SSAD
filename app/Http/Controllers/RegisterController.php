@@ -32,6 +32,23 @@ class RegisterController extends Controller
 
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $users = User::all();
+
+        return response()->json([
+            'users' => $users,
+        ], 200);
+    }
+
+
+
+
+    /**
      * Create a new user instance after a valid registration.
      *
      * @param  User  $data
@@ -54,6 +71,7 @@ class RegisterController extends Controller
             'name' => 'bail|required|string|max:255',
             'password' => 'bail|required|string|min:6|confirmed|max:30',
             'telephone_number' => 'bail|required|digits:8',
+            'roles' => 'bail|required'
         ];
     
         $messages = [
@@ -79,10 +97,17 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'password' => Hash::make($data['password']),
             'telephone_number' => $data['telephone_number'],
+            'roles' => $data['roles'],
         ]);
 
         return response()->json([
-            'user' => $user,
+            'message' => 'A new account has been successfully created'
         ], 200);
     }
+
+
+
+
+
+
 }

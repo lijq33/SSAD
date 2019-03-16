@@ -9,25 +9,35 @@ export const routes = [
         path : '/login',
         component: require('./views/Login.vue')
     },
+    
+    //account manager
     {
-        path : '/register',
-        component: require('./views/Register.vue'),
+        path : '/account/register',
+        component: require('./views/RegisterAccount.vue'),
         meta: {
-            requiresAuth: true
+            requiresAuthAccManager: true
         }
     },    
+    {
+        path : '/account/manage',
+        component: require('./views/ManageAccount.vue'),
+        meta: {
+            requiresAuthAccManager: true
+        }
+    },    
+
     {
         path : '/crisis/new',
         component: require('./views/NewCrisis.vue'),
         meta: {
-            requiresAuth: true
+            requiresAuthCCOperator: true
         }
     },
     {
         path : '/crisis/manage',
         component: require('./views/ManageCrisis.vue'),
         meta: {
-            requiresAuth: true
+            requiresAuthCrisisManager: true
         }
     },
     {
@@ -37,6 +47,12 @@ export const routes = [
             requiresAuth: false
         }
     } 
+
+
+    // requiresAuthCCOperator 
+    // requiresAuthCDAdmin 
+    // requiresAuthCrisisManager 
+    // requiresAuthAccManager
 
     // //requires login
     // {

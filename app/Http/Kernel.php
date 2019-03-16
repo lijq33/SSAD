@@ -53,6 +53,10 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.user' => Middleware\AuthUser::class,
+        'auth.ccoperator' => Middleware\AuthCCOperator::class,
+        'auth.cdadmin' => Middleware\AuthCDAdmin::class,
+        'auth.crisismanager' => Middleware\AuthCrisisManager::class,
+        'auth.accountmanager' => Middleware\AuthAccountManager::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,

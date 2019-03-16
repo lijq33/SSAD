@@ -161,8 +161,6 @@
                             </div>
                         </div>
 
-                        <g-recaptcha></g-recaptcha>
-
                         <div class="form-group row tw-my-6">
                             <div class="col-md-6 offset-md-4">
                                 <div v-if = "!isLoading">

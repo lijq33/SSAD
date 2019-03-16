@@ -12,8 +12,9 @@
                 <ul class="navbar-nav ml-auto">
                     
                     <!-- EVERYONE CAN SEE -->
-                   
-
+                    <li>
+                        <router-link to="/basemap" class="nav-link">Map</router-link>
+                    </li>
                     <!-- Only when not logged in -->
                     <template v-if = "!currentUser">
                         <li>
@@ -24,18 +25,55 @@
                         </li>
                     </template>
 
-                    <template v-else>
+                    <template v-if = "isCallCenterOperator">
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
                                 Crisis Information
-                                <!--<span class="caret"></span> -->
                             </a>
 
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <router-link to="/crisis/new" class="nav-link">New Crisis</router-link>
+                            </div>
+                        </li>
+                    </template>
+
+                    <template v-if = "isCrisisManager">
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+                                Crisis Information
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <router-link to="/crisis/manage" class="nav-link">Manage Crisis</router-link>
                             </div>
                         </li>
+                    </template>
+
+                    <template v-if = "isCivilDefencesAdmin">
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+                                isCivilDefencesAdmin
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            </div>
+                        </li>
+                    </template>
+
+                    <template v-if = "isAccountManager">
+                          <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+                                Account
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <router-link to="/account/register" class="nav-link">Register Accounts</router-link>
+                                <router-link to="/account/manage" class="nav-link">Manage Accounts</router-link>
+                            </div>
+                        </li>
+                    </template>
+
+                    <template v-if = "currentUser">
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="tw-capitalize nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
                                 {{ currentUser.name }} <span class="caret"></span>
@@ -47,23 +85,7 @@
                         </li>
                     </template>
 
-                    <!-- Only for non-admin user-->
-                    <template v-if = "currentUser">
-                        <li>
-                            <router-link to="/help" class="nav-link">Help</router-link>
-                        </li>
-                          <li>
-                            <router-link to="/basemap" class="nav-link">Map</router-link>
-                        </li>
-
-                    </template>
-
-                    <!-- For admin -->
-                    <template v-if = "isSuperAdmin">
-                        <li>
-                            <router-link to="/register" class="nav-link">Register</router-link>
-                        </li>
-                    </template>
+                  
                     
                 </ul>
             </div>
@@ -84,9 +106,30 @@
             currentUser() {
                 return this.$store.getters.currentUser
             },
-            isSuperAdmin() {
-                return this.$store.getters.isSuperAdmin
-            }
+        
+            isCallCenterOperator(){
+                if (!this.currentUser)
+                    return false
+                return this.currentUser.roles == 'CallCenterOperator';
+            },
+                        
+            isCrisisManager(){
+                if (!this.currentUser)
+                    return false
+                return this.currentUser.roles == 'CrisisManager';
+            },
+                       
+            isCivilDefencesAdmin(){
+                if (!this.currentUser)
+                    return false
+                return this.currentUser.roles == 'CivilDefencesAdmin';
+            },
+
+            isAccountManager(){
+                if (!this.currentUser)
+                    return false
+                return this.currentUser.roles == 'AccountManager';
+            },
         }
     }
 </script>

@@ -203,7 +203,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Crisis Type dropdown -->
+                                <!-- Description -->
                                 <div class = "card">
                                     <div class = "card-body">
                                         <h5 class = "card-title"> Description:</h5>
@@ -293,8 +293,8 @@
 
                 axios.post('/api/crisis', this.form)
                 .then(response => {
-                    $('html, body').animate({ scrollTop: 0 }, 'slow');
                     this.message = response.data.message;
+                    $('html, body').animate({ scrollTop: 0 }, 'slow');
                     this.isLoading = false;
                     this.resetFields();
                 })
