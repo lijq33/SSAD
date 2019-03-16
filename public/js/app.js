@@ -90074,8 +90074,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'app-header',
@@ -90149,6 +90147,18 @@ var render = function() {
                 "ul",
                 { staticClass: "navbar-nav ml-auto" },
                 [
+                  _c(
+                    "li",
+                    [
+                      _c(
+                        "router-link",
+                        { staticClass: "nav-link", attrs: { to: "/basemap" } },
+                        [_vm._v("Map")]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
                   !_vm.currentUser
                     ? [
                         _c(
@@ -90325,22 +90335,7 @@ var render = function() {
                             ],
                             1
                           )
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "li",
-                          [
-                            _c(
-                              "router-link",
-                              {
-                                staticClass: "nav-link",
-                                attrs: { to: "/basemap" }
-                              },
-                              [_vm._v("Map")]
-                            )
-                          ],
-                          1
-                        )
+                        ])
                       ]
                     : _vm._e(),
                   _vm._v(" "),

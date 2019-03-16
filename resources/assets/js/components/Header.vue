@@ -12,7 +12,9 @@
                 <ul class="navbar-nav ml-auto">
                     
                     <!-- EVERYONE CAN SEE -->
-                   
+                    <li>
+                        <router-link to="/basemap" class="nav-link">Map</router-link>
+                    </li>
                     <!-- Only when not logged in -->
                     <template v-if = "!currentUser">
                         <li>
@@ -69,10 +71,6 @@
                                 <router-link to="/account/manage" class="nav-link">Manage Accounts</router-link>
                             </div>
                         </li>
-                          <li>
-                            <router-link to="/basemap" class="nav-link">Map</router-link>
-                        </li>
-
                     </template>
 
                     <template v-if = "currentUser">
