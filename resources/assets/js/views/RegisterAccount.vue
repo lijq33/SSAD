@@ -251,16 +251,18 @@
                     this.isLoading = false;
                 });
             },
+         
+            resetFields() {
+                var scope = this; 
+
+                Object.keys(this.form).forEach(function(key,index) {
+                    scope.form[key] = '';
+                });
+
+                this.form.roles= null;
+            }
         },
 
-        resetFields() {
-            var scope = this; 
-
-            Object.keys(this.form).forEach(function(key,index) {
-                scope.form[key] = '';
-            });
-
-            this.form.roles= null;
-        }
+       
     }
 </script>

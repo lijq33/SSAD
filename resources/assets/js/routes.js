@@ -9,6 +9,14 @@ export const routes = [
         path : '/login',
         component: require('./views/Login.vue')
     },
+    {
+        path : '/subscribe',
+        component: require('./views/Subscriber.vue')
+    },  
+    {
+        path : '/test',
+        component: require('./views/test.vue')
+    },
     
     //account manager
     {
