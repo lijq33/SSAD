@@ -44,7 +44,7 @@ class Crisis extends Model
 
         $assistance = implode(", ", $data['assistanceRequired']);
 
-        Crisis::create([
+        $crisis = Crisis::create([
             'name' => $data['name'],
             'user_id' => $data['id'],
             'telephone_number' => $data['telephoneNumber'],
@@ -59,6 +59,8 @@ class Crisis extends Model
             'status' => 'registered',
             'description' => $data['description'],
         ]);
+
+        return $crisis;
     }
 
 }

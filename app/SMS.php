@@ -14,7 +14,7 @@ class SMS extends Model
      */
     public function sendSMS($telephone,  $content) {
 
-        $basic  = new \Nexmo\Client\Credentials\Basic(NEXMO_API_KEY, NEXMO_API_SECRET);
+        $basic  = new \Nexmo\Client\Credentials\Basic(env('NEXMO_API_KEY'), env('NEXMO_API_SECRET'));
         $client = new \Nexmo\Client($basic);
 
         $message = $client->message()->send([

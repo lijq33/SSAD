@@ -80104,10 +80104,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.error = "";
 
             axios.post('/api/crisis', this.form).then(function (response) {
+                console.log(response.data.crisis);
                 _this.message = response.data.message;
                 $('html, body').animate({ scrollTop: 0 }, 'slow');
                 _this.isLoading = false;
-                _this.resetFields();
+                // this.resetFields();
             }).catch(function (error) {
                 _this.error = error.response.data.errors;
                 _this.isLoading = false;

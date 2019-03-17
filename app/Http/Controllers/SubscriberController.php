@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CrisisCreated;
 use App\Subscriber;
+use App\SMS;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -41,6 +43,10 @@ class SubscriberController extends Controller
 
     public function index()
     {
+        $crisis = \App\Crisis::find(1)->first();
+
+        event(new CrisisCreated($crisis));
+
         $subscribers = Subscriber::all();
         
         if($subscribers->isEmpty()){

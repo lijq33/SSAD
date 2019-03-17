@@ -26,6 +26,6 @@ class SendTwitterCrisisCreatedNotification
      */
     public function handle(CrisisCreated $event)
     {
-        //Trigger twitter
+        //
     }
 }

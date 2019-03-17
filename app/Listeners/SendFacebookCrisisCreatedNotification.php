@@ -26,6 +26,6 @@ class SendFacebookCrisisCreatedNotification
      */
     public function handle(CrisisCreated $event)
     {
-        //Trigger facebook
+        //
     }
 }
