@@ -8,6 +8,8 @@ use Carbon\Carbon;
 class Crisis extends Model
 {
 
+    public $crisis;
+
     /**
      * Get the user that submitted the crisis.
      */
@@ -33,7 +35,7 @@ class Crisis extends Model
      * @var array
     */
     protected $fillable = [ 'user_id', 'name', 'telephone_number', 'postal_code', 'date', 'time', 'address', 
-                            'assistance_required', 'crisis_type', 'status', 'description'];
+                            'assistance_required', 'crisis_type', 'status', 'description', 'twitter_post_id', 'facebook_post_id'];
 
     public static function newCrisis($data){
 

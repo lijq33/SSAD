@@ -39,6 +39,25 @@ class SubscriberController extends Controller
         $this->middleware('guest');
     }
 
+    public function index()
+    {
+        $subscribers = Subscriber::all();
+        
+        if($subscribers->isEmpty()){
+            var_dump("empty");
+            return;
+        }
+
+
+        foreach($subscribers as $subscriber){
+            var_dump($subscriber->telephone_number);
+            var_dump($subscriber->name);
+            // $content = $event->crisis;
+            // $sms->sendSMS($subscriber->telephone_number,  $content);
+        }
+    }
+
+
     /**
      * Create a new user instance after a valid registration.
      *
@@ -54,7 +73,6 @@ class SubscriberController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'errors' => $validator->errors(),
-                'message' => 'You are required to fill in all the fields'
             ], 422);
         }
 
@@ -67,6 +85,7 @@ class SubscriberController extends Controller
     }
 
 
+
     /**
      * Remove the specified resource from storage.
      *
@@ -75,6 +94,7 @@ class SubscriberController extends Controller
      */
     public function destroy($telephone_number)
     {
+       
 
     }
 

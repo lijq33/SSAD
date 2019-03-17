@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use App\Event\CrisisCreated;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -16,6 +17,13 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Event' => [
             'App\Listeners\EventListener',
         ],
+
+        'CrisisCreated' => [
+            'App\Listeners\SendSmsCrisisCreatedNotification',
+            'App\Listeners\SendTwitterCrisisCreatedNotification',
+            'App\Listeners\SendFacebookCrisisCreatedNotification',
+        ]
+
     ];
 
     /**

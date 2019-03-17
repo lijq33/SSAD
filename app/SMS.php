@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class SMS extends Model
 {
-
    /**
      * @param $telephone the user's telephone number
      * @param $content the content to be sms

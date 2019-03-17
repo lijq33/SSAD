@@ -3,6 +3,9 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
+
+                    <flash :message = "message"></flash>
+
                     <div class="card-header tw-text-grey-darker">Subscription to Crisis Alert</div>
 
                     <div class="card-body">
@@ -116,6 +119,7 @@
                     telephone_number: '',
                 },
                 error: [],
+                message: '',
                 isLoading: false,
             }
         }, 
@@ -129,15 +133,31 @@
                 axios.post("/api/auth/subscriber", this.form)
                 .then(response => {
                     this.message = response.data.message;
+
                     $('html, body').animate({ scrollTop: 0 }, 'slow');
                     this.isLoading = false;
                     this.resetFields();
+
+                    setTimeout(() => {
+                        this.$router.replace( "/");
+                    }, 3000);         
+  
                 })
                 .catch((error) => {
+                    console.log(error);
                     this.error = error.response.data.errors;
                     this.isLoading = false;
                 });
             },
-        }
+        
+            resetFields() {
+                var scope = this; 
+
+                Object.keys(this.form).forEach(function(key,index) {
+                    scope.form[key] = '';
+                });
+            }
+        },
+        
     }
 </script>

@@ -23,11 +23,17 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('me', 'AuthController@me');
     Route::post('subscriber', 'SubscriberController@store');
     Route::post('subscriber/delete', 'SubscriberController@destory');
+    Route::get('subscriber', 'SubscriberController@index');
+
 });
 
 
 Route::group(['middleware' => 'auth.ccoperator'], function ($router) {
-    Route::resource('crisis', 'CrisisController', ['except' => ['create', 'edit']]);
+    Route::post('crisis', 'CrisisController@store');
+});
+
+Route::group(['middleware' => 'auth.crisismanager'], function ($router) {
+    Route::get('crisis', 'CrisisController@index');
 });
 
 Route::group(['middleware' => 'auth.accountmanager'], function ($router) {

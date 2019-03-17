@@ -30,6 +30,7 @@ Start Mysql Service
 
 #Creating all UserType.
 php artisan db:seed --class=UsersTableSeeder
+php artisan db:seed --class=SubscribersTableSeeder
 look at UserTableSeeder for more details
 
 ##Type of user
@@ -74,6 +75,7 @@ reading for air pollution (http://www.nea.gov.sg/psi/).
 
 
 ##Completed Functionalities
+
 
 ##Tools
 SMS - Nexmo

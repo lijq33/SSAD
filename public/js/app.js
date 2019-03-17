@@ -76992,6 +76992,9 @@ var routes = [{
 }, {
     path: '/subscribe',
     component: __webpack_require__(450)
+}, {
+    path: '/test',
+    component: __webpack_require__(453)
 },
 
 //account manager
@@ -78047,18 +78050,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.error = error.response.data.errors;
                 _this.isLoading = false;
             });
+        },
+        resetFields: function resetFields() {
+            var scope = this;
+
+            Object.keys(this.form).forEach(function (key, index) {
+                scope.form[key] = '';
+            });
+
+            this.form.roles = null;
         }
-    },
-
-    resetFields: function resetFields() {
-        var scope = this;
-
-        Object.keys(this.form).forEach(function (key, index) {
-            scope.form[key] = '';
-        });
-
-        this.form.roles = null;
     }
+
 });
 
 /***/ }),
@@ -97090,6 +97093,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -97107,6 +97113,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 telephone_number: ''
             },
             error: [],
+            message: '',
             isLoading: false
         };
     },
@@ -97122,15 +97129,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             axios.post("/api/auth/subscriber", this.form).then(function (response) {
                 _this.message = response.data.message;
+
                 $('html, body').animate({ scrollTop: 0 }, 'slow');
                 _this.isLoading = false;
                 _this.resetFields();
+
+                setTimeout(function () {
+                    _this.$router.replace("/");
+                }, 3000);
             }).catch(function (error) {
+                console.log(error);
                 _this.error = error.response.data.errors;
                 _this.isLoading = false;
             });
+        },
+        resetFields: function resetFields() {
+            var scope = this;
+
+            Object.keys(this.form).forEach(function (key, index) {
+                scope.form[key] = '';
+            });
         }
     }
+
 });
 
 /***/ }),
@@ -97144,261 +97165,270 @@ var render = function() {
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-8" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header tw-text-grey-darker" }, [
-            _vm._v("Subscription to Crisis Alert")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "form-group row" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "col-md-4 col-form-label text-md-right",
-                  attrs: { for: "name" }
-                },
-                [
-                  _vm._v(
-                    "\n                            Full Name\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-6" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.form.name,
-                      expression: "form.name"
-                    }
-                  ],
-                  staticClass:
-                    "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
-                  class: {
-                    "tw-border-red-light": _vm.error["name"] != undefined
-                  },
-                  attrs: {
-                    type: "text",
-                    id: "name",
-                    placeholder: "John Doe",
-                    required: "",
-                    autofocus: ""
-                  },
-                  domProps: { value: _vm.form.name },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.form, "name", $event.target.value)
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _vm.error["name"] != undefined
-                  ? _c("div", { staticClass: "tw-text-red" }, [
-                      _c("span", [
-                        _vm._v(
-                          " " + _vm._s(this.error["name"].toString()) + " "
-                        )
-                      ])
-                    ])
-                  : _vm._e()
-              ])
+        _c(
+          "div",
+          { staticClass: "card" },
+          [
+            _c("flash", { attrs: { message: _vm.message } }),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-header tw-text-grey-darker" }, [
+              _vm._v("Subscription to Crisis Alert")
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "form-group row" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "col-md-4 col-form-label text-md-right",
-                  attrs: { for: "email" }
-                },
-                [_vm._v("Email")]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-6" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.form.email,
-                      expression: "form.email"
-                    }
-                  ],
-                  staticClass:
-                    "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
-                  class: {
-                    "tw-border-red-light": _vm.error["email"] != undefined
+            _c("div", { staticClass: "card-body" }, [
+              _c("div", { staticClass: "form-group row" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-md-4 col-form-label text-md-right",
+                    attrs: { for: "name" }
                   },
-                  attrs: {
-                    type: "text",
-                    id: "email",
-                    placeholder: "JohnDoe@gmail.com",
-                    required: "",
-                    autofocus: ""
-                  },
-                  domProps: { value: _vm.form.email },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.form, "email", $event.target.value)
-                    }
-                  }
-                }),
+                  [
+                    _vm._v(
+                      "\n                            Full Name\n                        "
+                    )
+                  ]
+                ),
                 _vm._v(" "),
-                _vm.error["email"] != undefined
-                  ? _c("div", { staticClass: "tw-text-red" }, [
-                      _c("span", [
-                        _vm._v(
-                          " " + _vm._s(this.error["email"].toString()) + " "
-                        )
-                      ])
-                    ])
-                  : _vm._e()
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group row" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "col-md-4 col-form-label text-md-right",
-                  attrs: { for: "telephone_number" }
-                },
-                [
-                  _vm._v(
-                    "\n                            Telephone Number\n                             "
-                  ),
-                  _c(
-                    "popper",
-                    {
-                      attrs: {
-                        trigger: "hover",
-                        options: { placement: "bottom" }
+                _c("div", { staticClass: "col-md-6" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.name,
+                        expression: "form.name"
                       }
+                    ],
+                    staticClass:
+                      "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+                    class: {
+                      "tw-border-red-light": _vm.error["name"] != undefined
                     },
-                    [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "popper tw-font-hairline tw-text-grey-dark"
-                        },
-                        [
-                          _vm._v(
-                            "\n                                    You will be alerted through our SMS services.\n                                "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        { attrs: { slot: "reference" }, slot: "reference" },
-                        [
-                          _c("i", {
-                            staticClass:
-                              "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
-                          })
-                        ]
-                      )
-                    ]
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-6" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.form.telephone_number,
-                      expression: "form.telephone_number"
-                    }
-                  ],
-                  staticClass:
-                    "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
-                  class: {
-                    "tw-border-red-light":
-                      _vm.error["telephone_number"] != undefined
-                  },
-                  attrs: {
-                    type: "text",
-                    id: "telephone_number",
-                    placeholder: "9512 2314",
-                    required: "",
-                    autofocus: ""
-                  },
-                  domProps: { value: _vm.form.telephone_number },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+                    attrs: {
+                      type: "text",
+                      id: "name",
+                      placeholder: "John Doe",
+                      required: "",
+                      autofocus: ""
+                    },
+                    domProps: { value: _vm.form.name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form, "name", $event.target.value)
                       }
-                      _vm.$set(
-                        _vm.form,
-                        "telephone_number",
-                        $event.target.value
-                      )
                     }
-                  }
-                }),
+                  }),
+                  _vm._v(" "),
+                  _vm.error["name"] != undefined
+                    ? _c("div", { staticClass: "tw-text-red" }, [
+                        _c("span", [
+                          _vm._v(
+                            " " + _vm._s(this.error["name"].toString()) + " "
+                          )
+                        ])
+                      ])
+                    : _vm._e()
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group row" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-md-4 col-form-label text-md-right",
+                    attrs: { for: "email" }
+                  },
+                  [_vm._v("Email")]
+                ),
                 _vm._v(" "),
-                _vm.error["telephone_number"] != undefined
-                  ? _c("div", { staticClass: "tw-text-red" }, [
-                      _c("span", [
-                        _vm._v(
-                          " " +
-                            _vm._s(this.error["telephone_number"].toString()) +
-                            " "
+                _c("div", { staticClass: "col-md-6" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.email,
+                        expression: "form.email"
+                      }
+                    ],
+                    staticClass:
+                      "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+                    class: {
+                      "tw-border-red-light": _vm.error["email"] != undefined
+                    },
+                    attrs: {
+                      type: "text",
+                      id: "email",
+                      placeholder: "JohnDoe@gmail.com",
+                      required: "",
+                      autofocus: ""
+                    },
+                    domProps: { value: _vm.form.email },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form, "email", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm.error["email"] != undefined
+                    ? _c("div", { staticClass: "tw-text-red" }, [
+                        _c("span", [
+                          _vm._v(
+                            " " + _vm._s(this.error["email"].toString()) + " "
+                          )
+                        ])
+                      ])
+                    : _vm._e()
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group row" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-md-4 col-form-label text-md-right",
+                    attrs: { for: "telephone_number" }
+                  },
+                  [
+                    _vm._v(
+                      "\n                            Telephone Number\n                             "
+                    ),
+                    _c(
+                      "popper",
+                      {
+                        attrs: {
+                          trigger: "hover",
+                          options: { placement: "bottom" }
+                        }
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "popper tw-font-hairline tw-text-grey-dark"
+                          },
+                          [
+                            _vm._v(
+                              "\n                                    You will be alerted through our SMS services.\n                                "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          { attrs: { slot: "reference" }, slot: "reference" },
+                          [
+                            _c("i", {
+                              staticClass:
+                                "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-6" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.telephone_number,
+                        expression: "form.telephone_number"
+                      }
+                    ],
+                    staticClass:
+                      "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+                    class: {
+                      "tw-border-red-light":
+                        _vm.error["telephone_number"] != undefined
+                    },
+                    attrs: {
+                      type: "text",
+                      id: "telephone_number",
+                      placeholder: "9512 2314",
+                      required: "",
+                      autofocus: ""
+                    },
+                    domProps: { value: _vm.form.telephone_number },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.form,
+                          "telephone_number",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm.error["telephone_number"] != undefined
+                    ? _c("div", { staticClass: "tw-text-red" }, [
+                        _c("span", [
+                          _vm._v(
+                            " " +
+                              _vm._s(
+                                this.error["telephone_number"].toString()
+                              ) +
+                              " "
+                          )
+                        ])
+                      ])
+                    : _vm._e()
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group row tw-my-6" }, [
+                _c("div", { staticClass: "col-md-6 offset-md-4" }, [
+                  !_vm.isLoading
+                    ? _c("div", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "submit" },
+                            on: {
+                              click: function($event) {
+                                return _vm.subscribe()
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                    Subscribe\n                                "
+                            )
+                          ]
                         )
                       ])
-                    ])
-                  : _vm._e()
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group row tw-my-6" }, [
-              _c("div", { staticClass: "col-md-6 offset-md-4" }, [
-                !_vm.isLoading
-                  ? _c("div", [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary",
-                          attrs: { type: "submit" },
-                          on: {
-                            click: function($event) {
-                              return _vm.subscribe()
-                            }
+                    : _c("div", [
+                        _c("img", {
+                          attrs: {
+                            src: "/assets/img/loader.gif",
+                            alt: "Loading..."
                           }
-                        },
-                        [
-                          _vm._v(
-                            "\n                                    Subscribe\n                                "
-                          )
-                        ]
-                      )
-                    ])
-                  : _c("div", [
-                      _c("img", {
-                        attrs: {
-                          src: "/assets/img/loader.gif",
-                          alt: "Loading..."
-                        }
-                      })
-                    ])
+                        })
+                      ])
+                ])
               ])
             ])
-          ])
-        ])
+          ],
+          1
+        )
       ])
     ])
   ])
@@ -97410,6 +97440,128 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-1501b30a", module.exports)
+  }
+}
+
+/***/ }),
+/* 453 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(5)
+/* script */
+var __vue_script__ = __webpack_require__(454)
+/* template */
+var __vue_template__ = __webpack_require__(455)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/test.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-40d00dc5", Component.options)
+  } else {
+    hotAPI.reload("data-v-40d00dc5", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 454 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+    methods: {
+        test: function test() {
+            axios.get("/api/auth/subscriber").then(function (response) {
+                console.log(response);
+            }).catch(function (error) {});
+        }
+    }
+
+});
+
+/***/ }),
+/* 455 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-8" }, [
+        _c("div", { staticClass: "card" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary",
+              attrs: { type: "submit" },
+              on: {
+                click: function($event) {
+                  return _vm.test()
+                }
+              }
+            },
+            [_vm._v("\n                        test\n                    ")]
+          )
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-40d00dc5", module.exports)
   }
 }
 

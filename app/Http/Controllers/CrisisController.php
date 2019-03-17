@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Crisis;
 use App\User;
+use App\Events\CrisisCreated;
 
 class CrisisController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -47,7 +49,9 @@ class CrisisController extends Controller
         $data['date'] = \Carbon\Carbon::createFromFormat('d/m/Y', $data['date']);
         $data['time'] = \Carbon\Carbon::createFromFormat('g:i A', $data['time']);
      
-        Crisis::newCrisis($data);
+        $crisis = Crisis::newCrisis($data);
+
+        event(new CrisisCreated($crisis));
 
         return response()->json([
             'message' => 'You have successfully registered a new crisis!',

@@ -18,7 +18,7 @@ class Subscriber extends Model
     public static $rules = [
         'name' => 'required|string|max:255',
         'email' => 'required|string|email|max:255|unique:subscribers',
-        'telephone_number' => 'bail|required|digits:8',
+        'telephone_number' => 'bail|required|digits:8|unique:subscribers',
     ];
 
     public static function newSubscription($data){
@@ -29,8 +29,4 @@ class Subscriber extends Model
             'telephone_number' => $data['telephone_number'],
         ]);
     }
-
-
-
-
 }
