@@ -11,6 +11,9 @@
     </head>
 
     <body>
+        <div id="fb-root"></div>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2"></script>
         <div id="app">
             
             <main-app>

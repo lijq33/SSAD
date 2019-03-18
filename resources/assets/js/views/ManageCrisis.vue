@@ -28,8 +28,8 @@
                     <td>{{crisis.name}}</td>
                     <td>{{crisis.user.name}}</td>
                     <td> 
-                        <span class = "tw-flex tw-justify-around tw-items-center" v-if = "crisis.status === 'registered'">
-                            <popper v-if = "isAdmin" trigger="hover" :options = "{placement: 'bottom'}">
+                        <span class = "tw-flex tw-justify-around tw-items-center">
+                            <popper  v-if = "crisis.status === 'resolved'" trigger="hover" :options = "{placement: 'bottom'}">
                                 <div class="popper tw-font-hairline tw-text-grey-dark">
                                     archive the crisis
                                 </div>
@@ -136,9 +136,7 @@
                 });
                 
                 promise.then(function() { 
-                    axios.post('/api/crisis/archive', {
-                        id: crisis.id,
-                    })
+                    axios.delete('/api/crisis/'+crisis.id)
                     .then((res) => {
                         scope.message = "We've successfully archive the crisis!";
                         scope.crisis = [];

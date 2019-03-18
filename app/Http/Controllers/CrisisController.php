@@ -59,14 +59,18 @@ class CrisisController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Remove the specified resource from storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
     */
-    public function archive(Request $request)
+    public function destroy(Crisis $crisis)
     {
+        $crisis->delete();
 
+        return response()->json([
+            'message' => 'Crisis has been archived'
+        ]);
     }
 
 }

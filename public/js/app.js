@@ -81487,9 +81487,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
 
             promise.then(function () {
-                axios.post('/api/crisis/archive', {
-                    id: crisis.id
-                }).then(function (res) {
+                axios.delete('/api/crisis/' + crisis.id).then(function (res) {
                     scope.message = "We've successfully archive the crisis!";
                     scope.crisis = [];
                     scope.getcrisis();
@@ -81566,60 +81564,14 @@ var render = function() {
                 _c("td", [_vm._v(_vm._s(crisis.user.name))]),
                 _vm._v(" "),
                 _c("td", [
-                  crisis.status === "registered"
-                    ? _c(
-                        "span",
-                        {
-                          staticClass:
-                            "tw-flex tw-justify-around tw-items-center"
-                        },
-                        [
-                          _vm.isAdmin
-                            ? _c(
-                                "popper",
-                                {
-                                  attrs: {
-                                    trigger: "hover",
-                                    options: { placement: "bottom" }
-                                  }
-                                },
-                                [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "popper tw-font-hairline tw-text-grey-dark"
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                                archive the crisis\n                            "
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "button",
-                                    {
-                                      attrs: { slot: "reference" },
-                                      slot: "reference"
-                                    },
-                                    [
-                                      _c("i", {
-                                        staticClass:
-                                          "fas fa-archive tw-cursor-pointer",
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.archive(crisis)
-                                          }
-                                        }
-                                      })
-                                    ]
-                                  )
-                                ]
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _c(
+                  _c(
+                    "span",
+                    {
+                      staticClass: "tw-flex tw-justify-around tw-items-center"
+                    },
+                    [
+                      crisis.status === "resolved"
+                        ? _c(
                             "popper",
                             {
                               attrs: {
@@ -81636,7 +81588,7 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                                Update the crisis\n                            "
+                                    "\n                                archive the crisis\n                            "
                                   )
                                 ]
                               ),
@@ -81650,10 +81602,10 @@ var render = function() {
                                 [
                                   _c("i", {
                                     staticClass:
-                                      "fas fa-pencil-alt tw-cursor-pointer",
+                                      "fas fa-archive tw-cursor-pointer",
                                     on: {
                                       click: function($event) {
-                                        return _vm.update(crisis)
+                                        return _vm.archive(crisis)
                                       }
                                     }
                                   })
@@ -81661,10 +81613,50 @@ var render = function() {
                               )
                             ]
                           )
-                        ],
-                        1
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "popper",
+                        {
+                          attrs: {
+                            trigger: "hover",
+                            options: { placement: "bottom" }
+                          }
+                        },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "popper tw-font-hairline tw-text-grey-dark"
+                            },
+                            [
+                              _vm._v(
+                                "\n                                Update the crisis\n                            "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            { attrs: { slot: "reference" }, slot: "reference" },
+                            [
+                              _c("i", {
+                                staticClass:
+                                  "fas fa-pencil-alt tw-cursor-pointer",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.update(crisis)
+                                  }
+                                }
+                              })
+                            ]
+                          )
+                        ]
                       )
-                    : _vm._e()
+                    ],
+                    1
+                  )
                 ])
               ])
             }),
@@ -97035,6 +97027,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -97106,7 +97109,7 @@ var render = function() {
       _c("div", { staticClass: "col-md-8" }, [
         _c(
           "div",
-          { staticClass: "card" },
+          { staticClass: "card tw-mb-6" },
           [
             _c("flash", { attrs: { message: _vm.message } }),
             _vm._v(" "),
@@ -97367,12 +97370,46 @@ var render = function() {
             ])
           ],
           1
-        )
+        ),
+        _vm._v(" "),
+        _vm._m(0)
       ])
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c(
+        "a",
+        {
+          staticClass: "twitter-follow-button",
+          attrs: {
+            href: "https://twitter.com/SSAD18789166?ref_src=twsrc%5Etfw",
+            "data-size": "large",
+            "data-show-count": "false"
+          }
+        },
+        [_vm._v("\n                    Follow @SSAD18789166\n                ")]
+      ),
+      _vm._v(" "),
+      _c("div", {
+        staticClass: "fb-like",
+        attrs: {
+          "data-href": "https://www.facebook.com/SsadTTCA/",
+          "data-layout": "standard",
+          "data-action": "like",
+          "data-size": "large",
+          "data-show-faces": "true",
+          "data-share": "true"
+        }
+      })
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

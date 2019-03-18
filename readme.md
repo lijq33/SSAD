@@ -8,9 +8,13 @@ npm install
 Open mysql, create a schema name 'ssad'
 
 ##.env
+copy from env and paste it to .env
+OR
 add:
 NEXMO_API_KEY=6e2a812f
 NEXMO_API_SECRET=bWjtpcyA22k3yjlq
+BUGSNAG_API_KEY=9ee055d7d91335afdfefd7e8cdedbefb
+FACEBOOK_PAGE_ID=342236433072588
 run php artisan jwt:secret
 
 #starting the services
@@ -41,26 +45,19 @@ role 4 - Account Manager - able to register and remove new account
 
 
 ##THINGS TO DO
-1)Real time status update on a map of singapore integrated with weather conditions, dengue hot spot, haze information and so on.
+
+Xingyu: Real time status update on a map of singapore integrated with weather conditions, dengue hot spot, haze information and so on.
     - PERFORM AJAX/AXIOS request to data.gov.sg. Those information can be then displayed on our maps.
 
-The Prime Minister’s Office shall receive a status report summarizing key indicators and trends over email every 30 minutes.
+Jian Hao: The Prime Minister’s Office shall receive a status report summarizing key indicators and trends over email every 30 minutes.
     - Mailswift & ????
 
-The CMS shall provide useful information such as location of Civil Defence shelters and updates to the public through social media periodically.
-    - Every 30min?
+Vick & Jay: The CMS shall provide useful information such as location of Civil Defence shelters and updates to the public through social media periodically.
+
 
 The input of the CMS may come from different sources. The main one is from call center. 
 The public may call call center hotline for assistance and incident reporting. Call center operators 
-will request the following information from members of the public:
-    • Name
-    • Mobile number
-    • Location (postal code and building unit number, if applicable)
-    • Type of assistance requested
-        o Emergency Ambulance 
-        o Rescue and Evacuation 
-        o Fire-Fighting
-        o Gas Leak Control
+will request the following information from members of the public.
 
 Call center operators shall enter the information provided into the CMS via a user interface (either web or desktop application). 
 Requests are immediately updated on the map and dispatched using SMS to the relevant agencies:
@@ -76,6 +73,13 @@ uncomment eventserviceprovided to get sms to work.
 
 
 ##Completed Functionalities
+Submit new crisis
+Create Accounts
+Subscribing
+
+
+
+
 
 
 ##Tools
