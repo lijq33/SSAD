@@ -1,6 +1,3 @@
-##Brief
-emergency situations can arise due to dengue outbreak, haze, bird, flu outbreak, earthquake, aftershocks, tsunami’s, terrorist activities or accidents within crowded, confined areas.
-
 ##SETUP
 #COMPOSER AND NPM
 Composer Update
@@ -35,6 +32,7 @@ Start Mysql Service
 #Creating all UserType.
 php artisan db:seed --class=UsersTableSeeder
 php artisan db:seed --class=SubscribersTableSeeder
+php artisan db:seed --class=AgenciesTableSeeder
 look at UserTableSeeder for more details
 
 ##Type of user
@@ -94,16 +92,9 @@ Subscribing
 Archiving a crisis
 
 
-
-
-
 ##COMMENTS
 uncomment eventserviceprovided to get sms to work.
-
-
-
-
-
+remove test
 
 ##Tools
 SMS - Nexmo
@@ -114,10 +105,12 @@ Facebook - Facebook API
 Twitter - Twitter API
 
 Reporting - JasperReports
+
 Central Processing Unit 
 CallCentreUI
-Weather - Yahoo! Weather RSS Feed
-Email - Apache Commons Email
+
+Weather - Data.gov.sg / Yahoo! Weather RSS Feed
+Email - Mail Swift
 
 
 
