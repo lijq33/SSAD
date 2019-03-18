@@ -77023,6 +77023,12 @@ var routes = [{
         requiresAuthCrisisManager: true
     }
 }, {
+    path: '/crisis/archive',
+    component: __webpack_require__(456),
+    meta: {
+        requiresAuthCrisisManager: true
+    }
+}, {
     path: '/basemap',
     component: __webpack_require__(273),
     meta: {
@@ -92510,6 +92516,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'app-header',
@@ -92711,6 +92718,15 @@ var render = function() {
                                   attrs: { to: "/crisis/manage" }
                                 },
                                 [_vm._v("Manage Crisis")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "nav-link",
+                                  attrs: { to: "/crisis/archive" }
+                                },
+                                [_vm._v("View Archived Crisis")]
                               )
                             ],
                             1
@@ -97526,6 +97542,260 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-40d00dc5", module.exports)
+  }
+}
+
+/***/ }),
+/* 456 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(5)
+/* script */
+var __vue_script__ = __webpack_require__(457)
+/* template */
+var __vue_template__ = __webpack_require__(458)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/ArchiveCrisis.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3431223c", Component.options)
+  } else {
+    hotAPI.reload("data-v-3431223c", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 457 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_popperjs__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_popperjs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__UpdateCrisis__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__UpdateCrisis___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__UpdateCrisis__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        'popper': __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default.a,
+        'update-crisis': __WEBPACK_IMPORTED_MODULE_2__UpdateCrisis___default.a
+    },
+
+    mounted: function mounted() {
+        this.getCrisis();
+
+        setTimeout(function () {
+            $("#crisis").DataTable();
+        }, 2000);
+    },
+    data: function data() {
+        return {
+            crises: [],
+
+            modalShow: false,
+
+            message: '',
+            error: '',
+            updateCrisis: ''
+        };
+    },
+
+
+    methods: {
+        getCrisis: function getCrisis() {
+            var _this = this;
+
+            axios.get('/api/crisis/archive').then(function (res) {
+                _this.crises = res.data.crises;
+            }).catch(function (error) {
+                _this.error = error.response.data.errors;
+            });
+        },
+        archive: function archive(crisis) {
+            this.modalShow = true;
+            var scope = this;
+
+            var promise = new Promise(function (resolve, reject) {
+                var archiveButton = document.getElementById('archiveButton');
+                archiveButton.addEventListener("click", function () {
+                    scope.modalShow = false;
+                    resolve();
+                });
+                var dontArchiveButton = document.getElementById('dontArchiveButton');
+                dontArchiveButton.addEventListener("click", function () {
+                    scope.modalShow = false;
+                    reject();
+                });
+            });
+
+            promise.then(function () {
+                axios.delete('/api/crisis/' + crisis.id).then(function (res) {
+                    scope.message = "We've successfully archive the crisis!";
+                    scope.crisis = [];
+                    scope.getcrisis();
+                }).catch(function (error) {
+                    scope.error = error.response;
+                });
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 458 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "table",
+      {
+        staticClass: "table table-striped table-bordered",
+        staticStyle: { width: "100%" },
+        attrs: { id: "example" }
+      },
+      [
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "tbody",
+          _vm._l(_vm.crises, function(crisis, index) {
+            return _c("tr", { key: index + crisis.health_service_type }, [
+              _c("td", [_vm._v(_vm._s(crisis.date))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(crisis.time))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(crisis.crisis_type))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(crisis.description))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(crisis.assistance_required))]),
+              _vm._v(" "),
+              _c("td", [
+                _vm._v(
+                  _vm._s(crisis.address) + " " + _vm._s(crisis.postal_code)
+                )
+              ]),
+              _vm._v(" "),
+              _c("td", { staticClass: "tw-capitalize" }, [
+                _vm._v(_vm._s(crisis.status))
+              ]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(crisis.name))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(crisis.user.name))])
+            ])
+          }),
+          0
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Date")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Time")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Crisis Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Description")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Assistance Requested")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Location")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Status")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Reported By")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Submitted By")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3431223c", module.exports)
   }
 }
 

@@ -86,14 +86,12 @@ https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b
 #Updating a crisis
 Prash
 
-#Archiving a crisis
-JQ
-
 
 ##Completed Functionalities
 Submit new crisis
 Create Accounts
 Subscribing
+Archiving a crisis
 
 
 

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Crisis;
 use App\User;
 use App\Events\CrisisCreated;
+use App\Events\CrisisUpdated;
 
 class CrisisController extends Controller
 {
@@ -19,6 +20,20 @@ class CrisisController extends Controller
     public function index()
     {
         $crises = Crisis::with('user:id,name')->get();
+
+        return response()->json([
+            'crises' => $crises,
+        ], 200);
+    }
+
+    /**
+     * Display a listing of the crisis which had been archived.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function archive()
+    {
+        $crises = Crisis::onlyTrashed()->with('user:id,name')->get();
 
         return response()->json([
             'crises' => $crises,
@@ -74,7 +89,11 @@ class CrisisController extends Controller
     {
         $data = request()->all();
 
-        $validator = Validator::make($data = request()->all(), Crisis::$rules);
+        $rules = [
+            'status' => 'required|string',
+        ];
+
+        $validator = Validator::make($data = request()->all(), $rules);
 
         if ($validator->fails()) {
             return response()->json([
@@ -83,16 +102,15 @@ class CrisisController extends Controller
         }
 
         $crisis->update([
-            
+            'description' => $data['description'],
+            'status' => $data['status']
         ]);
 
-        event(new CrisisCreated($crisis));
+        event(new CrisisUpdated($crisis));
 
         return response()->json([
             'message' => 'You have successfully updated a crisis!',
         ], 200);
-
-
     }
 
     /**
@@ -109,5 +127,4 @@ class CrisisController extends Controller
             'message' => 'Crisis has been archived'
         ]);
     }
-
 }

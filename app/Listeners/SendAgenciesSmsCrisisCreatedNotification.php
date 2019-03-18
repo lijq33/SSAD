@@ -28,20 +28,20 @@ class SendAgenciesSmsCrisisCreatedNotification
     {
         $sms = new SMS();
 
-        if($crisis->assistance_required == null){
+        $crisis = $event->crisis;
+
+        if($crisis->agency == null){
             return;
         }
         
-        $crisis = $event->crisis;
-        $content = "There is currently a " . $crisis->crisis_type . " at " . $crisis->address. ". For more information, visit us at www.CrisisLookOut.com";
-        
-        $assistances = explode(",", $crisis->assistance_required);
-    
-        foreach($assistances as $assistance){
+        $content = "There is currently a " . $crisis->crisis_type . " at " . $crisis->address . $crisis->postal_code ;
+
+        foreach($crisis->agency as $agency){
             $telephone_number = $assistance->telephone_number;
             $name = $assistance->name;
             $sms->sendSMS($assistance->telephone_number,  $content);
         }
+
 
 
     }
