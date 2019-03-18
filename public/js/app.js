@@ -80037,7 +80037,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         submitCrisis: function submitCrisis() {
             var _this = this;
 
-            this.isLoading = true;
+            // this.isLoading = true;
             this.message = "";
             this.error = "";
 
@@ -80045,7 +80045,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.message = response.data.message;
                 $('html, body').animate({ scrollTop: 0 }, 'slow');
                 _this.isLoading = false;
-                _this.resetFields();
+                // this.resetFields();
             }).catch(function (error) {
                 _this.error = error.response.data.errors;
                 _this.isLoading = false;
@@ -80611,16 +80611,13 @@ var render = function() {
                             attrs: {
                               type: "checkbox",
                               id: "Emergency Ambulance",
-                              value: "Emergency Ambulance"
+                              value: "1"
                             },
                             domProps: {
                               checked: Array.isArray(
                                 _vm.form.assistanceRequired
                               )
-                                ? _vm._i(
-                                    _vm.form.assistanceRequired,
-                                    "Emergency Ambulance"
-                                  ) > -1
+                                ? _vm._i(_vm.form.assistanceRequired, "1") > -1
                                 : _vm.form.assistanceRequired
                             },
                             on: {
@@ -80629,7 +80626,7 @@ var render = function() {
                                   $$el = $event.target,
                                   $$c = $$el.checked ? true : false
                                 if (Array.isArray($$a)) {
-                                  var $$v = "Emergency Ambulance",
+                                  var $$v = "1",
                                     $$i = _vm._i($$a, $$v)
                                   if ($$el.checked) {
                                     $$i < 0 &&
@@ -80678,85 +80675,14 @@ var render = function() {
                             staticClass: "form-check-input",
                             attrs: {
                               type: "checkbox",
-                              id: "Fire-Fighting",
-                              value: "Fire-Fighting"
-                            },
-                            domProps: {
-                              checked: Array.isArray(
-                                _vm.form.assistanceRequired
-                              )
-                                ? _vm._i(
-                                    _vm.form.assistanceRequired,
-                                    "Fire-Fighting"
-                                  ) > -1
-                                : _vm.form.assistanceRequired
-                            },
-                            on: {
-                              change: function($event) {
-                                var $$a = _vm.form.assistanceRequired,
-                                  $$el = $event.target,
-                                  $$c = $$el.checked ? true : false
-                                if (Array.isArray($$a)) {
-                                  var $$v = "Fire-Fighting",
-                                    $$i = _vm._i($$a, $$v)
-                                  if ($$el.checked) {
-                                    $$i < 0 &&
-                                      _vm.$set(
-                                        _vm.form,
-                                        "assistanceRequired",
-                                        $$a.concat([$$v])
-                                      )
-                                  } else {
-                                    $$i > -1 &&
-                                      _vm.$set(
-                                        _vm.form,
-                                        "assistanceRequired",
-                                        $$a
-                                          .slice(0, $$i)
-                                          .concat($$a.slice($$i + 1))
-                                      )
-                                  }
-                                } else {
-                                  _vm.$set(_vm.form, "assistanceRequired", $$c)
-                                }
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "label",
-                            {
-                              staticClass: "form-check-label",
-                              attrs: { for: "Fire-Fighting" }
-                            },
-                            [_vm._v("Fire-Fighting")]
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "form-check" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.assistanceRequired,
-                                expression: "form.assistanceRequired"
-                              }
-                            ],
-                            staticClass: "form-check-input",
-                            attrs: {
-                              type: "checkbox",
                               id: "Rescue",
-                              value: "Rescue & Evac"
+                              value: "2"
                             },
                             domProps: {
                               checked: Array.isArray(
                                 _vm.form.assistanceRequired
                               )
-                                ? _vm._i(
-                                    _vm.form.assistanceRequired,
-                                    "Rescue & Evac"
-                                  ) > -1
+                                ? _vm._i(_vm.form.assistanceRequired, "2") > -1
                                 : _vm.form.assistanceRequired
                             },
                             on: {
@@ -80765,7 +80691,7 @@ var render = function() {
                                   $$el = $event.target,
                                   $$c = $$el.checked ? true : false
                                 if (Array.isArray($$a)) {
-                                  var $$v = "Rescue & Evac",
+                                  var $$v = "2",
                                     $$i = _vm._i($$a, $$v)
                                   if ($$el.checked) {
                                     $$i < 0 &&
@@ -80814,17 +80740,14 @@ var render = function() {
                             staticClass: "form-check-input",
                             attrs: {
                               type: "checkbox",
-                              id: "GasLeak",
-                              value: "Gas Leak Control"
+                              id: "Fire-Fighting",
+                              value: "3"
                             },
                             domProps: {
                               checked: Array.isArray(
                                 _vm.form.assistanceRequired
                               )
-                                ? _vm._i(
-                                    _vm.form.assistanceRequired,
-                                    "Gas Leak Control"
-                                  ) > -1
+                                ? _vm._i(_vm.form.assistanceRequired, "3") > -1
                                 : _vm.form.assistanceRequired
                             },
                             on: {
@@ -80833,7 +80756,72 @@ var render = function() {
                                   $$el = $event.target,
                                   $$c = $$el.checked ? true : false
                                 if (Array.isArray($$a)) {
-                                  var $$v = "Gas Leak Control",
+                                  var $$v = "3",
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(
+                                        _vm.form,
+                                        "assistanceRequired",
+                                        $$a.concat([$$v])
+                                      )
+                                  } else {
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        _vm.form,
+                                        "assistanceRequired",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
+                                  }
+                                } else {
+                                  _vm.$set(_vm.form, "assistanceRequired", $$c)
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            {
+                              staticClass: "form-check-label",
+                              attrs: { for: "Fire-Fighting" }
+                            },
+                            [_vm._v("Fire-Fighting")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-check" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.assistanceRequired,
+                                expression: "form.assistanceRequired"
+                              }
+                            ],
+                            staticClass: "form-check-input",
+                            attrs: {
+                              type: "checkbox",
+                              id: "GasLeak",
+                              value: "4"
+                            },
+                            domProps: {
+                              checked: Array.isArray(
+                                _vm.form.assistanceRequired
+                              )
+                                ? _vm._i(_vm.form.assistanceRequired, "4") > -1
+                                : _vm.form.assistanceRequired
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.form.assistanceRequired,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = "4",
                                     $$i = _vm._i($$a, $$v)
                                   if ($$el.checked) {
                                     $$i < 0 &&

@@ -85,19 +85,19 @@
                                         <h5 class = "card-title">Assistance Required:</h5>
 
                                         <div class = "form-check">
-                                            <input class = "form-check-input" type = "checkbox" id = "Emergency Ambulance" v-model = "form.assistanceRequired" value = "Emergency Ambulance">
+                                            <input class = "form-check-input" type = "checkbox" id = "Emergency Ambulance" v-model = "form.assistanceRequired" value = "1">
                                             <label class = "form-check-label" for = "Emergency Ambulance">Emergency Ambulance</label>
                                         </div>
                                         <div class = "form-check">
-                                            <input class = "form-check-input" type = "checkbox" id = "Fire-Fighting" v-model = "form.assistanceRequired" value = "Fire-Fighting">
-                                            <label class = "form-check-label" for = "Fire-Fighting">Fire-Fighting</label>
-                                        </div>
-                                        <div class = "form-check">
-                                            <input class = "form-check-input" type = "checkbox" id = "Rescue" v-model = "form.assistanceRequired" value = "Rescue &amp; Evac">
+                                            <input class = "form-check-input" type = "checkbox" id = "Rescue" v-model = "form.assistanceRequired" value = "2">
                                             <label class = "form-check-label" for = "Rescue">Rescue &amp; Evac</label>
                                         </div>
                                         <div class = "form-check">
-                                            <input class = "form-check-input" type = "checkbox" id = "GasLeak" v-model = "form.assistanceRequired" value = "Gas Leak Control">
+                                            <input class = "form-check-input" type = "checkbox" id = "Fire-Fighting" v-model = "form.assistanceRequired" value = "3">
+                                            <label class = "form-check-label" for = "Fire-Fighting">Fire-Fighting</label>
+                                        </div>
+                                        <div class = "form-check">
+                                            <input class = "form-check-input" type = "checkbox" id = "GasLeak" v-model = "form.assistanceRequired" value = "4">
                                             <label class = "form-check-label" for = "GasLeak">Gas Leak Control</label>
                                         </div>
                                     </div>
@@ -287,7 +287,7 @@
 
         methods: {
             submitCrisis() {
-                this.isLoading = true;
+                // this.isLoading = true;
                 this.message = "";
                 this.error = "";
 
@@ -296,7 +296,7 @@
                     this.message = response.data.message;
                     $('html, body').animate({ scrollTop: 0 }, 'slow');
                     this.isLoading = false;
-                    this.resetFields();
+                    // this.resetFields();
                 })
                 .catch((error) => {
                     this.error = error.response.data.errors;

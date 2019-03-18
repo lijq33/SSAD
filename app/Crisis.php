@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use App\Agency;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Crisis extends Model
@@ -17,6 +18,15 @@ class Crisis extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    /**
+     * Get the agency which assistance will be required.
+     */
+    public function agency()
+    {
+        return $this->belongsToMany(Agency::class, 'crisis_agencies', 'crisis_id', 'agency_id');
+    }
+
    
     // Add your validation rules here
     public static $rules = [
@@ -34,15 +44,13 @@ class Crisis extends Model
      *
      * @var array
     */
-    protected $fillable = [ 'user_id', 'name', 'telephone_number', 'postal_code', 'date', 'time', 'address', 
-                            'assistance_required', 'crisis_type', 'status', 'description', 'twitter_post_id', 'facebook_post_id'];
+    protected $fillable = ['user_id', 'name', 'telephone_number', 'postal_code', 'date', 'time', 'address', 
+                            'crisis_type', 'status', 'description', 'twitter_post_id', 'facebook_post_id'];
 
     public static function newCrisis($data){
 
         $data['date'] = (Carbon::parse($data['date'])->format('Y/m/d'));
         $data['time'] = (Carbon::parse($data['time'])->format('H:i:s'));
-
-        $assistance = implode(", ", $data['assistanceRequired']);
 
         $crisis = Crisis::create([
             'name' => $data['name'],
@@ -54,7 +62,6 @@ class Crisis extends Model
             'crisis_type' => $data['crisisType'],
             'date' => $data['date'],
             'time' => $data['time'],
-            'assistance_required' => $assistance,
             
             'status' => 'registered',
             'description' => $data['description'],

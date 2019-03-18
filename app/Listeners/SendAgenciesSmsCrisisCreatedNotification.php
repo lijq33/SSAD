@@ -43,10 +43,6 @@ class SendAgenciesSmsCrisisCreatedNotification
             $sms->sendSMS($assistance->telephone_number,  $content);
         }
 
-        Emergency Ambulance – Singapore Civil Defence Force (SCDF)
-        Rescue and Evacuation - SCDF
-        Fire-Fighting - SCDF
-        Gas Leak Control – Singapore Power
 
     }
 }

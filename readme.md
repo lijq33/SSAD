@@ -46,36 +46,61 @@ role 4 - Account Manager - able to register and remove new account
 
 ##THINGS TO DO
 
+
+#MAP
 Xingyu: Real time status update on a map of singapore integrated with weather conditions, dengue hot spot, haze information and so on.
-    - PERFORM AJAX/AXIOS request to data.gov.sg. Those information can be then displayed on our maps.
 
-Jian Hao: The Prime Minister’s Office shall receive a status report summarizing key indicators and trends over email every 30 minutes.
-    - Mailswift & ????
+Weather:
+air temperature - https://api.data.gov.sg/v1/environment/air-temperature
+rainfall - https://api.data.gov.sg/v1/environment/rainfall
+relative humidity - https://api.data.gov.sg/v1/environment/relative-humidity
+weather-forecast - https://api.data.gov.sg/v1/environment/(2-hour/24-hour/4-day)-weather-forecast
 
-Vick & Jay: The CMS shall provide useful information such as location of Civil Defence shelters and updates to the public through social media periodically.
+Dengue: 
+<iframe width="600" height="400" src="https://data.gov.sg/dataset/dengue-clusters/resource/801ce5ce-fb99-4211-94fe-9d8ca5e182d4/view/07e4bfc9-8675-4534-959f-768be06aeeab" frameBorder="0"> </iframe>
 
+Haze:
+pm2.5 - https://api.data.gov.sg/v1/environment/pm25
+psi - https://api.data.gov.sg/v1/environment/psi
 
-The input of the CMS may come from different sources. The main one is from call center. 
-The public may call call center hotline for assistance and incident reporting. Call center operators 
-will request the following information from members of the public.
+CD Shelter: 
+https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b6d4-b963c7bb1c09
 
-Call center operators shall enter the information provided into the CMS via a user interface (either web or desktop application). 
-Requests are immediately updated on the map and dispatched using SMS to the relevant agencies:
-o Emergency Ambulance – Singapore Civil Defence Force (SCDF)
-o Rescue and Evacuation - SCDF
-o Fire-Fighting - SCDF
-o Gas Leak Control – Singapore Power
 Other possible courses could be weather forecast API (http://developer.yahoo.com/weather/), PSI 
 reading for air pollution (http://www.nea.gov.sg/psi/). 
 
-##COMMENTS
-uncomment eventserviceprovided to get sms to work.
+#Periodically report
+Jian Hao: The Prime Minister’s Office shall receive a status report summarizing key indicators and trends over email every 30 minutes.
+
+Tools:
+Mailswift
+Jasper Report: https://github.com/PHPJasper/phpjasper-laravel
+Laravel Report Generators https://github.com/Jimmy-JS/laravel-report-generator/blob/master/readme.md
+
+#Social Media
+Vick & Jay: The CMS shall provide useful information such as location of Civil Defence shelters and updates to the public through social media periodically.
+
+CD Shelter: 
+https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b6d4-b963c7bb1c09
+
+#Updating a crisis
+Prash
+
+#Archiving a crisis
+JQ
 
 
 ##Completed Functionalities
 Submit new crisis
 Create Accounts
 Subscribing
+
+
+
+
+
+##COMMENTS
+uncomment eventserviceprovided to get sms to work.
 
 
 
