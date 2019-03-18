@@ -50,8 +50,6 @@ The Prime Minister’s Office shall receive a status report summarizing key indi
 The CMS shall provide useful information such as location of Civil Defence shelters and updates to the public through social media periodically.
     - Every 30min?
 
-The CMS shall serve as a command-and-control platform to respond quickly to needs and dangerous conditions,such as gas leaks, hazardous air condition and fires
-
 The input of the CMS may come from different sources. The main one is from call center. 
 The public may call call center hotline for assistance and incident reporting. Call center operators 
 will request the following information from members of the public:
@@ -72,6 +70,9 @@ o Fire-Fighting - SCDF
 o Gas Leak Control – Singapore Power
 Other possible courses could be weather forecast API (http://developer.yahoo.com/weather/), PSI 
 reading for air pollution (http://www.nea.gov.sg/psi/). 
+
+##COMMENTS
+uncomment eventserviceprovided to get sms to work.
 
 
 ##Completed Functionalities

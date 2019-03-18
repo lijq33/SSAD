@@ -293,11 +293,10 @@
 
                 axios.post('/api/crisis', this.form)
                 .then(response => {
-                    console.log(response.data.crisis);
                     this.message = response.data.message;
                     $('html, body').animate({ scrollTop: 0 }, 'slow');
                     this.isLoading = false;
-                    // this.resetFields();
+                    this.resetFields();
                 })
                 .catch((error) => {
                     this.error = error.response.data.errors;

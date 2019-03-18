@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Crisis extends Model
 {
-
-    public $crisis;
+    use SoftDeletes;
 
     /**
      * Get the user that submitted the crisis.

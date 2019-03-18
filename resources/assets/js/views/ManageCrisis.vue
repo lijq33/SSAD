@@ -65,7 +65,8 @@
 
         <!-- Update -->
         <b-modal ref="myModalRef" size="lg" hide-footer title = "Current crisis Details:">
-            <update-crisis :crisis = "updateCrisis"
+            <update-crisis 
+                :crisis = "updateCrisis"
                 @hideModal = "hideModal"
                 @updateSuccess = "updateSuccess"
             >
@@ -112,7 +113,7 @@
                     this.crises = res.data.crises;
                 })
                 .catch((error) => {
-                    this.error = error.response;
+                    this.error = error.response.data.errors;
                 })
             },
 

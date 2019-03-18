@@ -33,6 +33,7 @@ class CreateCrisesTable extends Migration
             $table->integer('twitter_post_id')->nullable();
             $table->integer('facebook_post_id')->nullable();
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }
