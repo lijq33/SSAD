@@ -104,6 +104,8 @@
                 message:'',
                 error: '',
                 updateCrisis: '',
+                crisisStatus: '',
+                crisisDesc: '',
             }
         },
 
@@ -152,6 +154,8 @@
             update(crisis) {
                 this.$refs.myModalRef.show()
                 this.updateCrisis = crisis;
+                this.crisisStatus = crisis.status;
+                this.crisisDesc = crisis.description;
             },
 
 

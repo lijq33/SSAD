@@ -5,7 +5,7 @@
             <label class="col-md-4 col-form-label">
                 Crisis Status :
             </label>
-            <input type="text"  v-model="crisisStatus"
+            <input type="text"  v-model="updatedStatus"
                 class="col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-bg-grey-light"
                 
             >
@@ -15,7 +15,7 @@
             <label class="col-md-4 col-form-label">
                 Description :
             </label>
-            <textarea  v-model="crisisDescription"
+            <textarea  v-model="updatedDescription"
                 class = "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-bg-grey-light tw-py-2"
                 
             >
@@ -29,65 +29,57 @@
 
     </div>
 
-
-    
 </template>
 
 <script>
-
+    
     export default {
         props: ['crisis'],
-        
+
         data() {
             return {
-                crisisStatus: 'Test',
-                crisisDescription: 'Test',
+                updatedStatus: '',
+                updatedDescription: '',
+                error: '',
 
             }
         },
-
+        mounted(){
+         
+        },
         watch: {
             crisis() {
-
+                this.updatedStatus = this.crisis.status;
+                this.updatedDescription = this.crisis.description;
+              
             },
         },
 
 
 
         computed: {
- 
+         
         },
 
         methods: {
-            /* updateAppointment(){
-                axios.post('/api/appointment/update', {
-                    id: this.appointment.id,
-                    
-                    health_service_type: this.editAppointment.health_service_type.split(" ").join(""),
-                    department: this.department,
-                    service: this.service,
-                    
-                    condition: this.condition,
-                    prefer_doctor: this.prefer_practitioner,
-                    prefer_dentist: this.prefer_practitioner,
 
-                    referal: this.referal,
-                    appointment_date: this.appointment_date,
-                    appointment_time: this.appointment_time,
-                })
-                .then((res) => {
-                    this.$emit('updateSuccess');
-                })
-                .catch((error) => {
-                    this.error = error.response;
-                })
-            } */
-
+    
             updateCrisis(){
-                    alert("Test");
+                    axios.post('/api/crisis/'+this.crisis.id, {
+                        status : this.updatedStatus,
+                        description : this.updatedDescription,
+                    })
+                    .then((res) => {
+                        this.$emit('updateSuccess');
+                     })
+                     .catch((error) => {
+                         this.error = error.response;
+                     })
+            
             },
 
             hideModal() {
+               
                 this.$emit('hideModal');
             },
         }
