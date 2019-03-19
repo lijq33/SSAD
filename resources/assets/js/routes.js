@@ -48,6 +48,7 @@ export const routes = [
             requiresAuthCrisisManager: true
         }
     },
+  
     {
         path : '/crisis/archive',
         component: require('./views/ArchiveCrisis.vue'),
