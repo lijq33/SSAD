@@ -33,7 +33,6 @@ Start Mysql Service
 php artisan db:seed --class=UsersTableSeeder
 php artisan db:seed --class=SubscribersTableSeeder
 php artisan db:seed --class=AgenciesTableSeeder
-look at UserTableSeeder for more details
 
 ##Type of user
 role 1 - Call Center Operator - able to register a new crisis
@@ -43,7 +42,6 @@ role 4 - Account Manager - able to register and remove new account
 
 
 ##THINGS TO DO
-
 
 #MAP
 Xingyu: Real time status update on a map of singapore integrated with weather conditions, dengue hot spot, haze information and so on.
@@ -84,13 +82,11 @@ https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b
 #Updating a crisis
 Prash
 
-
 ##Completed Functionalities
 Submit new crisis
 Create Accounts
 Subscribing
 Archiving a crisis
-
 
 ##COMMENTS
 uncomment eventserviceprovided to get sms to work.
@@ -111,6 +107,15 @@ CallCentreUI
 
 Weather - Data.gov.sg / Yahoo! Weather RSS Feed
 Email - Mail Swift
+
+
+
+
+
+
+
+
+
 
 
 
@@ -143,7 +148,7 @@ For instance, The rule stats that
         'address' => 'required',
         'crisisType' => 'required',
     ];
-. This means that if anything or anyone tries to perform some malicious actions such as man-in-the-middle attack, we ensure that the damage is reduce to the minimum. For instance the legitimate request date is 12/3/2019 but some hacker change it to 14/3/2019. We know that this is not possible as we would not know if a crisis happen tomorrow. Hence, this safeguard our backend by adding one additional layer of security.
+This means that if anything or anyone tries to perform some malicious actions such as man-in-the-middle attack, we ensure that the damage is reduce to the minimum. For instance the legitimate request date is 12/3/2019 but some hacker change it to 14/3/2019. We know that this is not possible as we would not know if a crisis happen tomorrow. Hence, this safeguard our backend by adding one additional layer of security.
 
 #JWT Token
 Secure method to transmit JSON as it is digitally signed
