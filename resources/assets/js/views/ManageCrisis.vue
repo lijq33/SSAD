@@ -17,7 +17,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for = "(crisis, index) in crises" :key = "index + crisis.health_service_type">
+                <tr v-for = "(crisis, index) in crises" :key = "index + crisis">
                     <td>{{crisis.date}}</td>
                     <td>{{crisis.time}}</td>
                     <td>{{crisis.crisis_type}}</td>
