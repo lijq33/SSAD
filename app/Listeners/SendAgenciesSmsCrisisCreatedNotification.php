@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\SMS;
 use App\Events\CrisisCreated;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -34,12 +35,11 @@ class SendAgenciesSmsCrisisCreatedNotification
             return;
         }
         
-        $content = "There is currently a " . $crisis->crisis_type . " at " . $crisis->address . $crisis->postal_code ;
-
         foreach($crisis->agency as $agency){
-            $telephone_number = $assistance->telephone_number;
-            $name = $assistance->name;
-            $sms->sendSMS($assistance->telephone_number,  $content);
+            $name = $agency->agency;
+            $content = $name. ", There is currently a " . $crisis->crisis_type . " at " . $crisis->address . $crisis->postal_code;
+            $telephone_number = $agency->hotline;
+            $sms->sendSMS($telephone_number,  $content);
         }
 
 
