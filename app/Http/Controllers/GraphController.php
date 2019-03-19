@@ -72,9 +72,13 @@ class GraphController extends Controller
 
     public function publishToPage(Request $request){
         $page_id='342236433072588';
+
+        $data = request()->all();
+
         try{
-            $post= $this->api->post('/'.$page_id.'/feed',array('message' => request->message)
+            $post= $this->api->post('/'.$page_id.'/feed',array('message' => $data->message)
             ,$this->getPageAccessToken($page_id));
+
             $post= $post->getGraphNode()->asArray();
             dd($post);
         }catch (FacebookSDKException $e){
