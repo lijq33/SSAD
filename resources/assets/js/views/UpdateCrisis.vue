@@ -1,5 +1,35 @@
 <template>
-<div >
+<div>
+    <!-- for updating crisis status -->
+  <div class="form-group row tw-flex tw-justify-center">
+            <label class="col-md-4 col-form-label">
+                Crisis Status :
+            </label>
+            <input type="text"  v-model="crisisStatus"
+                class="col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-bg-grey-light"
+                
+            >
+        </div>
+        <!-- for updating crisis description -->
+        <div class="form-group row tw-flex tw-justify-center">
+            <label class="col-md-4 col-form-label">
+                Description :
+            </label>
+            <textarea  v-model="crisisDescription"
+                class = "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-bg-grey-light tw-py-2"
+                
+            >
+            </textarea>
+        </div>
+
+        <div class = "tw-flex tw-justify-end tw-m-4 tw-border-t tw-border-grey tw-pt-4">
+            <button class = "tw-mr-2 btn btn-secondary" @click = "hideModal()">Cancel</button>
+            <button class = "tw-ml-2 btn btn-primary" @click = "updateCrisis()">Update</button>
+        </div>
+
+    </div>
+
+<!-- <div>
     <div >
         <div class="form-group row tw-flex tw-justify-center">
             <label class="col-md-4 col-form-label text-md-right">
@@ -33,7 +63,7 @@
         </div>
 
         <!-- EDITABLE DATA -->
-        <div v-if = "!isChasclinic" class="form-group row tw-flex tw-justify-center">
+<!--         <div v-if = "!isChasclinic" class="form-group row tw-flex tw-justify-center">
             <label class="col-md-4 col-form-label text-md-right">
                 {{this.Role}} : 
             </label>
@@ -105,32 +135,37 @@
             <button class = "tw-mr-2 btn btn-secondary" @click = "hideModal()">Cancel</button>
             <button class = "tw-ml-2 btn btn-primary" @click = "updateAppointment()">Update</button>
         </div>
-    </div>
+    </div>  -->
+    
 </template>
 
 <script>
-
+ import ManageCrisis from './ManageCrisis';
     export default {
         props: ['crisis'],
-
+        
         data() {
             return {
-    
+                crisisStatus: 'Test',
+                crisisDescription: 'Test',
+
             }
         },
 
         watch: {
             crisis() {
-    
+
             },
         },
+
+
 
         computed: {
  
         },
 
         methods: {
-            updateAppointment(){
+            /* updateAppointment(){
                 axios.post('/api/appointment/update', {
                     id: this.appointment.id,
                     
@@ -152,6 +187,10 @@
                 .catch((error) => {
                     this.error = error.response;
                 })
+            } */
+
+            updateCrisis(){
+                    alert("Test");
             },
 
             hideModal() {

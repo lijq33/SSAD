@@ -64,13 +64,14 @@
         </b-modal>
 
         <!-- Update -->
-        <b-modal ref="myModalRef" size="lg" hide-footer title = "Current crisis Details:">
+        <b-modal ref="myModalRef" size="lg" hide-footer title = "Current Crisis Details:">
             <update-crisis 
                 :crisis = "updateCrisis"
                 @hideModal = "hideModal"
-                @updateSuccess = "updateSuccess"
-            >
-            </update-crisis>
+                @updateSuccess = "updateSuccess"></update-crisis>
+           
+            <!-- UI -->
+
         </b-modal>
     </div>
 </template>
