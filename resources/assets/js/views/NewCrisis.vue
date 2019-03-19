@@ -118,13 +118,12 @@
                                                 Postal Code:
                                             </label>
                                             <div class = "col-md-6">
-                                                <input type = "text"
-                                                    class = "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic" 
-                                                    id = "Postal Code" v-model = "form.postalCode"
-                                                    :class = "{ 'tw-border-red-light' : error['postalCode'] != undefined}"
-                                                    placeholder = "520894"
-                                                    required autofocus
-                                                >
+                                                <GmapAutocomplete
+                                                    class="tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64"
+                                                    @place_changed="setPlace"
+                                                     ref="autocomplete"
+                                                ></GmapAutocomplete>
+
                                                 <div class = "tw-text-red" v-if = "error['postalCode'] != undefined">
                                                     <span> {{this.error['postalCode'].toString()}} </span>   
                                                 </div>
@@ -141,8 +140,9 @@
                                                     class = "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic"
                                                     id = "Address" v-model = "form.address"
                                                     :class = "{ 'tw-border-red-light' : error['address'] != undefined}"
-                                                    placeholder = "Blk 35 Woodlands St 45"
+                                                    placeholder = ""
                                                     required autofocus
+                                                    disabled
                                                 >
                                                 <div class = "tw-text-red" v-if = "error['address'] != undefined">
                                                     <span> {{this.error['address'].toString()}} </span>   
@@ -286,6 +286,79 @@
         },
 
         methods: {
+            postalCodeBestMatch(data,matchPostalCode){
+
+                var scope = this;
+                var found = false;
+
+                data.forEach(element => {
+                    if(element.formatted_address.includes(matchPostalCode)){
+                        scope.form.address = element.formatted_address;
+                        scope.form.postalCode = matchPostalCode;
+                        found = true;
+                    }
+                });
+                
+                //if not found use, original postal code
+                //can use nearest address also
+                if(!found){
+                    this.form.address = "Singapore "+matchPostalCode;
+                    this.form.postalCode = matchPostalCode;
+                }
+            },
+            addressGeoCoder(geocoder,place_id,pos,postalAddType,validPostalCode){ 
+                
+                var scope = this;
+
+                if(postalAddType === "postal_code"){
+                
+                //use latlng to determine the location
+                //use this method for postal code entered eg:"729826"
+                 geocoder.geocode({ location: pos }, function(results, status) {
+                    if (status === "OK") {
+
+                        //process best match
+                        scope.postalCodeBestMatch(results,validPostalCode);
+                         
+                    }
+                });
+                }else{
+                //get details about the place
+                //use this method for place name entered eg:"singapore zoo"
+                geocoder.geocode({ placeId: place_id }, function(results, status) { 
+                    if (status === "OK") {
+                        
+                        scope.form.address = results[0].formatted_address;
+                        scope.form.postalCode = validPostalCode;
+                    }
+                }); 
+                }    
+
+            },
+            setPlace(place) {  
+
+                if (place.id) {  
+                      var pos = {
+                        lat: place.geometry.location.lat(),
+                        lng: place.geometry.location.lng()
+                        }; 
+
+                        //check if is postal code or address 
+                        var str = this.$refs.autocomplete.$el.value;
+                        var isPostalCode = str.slice(str.length-6, str.length);
+                        var postalAddType = "address";
+
+                        if(isPostalCode.match(/^-{0,1}\d+$/)){
+                            postalAddType = "postal_code"
+                        }else{
+                            isPostalCode = place.formatted_address.slice(place.formatted_address.length-6, place.formatted_address.length.length);
+                            console.log(isPostalCode)
+                        } 
+                        
+                    //get additonal address from postal code or address
+                    this.addressGeoCoder(new google.maps.Geocoder(),place.place_id,pos,postalAddType,isPostalCode); 
+                }
+            },
             submitCrisis() {
                 // this.isLoading = true;
                 this.message = "";

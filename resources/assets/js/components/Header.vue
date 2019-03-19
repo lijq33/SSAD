@@ -13,7 +13,7 @@
                     
                     <!-- EVERYONE CAN SEE -->
                     <li>
-                        <router-link to="/basemap" class="nav-link">Map</router-link>
+                        <router-link to="/map" class="nav-link">Map</router-link>
                     </li>
                     <!-- Only when not logged in -->
                     <template v-if = "!currentUser">
@@ -85,9 +85,6 @@
                             </div>
                         </li>
                     </template>
-
-                  
-                    
                 </ul>
             </div>
         </div>
