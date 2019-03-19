@@ -100,8 +100,9 @@ class SubscriberController extends Controller
      */
     public function destroy($telephone_number)
     {
-       
+        $data = request()->all();
 
+        Subscriber::find($data);
     }
 
 }
