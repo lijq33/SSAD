@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
+                <div class="card tw-mb-6">
 
                     <flash :message = "message"></flash>
 
@@ -82,6 +82,9 @@
                             </div>
                         </div>
 
+                       
+
+
                         <div class="form-group row tw-my-6">
                             <div class="col-md-6 offset-md-4">
                                 <div v-if = "!isLoading">
@@ -95,6 +98,14 @@
                             </div>
                         </div>
 
+                    </div>
+                </div>
+                <div>
+                    <a href="https://twitter.com/SSAD18789166?ref_src=twsrc%5Etfw" data-size="large" class="twitter-follow-button" data-show-count="false">
+                        Follow @SSAD18789166
+                    </a>
+                    <div class="fb-like" data-href="https://www.facebook.com/SsadTTCA/" 
+                        data-layout="standard" data-action="like" data-size="large" data-show-faces="true" data-share="true">
                     </div>
                 </div>
             </div>

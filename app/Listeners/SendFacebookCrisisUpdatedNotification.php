@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\CrisisCreated;
+use App\Events\CrisisUpdated;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendTwitterCrisisCreatedNotification
+class SendFacebookCrisisUpdatedNotification
 {
     /**
      * Create the event listener.
@@ -21,11 +21,11 @@ class SendTwitterCrisisCreatedNotification
     /**
      * Handle the event.
      *
-     * @param  CrisisCreated  $event
+     * @param  CrisisUpdated  $event
      * @return void
      */
-    public function handle(CrisisCreated $event)
+    public function handle(CrisisUpdated $event)
     {
-
+        //
     }
 }

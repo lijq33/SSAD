@@ -14,9 +14,16 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'App\Events\CrisisCreated' => [
-            'App\Listeners\SendSmsCrisisCreatedNotification',
+            // 'App\Listeners\SendAgenciesSmsCrisisCreatedNotification',
+            // 'App\Listeners\SendSmsCrisisCreatedNotification',
             'App\Listeners\SendTwitterCrisisCreatedNotification',
             'App\Listeners\SendFacebookCrisisCreatedNotification',
+        ],
+
+        'App\Events\CrisisUpdated' => [
+            'App\Listeners\SendSmsCrisisUpdatedNotification',
+            'App\Listeners\SendTwitterCrisisUpdatedNotification',
+            'App\Listeners\SendFacebookCrisisUpdatedNotification',
         ]
     ];
 
@@ -28,7 +35,5 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-
-        //
     }
 }

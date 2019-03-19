@@ -41,27 +41,27 @@ class SubscriberController extends Controller
         $this->middleware('guest');
     }
 
-    public function index()
-    {
-        $crisis = \App\Crisis::find(1)->first();
+    // public function index()
+    // {
+    //     $crisis = \App\Crisis::find(1)->first();
 
-        event(new CrisisCreated($crisis));
+    //     event(new CrisisCreated($crisis));
 
-        $subscribers = Subscriber::all();
+    //     $subscribers = Subscriber::all();
         
-        if($subscribers->isEmpty()){
-            var_dump("empty");
-            return;
-        }
+    //     if($subscribers->isEmpty()){
+    //         var_dump("empty");
+    //         return;
+    //     }
 
 
-        foreach($subscribers as $subscriber){
-            var_dump($subscriber->telephone_number);
-            var_dump($subscriber->name);
-            // $content = $event->crisis;
-            // $sms->sendSMS($subscriber->telephone_number,  $content);
-        }
-    }
+    //     foreach($subscribers as $subscriber){
+    //         var_dump($subscriber->telephone_number);
+    //         var_dump($subscriber->name);
+    //         // $content = $event->crisis;
+    //         // $sms->sendSMS($subscriber->telephone_number,  $content);
+    //     }
+    // }
 
 
     /**

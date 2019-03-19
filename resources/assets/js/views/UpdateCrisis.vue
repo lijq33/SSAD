@@ -1,5 +1,35 @@
 <template>
-<div >
+<div>
+    <!-- for updating crisis status -->
+  <div class="form-group row tw-flex tw-justify-center">
+            <label class="col-md-4 col-form-label">
+                Crisis Status :
+            </label>
+            <input type="text"  v-model="crisisStatus"
+                class="col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-bg-grey-light"
+                
+            >
+        </div>
+        <!-- for updating crisis description -->
+        <div class="form-group row tw-flex tw-justify-center">
+            <label class="col-md-4 col-form-label">
+                Description :
+            </label>
+            <textarea  v-model="crisisDescription"
+                class = "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-bg-grey-light tw-py-2"
+                
+            >
+            </textarea>
+        </div>
+
+        <div class = "tw-flex tw-justify-end tw-m-4 tw-border-t tw-border-grey tw-pt-4">
+            <button class = "tw-mr-2 btn btn-secondary" @click = "hideModal()">Cancel</button>
+            <button class = "tw-ml-2 btn btn-primary" @click = "updateCrisis()">Update</button>
+        </div>
+
+    </div>
+
+<!-- <div>
     <div >
         <div class="form-group row tw-flex tw-justify-center">
             <label class="col-md-4 col-form-label text-md-right">
@@ -33,7 +63,7 @@
         </div>
 
         <!-- EDITABLE DATA -->
-        <div v-if = "!isChasclinic" class="form-group row tw-flex tw-justify-center">
+<!--         <div v-if = "!isChasclinic" class="form-group row tw-flex tw-justify-center">
             <label class="col-md-4 col-form-label text-md-right">
                 {{this.Role}} : 
             </label>
@@ -105,194 +135,37 @@
             <button class = "tw-mr-2 btn btn-secondary" @click = "hideModal()">Cancel</button>
             <button class = "tw-ml-2 btn btn-primary" @click = "updateAppointment()">Update</button>
         </div>
-    </div>
+    </div>  -->
+    
 </template>
 
 <script>
-
+ import ManageCrisis from './ManageCrisis';
     export default {
-        props: ['appointment'],
-
+        props: ['crisis'],
+        
         data() {
             return {
-                editAppointment: '',
-                
-                referal: '',
-                condition: '',
-                department: '',
-                service: '',
-                prefer_practitioner: '',
-                appointment_date: '',
-                appointment_time: '',
-                allDentalServices: [
-                    'Bonding',
-                    'Braces',
-                    'Bridges and Implants',
-                    'Crowns and Caps',
-                    'Dentures',
-                    'Extractions',
-                    'Fillngs and Repairs',
-                    'Gum Surgery',
-                    'Oral Cancer Examinations',
-                    'Root Canals',
-                    'Sealants',
-                    'Teeth Whitening',
-                    'Veneers',
-                ],
+                crisisStatus: 'Test',
+                crisisDescription: 'Test',
 
-                 allDepartments: [
-                    'Anaesthesiology',
-                    'Cardiology - NHCS',
-                    'Cardiothoracic Surgery - NHCS',
-                    'Colorectal Surgery ',
-                    'Dermatology',
-                    'Diagnostic Radiology',
-                    'Emergency Medicine',
-                    'Endocrinology',
-                    'Family Medicine Continuing Care',
-                    'Gastroenterology & Hepatology',
-                    'General Surgery',
-                    'Geriatric Medicine',
-                    'Haematology',
-                    'Hand Surgery',
-                    'Hepato-pancreato-biliary and Transplant Surgery',
-                    'Infectious Diseases',
-                    'Internal Medicine',
-                    'Neonatal & Developmental Medicine',
-                    'Neurology',
-                    'Neurosurgery',
-                    'Nuclear Medicine and Molecular Imaging',
-                    'Medical Oncology - NCCS',
-                    'Obstetrics and Gynaecology',
-                    'Occupational and Environmental Medicine',
-                    'Opthalmology - SNEC',
-                    'Oral & Maxillofacial - NDCS',
-                    'Orthopaedic Surgery',
-                    'Otolaryngology (ENT)',
-                    'Palliative Medicine - NCCS',
-                    'Pathology',
-                    'Plastic, Reconstructive & Aesthetic Surgery',
-                    'Psychiatry',
-                    'Radiation Oncology - NCCS',
-                    'Rehabilitation Medicine',
-                    'Renal Medicine',
-                    'Respiratory & Critical Care Medicine',
-                    'Rheumatology & Immunology',
-                    'Upper GastrointestinaI & Bariatric Surgery',
-                    'Urology',
-                    'Vascular Surgery',
-                    'Allergy Centre',
-                    'Ambulatory Surgery Centre',
-                    'Ambulatory Endoscopy Centre',
-                    'Autoimmunity & Rheumatology Centre (ARC)',
-                    'Blood Cancer Centre',
-                    'Breast Centre',
-                    'Burns Centre',
-                    'Centre for Assisted Reproduction (CARE)',
-                    'Centre for Digestive and Liver Diseases (CDLD)',
-                    'Diabetes & Metabolism Centre (DMC)',
-                    'Eating Disorder Programme',
-                    'ENT (Ear, Nose & Throat) Centre',
-                    'Gastrointestinal Function Unit',
-                    'Haematology Centre',
-                    'Haemodialysis Centre',
-                    'Head & Neck Centre',
-                    'Health Assessment Centre',
-                    'Hearing and Ear Implants',
-                    'Hyperbaric & Diving Medicine Centre',
-                    'Inflammatory Bowel Disease Centre',
-                    'LIFE Centre: Lifestyle Improvement and Fitness Enhancement',
-                    'Lung Centre',
-                    'Obstetrics and Gynaecology (O&G) Centre',
-                    'Orthopaedic Sports and Joint Centre',
-                    'Pain Management Centre',
-                    'Pelvic Floor Disorder',
-                    'Peritoneal Dialysis Centre',
-                    'Rehabilitation Centre',
-                    'Sleep Disorders',
-                    'Transplant Centre',
-                    'Travel Clinic',
-                    'Urology Centre',
-                    'Allied Health Departments / Units',
-                    'Allied Health Corporate Wellness Services',
-                    'Dietetics',
-                    'Medical Social Service',
-                    'Music & Creative Therapy Unit',
-                    'Occupational Therapy',
-                    'Pharmacy',
-                    'Physiotherapy',
-                    'Podiatry',
-                    'Speech Therapy',
-                    'Nursing',
-                    'Specialist Nursing Services'
-                ],
             }
         },
 
         watch: {
-            appointment() {
-                this.editAppointment = this.appointment;
+            crisis() {
 
-                this.appointment_date = this.editAppointment.appointment_date;
-                this.appointment_time = this.editAppointment.appointment_time;
-                this.referal = this.appointment.referal; 
-                this.department = this.appointment.department; 
-                this.condition = this.appointment.condition; 
-                this.service = this.appointment.service; 
-                this.prefer_practitioner = this.Practitioner;
             },
         },
 
+
+
         computed: {
-            clinic() {
-                if (this.editAppointment.health_service_type === "Chas Clinic") {
-                    return this.editAppointment.chas_clinic
-                }
-                if (this.editAppointment.health_service_type === "Dental") {
-                    return this.editAppointment.dental
-                }
-                if (this.editAppointment.health_service_type === "Polyclinic") {
-                    return this.editAppointment.polyclinic
-                }
-                if (this.editAppointment.health_service_type === "Hospital") {
-                    return this.editAppointment.hospital
-                }
-            },
-
-            Role() {
-                 if (this.editAppointment.health_service_type === "Dental") {
-                    return "Preferred Dentist"
-                }
-                return "Preferred Doctor"
-            },
-
-            Practitioner() {
-                 if (this.editAppointment.health_service_type === "Dental") {
-                    return this.editAppointment.prefer_dentist;
-                }
-                return this.editAppointment.prefer_doctor;
-            },
-
-            isDental() {
-                return this.editAppointment.health_service_type === 'Dental';
-            },
-
-            isChasclinic() {
-                return this.editAppointment.health_service_type === 'Chas Clinic';
-            },
-
-            isHospital() {
-                return this.editAppointment.health_service_type === 'Hospital';
-            },
-
-            isPolyclinic() {
-                return this.editAppointment.health_service_type === 'Polyclinic';
-            },
-      
+ 
         },
 
         methods: {
-            updateAppointment(){
+            /* updateAppointment(){
                 axios.post('/api/appointment/update', {
                     id: this.appointment.id,
                     
@@ -314,6 +187,10 @@
                 .catch((error) => {
                     this.error = error.response;
                 })
+            } */
+
+            updateCrisis(){
+                    alert("Test");
             },
 
             hideModal() {

@@ -28,11 +28,11 @@ class CreateCrisesTable extends Migration
             $table->longText('description')->nullable();
             $table->string('address');
             $table->string('crisis_type');
-            $table->string('assistance_required');
 
             $table->integer('twitter_post_id')->nullable();
             $table->integer('facebook_post_id')->nullable();
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

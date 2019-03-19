@@ -1,6 +1,5 @@
 <template>
     <div>
-        <flash :message = "message"></flash>
         <table id="example" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
@@ -13,7 +12,6 @@
                     <th>Status</th>
                     <th>Reported By</th>
                     <th>Submitted By</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,52 +25,9 @@
                     <td class = "tw-capitalize">{{crisis.status}}</td>
                     <td>{{crisis.name}}</td>
                     <td>{{crisis.user.name}}</td>
-                    <td> 
-                        <span class = "tw-flex tw-justify-around tw-items-center">
-                            <popper  v-if = "crisis.status === 'resolved'" trigger="hover" :options = "{placement: 'bottom'}">
-                                <div class="popper tw-font-hairline tw-text-grey-dark">
-                                    archive the crisis
-                                </div>
-                                <button slot="reference">   
-                                    <i class="fas fa-archive tw-cursor-pointer"  @click = "archive(crisis)"></i>
-                                </button>
-                            </popper>
-
-                            <popper trigger="hover" :options = "{placement: 'bottom'}">
-                                <div class="popper tw-font-hairline tw-text-grey-dark">
-                                    Update the crisis
-                                </div>
-                                <button slot="reference">   
-                                    <i class="fas fa-pencil-alt tw-cursor-pointer" @click = "update(crisis)"></i>
-                                </button>
-                            </popper>
-                        </span>
-                    </td>
                 </tr>  
             </tbody>
         </table>
-
-        <!-- Archive -->
-        <b-modal title="Alert" v-model = "modalShow" hide-footer header-bg-variant="warning">
-            <div class = "tw-w-full">
-                Are you sure that you would like to archive the crisis?
-            </div>
-            <div class = "tw-border-t tw-pt-4 tw-mt-4 tw-flex tw-justify-end tw-w-full">
-                <button class = "tw-mr-2 btn btn-secondary" id='dontArchiveButton'>Cancel</button>
-                <button class = "tw-ml-2 btn btn-primary" id='archiveButton'>Archive</button>
-            </div>
-        </b-modal>
-
-        <!-- Update -->
-        <b-modal ref="myModalRef" size="lg" hide-footer title = "Current Crisis Details:">
-            <update-crisis 
-                :crisis = "updateCrisis"
-                @hideModal = "hideModal"
-                @updateSuccess = "updateSuccess"></update-crisis>
-           
-            <!-- UI -->
-
-        </b-modal>
     </div>
 </template>
 
@@ -109,7 +64,7 @@
 
         methods: {
             getCrisis() {
-                axios.get('/api/crisis')
+                axios.get('/api/crisis/archive')
                 .then((res) => {
                     this.crises = res.data.crises;
                 })
@@ -148,24 +103,6 @@
                     })
                 });
             },
-
-            update(crisis) {
-                this.$refs.myModalRef.show()
-                this.updateCrisis = crisis;
-            },
-
-
-            updateSuccess(){
-                this.message = "We've successfully update the crisis details!";
-                this.hideModal();
-                this.getCrisis();
-                this.crisis = [];
-            },
-         
-            hideModal() {
-                this.$refs.myModalRef.hide()
-            },
-
         }
     }
 </script>

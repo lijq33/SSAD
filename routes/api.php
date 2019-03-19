@@ -23,7 +23,7 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('me', 'AuthController@me');
     Route::post('subscriber', 'SubscriberController@store');
     Route::post('subscriber/delete', 'SubscriberController@destory');
-    Route::get('subscriber', 'SubscriberController@index');
+    // Route::get('subscriber', 'SubscriberController@index');
 
 });
 
@@ -34,6 +34,8 @@ Route::group(['middleware' => 'auth.ccoperator'], function ($router) {
 
 Route::group(['middleware' => 'auth.crisismanager'], function ($router) {
     Route::get('crisis', 'CrisisController@index');
+    Route::get('crisis/archive', 'CrisisController@archive');
+    Route::delete('crisis/{crisis}', 'CrisisController@destroy');
 });
 
 Route::group(['middleware' => 'auth.accountmanager'], function ($router) {

@@ -48,6 +48,14 @@ export const routes = [
             requiresAuthCrisisManager: true
         }
     },
+  
+    {
+        path : '/crisis/archive',
+        component: require('./views/ArchiveCrisis.vue'),
+        meta: {
+            requiresAuthCrisisManager: true
+        }
+    },
     {
         path : '/basemap',
         component: require('./views/BaseMap.vue'),
