@@ -36,6 +36,7 @@ Route::group(['middleware' => 'auth.crisismanager'], function ($router) {
     Route::get('crisis', 'CrisisController@index');
     Route::get('crisis/archive', 'CrisisController@archive');
     Route::delete('crisis/{crisis}', 'CrisisController@destroy');
+    Route::post('crisis/{crisis}', 'CrisisController@update');
 });
 
 Route::group(['middleware' => 'auth.accountmanager'], function ($router) {
