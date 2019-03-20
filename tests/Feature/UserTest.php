@@ -7,49 +7,67 @@ use App\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 USE Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class UserTest extends TestCase
 {
     use DatabaseMigrations;
 
     /** @test */
-    public function it_can_subscribe_to_sms()
-    {
-  
-    }
-
-    /** @test */
-    public function it_cannot_subscribe_to_sms_with_the_same_number()
-    {
-
-    }
-
-    /** @test */
     public function it_cannot_register_user_account_if_unauthenticated()
     {
 
         $response = $this->post('/api/auth/register', [
-            'nric' => 'S9111211Z',
-            'email' => 'test@test.com',
             'name' => 'testing name',
+            'nric' => 'S9876543Z',
+            'email' => 'test@test.com',
             'password' => '123456',
             'password_confirmation' => '123456',
             'telephone_number' => '12245678',
+            'roles' => 'CallCenterOperator'
         ]);
         
-        $response->assertStatus(200);
-        $response->assertSuccessful();
+        $response->assertStatus(405);
 
-        $this->assertDatabaseHas('users', [
-            'nric' => 'S9111211Z',
+        $this->assertDatabaseMissing('users', [
+            'nric' => 'S9876543Z',
         ]);
 
     }
     
+    /** @test*/
+    public function it_can_log_a_user_in()
+    {
+        DB::table('users')->insert([
+            'name' => Str::random(10),
+            'nric' => 'S1234569Z',
+            'email' => Str::random(10).'@gmail.com',
+            'password' => bcrypt('123123'),
+            'telephone_number' => random_int(90000000 ,99999999),
+            'roles' => 'AccountManager'
+        ]);
+
+        $this->assertDatabaseHas('users', [
+            'nric' => 'S1234569Z',
+        ]);
+
+        $login = $this->post('/api/auth/login',[
+            'nric' => 'S1234569Z',
+            'password' => '123123',
+        ]);
+
+        $login->assertStatus(200);
+    }
+
+
+
     /** @test */
     public function it_can_register_user_account_if_authenticated()
     {
-        $nric = 'S1234561Z';
+        it_can_log_a_user_in();
+
+        $nric = 'S98765432Z';
         $response = $this->post('/api/auth/register', [
             'nric' => $nric,
             'email' => '1@test.com',
@@ -57,6 +75,7 @@ class UserTest extends TestCase
             'password' => '123456',
             'password_confirmation' => '123456',
             'telephone_number' => '87654321',
+            'roles' => 'AccountManager'
         ]);
          
         $response->assertStatus(200);
@@ -64,16 +83,17 @@ class UserTest extends TestCase
             'nric' => $nric,
         ]);
 
-        $response = $this->post('/api/auth/register', [
-            'nric' => $nric,
-            'email' => '2@test.com',
-            'name' => 'testing name',
-            'password' => '123456',
-            'password_confirmation' => '123456',
-            'telephone_number' => '12345678',
-        ]);
+        // $response = $this->post('/api/auth/register', [
+        //     'nric' => $nric,
+        //     'email' => '2@test.com',
+        //     'name' => 'testing name',
+        //     'password' => '123456',
+        //     'password_confirmation' => '123456',
+        //     'telephone_number' => '12345678',
+        // ]);
  
-        $response->assertStatus(422);
+        // $response->assertStatus(422);
+
     }
 
     /** @test */
@@ -246,7 +266,7 @@ class UserTest extends TestCase
             'nric' => 'S1234567Z',
         ]);
     }
-
+    
     /** @test */
     public function it_cannot_register_user_account_with_wrong_email_format()
     {
@@ -368,32 +388,7 @@ class UserTest extends TestCase
 
     }
 
-    /** @test*/
-    public function it_can_log_a_user_in()
-    {
-        $response = $this->post('/api/auth/register', [
-            'nric' => 'S1234567Z',
-            'email' => 'test@test.com',
-            'name' => 'testing name',
-            'password' => '123456',
-            'password_confirmation' => '123456',
-            'telephone_number' => '12345678',
-        ]);
-        
-        $response->assertStatus(200);
-
-        $this->assertDatabaseHas('users', [
-            'nric' => 'S1234567Z',
-        ]);
-
-        $login = $this->post('/api/auth/login',[
-            'nric' => 'S1234567Z',
-            'password' => '123456',
-        ]);
-
-        $login->assertStatus(200);
-    }
-
+    
     /** @test*/
     public function it_cannot_log_a_wrong_user_in()
     {
