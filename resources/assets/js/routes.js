@@ -57,12 +57,9 @@ export const routes = [
         }
     },
     {
-        path : '/basemap',
-        component: require('./views/BaseMap.vue'),
-        meta: {
-            requiresAuth: false
-        }
-    } 
+        path : '/map',
+        component: require('./views/DisplayMap.vue'),
+    }
 
 
     // requiresAuthCCOperator 

@@ -10,7 +10,9 @@
         "fideloper/proxy": "^4.0",
         "jimmyjs/laravel-report-generator": "^1.1",
         "laravel/framework": "5.6.*",
-        "laravel/tinker": "^1.0",
+        "laravel/tinker": "^1.0",        
+        "laravel/socialite": "^3.0",
+        "facebook/graph-sdk": "^5.6",
         "nexmo/client": "^1.6",
         "nexmo/laravel": "^1.1",
         "tymon/jwt-auth": "^1.0.0"
