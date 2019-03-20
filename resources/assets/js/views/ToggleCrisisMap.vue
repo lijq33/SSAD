@@ -34,6 +34,7 @@
           { text: 'Gas Leak', value: 'showGasLeakData' }
         ],
         weatherOptions: [
+          { text: '(2H) Weather Forecast', value: 'showTwoHrWeatherData' },
           { text: 'Haze', value: 'showHazeData' },
           { text: 'Rain', value: 'showRainData' },
         ]

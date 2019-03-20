@@ -85,29 +85,17 @@ export default {
     showDegueData(){
       console.log("show fire data on the map!")
 
-      	axios.get('/api/crisis')
-				.then((res) => {	
-					 console.log(res) 
+      	// axios.get('/api/crisis')
+				// .then((res) => {	
+				// 	 console.log(res) 
 					
-				}).catch((error) => {
-					console.log(error)
-				}).then(() => {
+				// }).catch((error) => {
+				// 	console.log(error)
+				// }).then(() => {
 					 
-        });
+        // });
         
-        // $.ajax({
-        //         url: "/api/crisis",
-        //         type: "GET",
-        //         success: function (data, status, jqXHR) { 
-        //             console.log(data)
-        //         },
-        //         error: function (jqXHR, status, err) {
-        //             console.log("Local error callback.");
-        //         },
-        //         complete: function (jqXHR, status) {
-                
-        //         }
-        //     }) 
+        
     },
     showFireData(){
 
@@ -120,7 +108,23 @@ export default {
     },
     showRainData(){
 
-    }, 
+    },
+    showTwoHrWeatherData(){
+      $.ajax({
+                url: "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast",
+                type: "GET",
+                success: function (data, status, jqXHR) { 
+                  console.log(data)
+                   
+                },
+                error: function (jqXHR, status, err) {
+                    console.log(err);
+                },
+                complete: function (jqXHR, status) {
+  
+                }
+            }); 
+    },
     panMap(lat, lng) {
       //pan to any location on the map by giving lat and lng coordinates
       this.$refs.mapRef.$mapPromise.then(map => {
@@ -199,6 +203,8 @@ export default {
            scope.showHazeData();
          }else if(element === "showRainData"){
             scope.showRainData();
+         }else if(element === "showTwoHrWeatherData"){
+            scope.showTwoHrWeatherData();
          }
          
       });

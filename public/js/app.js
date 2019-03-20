@@ -82788,30 +82788,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     showDegueData: function showDegueData() {
       console.log("show fire data on the map!");
 
-      axios.get('/api/crisis').then(function (res) {
-        console.log(res);
-      }).catch(function (error) {
-        console.log(error);
-      }).then(function () {});
+      // axios.get('/api/crisis')
+      // .then((res) => {	
+      // 	 console.log(res) 
 
-      // $.ajax({
-      //         url: "/api/crisis",
-      //         type: "GET",
-      //         success: function (data, status, jqXHR) { 
-      //             console.log(data)
-      //         },
-      //         error: function (jqXHR, status, err) {
-      //             console.log("Local error callback.");
-      //         },
-      //         complete: function (jqXHR, status) {
+      // }).catch((error) => {
+      // 	console.log(error)
+      // }).then(() => {
 
-      //         }
-      //     }) 
+      // });
+
     },
     showFireData: function showFireData() {},
     showGasLeakData: function showGasLeakData() {},
     showHazeData: function showHazeData() {},
     showRainData: function showRainData() {},
+    showTwoHrWeatherData: function showTwoHrWeatherData() {
+      $.ajax({
+        url: "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast",
+        type: "GET",
+        success: function success(data, status, jqXHR) {
+          console.log(data);
+        },
+        error: function error(jqXHR, status, err) {
+          console.log(err);
+        },
+        complete: function complete(jqXHR, status) {}
+      });
+    },
     panMap: function panMap(lat, lng) {
       //pan to any location on the map by giving lat and lng coordinates
       this.$refs.mapRef.$mapPromise.then(function (map) {
@@ -82891,6 +82895,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           scope.showHazeData();
         } else if (element === "showRainData") {
           scope.showRainData();
+        } else if (element === "showTwoHrWeatherData") {
+          scope.showTwoHrWeatherData();
         }
       });
 
@@ -92400,7 +92406,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       selected: [], // Must be an array reference!
       crisisOptions: [{ text: 'Degue', value: 'showDegueData' }, { text: 'Fire', value: 'showFireData' }, { text: 'Gas Leak', value: 'showGasLeakData' }],
-      weatherOptions: [{ text: 'Haze', value: 'showHazeData' }, { text: 'Rain', value: 'showRainData' }]
+      weatherOptions: [{ text: '(2H) Weather Forecast', value: 'showTwoHrWeatherData' }, { text: 'Haze', value: 'showHazeData' }, { text: 'Rain', value: 'showRainData' }]
     };
   },
 
