@@ -80449,6 +80449,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                         scope.form.address = results[0].formatted_address;
                         scope.form.postalCode = validPostalCode;
+                        scope.form.postalCode = '123123';
                     }
                 });
             }
@@ -82785,6 +82786,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   description: "",
 
   methods: {
+    removeMarkers: function removeMarkers(markerType) {
+      var scope = this;
+      var tempIndex = 0;
+
+      this.markers.forEach(function (element, index) {
+        if (element.markerType === markerType) {
+          tempIndex++;
+        }
+      });
+
+      while (tempIndex != 0) {
+
+        for (var i = 0; i < this.markers.length; i++) {
+          if (this.markers[i].markerType == markerType) {
+            this.markers.splice(i, 1);
+            break;
+          }
+        }
+        tempIndex--;
+      }
+    },
+    notContainedIn: function notContainedIn(arr) {
+      return function arrNotContains(element) {
+        return arr.indexOf(element) === -1;
+      };
+    },
     showDegueData: function showDegueData() {
       console.log("show fire data on the map!");
 
@@ -82803,12 +82830,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     showGasLeakData: function showGasLeakData() {},
     showHazeData: function showHazeData() {},
     showRainData: function showRainData() {},
-    showTwoHrWeatherData: function showTwoHrWeatherData() {
+    showTwoHrWeatherData: function showTwoHrWeatherData(markerType) {
+      var scope = this;
       $.ajax({
         url: "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast",
         type: "GET",
         success: function success(data, status, jqXHR) {
-          console.log(data);
+
+          data.area_metadata.forEach(function (element, index) {
+            scope.markers.push({
+              markerType: markerType,
+              position: {
+                lat: element.label_location.latitude,
+                lng: element.label_location.longitude
+              },
+              infoText: '<div id="content">' + '<div id="siteNotice">' + '</div>' + '<h6>' + element.name + '</h6>' + '<div id="bodyContent">' + data.items[0].forecasts[index].forecast + '</div>' + '</div>'
+            });
+          });
         },
         error: function error(jqXHR, status, err) {
           console.log(err);
@@ -82841,7 +82879,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
 
       //zoom to clicked markers or from right info panel
-      this.setMapZoomLvl(18);
+      //this.setMapZoomLvl(18);
     }
   },
   watch: {
@@ -82879,38 +82917,49 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.place = null;
     },
     toggleData: function toggleData(newValue, oldValue) {
-      //console.log("new old value of new marker");
-      //console.log(newValue);
-
       var scope = this;
 
-      newValue.forEach(function (element) {
-        if (element === "showDegueData") {
-          scope.showDegueData();
-        } else if (element === "showFireData") {
-          scope.showFireData();
-        } else if (element === "showGasLeakData") {
-          scope.showGasLeakData();
-        } else if (element === "showHazeData") {
-          scope.showHazeData();
-        } else if (element === "showRainData") {
-          scope.showRainData();
-        } else if (element === "showTwoHrWeatherData") {
-          scope.showTwoHrWeatherData();
+      if (oldValue == null) {
+        console.log("add the first time");
+        newValue.forEach(function (element) {
+          if (element === "showDegueData") {
+            scope.showDegueData(element);
+          } else if (element === "showFireData") {
+            scope.showFireData(element);
+          } else if (element === "showGasLeakData") {
+            scope.showGasLeakData(element);
+          } else if (element === "showHazeData") {
+            scope.showHazeData(element);
+          } else if (element === "showRainData") {
+            scope.showRainData(element);
+          } else if (element === "showTwoHrWeatherData") {
+            scope.showTwoHrWeatherData(element);
+          }
+        });
+      } else {
+
+        if (newValue.length > oldValue.length) {
+          console.log("add");
+          console.log(newValue.filter(scope.notContainedIn(oldValue)).concat(oldValue.filter(scope.notContainedIn(newValue))));
+          newValue.forEach(function (element) {
+            if (element === "showDegueData") {
+              scope.showDegueData(element);
+            } else if (element === "showFireData") {
+              scope.showFireData(element);
+            } else if (element === "showGasLeakData") {
+              scope.showGasLeakData(element);
+            } else if (element === "showHazeData") {
+              scope.showHazeData(element);
+            } else if (element === "showRainData") {
+              scope.showRainData(element);
+            } else if (element === "showTwoHrWeatherData") {
+              scope.showTwoHrWeatherData(element);
+            }
+          });
+        } else {
+          scope.removeMarkers(newValue.filter(scope.notContainedIn(oldValue)).concat(oldValue.filter(scope.notContainedIn(newValue)))[0]);
         }
-      });
-
-      //   newValue.observe(obj, function(changes) {
-      //   console.log(changes);
-      // });
-
-      // this.markers.push({
-      //     position: {
-      //       lat: newValue.place.position.lat,
-      //       lng: newValue.place.position.lng
-      //     },
-      //     infoText: newValue.incidentName
-      //   })
+      }
     }
   }
 });
@@ -92271,7 +92320,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n      " + _vm._s(_vm.infoContent) + "\n    ")]
+            [_c("span", { domProps: { innerHTML: _vm._s(_vm.infoContent) } })]
           ),
           _vm._v(" "),
           _vm._l(_vm.markers, function(marker, index) {

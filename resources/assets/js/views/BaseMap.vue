@@ -13,7 +13,7 @@
         :opened="infoWinOpen"
         @closeclick="infoWinOpen=false"
       >
-        {{infoContent}}
+        <span v-html="infoContent"></span>
       </gmap-info-window>
 
       <GmapMarker
@@ -82,6 +82,32 @@ export default {
   description: "",
 
   methods: {
+    removeMarkers(markerType){
+      var scope =this;
+      var tempIndex = 0;
+
+        this.markers.forEach((element,index) => {  
+               if(element.markerType === markerType){
+                  tempIndex++;
+               }
+        }); 
+
+      while(tempIndex != 0){
+       
+         for( var i = 0; i < this.markers.length; i++){ 
+          if ( this.markers[i].markerType == markerType) {
+            this.markers.splice(i, 1);
+            break; 
+          }
+        } 
+        tempIndex--;
+      } 
+    },
+    notContainedIn(arr) {
+    return function arrNotContains(element) {
+        return arr.indexOf(element) === -1;
+    };
+    },
     showDegueData(){
       console.log("show fire data on the map!")
 
@@ -109,19 +135,35 @@ export default {
     showRainData(){
 
     },
-    showTwoHrWeatherData(){
+    showTwoHrWeatherData(markerType){
+      var scope = this;
       $.ajax({
                 url: "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast",
                 type: "GET",
                 success: function (data, status, jqXHR) { 
-                  console.log(data)
-                   
+
+                   data.area_metadata.forEach((element,index) => {  
+                     scope.markers.push({
+                        markerType:markerType,
+                        position: {
+                          lat: element.label_location.latitude,
+                          lng: element.label_location.longitude
+                        },
+                        infoText: '<div id="content">'+
+                                  '<div id="siteNotice">'+
+                                  '</div>'+
+                                  '<h6>'+element.name+'</h6>'+
+                                  '<div id="bodyContent">'+data.items[0].forecasts[index].forecast+
+                                  '</div>'+
+                                  '</div>'
+                          });
+                        });  
                 },
                 error: function (jqXHR, status, err) {
                     console.log(err);
                 },
                 complete: function (jqXHR, status) {
-  
+                 
                 }
             }); 
     },
@@ -149,7 +191,7 @@ export default {
       }
 
       //zoom to clicked markers or from right info panel
-      this.setMapZoomLvl(18);
+      //this.setMapZoomLvl(18);
     }
   },
   watch: {
@@ -187,39 +229,49 @@ export default {
       this.place = null;
     },
     toggleData(newValue, oldValue) {
-      //console.log("new old value of new marker");
-       //console.log(newValue);
-
        var scope = this;
- 
-       newValue.forEach(element => {
-         if(element === "showDegueData"){
-           scope.showDegueData();
-         }else if (element === "showFireData"){
-            scope.showFireData();
-         }else if (element === "showGasLeakData"){
-           scope.showGasLeakData();
-         }else if (element === "showHazeData"){
-           scope.showHazeData();
-         }else if(element === "showRainData"){
-            scope.showRainData();
-         }else if(element === "showTwoHrWeatherData"){
-            scope.showTwoHrWeatherData();
-         }
-         
-      });
- 
-    //   newValue.observe(obj, function(changes) {
-    //   console.log(changes);
-    // });
-          
-      // this.markers.push({
-      //     position: {
-      //       lat: newValue.place.position.lat,
-      //       lng: newValue.place.position.lng
-      //     },
-      //     infoText: newValue.incidentName
-      //   })
+
+       if(oldValue == null){
+         console.log("add the first time");
+         newValue.forEach(element => {
+                  if(element === "showDegueData"){
+                    scope.showDegueData(element);
+                  }else if (element === "showFireData"){
+                      scope.showFireData(element);
+                  }else if (element === "showGasLeakData"){
+                    scope.showGasLeakData(element);
+                  }else if (element === "showHazeData"){
+                    scope.showHazeData(element);
+                  }else if(element === "showRainData"){
+                      scope.showRainData(element);
+                  }else if(element === "showTwoHrWeatherData"){
+                      scope.showTwoHrWeatherData(element);
+                  } 
+           });
+       }else{
+
+         if(newValue.length > oldValue.length){
+           console.log("add")
+           console.log(newValue.filter(scope.notContainedIn(oldValue)).concat(oldValue.filter(scope.notContainedIn(newValue))));
+               newValue.forEach(element => {
+                  if(element === "showDegueData"){
+                    scope.showDegueData(element);
+                  }else if (element === "showFireData"){
+                      scope.showFireData(element);
+                  }else if (element === "showGasLeakData"){
+                    scope.showGasLeakData(element);
+                  }else if (element === "showHazeData"){
+                    scope.showHazeData(element);
+                  }else if(element === "showRainData"){
+                      scope.showRainData(element);
+                  }else if(element === "showTwoHrWeatherData"){
+                      scope.showTwoHrWeatherData(element);
+                  } 
+                });
+          }else{     
+              scope.removeMarkers(newValue.filter(scope.notContainedIn(oldValue)).concat(oldValue.filter(scope.notContainedIn(newValue)))[0])
+          }  
+       }
     }
   } 
 };
