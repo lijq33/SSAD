@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use App\Mail\DataUpdate;
 
 class RegisterController extends Controller
 {
@@ -98,8 +97,6 @@ class RegisterController extends Controller
             'telephone_number' => $data['telephone_number'],
             'roles' => $data['roles'],
         ]);
-
-        \Mail::to($user)->send(new DataUpdate($user));
 
         return response()->json([
             'message' => 'A new account has been successfully created'
