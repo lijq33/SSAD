@@ -146,7 +146,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
+		
         /*
          * Package Service Providers...
          */
@@ -165,6 +165,8 @@ return [
         * Other Service Providers...
         */
         Nexmo\Laravel\NexmoServiceProvider::class,
+		
+		Thujohn\Twitter\TwitterServiceProvider::class,
 
     ],
 
@@ -178,6 +180,7 @@ return [
     | the aliases are "lazy" loaded so they don't hinder performance.
     |
     */
+
 
     'aliases' => [
 
@@ -214,7 +217,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'PdfReport' => Jimmyjs\ReportGenerator\Facades\PdfReportFacade::class,
+		'Twitter'=> Thujohn\Twitter\Facades\Twitter::class,
     ],
 
 ];

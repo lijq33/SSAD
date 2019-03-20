@@ -218,8 +218,8 @@
                 ],
 
                 form:{
-                    name: '',
                     nric: '',
+                    name: '',
                     password: '',
                     password_confirmation: '',
                     email: '',
