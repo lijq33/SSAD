@@ -330,6 +330,7 @@
                         
                         scope.form.address = results[0].formatted_address;
                         scope.form.postalCode = validPostalCode;
+                        scope.form.postalCode = '123123';
                     }
                 }); 
                 }    

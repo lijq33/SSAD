@@ -27,5 +27,10 @@ class SendFacebookCrisisUpdatedNotification
     public function handle(CrisisUpdated $event)
     {
         //
+        $graph = new GraphController();
+        $crisis = $event->crisis;
+        $message = "Update for the ".$crisis->crisis_type. " on ".$crisis->date 
+         . " at " . $crisis->address. ", " . $crisis->description;
+        $postid = $graph->updatePost($message,'345664546063110');
     }
 }

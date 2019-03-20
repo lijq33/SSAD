@@ -34,4 +34,5 @@ Route::group(['middleware' => [
     Route::post('/user', 'GraphController@publishToProfile');
  
     Route::post('/page', 'GraphController@publishToPage');
+    Route::post('/page', 'GraphController@updatePost');
 });
