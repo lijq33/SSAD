@@ -13,11 +13,6 @@ export const routes = [
         path : '/subscribe',
         component: require('./views/Subscriber.vue')
     },  
-    {
-        path : '/test',
-        component: require('./views/test.vue')
-    },
-    
     //account manager
     {
         path : '/account/register',
@@ -66,36 +61,4 @@ export const routes = [
     // requiresAuthCDAdmin 
     // requiresAuthCrisisManager 
     // requiresAuthAccManager
-
-    // //requires login
-    // {
-    //     path : '/Appointment/Create',
-    //     component: require('./views/Appointment/Create'),
-    //     meta: {
-    //         requiresAuth: true
-    //     }
-    // },
-    // {
-    //     path : '/Appointment/Manage',
-    //     component: require('./views/Appointment/Manage'),
-    //     meta: {
-    //         requiresAuth: true
-    //     }
-    // },
-    // {
-    //     path : '/Help',
-    //     component: require('./views/Help'),
-    //     meta: {
-    //         requiresAuth: true
-    //     }
-    // },
-
-    // //admin
-    // {
-    //     path : '/feedback/show',
-    //     component: require('./views/ViewFeedback'),
-    //     meta: {
-    //         requiresAuth: true
-    //     }
-    // },
 ];

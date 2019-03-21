@@ -77023,11 +77023,7 @@ var routes = [{
 }, {
     path: '/subscribe',
     component: __webpack_require__(259)
-}, {
-    path: '/test',
-    component: __webpack_require__(262)
 },
-
 //account manager
 {
     path: '/account/register',
@@ -77067,38 +77063,6 @@ var routes = [{
     // requiresAuthCDAdmin 
     // requiresAuthCrisisManager 
     // requiresAuthAccManager
-
-    // //requires login
-    // {
-    //     path : '/Appointment/Create',
-    //     component: require('./views/Appointment/Create'),
-    //     meta: {
-    //         requiresAuth: true
-    //     }
-    // },
-    // {
-    //     path : '/Appointment/Manage',
-    //     component: require('./views/Appointment/Manage'),
-    //     meta: {
-    //         requiresAuth: true
-    //     }
-    // },
-    // {
-    //     path : '/Help',
-    //     component: require('./views/Help'),
-    //     meta: {
-    //         requiresAuth: true
-    //     }
-    // },
-
-    // //admin
-    // {
-    //     path : '/feedback/show',
-    //     component: require('./views/ViewFeedback'),
-    //     meta: {
-    //         requiresAuth: true
-    //     }
-    // },
 }];
 
 /***/ }),
@@ -78332,128 +78296,9 @@ if (false) {
 }
 
 /***/ }),
-/* 262 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(4)
-/* script */
-var __vue_script__ = __webpack_require__(263)
-/* template */
-var __vue_template__ = __webpack_require__(264)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/views/test.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-40d00dc5", Component.options)
-  } else {
-    hotAPI.reload("data-v-40d00dc5", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 263 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-
-    methods: {
-        test: function test() {
-            axios.get("/api/auth/subscriber").then(function (response) {
-                console.log(response);
-            }).catch(function (error) {});
-        }
-    }
-
-});
-
-/***/ }),
-/* 264 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8" }, [
-        _c("div", { staticClass: "card" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary",
-              attrs: { type: "submit" },
-              on: {
-                click: function($event) {
-                  return _vm.test()
-                }
-              }
-            },
-            [_vm._v("\n                        test\n                    ")]
-          )
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-40d00dc5", module.exports)
-  }
-}
-
-/***/ }),
+/* 262 */,
+/* 263 */,
+/* 264 */,
 /* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -80346,45 +80191,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -81315,7 +81121,7 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                                            Location searcher:\n                                        "
+                                "\n                                            Location:\n                                        "
                               )
                             ]
                           ),
@@ -81333,144 +81139,6 @@ var render = function() {
                             ],
                             1
                           )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "form-group row" }, [
-                          _c(
-                            "label",
-                            {
-                              staticClass: "col-md-4 col-form-label",
-                              attrs: { for: "postalCode" }
-                            },
-                            [
-                              _vm._v(
-                                "\n                                            Postal Code:\n                                        "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-md-6" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.postalCode,
-                                  expression: "form.postalCode"
-                                }
-                              ],
-                              staticClass:
-                                "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic",
-                              class: {
-                                "tw-border-red-light":
-                                  _vm.error["postalCode"] != undefined
-                              },
-                              attrs: {
-                                type: "text",
-                                id: "postalCode",
-                                placeholder: "",
-                                required: "",
-                                autofocus: "",
-                                disabled: ""
-                              },
-                              domProps: { value: _vm.form.postalCode },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.form,
-                                    "postalCode",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _vm.error["postalCode"] != undefined
-                              ? _c("div", { staticClass: "tw-text-red" }, [
-                                  _c("span", [
-                                    _vm._v(
-                                      " " +
-                                        _vm._s(
-                                          this.error["postalCode"].toString()
-                                        ) +
-                                        " "
-                                    )
-                                  ])
-                                ])
-                              : _vm._e()
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "form-group row" }, [
-                          _c(
-                            "label",
-                            {
-                              staticClass: "col-md-4 col-form-label",
-                              attrs: { for: "Address" }
-                            },
-                            [
-                              _vm._v(
-                                "\n                                            Address:\n                                        "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-md-6" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.form.address,
-                                  expression: "form.address"
-                                }
-                              ],
-                              staticClass:
-                                "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic",
-                              class: {
-                                "tw-border-red-light":
-                                  _vm.error["address"] != undefined
-                              },
-                              attrs: {
-                                type: "text",
-                                id: "Address",
-                                placeholder: "",
-                                required: "",
-                                autofocus: "",
-                                disabled: ""
-                              },
-                              domProps: { value: _vm.form.address },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.form,
-                                    "address",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _vm.error["address"] != undefined
-                              ? _c("div", { staticClass: "tw-text-red" }, [
-                                  _c("span", [
-                                    _vm._v(
-                                      " " +
-                                        _vm._s(
-                                          this.error["address"].toString()
-                                        ) +
-                                        " "
-                                    )
-                                  ])
-                                ])
-                              : _vm._e()
-                          ])
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "form-group row" }, [

@@ -113,7 +113,7 @@
                                         <h5 class = "card-title">Location</h5>
                                         <div class = "form-group row">
                                             <label for = "" class = "col-md-4 col-form-label">
-                                                Location searcher:
+                                                Location:
                                             </label>
                                             <div class = "col-md-6">
                                                 <GmapAutocomplete
@@ -121,45 +121,6 @@
                                                     @place_changed="setPlace"
                                                     ref="autocomplete"
                                                 ></GmapAutocomplete>
-                                            </div>
-                                        </div>
-                                        <!-- Postal Code -->
-                                        <div class = "form-group row">
-                                            <label for = "postalCode" class = "col-md-4 col-form-label">
-                                                Postal Code:
-                                            </label>
-                                            <div class = "col-md-6">
-                                                 <input type = "text"
-                                                    class = "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic"
-                                                    id = "postalCode" v-model = "form.postalCode"
-                                                    :class = "{ 'tw-border-red-light' : error['postalCode'] != undefined}"
-                                                    placeholder = ""
-                                                    required autofocus
-                                                    disabled
-                                                >
-                                                <div class = "tw-text-red" v-if = "error['postalCode'] != undefined">
-                                                    <span> {{this.error['postalCode'].toString()}} </span>   
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Address -->
-                                        <div class = "form-group row">
-                                            <label for = "Address" class = "col-md-4 col-form-label">
-                                                Address:
-                                            </label>
-                                            <div class = "col-md-6">
-                                                <input type = "text"
-                                                    class = "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic"
-                                                    id = "Address" v-model = "form.address"
-                                                    :class = "{ 'tw-border-red-light' : error['address'] != undefined}"
-                                                    placeholder = ""
-                                                    required autofocus
-                                                    disabled
-                                                >
-                                                <div class = "tw-text-red" v-if = "error['address'] != undefined">
-                                                    <span> {{this.error['address'].toString()}} </span>   
-                                                </div>
                                             </div>
                                         </div>
 
