@@ -10,8 +10,7 @@ USE Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+
 
 class UpdateCrisisTest extends TestCase
 {
@@ -54,11 +53,11 @@ class UpdateCrisisTest extends TestCase
     {
         $crisis = factory(Crisis::class)
             ->create();
-        $users = ['CallCenterOperator', 'AccountManager', 'CivilDefencesAdmin'];
+        $roles = ['CallCenterOperator', 'AccountManager', 'CivilDefencesAdmin'];
 
-        foreach($users as $userState){
+        foreach($roles as $role){
             $user = factory(User::class)
-                ->states($userState)
+                ->states($role)
                 ->create();
 
             $login = $this->post('/api/auth/login',[

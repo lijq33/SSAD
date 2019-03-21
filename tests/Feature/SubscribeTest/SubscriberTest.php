@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\SubscribeTest;
 
 use Tests\TestCase;
-use App\User;
+USE Illuminate\Foundation\Testing\DatabaseMigrations;
+
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-USE Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class UserTest extends TestCase
 {
@@ -46,7 +46,7 @@ class UserTest extends TestCase
         ]);
 
         $response = $this->post('/api/auth/subscriber', [
-            'email' => 'test1@test.com',
+            'email' => 'test2@test.com',
             'name' => 'testing name',
             'telephone_number' => '98765432',
         ]);
@@ -54,9 +54,34 @@ class UserTest extends TestCase
         $response->assertStatus(422);
     }
 
-        /** @test */
-        public function it_can_unsubscribe_to_sms()
-        {
-            
-        }
+    /** @test */
+    public function it_cannot_subscribe_to_sms_with_the_same_email()
+    {
+        $response = $this->post('/api/auth/subscriber', [
+            'email' => 'test@test.com',
+            'name' => 'testing name',
+            'telephone_number' => '98765432',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertSuccessful();
+
+        $this->assertDatabaseHas('subscribers', [
+            'telephone_number' => '98765432',
+        ]);
+
+        $response = $this->post('/api/auth/subscriber', [
+            'email' => 'test@test.com',
+            'name' => 'testing name',
+            'telephone_number' => '98765431',
+        ]);
+
+        $response->assertStatus(422);
+    }
+
+    /** @test */
+    public function it_can_unsubscribe_to_sms()
+    {
+        
+    }
 }

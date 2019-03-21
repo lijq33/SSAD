@@ -36,7 +36,7 @@ class Crisis extends Model
         'date' => 'bail|required|date_format:d/m/Y|before:tomorrow',
         'time' => 'required',
         'address' => 'required',
-        'crisisType' => 'required',
+        'crisisType' => 'required', //add in for Enum
     ];
 
     /**
