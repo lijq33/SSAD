@@ -78551,6 +78551,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -78595,6 +78599,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.isLoading = false;
                 scope.resetFields();
             }).catch(function (error) {
+                console.log(error.response);
+                console.log(error.response.data);
                 _this.error = error.response.data.errors;
                 _this.isLoading = false;
             });
@@ -78849,8 +78855,32 @@ var render = function() {
                               "popper tw-font-hairline tw-text-grey-dark"
                           },
                           [
-                            _vm._v(
-                              "\n                                    Your password should contain a minimum of 6 characters\n                                "
+                            _c("div", { staticClass: "tw-font-bold" }, [
+                              _vm._v("Your password should include:")
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "tw-flex tw-justify-end" },
+                              [_vm._v("Uppercase characters (A – Z)")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "tw-flex tw-justify-end" },
+                              [_vm._v("Lowercase characters (a – z)")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "tw-flex tw-justify-end" },
+                              [_vm._v("Numerical digits (0 – 9)")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "tw-flex tw-justify-end" },
+                              [_vm._v("Non-alphanumeric (!, $, #, %)")]
                             )
                           ]
                         ),

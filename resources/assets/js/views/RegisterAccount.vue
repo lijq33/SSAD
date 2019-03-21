@@ -73,7 +73,11 @@
                                 Password
                                 <popper trigger="hover" :options = "{placement: 'bottom'}">
                                     <div class="popper tw-font-hairline tw-text-grey-dark">
-                                        Your password should contain a minimum of 6 characters
+                                        <div class="tw-font-bold">Your password should include:</div>
+                                        <div class="tw-flex tw-justify-end">Uppercase characters (A – Z)</div>
+                                        <div class="tw-flex tw-justify-end">Lowercase characters (a – z)</div>
+                                        <div class="tw-flex tw-justify-end">Numerical digits (0 – 9)</div>
+                                        <div class="tw-flex tw-justify-end">Non-alphanumeric (!, $, #, %)</div>
                                     </div>
                                     <button slot="reference">   
                                         <i class="fas fa-exclamation-circle tw-text-grey-dark tw-cursor-pointer"></i>
@@ -239,14 +243,17 @@
                 var scope = this;
                 this.isLoading = true;
                 this.error = [],
-                axios.post("/api/register",this.form)
+                axios.post("/api/register", this.form)
                 .then(response => {
                     this.message = response.data.message;
                     $('html, body').animate({ scrollTop: 0 }, 'slow');
                     this.isLoading = false;
                     scope.resetFields();
+
                 })
                 .catch((error) => {
+                    console.log(error.response);
+                    console.log(error.response.data);
                     this.error = error.response.data.errors;
                     this.isLoading = false;
                 });

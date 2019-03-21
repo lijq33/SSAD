@@ -194,14 +194,8 @@ class UserTest extends TestCase
         $response->assertStatus(422);
     }
 
-
-
-
-
-
-    
     /** @test */
-    public function it_cannot_register_user_account_with_short_nric()
+    public function it_cannot_register_user_account_with_incorrect_nric_format()
     {
         $user = factory(User::class)
             ->states('AccountManager')
@@ -214,11 +208,10 @@ class UserTest extends TestCase
 
         $login->assertStatus(200);
 
-        $email = $this->faker->email();
-
+        //Short NRIC
         $response = $this->post('/api/register', [
-            'nric' =>  "S9765432Z",
-            'email' => $email,
+            'nric' =>  "S976543Z",
+            'email' => "test@test.com",
             'name' => $this->faker->firstName(),
             'password' => '123456',
             'password_confirmation' => '123456',
@@ -226,47 +219,161 @@ class UserTest extends TestCase
             'roles' => 'AccountManager',
         ]);
         
-        $response->assertStatus(200);
+        $response->assertStatus(422);
 
-        $this->assertDatabasehas('users', [
-            'nric' =>  "S9765432Z",
+        $this->assertDatabaseMissing('users', [
+            'nric' =>  "S976543Z",
         ]);
 
+        //Long NRIC
         $response = $this->post('/api/register', [
-            'nric' =>  "S9765431Z",
-            'email' => $email,
+            'nric' =>  "S97654322Z",
+            'email' => "test@test.com",
             'name' => $this->faker->firstName(),
             'password' => '123456',
             'password_confirmation' => '123456',
             'telephone_number' => random_int(90000000 ,99999999),
             'roles' => 'AccountManager',
         ]);
- 
+        
         $response->assertStatus(422);
+
+        $this->assertDatabaseMissing('users', [
+            'nric' =>  "S97654322Z",
+        ]);
+        
+        //Empty NRIC
+        $response = $this->post('/api/register', [
+            'nric' =>  "",
+            'email' => "test@test.com",
+            'name' => $this->faker->firstName(),
+            'password' => '123456',
+            'password_confirmation' => '123456',
+            'telephone_number' => random_int(90000000 ,99999999),
+            'roles' => 'AccountManager',
+        ]);
+        
+        $response->assertStatus(422);
+
+        $this->assertDatabaseMissing('users', [
+            'email' =>  "test@test.com",
+        ]);
     }
 
-    /** @test */
-    public function it_cannot_register_user_account_with_long_nric()
-    {
-
-    }
 
     /** @test */
-    public function it_cannot_register_user_account_with_short_telephone()
+    public function it_cannot_register_user_account_with_incorrect_telephone_format()
     {
+        $user = factory(User::class)
+            ->states('AccountManager')
+            ->create();
+        
+        $login = $this->post('/api/auth/login',[
+            'nric' => $user->nric,
+            'password' => '123123',
+        ]);
 
-    }
+        $login->assertStatus(200);
 
-    /** @test */
-    public function it_cannot_register_user_account_with_long_telephone()
-    {
+        //Short telephone
+        $response = $this->post('/api/register', [
+            'nric' =>  "S976543Z",
+            'email' => "test@test.com",
+            'name' => $this->faker->firstName(),
+            'password' => '123456',
+            'password_confirmation' => '123456',
+            'telephone_number' => random_int(9000000 ,9999999),
+            'roles' => 'AccountManager',
+        ]);
+        
+        $response->assertStatus(422);
 
+        $this->assertDatabaseMissing('users', [
+            'nric' =>  "S976543Z",
+        ]);
+
+        //Long telephone
+        $response = $this->post('/api/register', [
+            'nric' =>  "S976543Z",
+            'email' => "test@test.com",
+            'name' => $this->faker->firstName(),
+            'password' => '123456',
+            'password_confirmation' => '123456',
+            'telephone_number' => random_int(900000000 ,999999999),
+            'roles' => 'AccountManager',
+        ]);
+        
+        $response->assertStatus(422);
+
+        $this->assertDatabaseMissing('users', [
+            'nric' =>  "S976543Z",
+        ]);
+        
+        //Empty telephone
+        $response = $this->post('/api/register', [
+            'nric' =>  "S9876543Z",
+            'email' => "test@test.com",
+            'name' => $this->faker->firstName(),
+            'password' => '123456',
+            'password_confirmation' => '123456',
+            'telephone_number' => "",
+            'roles' => 'AccountManager',
+        ]);
+        
+        $response->assertStatus(422);
+
+        $this->assertDatabaseMissing('users', [
+            'nric' => 'S976543Z',
+        ]);
+    
+        //Alphable in telephone
+        $response = $this->post('/api/register', [
+            'nric' =>  "S9876543Z",
+            'email' => "test@test.com",
+            'name' => $this->faker->firstName(),
+            'password' => '123456',
+            'password_confirmation' => '123456',
+            'telephone_number' => 'a'.random_int(9000000 ,9999999),
+            'roles' => 'AccountManager',
+        ]);
+        
+        $response->assertStatus(422);
+
+        $this->assertDatabaseMissing('users', [
+            'nric' => 'S976543Z',
+        ]);
     }
 
     /** @test */
     public function it_cannot_register_user_account_with_mismatched_password()
     {
+        $user = factory(User::class)
+            ->states('AccountManager')
+            ->create();
+        
+        $login = $this->post('/api/auth/login',[
+            'nric' => $user->nric,
+            'password' => '123123',
+        ]);
 
+        $login->assertStatus(200);
+
+        //Short telephone
+        $response = $this->post('/api/register', [
+            'nric' =>  "S976543Z",
+            'email' => "test@test.com",
+            'name' => $this->faker->firstName(),
+            'password' => '123456',
+            'password_confirmation' => '123455',
+            'telephone_number' => random_int(90000000 ,99999999),
+            'roles' => 'AccountManager',
+        ]);
+        
+        $response->assertStatus(422);
+
+        $this->assertDatabaseMissing('users', [
+            'nric' =>  "S976543Z",
+        ]);
     }
 
     /** @test */

@@ -65,9 +65,17 @@ class RegisterController extends Controller
                         'regex:/[a-zA-Z]\d{7}[a-zA-Z]/u',
                         'string',
                     ),
+            'password' => array(
+                        'bail',
+                        'required',
+                        'string',
+                        'min:8',
+                        'confirmed',
+                        'max:30',
+                        'regex:/^.*(?=.{5,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/'
+                    ),
             'email' => 'bail|required|string|email|max:255|unique:users',
             'name' => 'bail|required|string|max:255',
-            'password' => 'bail|required|string|min:6|confirmed|max:30',
             'telephone_number' => 'bail|required|digits:8',
             'roles' => 'bail|required|in:CallCenterOperator,CrisisManager,CivilDefencesAdmin,AccountManager'
         ];
@@ -78,7 +86,8 @@ class RegisterController extends Controller
             'email' => 'The format of :attribute is incorrect!',
             'max' => 'Your :attribute is too long!',
             'digits:value' => 'Your :attribute should have :value digits',
-            'regex' => 'The format of :attribute is wrong'
+            'regex' => 'The format of :attribute is wrong',
+            'password.regex'  => 'Your password did not fulfill the minimum requirement',
         ];
     
         $validator = Validator::make($data = request()->all(), $rules, $messages);
