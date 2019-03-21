@@ -80369,6 +80369,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -80406,76 +80409,76 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     methods: {
-        postalCodeBestMatch: function postalCodeBestMatch(data, matchPostalCode) {
+        bestAddressMatch: function bestAddressMatch(geocoder, pos, serviceFormatedAddress, matchPostalCode) {
 
             var scope = this;
-            var found = false;
+            var foundBestMatch = false;
 
-            data.forEach(function (element) {
-                if (element.formatted_address.includes(matchPostalCode)) {
-                    scope.form.address = element.formatted_address;
-                    scope.form.postalCode = matchPostalCode;
-                    found = true;
+            //use latlng to determine the location
+            //use string longest length determine the best match
+            geocoder.geocode({ location: pos }, function (results, status) {
+                if (status === "OK") {
+
+                    results.forEach(function (element) {
+                        if (element.formatted_address.includes(matchPostalCode)) {
+                            foundBestMatch = true;
+                            if (element.formatted_address.length > serviceFormatedAddress.length) {
+                                scope.form.address = element.formatted_address;
+                            } else {
+                                scope.form.address = serviceFormatedAddress;
+                            }
+                        }
+                    });
+
+                    if (!foundBestMatch) {
+                        scope.form.address = serviceFormatedAddress;
+                    }
+
+                    //case 1: no postal code set to 0
+                    //case 2: more than 6 digits set to 0
+
+                    if (matchPostalCode !== undefined) {
+                        if (matchPostalCode.length > 6) {
+                            scope.form.postalCode = "";
+                        } else {
+                            scope.form.postalCode = matchPostalCode;
+                        }
+                    } else {
+                        scope.form.postalCode = "";
+                    }
                 }
             });
-
-            //if not found use, original postal code
-            //can use nearest address also
-            if (!found) {
-                this.form.address = "Singapore " + matchPostalCode;
-                this.form.postalCode = matchPostalCode;
-            }
-        },
-        addressGeoCoder: function addressGeoCoder(geocoder, place_id, pos, postalAddType, validPostalCode) {
-
-            var scope = this;
-
-            if (postalAddType === "postal_code") {
-
-                //use latlng to determine the location
-                //use this method for postal code entered eg:"729826"
-                geocoder.geocode({ location: pos }, function (results, status) {
-                    if (status === "OK") {
-
-                        //process best match
-                        scope.postalCodeBestMatch(results, validPostalCode);
-                    }
-                });
-            } else {
-                //get details about the place
-                //use this method for place name entered eg:"singapore zoo"
-                geocoder.geocode({ placeId: place_id }, function (results, status) {
-                    if (status === "OK") {
-
-                        scope.form.address = results[0].formatted_address;
-                        scope.form.postalCode = validPostalCode;
-                        scope.form.postalCode = '123123';
-                    }
-                });
-            }
         },
         setPlace: function setPlace(place) {
+            var scope = this;
 
             if (place.id) {
+                //console.log(place)
+
+                var matchPostalCode;
+                var places_postal = place.address_components;
                 var pos = {
                     lat: place.geometry.location.lat(),
                     lng: place.geometry.location.lng()
                 };
 
-                //check if is postal code or address 
-                var str = this.$refs.autocomplete.$el.value;
-                var isPostalCode = str.slice(str.length - 6, str.length);
-                var postalAddType = "address";
+                //process postalcode
 
-                if (isPostalCode.match(/^-{0,1}\d+$/)) {
-                    postalAddType = "postal_code";
-                } else {
-                    isPostalCode = place.formatted_address.slice(place.formatted_address.length - 6, place.formatted_address.length.length);
-                    console.log(isPostalCode);
+                for (var i = 0; i < places_postal.length; i++) {
+                    if (places_postal[i].types == "postal_code") {
+                        //console.log("easy: "+places_postal[i].long_name);
+                        matchPostalCode = places_postal[i].long_name;
+                    }
                 }
 
-                //get additonal address from postal code or address
-                this.addressGeoCoder(new google.maps.Geocoder(), place.place_id, pos, postalAddType, isPostalCode);
+                //process full address
+                var service = new google.maps.places.PlacesService($('#service-helper').get(0));
+                service.getDetails({ placeId: place.place_id }, function (place, status) {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        //console.log(place.formatted_address)
+                        scope.bestAddressMatch(new google.maps.Geocoder(), pos, place.formatted_address, matchPostalCode);
+                    }
+                });
             }
         },
         submitCrisis: function submitCrisis() {
@@ -81686,7 +81689,9 @@ var render = function() {
             1
           )
         ])
-      ])
+      ]),
+      _vm._v(" "),
+      _c("div", { attrs: { id: "service-helper" } })
     ]
   )
 }
