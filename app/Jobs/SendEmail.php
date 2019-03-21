@@ -8,7 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Mail\DataUpdate;
-use Illuminate\Support\Facades\PdfReport;
+use Jimmyjs\ReportGenerator\Facades\PdfReport;
 
 
 class SendEmail implements ShouldQueue
@@ -31,13 +31,14 @@ class SendEmail implements ShouldQueue
      */
     public function handle()
     {
-        $queryBuilder = Agencies::select(['name', 'age'])->get();
+        $queryBuilder = \App\User::select(['name', 'email'])->get();
+        $columns = ['name', 'email'];
 
         $pdf = PdfReport::of('1', '1', $queryBuilder, $columns)
          ->setPaper('a6')
          ->make();
          
-         var_dump($pdf);
+
 
         \Mail::to('test@testingemail.com')->send(new DataUpdate());
     }
