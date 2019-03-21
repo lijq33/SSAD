@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\CrisisCreated;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Twitter;
 
 class SendTwitterCrisisCreatedNotification
 {
