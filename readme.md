@@ -61,15 +61,15 @@ rainfall - https://api.data.gov.sg/v1/environment/rainfall
 relative humidity - https://api.data.gov.sg/v1/environment/relative-humidity
 weather-forecast - https://api.data.gov.sg/v1/environment/(2-hour/24-hour/4-day)-weather-forecast
 
-Dengue: 
-<iframe width="600" height="400" src="https://data.gov.sg/dataset/dengue-clusters/resource/801ce5ce-fb99-4211-94fe-9d8ca5e182d4/view/07e4bfc9-8675-4534-959f-768be06aeeab" frameBorder="0"> </iframe>
-
 Haze:
 pm2.5 - https://api.data.gov.sg/v1/environment/pm25
 psi - https://api.data.gov.sg/v1/environment/psi
 
 CD Shelter: 
 https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b6d4-b963c7bb1c09
+
+Dengue: 
+<iframe width="600" height="400" src="https://data.gov.sg/dataset/dengue-clusters/resource/801ce5ce-fb99-4211-94fe-9d8ca5e182d4/view/07e4bfc9-8675-4534-959f-768be06aeeab" frameBorder="0"> </iframe>
 
 Other possible courses could be weather forecast API (http://developer.yahoo.com/weather/), PSI 
 reading for air pollution (http://www.nea.gov.sg/psi/). 

@@ -111,19 +111,32 @@
                                 <div class = "card">
                                     <div class = "card-body">
                                         <h5 class = "card-title">Location</h5>
-
-                                        <!-- Postal Code -->
                                         <div class = "form-group row">
-                                            <label for = "Postal Code" class = "col-md-4 col-form-label">
-                                                Postal Code:
+                                            <label for = "" class = "col-md-4 col-form-label">
+                                                Location searcher:
                                             </label>
                                             <div class = "col-md-6">
                                                 <GmapAutocomplete
                                                     class="tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64"
                                                     @place_changed="setPlace"
-                                                     ref="autocomplete"
+                                                    ref="autocomplete"
                                                 ></GmapAutocomplete>
-
+                                            </div>
+                                        </div>
+                                        <!-- Postal Code -->
+                                        <div class = "form-group row">
+                                            <label for = "postalCode" class = "col-md-4 col-form-label">
+                                                Postal Code:
+                                            </label>
+                                            <div class = "col-md-6">
+                                                 <input type = "text"
+                                                    class = "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic"
+                                                    id = "postalCode" v-model = "form.postalCode"
+                                                    :class = "{ 'tw-border-red-light' : error['postalCode'] != undefined}"
+                                                    placeholder = ""
+                                                    required autofocus
+                                                    disabled
+                                                >
                                                 <div class = "tw-text-red" v-if = "error['postalCode'] != undefined">
                                                     <span> {{this.error['postalCode'].toString()}} </span>   
                                                 </div>
@@ -289,81 +302,58 @@
         },
 
         methods: {
-            bestAddressMatch(geocoder,pos,serviceFormatedAddress,matchPostalCode){ 
-                
+            bestAddressMatch(geocoder, pos, serviceFormatedAddress,matchPostalCode){ 
                 var scope = this;
                 var foundBestMatch = false;
 
-                //use latlng to determine the location
-                //use string longest length determine the best match
                  geocoder.geocode({ location: pos }, function(results, status) {
                     if (status === "OK") {
-                       
+                        results.forEach(element => {
+                            if(element.formatted_address.includes(matchPostalCode)){
+                                    foundBestMatch = true;
+                                if(element.formatted_address.length > serviceFormatedAddress.length){
+                                    scope.form.address = element.formatted_address; 
+                                }else{
+                                    scope.form.address = serviceFormatedAddress; 
+                                }  
+                            } 
+                        });  
 
-                    results.forEach(element => {
-                        if(element.formatted_address.includes(matchPostalCode)){
-                                foundBestMatch = true;
-                            if(element.formatted_address.length > serviceFormatedAddress.length){
-                                  scope.form.address = element.formatted_address; 
-                            }else{
-                                 scope.form.address = serviceFormatedAddress; 
-                            }  
-                        } 
-                    });  
+                        if(!foundBestMatch){
+                            scope.form.address = serviceFormatedAddress; 
+                        }
 
-                    if(!foundBestMatch){
-                         scope.form.address = serviceFormatedAddress; 
-                    }
-
-                    //case 1: no postal code set to 0
-                    //case 2: more than 6 digits set to 0
-
-                     if(matchPostalCode !== undefined){
-                          if(matchPostalCode.length > 6 ){
-                                scope.form.postalCode="";
-                            }else{
-                                scope.form.postalCode = matchPostalCode;
-                            }
-                     }else{
-                          scope.form.postalCode="";
-                     }
- 
                     }
                 });
-
             },
+
             setPlace(place) {  
                 var scope = this;
 
-                if (place.id) {  
-                    //console.log(place)
-
+                if (place.id) { 
                     var matchPostalCode;
-                    var places_postal = place.address_components;
+                    place.address_components.forEach(address_component => {
+                        if(address_component.types[0] == 'postal_code'){
+                            matchPostalCode = address_component.long_name;
+                            scope.form.postalCode = address_component.short_name;
+                        }
+                    });
+    
                     var pos = {
-                    lat: place.geometry.location.lat(),
-                    lng: place.geometry.location.lng()
+                        lat: place.geometry.location.lat(),
+                        lng: place.geometry.location.lng()
                     }; 
 
-                    //process postalcode
-
-                for (var i = 0; i < places_postal.length; i++ ) {
-                    if (places_postal[i].types == "postal_code"){
-                        //console.log("easy: "+places_postal[i].long_name);
-                        matchPostalCode = places_postal[i].long_name;
-                    }
-                }
-                    
-                    //process full address
                     var service = new google.maps.places.PlacesService($('#service-helper').get(0)); 
-                                service.getDetails({placeId: place.place_id}, function(place, status) {
-                                    if (status === google.maps.places.PlacesServiceStatus.OK) {
-                                        //console.log(place.formatted_address)
-                                       scope.bestAddressMatch(new google.maps.Geocoder(),pos,place.formatted_address,matchPostalCode); 
-                         }
+
+                    service.getDetails({ placeId: place.place_id }, function(place, status) {
+                        if (status === google.maps.places.PlacesServiceStatus.OK) {
+                            scope.bestAddressMatch(new google.maps.Geocoder(), pos, place.formatted_address, matchPostalCode); 
+                        }
                     });
-                  }
+                }
             },
+
             submitCrisis() {
                 // this.isLoading = true;
                 this.message = "";

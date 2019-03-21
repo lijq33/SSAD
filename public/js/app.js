@@ -80369,6 +80369,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -80406,76 +80422,53 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     methods: {
-        postalCodeBestMatch: function postalCodeBestMatch(data, matchPostalCode) {
-
+        bestAddressMatch: function bestAddressMatch(geocoder, pos, serviceFormatedAddress, matchPostalCode) {
             var scope = this;
-            var found = false;
+            var foundBestMatch = false;
 
-            data.forEach(function (element) {
-                if (element.formatted_address.includes(matchPostalCode)) {
-                    scope.form.address = element.formatted_address;
-                    scope.form.postalCode = matchPostalCode;
-                    found = true;
+            geocoder.geocode({ location: pos }, function (results, status) {
+                if (status === "OK") {
+                    results.forEach(function (element) {
+                        if (element.formatted_address.includes(matchPostalCode)) {
+                            foundBestMatch = true;
+                            if (element.formatted_address.length > serviceFormatedAddress.length) {
+                                scope.form.address = element.formatted_address;
+                            } else {
+                                scope.form.address = serviceFormatedAddress;
+                            }
+                        }
+                    });
+
+                    if (!foundBestMatch) {
+                        scope.form.address = serviceFormatedAddress;
+                    }
                 }
             });
-
-            //if not found use, original postal code
-            //can use nearest address also
-            if (!found) {
-                this.form.address = "Singapore " + matchPostalCode;
-                this.form.postalCode = matchPostalCode;
-            }
-        },
-        addressGeoCoder: function addressGeoCoder(geocoder, place_id, pos, postalAddType, validPostalCode) {
-
-            var scope = this;
-
-            if (postalAddType === "postal_code") {
-
-                //use latlng to determine the location
-                //use this method for postal code entered eg:"729826"
-                geocoder.geocode({ location: pos }, function (results, status) {
-                    if (status === "OK") {
-
-                        //process best match
-                        scope.postalCodeBestMatch(results, validPostalCode);
-                    }
-                });
-            } else {
-                //get details about the place
-                //use this method for place name entered eg:"singapore zoo"
-                geocoder.geocode({ placeId: place_id }, function (results, status) {
-                    if (status === "OK") {
-
-                        scope.form.address = results[0].formatted_address;
-                        scope.form.postalCode = validPostalCode;
-                        scope.form.postalCode = '123123';
-                    }
-                });
-            }
         },
         setPlace: function setPlace(place) {
+            var scope = this;
 
             if (place.id) {
+                var matchPostalCode;
+                place.address_components.forEach(function (address_component) {
+                    if (address_component.types[0] == 'postal_code') {
+                        matchPostalCode = address_component.long_name;
+                        scope.form.postalCode = address_component.short_name;
+                    }
+                });
+
                 var pos = {
                     lat: place.geometry.location.lat(),
                     lng: place.geometry.location.lng()
                 };
 
-                //check if is postal code or address 
-                var str = this.$refs.autocomplete.$el.value;
-                var isPostalCode = str.slice(str.length - 6, str.length);
-                var postalAddType = "address";
+                var service = new google.maps.places.PlacesService($('#service-helper').get(0));
 
-                if (isPostalCode.match(/^-{0,1}\d+$/)) {
-                    postalAddType = "postal_code";
-                } else {
-                    isPostalCode = place.formatted_address.slice(place.formatted_address.length - 6, place.formatted_address.length.length);
-                    console.log(isPostalCode);
-                }
-
-                //get additonal address from postal code or address
-                this.addressGeoCoder(new google.maps.Geocoder(), place.place_id, pos, postalAddType, isPostalCode);
+                service.getDetails({ placeId: place.place_id }, function (place, status) {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        scope.bestAddressMatch(new google.maps.Geocoder(), pos, place.formatted_address, matchPostalCode);
+                    }
+                });
             }
         },
         submitCrisis: function submitCrisis() {
@@ -81318,11 +81311,11 @@ var render = function() {
                             "label",
                             {
                               staticClass: "col-md-4 col-form-label",
-                              attrs: { for: "Postal Code" }
+                              attrs: { for: "" }
                             },
                             [
                               _vm._v(
-                                "\n                                            Postal Code:\n                                        "
+                                "\n                                            Location searcher:\n                                        "
                               )
                             ]
                           ),
@@ -81336,24 +81329,79 @@ var render = function() {
                                 staticClass:
                                   "tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64",
                                 on: { place_changed: _vm.setPlace }
-                              }),
-                              _vm._v(" "),
-                              _vm.error["postalCode"] != undefined
-                                ? _c("div", { staticClass: "tw-text-red" }, [
-                                    _c("span", [
-                                      _vm._v(
-                                        " " +
-                                          _vm._s(
-                                            this.error["postalCode"].toString()
-                                          ) +
-                                          " "
-                                      )
-                                    ])
-                                  ])
-                                : _vm._e()
+                              })
                             ],
                             1
                           )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-md-4 col-form-label",
+                              attrs: { for: "postalCode" }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                            Postal Code:\n                                        "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-md-6" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.postalCode,
+                                  expression: "form.postalCode"
+                                }
+                              ],
+                              staticClass:
+                                "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic",
+                              class: {
+                                "tw-border-red-light":
+                                  _vm.error["postalCode"] != undefined
+                              },
+                              attrs: {
+                                type: "text",
+                                id: "postalCode",
+                                placeholder: "",
+                                required: "",
+                                autofocus: "",
+                                disabled: ""
+                              },
+                              domProps: { value: _vm.form.postalCode },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "postalCode",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.error["postalCode"] != undefined
+                              ? _c("div", { staticClass: "tw-text-red" }, [
+                                  _c("span", [
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(
+                                          this.error["postalCode"].toString()
+                                        ) +
+                                        " "
+                                    )
+                                  ])
+                                ])
+                              : _vm._e()
+                          ])
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "form-group row" }, [
@@ -81686,7 +81734,9 @@ var render = function() {
             1
           )
         ])
-      ])
+      ]),
+      _vm._v(" "),
+      _c("div", { attrs: { id: "service-helper" } })
     ]
   )
 }
@@ -82786,33 +82836,74 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   description: "",
 
   methods: {
+    removeMarkers: function removeMarkers(markerType) {
+      var scope = this;
+      var tempIndex = 0;
+
+      this.markers.forEach(function (element, index) {
+        if (element.markerType === markerType) {
+          tempIndex++;
+        }
+      });
+
+      while (tempIndex != 0) {
+
+        for (var i = 0; i < this.markers.length; i++) {
+          if (this.markers[i].markerType == markerType) {
+            this.markers.splice(i, 1);
+            break;
+          }
+        }
+        tempIndex--;
+      }
+    },
+    notContainedIn: function notContainedIn(arr) {
+      return function arrNotContains(element) {
+        return arr.indexOf(element) === -1;
+      };
+    },
     showDegueData: function showDegueData() {
       console.log("show fire data on the map!");
 
-      axios.get('/api/crisis').then(function (res) {
-        console.log(res);
-      }).catch(function (error) {
-        console.log(error);
-      }).then(function () {});
+      // axios.get('/api/crisis')
+      // .then((res) => {	
+      // 	 console.log(res) 
 
-      // $.ajax({
-      //         url: "/api/crisis",
-      //         type: "GET",
-      //         success: function (data, status, jqXHR) { 
-      //             console.log(data)
-      //         },
-      //         error: function (jqXHR, status, err) {
-      //             console.log("Local error callback.");
-      //         },
-      //         complete: function (jqXHR, status) {
+      // }).catch((error) => {
+      // 	console.log(error)
+      // }).then(() => {
 
-      //         }
-      //     }) 
+      // });
+
     },
     showFireData: function showFireData() {},
     showGasLeakData: function showGasLeakData() {},
     showHazeData: function showHazeData() {},
     showRainData: function showRainData() {},
+    showTwoHrWeatherData: function showTwoHrWeatherData(markerType) {
+      var scope = this;
+      $.ajax({
+        url: "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast",
+        type: "GET",
+        success: function success(data, status, jqXHR) {
+
+          data.area_metadata.forEach(function (element, index) {
+            scope.markers.push({
+              markerType: markerType,
+              position: {
+                lat: element.label_location.latitude,
+                lng: element.label_location.longitude
+              },
+              infoText: '<div id="content">' + '<div id="siteNotice">' + '</div>' + '<h6>' + element.name + '</h6>' + '<div id="bodyContent">' + data.items[0].forecasts[index].forecast + '</div>' + '</div>'
+            });
+          });
+        },
+        error: function error(jqXHR, status, err) {
+          console.log(err);
+        },
+        complete: function complete(jqXHR, status) {}
+      });
+    },
     panMap: function panMap(lat, lng) {
       //pan to any location on the map by giving lat and lng coordinates
       this.$refs.mapRef.$mapPromise.then(function (map) {
@@ -82838,7 +82929,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
 
       //zoom to clicked markers or from right info panel
-      this.setMapZoomLvl(18);
+      //this.setMapZoomLvl(18);
     }
   },
   watch: {
@@ -82876,36 +82967,49 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.place = null;
     },
     toggleData: function toggleData(newValue, oldValue) {
-      //console.log("new old value of new marker");
-      //console.log(newValue);
-
       var scope = this;
 
-      newValue.forEach(function (element) {
-        if (element === "showDegueData") {
-          scope.showDegueData();
-        } else if (element === "showFireData") {
-          scope.showFireData();
-        } else if (element === "showGasLeakData") {
-          scope.showGasLeakData();
-        } else if (element === "showHazeData") {
-          scope.showHazeData();
-        } else if (element === "showRainData") {
-          scope.showRainData();
+      if (oldValue == null) {
+        console.log("add the first time");
+        newValue.forEach(function (element) {
+          if (element === "showDegueData") {
+            scope.showDegueData(element);
+          } else if (element === "showFireData") {
+            scope.showFireData(element);
+          } else if (element === "showGasLeakData") {
+            scope.showGasLeakData(element);
+          } else if (element === "showHazeData") {
+            scope.showHazeData(element);
+          } else if (element === "showRainData") {
+            scope.showRainData(element);
+          } else if (element === "showTwoHrWeatherData") {
+            scope.showTwoHrWeatherData(element);
+          }
+        });
+      } else {
+
+        if (newValue.length > oldValue.length) {
+          console.log("add");
+          console.log(newValue.filter(scope.notContainedIn(oldValue)).concat(oldValue.filter(scope.notContainedIn(newValue))));
+          newValue.forEach(function (element) {
+            if (element === "showDegueData") {
+              scope.showDegueData(element);
+            } else if (element === "showFireData") {
+              scope.showFireData(element);
+            } else if (element === "showGasLeakData") {
+              scope.showGasLeakData(element);
+            } else if (element === "showHazeData") {
+              scope.showHazeData(element);
+            } else if (element === "showRainData") {
+              scope.showRainData(element);
+            } else if (element === "showTwoHrWeatherData") {
+              scope.showTwoHrWeatherData(element);
+            }
+          });
+        } else {
+          scope.removeMarkers(newValue.filter(scope.notContainedIn(oldValue)).concat(oldValue.filter(scope.notContainedIn(newValue)))[0]);
         }
-      });
-
-      //   newValue.observe(obj, function(changes) {
-      //   console.log(changes);
-      // });
-
-      // this.markers.push({
-      //     position: {
-      //       lat: newValue.place.position.lat,
-      //       lng: newValue.place.position.lng
-      //     },
-      //     infoText: newValue.incidentName
-      //   })
+      }
     }
   }
 });
@@ -92266,7 +92370,7 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n      " + _vm._s(_vm.infoContent) + "\n    ")]
+            [_c("span", { domProps: { innerHTML: _vm._s(_vm.infoContent) } })]
           ),
           _vm._v(" "),
           _vm._l(_vm.markers, function(marker, index) {
@@ -92401,7 +92505,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       selected: [], // Must be an array reference!
       crisisOptions: [{ text: 'Degue', value: 'showDegueData' }, { text: 'Fire', value: 'showFireData' }, { text: 'Gas Leak', value: 'showGasLeakData' }],
-      weatherOptions: [{ text: 'Haze', value: 'showHazeData' }, { text: 'Rain', value: 'showRainData' }]
+      weatherOptions: [{ text: '(2H) Weather Forecast', value: 'showTwoHrWeatherData' }, { text: 'Haze', value: 'showHazeData' }, { text: 'Rain', value: 'showRainData' }]
     };
   },
 
