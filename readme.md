@@ -15,6 +15,9 @@ FACEBOOK_PAGE_ID=342236433072588
 run php artisan jwt:secret
 
 #starting the services
+
+composer require barryvdh/laravel-dompdf : Run this when there is any PDF related errors.
+
 run mysql service using XAMPP 
 npm run watch
 php artisan serve
@@ -40,6 +43,12 @@ role 2 - Crisis Manager - able to update and archive crisis
 role 3 - Civil Defences Admin - able to keep track which CD shelter is in-charge of the crisis. The status of the CD shelter
 role 4 - Account Manager - able to register and remove new account
 
+#Steps to set up automation of email sending
+Tutorial: https://quantizd.com/how-to-use-laravel-task-scheduler-on-windows-10/
+
+Command to input
+Program: C:\xampp\php\php.exe 
+Add Argument: -f "C:\Users\JianHao\Documents\NTU Materials\Year2 Sem2\SSAD\SSAD\artisan" schedule:run
 
 ##THINGS TO DO
 
