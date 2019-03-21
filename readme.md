@@ -15,6 +15,9 @@ FACEBOOK_PAGE_ID=342236433072588
 run php artisan jwt:secret
 
 #starting the services
+
+composer require barryvdh/laravel-dompdf : Run this when there is any PDF related errors.
+
 run mysql service using XAMPP 
 npm run watch
 php artisan serve
