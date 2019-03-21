@@ -29,6 +29,6 @@ class DataUpdate extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.auto')->attach('C:\Users\JianHao\Documents\NTU Materials\Year2 Sem2\SSAD\SSAD\public\assets\img\TL.jpg');
+        return $this->view('emails.auto')->attach(public_path().'\assets\img\TL.jpg');
     }
 }
