@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\CrisisCreated;
+use App\Crisis;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Http\Controllers\GraphController;
@@ -27,13 +28,17 @@ class SendFacebookCrisisCreatedNotification
      */
     public function handle(CrisisCreated $event)
     {
-        //
         $graph = new GraphController();
         $crisis = $event->crisis;
         $message = "On  ".$crisis->date. " at ".$crisis->time . " there is a " . $crisis->crisis_type
          . " at " . $crisis->address. ". " . $crisis->description;
         
-         $postid = $graph->publishToPage($message);
+        $postid = $graph->publishToPage($message);
+
+        $updateCrisis = Crisis::find($crisis->id);
+
+        $updateCrisis->update(['facebook_post_id' => $postid]);
+
 
     }
 }

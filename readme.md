@@ -83,6 +83,9 @@ Jasper Report: https://github.com/PHPJasper/phpjasper-laravel
 Laravel Report Generators https://github.com/Jimmy-JS/laravel-report-generator/blob/master/readme.md
 
 #Social Media
+Dengue: Periodically
+Fire/Other Crisis: Immediately
+
 Vick & Jay: The CMS shall provide useful information such as location of Civil Defence shelters and updates to the public through social media periodically.
 
 CD Shelter: 

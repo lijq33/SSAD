@@ -17,13 +17,13 @@ class EventServiceProvider extends ServiceProvider
             // 'App\Listeners\SendAgenciesSmsCrisisCreatedNotification',
             // 'App\Listeners\SendSmsCrisisCreatedNotification',
             // 'App\Listeners\SendTwitterCrisisCreatedNotification',
-            // 'App\Listeners\SendFacebookCrisisCreatedNotification',
+            'App\Listeners\SendFacebookCrisisCreatedNotification',
         ],
 
         'App\Events\CrisisUpdated' => [
             // 'App\Listeners\SendSmsCrisisUpdatedNotification',
             // 'App\Listeners\SendTwitterCrisisUpdatedNotification',
-            // 'App\Listeners\SendFacebookCrisisUpdatedNotification',
+            'App\Listeners\SendFacebookCrisisUpdatedNotification',
         ]
     ];
 
