@@ -30,7 +30,7 @@ class SendEmail implements ShouldQueue
      */
     public function handle()
     {
-        echo('test');
+
         $data = [
             'data'=>'hello'
         ];
