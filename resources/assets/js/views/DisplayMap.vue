@@ -10,11 +10,14 @@
       <b-button @click="clearSearch">Clear Search</b-button>
     </div>
 
+    <!--toggle map -->
+    <toggle-map  @get-toggle-data="handleToggleData"/>
+
     <!-- map components -->
     <basemap
       :_place="place"
       :clear-search="clearSearchData"
-      :incident-data="incidentData"
+      :toggle-data="toggleData"
     ></basemap>
 
 </div>
@@ -22,26 +25,25 @@
 
 <script>
 import BaseMap from './BaseMap';
+import ToggleMap from './ToggleCrisisMap';
 
 export default {
   name: "",
   components: {
     basemap: BaseMap,
+    toggleMap:ToggleMap
   },
 
   data() {
     return {
       place: null,
       clearSearchData: false,
-      incidentData:null
+      toggleData:null
     };
   },
   methods: {
-    handleReceiveIncidentData(value){
-
-     this.incidentData = value;
-      console.log(value)
-      
+    handleToggleData(toggleData){
+      this.toggleData = toggleData;
     },
     setPlace(place) {
       this.place = place;

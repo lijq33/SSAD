@@ -3,17 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Facebook\Facebook;
+use Facebook\Exceptions\FacebookSDKException;
+use Illuminate\Support\Facades\Auth;
 class GraphController extends Controller
 {
     private $api;
-    public function __construct(Facebook $fb)
+   
+    public function __construct(/*Facebook $fb*/)
     {
-        $this->middleware(function ($request, $next) use ($fb) {
-            $fb->setDefaultAccessToken(Auth::user()->token);
-            $this->api = $fb;
-            return $next($request);
-        });
+     
+            $config = config('services.facebook');
+            $fb = new Facebook([
+                'app_id' => '610989759339386',
+                'app_secret' =>'9900d6676b7faad607a63cdb60518f14',
+                'default_graph_version' => 'v2.6',
+            ]);
+        
+
+        $this->api = $fb;
+       
     }
  
     public function retrieveUserProfile(){
@@ -70,22 +79,43 @@ class GraphController extends Controller
         }
     }
 
-    public function publishToPage(Request $request){
+    public function publishToPage($message){
         $page_id='342236433072588';
-
-        $data = request()->all();
+       
 
         try{
-            $post= $this->api->post('/'.$page_id.'/feed',array('message' => $data->message)
-            ,$this->getPageAccessToken($page_id));
+            $post= $this->api->post('/'.$page_id.'/feed',array('message' => $message)
+            ,'EAAIrsSORG3oBAFlRZANTDB8svZB9naEZCNehPLJBkxUbQ20S1FhGIbb17k48vHZCPIOylTWb3w
+            9hqTbhfDZBfCZCKkjlLYZBElPJmVuNcWyGq56vlNfEv0qz9q4M9ZAMZAn0p49mxxEGFOLBbcBJKxx9GieYsKqFz4KZA9odMTsHNzAgZDZD');
+           
 
             $post= $post->getGraphNode()->asArray();
+           
             dd($post);
+            return $post['id'];
         }catch (FacebookSDKException $e){
             dd($e); // handle exception
         }
     }
 
+    public function updatePost($message,$post_id){
+        $page_id='342236433072588';
+        
+
+        try{
+            $post= $this->api->post('/'.$page_id.'_'.$post_id,array('message' => $message)
+            ,'EAAIrsSORG3oBAFlRZANTDB8svZB9naEZCNehPLJBkxUbQ20S1FhGIbb17k48vHZCPIOylTWb3w
+            9hqTbhfDZBfCZCKkjlLYZBElPJmVuNcWyGq56vlNfEv0qz9q4M9ZAMZAn0p49mxxEGFOLBbcBJKxx9GieYsKqFz4KZA9odMTsHNzAgZDZD');
+           
+
+            $post= $post->getGraphNode()->asArray();
+            
+            dd($post);
+            
+        }catch (FacebookSDKException $e){
+            dd($e); // handle exception
+        }
+    }
 
 
 }
