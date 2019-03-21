@@ -11,15 +11,13 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class DataUpdate extends Mailable
 {
     use Queueable, SerializesModels;
-    //public $user;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(/*User $user*/)
+    public function __construct()
     {
-        //$this->user = $user;
     }
 
     /**
@@ -29,6 +27,7 @@ class DataUpdate extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.auto')->attach(public_path().'\assets\img\TL.jpg');
+
+        return $this->view('emails.auto')->attach(public_path().'/myfile.pdf');
     }
 }
