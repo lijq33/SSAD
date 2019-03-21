@@ -82491,7 +82491,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       access_token: "",
       childData: null,
       modalShow: false,
-
       infoOptions: {
         pixelOffset: {
           width: 0,
@@ -82505,24 +82504,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     removeMarkers: function removeMarkers(markerType) {
-      var scope = this;
-      var tempIndex = 0;
 
-      this.markers.forEach(function (element, index) {
-        if (element.markerType === markerType) {
-          tempIndex++;
-        }
-      });
-
-      while (tempIndex != 0) {
-
-        for (var i = 0; i < this.markers.length; i++) {
-          if (this.markers[i].markerType == markerType) {
-            this.markers.splice(i, 1);
-            break;
-          }
-        }
-        tempIndex--;
+      for (var i = 0; i < this.markers.length; i++) {
+        this.markers[i].setMap(null);
       }
     },
     notContainedIn: function notContainedIn(arr) {
@@ -82550,19 +82534,43 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     showRainData: function showRainData() {},
     showTwoHrWeatherData: function showTwoHrWeatherData(markerType) {
       var scope = this;
+      var infowindow = new google.maps.InfoWindow({
+        content: ''
+      });
+
       $.ajax({
         url: "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast",
         type: "GET",
         success: function success(data, status, jqXHR) {
 
           data.area_metadata.forEach(function (element, index) {
-            scope.markers.push({
-              markerType: markerType,
-              position: {
-                lat: element.label_location.latitude,
-                lng: element.label_location.longitude
-              },
-              infoText: '<div id="content">' + '<div id="siteNotice">' + '</div>' + '<h6>' + element.name + '</h6>' + '<div id="bodyContent">' + data.items[0].forecasts[index].forecast + '</div>' + '</div>'
+
+            scope.$refs.mapRef.$mapPromise.then(function (map) {
+
+              var marker = new google.maps.Marker({
+                markerType: markerType,
+                animation: google.maps.Animation.DROP,
+                position: { lat: element.label_location.latitude, lng: element.label_location.longitude },
+                map: map,
+                title: ''
+              });
+
+              scope.markers.push(marker);
+
+              google.maps.event.addListener(marker, 'click', function (marker, index) {
+                return function () {
+
+                  infowindow.setContent('<div id="content">' + '<div id="siteNotice">' + '</div>' + '<h6>' + element.name + '</h6>' + '<div id="bodyContent">' + data.items[0].forecasts[index].forecast + '</div>' + '</div>');
+                  infowindow.open(map, marker);
+
+                  //one animation
+                  for (var i = 0; i < scope.markers.length; i++) {
+                    scope.markers[i].setAnimation(null);
+                  }
+
+                  marker.setAnimation(google.maps.Animation.BOUNCE);
+                };
+              }(marker, index));
             });
           });
         },
@@ -92016,63 +92024,11 @@ var render = function() {
   return _c(
     "div",
     [
-      _c(
-        "GmapMap",
-        {
-          ref: "mapRef",
-          staticStyle: { width: "auto", height: "600px" },
-          attrs: { zoom: _vm.zoom_lvl, center: _vm.sgcoord }
-        },
-        [
-          _c(
-            "gmap-info-window",
-            {
-              attrs: {
-                options: _vm.infoOptions,
-                position: _vm.infoWindowPos,
-                opened: _vm.infoWinOpen
-              },
-              on: {
-                closeclick: function($event) {
-                  _vm.infoWinOpen = false
-                }
-              }
-            },
-            [_c("span", { domProps: { innerHTML: _vm._s(_vm.infoContent) } })]
-          ),
-          _vm._v(" "),
-          _vm._l(_vm.markers, function(marker, index) {
-            return _c("GmapMarker", {
-              key: index,
-              attrs: { position: marker.position, clickable: true },
-              on: {
-                click: function($event) {
-                  return _vm.toggleInfoWindow(marker, index)
-                }
-              }
-            })
-          }),
-          _vm._v(" "),
-          this.place
-            ? _c("GmapMarker", {
-                attrs: {
-                  label: "★",
-                  position: {
-                    lat: this.place.position.lat,
-                    lng: this.place.position.lng
-                  },
-                  clickable: true
-                },
-                on: {
-                  click: function($event) {
-                    return _vm.toggleInfoWindow(_vm.place, 99)
-                  }
-                }
-              })
-            : _vm._e()
-        ],
-        2
-      )
+      _c("GmapMap", {
+        ref: "mapRef",
+        staticStyle: { width: "auto", height: "600px" },
+        attrs: { zoom: _vm.zoom_lvl, center: _vm.sgcoord }
+      })
     ],
     1
   )
