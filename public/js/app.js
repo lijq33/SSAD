@@ -80372,6 +80372,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -80410,15 +80423,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         bestAddressMatch: function bestAddressMatch(geocoder, pos, serviceFormatedAddress, matchPostalCode) {
-
             var scope = this;
             var foundBestMatch = false;
 
-            //use latlng to determine the location
-            //use string longest length determine the best match
             geocoder.geocode({ location: pos }, function (results, status) {
                 if (status === "OK") {
-
                     results.forEach(function (element) {
                         if (element.formatted_address.includes(matchPostalCode)) {
                             foundBestMatch = true;
@@ -80433,19 +80442,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     if (!foundBestMatch) {
                         scope.form.address = serviceFormatedAddress;
                     }
-
-                    //case 1: no postal code set to 0
-                    //case 2: more than 6 digits set to 0
-
-                    if (matchPostalCode !== undefined) {
-                        if (matchPostalCode.length > 6) {
-                            scope.form.postalCode = "";
-                        } else {
-                            scope.form.postalCode = matchPostalCode;
-                        }
-                    } else {
-                        scope.form.postalCode = "";
-                    }
                 }
             });
         },
@@ -80453,29 +80449,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var scope = this;
 
             if (place.id) {
-                //console.log(place)
-
                 var matchPostalCode;
-                var places_postal = place.address_components;
+                place.address_components.forEach(function (address_component) {
+                    if (address_component.types[0] == 'postal_code') {
+                        matchPostalCode = address_component.long_name;
+                        scope.form.postalCode = address_component.short_name;
+                    }
+                });
+
                 var pos = {
                     lat: place.geometry.location.lat(),
                     lng: place.geometry.location.lng()
                 };
 
-                //process postalcode
-
-                for (var i = 0; i < places_postal.length; i++) {
-                    if (places_postal[i].types == "postal_code") {
-                        //console.log("easy: "+places_postal[i].long_name);
-                        matchPostalCode = places_postal[i].long_name;
-                    }
-                }
-
-                //process full address
                 var service = new google.maps.places.PlacesService($('#service-helper').get(0));
+
                 service.getDetails({ placeId: place.place_id }, function (place, status) {
                     if (status === google.maps.places.PlacesServiceStatus.OK) {
-                        //console.log(place.formatted_address)
                         scope.bestAddressMatch(new google.maps.Geocoder(), pos, place.formatted_address, matchPostalCode);
                     }
                 });
@@ -81321,11 +81311,11 @@ var render = function() {
                             "label",
                             {
                               staticClass: "col-md-4 col-form-label",
-                              attrs: { for: "Postal Code" }
+                              attrs: { for: "" }
                             },
                             [
                               _vm._v(
-                                "\n                                            Postal Code:\n                                        "
+                                "\n                                            Location searcher:\n                                        "
                               )
                             ]
                           ),
@@ -81339,24 +81329,79 @@ var render = function() {
                                 staticClass:
                                   "tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64",
                                 on: { place_changed: _vm.setPlace }
-                              }),
-                              _vm._v(" "),
-                              _vm.error["postalCode"] != undefined
-                                ? _c("div", { staticClass: "tw-text-red" }, [
-                                    _c("span", [
-                                      _vm._v(
-                                        " " +
-                                          _vm._s(
-                                            this.error["postalCode"].toString()
-                                          ) +
-                                          " "
-                                      )
-                                    ])
-                                  ])
-                                : _vm._e()
+                              })
                             ],
                             1
                           )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group row" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "col-md-4 col-form-label",
+                              attrs: { for: "postalCode" }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                            Postal Code:\n                                        "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-md-6" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.postalCode,
+                                  expression: "form.postalCode"
+                                }
+                              ],
+                              staticClass:
+                                "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic",
+                              class: {
+                                "tw-border-red-light":
+                                  _vm.error["postalCode"] != undefined
+                              },
+                              attrs: {
+                                type: "text",
+                                id: "postalCode",
+                                placeholder: "",
+                                required: "",
+                                autofocus: "",
+                                disabled: ""
+                              },
+                              domProps: { value: _vm.form.postalCode },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.form,
+                                    "postalCode",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.error["postalCode"] != undefined
+                              ? _c("div", { staticClass: "tw-text-red" }, [
+                                  _c("span", [
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(
+                                          this.error["postalCode"].toString()
+                                        ) +
+                                        " "
+                                    )
+                                  ])
+                                ])
+                              : _vm._e()
+                          ])
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "form-group row" }, [
@@ -93678,10 +93723,10 @@ var isApiSetUp = false;
  *                    `{ client: <YOUR-CLIENT-ID> }`.
  *                  You may pass the libraries and/or version (as `v`) parameter into
  *                  this parameter and skip the next two parameters
- * @param version   Google Maps version
+ * @param version   Google for Maps version
  * @param libraries Libraries to load (@see
  *                  https://developers.google.com/maps/documentation/javascript/libraries)
- * @param loadCn    Boolean. If set to true, the map will be loaded from google maps China
+ * @param loadCn    Boolean. If set to true, the map will be loaded form goole maps China
  *                  (@see https://developers.google.com/maps/documentation/javascript/basics#GoogleMapsChina)
  *
  * Example:
@@ -93727,7 +93772,7 @@ var loadGmapApi = exports.loadGmapApi = function (options, loadCn) {
     var baseUrl = 'https://maps.googleapis.com/';
 
     if (typeof loadCn === 'boolean' && loadCn === true) {
-      baseUrl = 'https://maps.google.cn/';
+      baseUrl = 'http://maps.google.cn/';
     }
 
     var url = baseUrl + 'maps/api/js?' + Object.keys(options).map(function (key) {

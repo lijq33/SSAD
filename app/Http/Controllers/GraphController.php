@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use Facebook\Facebook;
 use Facebook\Exceptions\FacebookSDKException;
 use Illuminate\Support\Facades\Auth;
@@ -10,21 +11,45 @@ class GraphController extends Controller
 {
     private $api;
    
-    public function __construct(/*Facebook $fb*/)
+    public function __construct()
     {
-     
-            $config = config('services.facebook');
-            $fb = new Facebook([
-                'app_id' => '610989759339386',
-                'app_secret' =>'9900d6676b7faad607a63cdb60518f14',
-                'default_graph_version' => 'v2.6',
-            ]);
-        
+
+        $config = config('services.facebook');
+        $fb = new Facebook([
+            'app_id' => $config['cilent_id'],
+            'app_secret' => $config['client_secret'],
+            'default_graph_version'=> 'v2.6',
+        ]);
 
         $this->api = $fb;
-       
     }
  
+    public function publishToPage($message){
+        try{
+            $post= $this->api->post('/'.env('FACEBOOK_PAGE_ID').'/feed',array('message' => $message)
+            ,env('FACEBOOK_ACCESS_TOKEN'));
+           
+            $post= $post->getGraphNode()->asArray();
+           
+            return $post['id'];
+        }catch (FacebookSDKException $e){
+            dd($e); // handle exception
+        }
+    }
+
+    public function updatePost($message,$post_id){
+        try{
+            $post= $this->api->post('/'.$post_id,array('message' => $message)
+            ,env('FACEBOOK_ACCESS_TOKEN'));
+
+            $post= $post->getGraphNode()->asArray();
+            
+        }catch (FacebookSDKException $e){
+            dd($e); // handle exception
+        }
+    }
+
+
     public function retrieveUserProfile(){
         try {
  
@@ -33,7 +58,7 @@ class GraphController extends Controller
             $user = $this->api->get('/me?fields='.$params)->getGraphUser();
  
             dd($user);
- 
+
         } catch (FacebookSDKException $e) {
  
         }
@@ -52,6 +77,7 @@ class GraphController extends Controller
             dd($e); // handle exception
         }
     }
+    
     public function getPageAccessToken($page_id){
         try {
              // Get the \Facebook\GraphNodes\GraphUser object for the current user.
@@ -78,44 +104,5 @@ class GraphController extends Controller
             dd($e); // handle exception
         }
     }
-
-    public function publishToPage($message){
-        $page_id='342236433072588';
-       
-
-        try{
-            $post= $this->api->post('/'.$page_id.'/feed',array('message' => $message)
-            ,'EAAIrsSORG3oBAFlRZANTDB8svZB9naEZCNehPLJBkxUbQ20S1FhGIbb17k48vHZCPIOylTWb3w
-            9hqTbhfDZBfCZCKkjlLYZBElPJmVuNcWyGq56vlNfEv0qz9q4M9ZAMZAn0p49mxxEGFOLBbcBJKxx9GieYsKqFz4KZA9odMTsHNzAgZDZD');
-           
-
-            $post= $post->getGraphNode()->asArray();
-           
-            dd($post);
-            return $post['id'];
-        }catch (FacebookSDKException $e){
-            dd($e); // handle exception
-        }
-    }
-
-    public function updatePost($message,$post_id){
-        $page_id='342236433072588';
-        
-
-        try{
-            $post= $this->api->post('/'.$page_id.'_'.$post_id,array('message' => $message)
-            ,'EAAIrsSORG3oBAFlRZANTDB8svZB9naEZCNehPLJBkxUbQ20S1FhGIbb17k48vHZCPIOylTWb3w
-            9hqTbhfDZBfCZCKkjlLYZBElPJmVuNcWyGq56vlNfEv0qz9q4M9ZAMZAn0p49mxxEGFOLBbcBJKxx9GieYsKqFz4KZA9odMTsHNzAgZDZD');
-           
-
-            $post= $post->getGraphNode()->asArray();
-            
-            dd($post);
-            
-        }catch (FacebookSDKException $e){
-            dd($e); // handle exception
-        }
-    }
-
 
 }

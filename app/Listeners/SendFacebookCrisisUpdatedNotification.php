@@ -3,6 +3,10 @@
 namespace App\Listeners;
 
 use App\Events\CrisisUpdated;
+use App\Crisis;
+use App\Http\Controllers\GraphController;
+
+
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -31,6 +35,7 @@ class SendFacebookCrisisUpdatedNotification
         $crisis = $event->crisis;
         $message = "Update for the ".$crisis->crisis_type. " on ".$crisis->date 
          . " at " . $crisis->address. ", " . $crisis->description;
-        $postid = $graph->updatePost($message,'345664546063110');
+        
+        $graph->updatePost($message,$crisis->facebook_post_id);
     }
 }

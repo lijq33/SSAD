@@ -29,8 +29,8 @@ class CreateCrisesTable extends Migration
             $table->string('address');
             $table->string('crisis_type');
 
-            $table->integer('twitter_post_id')->nullable();
-            $table->integer('facebook_post_id')->nullable();
+            $table->string('twitter_post_id')->nullable();
+            $table->string('facebook_post_id')->nullable();
 
             $table->softDeletes();
             $table->timestamps();
