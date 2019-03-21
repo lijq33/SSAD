@@ -33,6 +33,8 @@ class Crisis extends Model
         'name' => 'bail|required',
         'telephoneNumber' => 'bail|required|integer|digits:8',
         'postalCode' => 'bail|required|integer|digits:6',
+        'lat' => 'required|integer',
+        'lng' => 'required|integer',
         'date' => 'bail|required|date_format:d/m/Y|before:tomorrow',
         'time' => 'required',
         'address' => 'required',
@@ -44,7 +46,7 @@ class Crisis extends Model
      *
      * @var array
     */
-    protected $fillable = ['user_id', 'name', 'telephone_number', 'postal_code', 'date', 'time', 'address', 
+    protected $fillable = ['user_id', 'name', 'telephone_number', 'postal_code', 'date', 'time', 'address', 'lat', 'lng',
                             'crisis_type', 'status', 'description', 'twitter_post_id', 'facebook_post_id'];
 
     public static function newCrisis($data){

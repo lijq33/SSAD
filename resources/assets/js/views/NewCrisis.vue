@@ -258,6 +258,11 @@
                     description: '',
                     assistanceRequired: [],
                     crisisType: null,
+                    
+                    lat: '',
+                    lng: '',
+
+                    geocode:'',
                 }
             }
         },
@@ -266,8 +271,8 @@
             bestAddressMatch(geocoder, pos, serviceFormatedAddress,matchPostalCode){ 
                 var scope = this;
                 var foundBestMatch = false;
-
-                 geocoder.geocode({ location: pos }, function(results, status) {
+                
+                geocoder.geocode({ location: pos }, function(results, status) {
                     if (status === "OK") {
                         results.forEach(element => {
                             if(element.formatted_address.includes(matchPostalCode)){
@@ -299,7 +304,10 @@
                             scope.form.postalCode = address_component.short_name;
                         }
                     });
-    
+
+                    scope.form.lat = place.geometry.location.lat();
+                    scope.form.lng = place.geometry.location.lng();
+
                     var pos = {
                         lat: place.geometry.location.lat(),
                         lng: place.geometry.location.lng()

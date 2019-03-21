@@ -220,6 +220,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         
+        'Map' => App\Facades\Map::class,
+
         'Twitter'=> Thujohn\Twitter\Facades\Twitter::class,
     ],
 
