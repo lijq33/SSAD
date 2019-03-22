@@ -100,13 +100,13 @@ export default {
         ) {
           console.log("click");
           scope.drawCircle.marker = new google.maps.Marker({
+            icon:'https://cdn4.iconfinder.com/data/icons/cologne/32x32/flag.png',
             draggable: true,
             position: event.latLng,
             map: map
           });
 
-            
-          scope.drawCircle.circle = new google.maps.Circle({
+           scope.drawCircle.circle = new google.maps.Circle({
             path: google.maps.SymbolPath.CIRCLE,
             strokeColor: circleData.circleFillColor,
             strokeOpacity: 1,

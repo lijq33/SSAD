@@ -82556,6 +82556,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           scope.drawCircle.clickMarkerListener = google.maps.event.addListener(map, "click", function (event) {
             console.log("click");
             scope.drawCircle.marker = new google.maps.Marker({
+              icon: 'https://cdn4.iconfinder.com/data/icons/cologne/32x32/flag.png',
               draggable: true,
               position: event.latLng,
               map: map
