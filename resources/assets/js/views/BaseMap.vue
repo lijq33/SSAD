@@ -1,6 +1,9 @@
 <template>
   <div>
 
+    <!-- draw circle -->
+    <draw-circle :circle-full-address="drawCircle.circleFullAddress" @get-circle-drawing="handleCircleData"/>
+
     <GmapMap
       ref="mapRef"
       style="width: auto; height: 600px;"
@@ -33,8 +36,7 @@
       /> -->
 
     </GmapMap>
-
-    
+ 
   </div>
 </template>
 
@@ -43,16 +45,19 @@ import bCollapse from "bootstrap-vue/es/components/collapse/collapse";
 import { ButtonGroup } from "bootstrap-vue/es/components";
 import { Modal } from "bootstrap-vue/es/components";
 import * as turf from "@turf/turf";
+import DrawCircle from './DrawCircle';
 
 export default {
   props: ["_place", "clearSearch","toggleData"],
 
   components: {
-    "b-collapse": bCollapse
+    "b-collapse": bCollapse,
+    drawCircle:DrawCircle
   },
 
   data() {
     return {
+      drawCircle:{marker:null,circle:null,draggableMarkerListener:null,clickMarkerListener:null,circleFullAddress:''},
       clearSearchVal: false,
       isLoading: false,
       zoom_lvl: 12,
@@ -81,6 +86,130 @@ export default {
   description: "",
 
   methods: {
+    enableCircleDrawing(circleData){
+      
+      var scope = this;
+
+      if(circleData.enableCircleDrawing){
+
+           this.$refs.mapRef.$mapPromise.then(map => {
+
+
+         scope.drawCircle.clickMarkerListener= google.maps.event.addListener(map, "click", function(
+          event
+        ) {
+          console.log("click");
+          scope.drawCircle.marker = new google.maps.Marker({
+            draggable: true,
+            position: event.latLng,
+            map: map
+          });
+
+            
+          scope.drawCircle.circle = new google.maps.Circle({
+            path: google.maps.SymbolPath.CIRCLE,
+            strokeColor: circleData.circleFillColor,
+            strokeOpacity: 1,
+            strokeWeight: 1,
+            fillColor: circleData.circleFillColor,
+            fillOpacity: 0.35,
+            map: map,
+            center: event.latLng,
+            radius: circleData.circleRadiusValue
+          });
+
+          //code can be further optimized
+          //or retrieve from backend
+          new google.maps.Geocoder().geocode(
+              {
+                location: event.latLng 
+              },
+              function(results, status) {
+                if (status === "OK") {
+                  scope.drawCircle.circleFullAddress = results[0].formatted_address; 
+
+                }
+              }
+            );
+         
+            scope.drawCircle.draggableMarkerListener = google.maps.event.addListener(scope.drawCircle.marker, "dragend", function(marker) {
+            
+            var latLng = marker.latLng;
+            var currentLatitude = latLng.lat();
+            var currentLongitude = latLng.lng();
+
+             scope.drawCircle.circle.setOptions({center:{lat:currentLatitude,lng:currentLongitude}});       
+
+            new google.maps.Geocoder().geocode(
+              {
+                location: {
+                  lat: currentLatitude,
+                  lng: currentLongitude
+                }
+              },
+              function(results, status) {
+                if (status === "OK") {
+                  scope.drawCircle.circleFullAddress = results[0].formatted_address;  
+
+                }
+              }
+            );
+          });
+
+          //remove click on map listenser
+
+          if(scope.drawCircle.clickMarkerListener != null ){
+            google.maps.event.removeListener(scope.drawCircle.clickMarkerListener);
+             
+          } 
+        });
+
+      });
+
+       if(scope.drawCircle.clickMarkerListener != null ){
+          google.maps.event.removeListener( scope.drawCircle.clickMarkerListener);
+            
+        } 
+
+      }else{
+        //remove circle listener
+        //remove marker & circle
+
+        if(scope.drawCircle.marker != null || scope.drawCircle.circle != null){
+          scope.drawCircle.marker.setMap(null);
+          scope.drawCircle.circle.setMap(null);
+        google.maps.event.removeListener(scope.drawCircle.draggableMarkerListener);
+        }
+
+        this.drawCircle.circleFullAddress = ''; 
+         
+      }
+
+    },
+    circleFillColor(circleData){
+
+      if(this.drawCircle.circle != null){
+       this.drawCircle.circle.setOptions({fillColor: circleData.circleFillColor,strokeColor: circleData.circleFillColor});   
+      }
+
+    },
+     circleRadiusValue(circleData){
+        if(this.drawCircle.circle != null){
+        this.drawCircle.circle.setOptions({radius:circleData.circleRadiusValue});   
+        } 
+       
+    },
+    handleCircleData(circleData){
+        
+        if(circleData.circleDataChangedType =="enableCircleDrawing" || !circleData.circleDataChangedType =="enableCircleDrawing"){
+          this.enableCircleDrawing(circleData);
+        }else if(circleData.circleDataChangedType == "circleFillColor"){
+          this.circleFillColor(circleData);
+        }else if(circleData.circleDataChangedType == "circleRadiusValue"){
+          this.circleRadiusValue(circleData);
+        }
+      
+    },
     removeMarkers(markerType){
     
       for(var i=0; i<this.markers.length; i++){
