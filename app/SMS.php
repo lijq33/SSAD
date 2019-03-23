@@ -23,5 +23,4 @@ class SMS extends Model
             'text' => $content
         ]);
     }
-
 }
