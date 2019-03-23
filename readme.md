@@ -5,9 +5,6 @@ npm install
 Open mysql, create a schema name 'ssad'
 
 ##.env
-copy from env and paste it to .env
-OR
-add:
 NEXMO_API_KEY=6e2a812f
 NEXMO_API_SECRET=bWjtpcyA22k3yjlq
 BUGSNAG_API_KEY=9ee055d7d91335afdfefd7e8cdedbefb
@@ -133,8 +130,11 @@ Email - Mail Swift
 
 
 
-
-
+##Design
+#facade design pattern
+Mapservice
+SMS 
+Mail
 
 
 ##Non-Functional Requirement - Security

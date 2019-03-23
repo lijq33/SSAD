@@ -27,8 +27,6 @@ class CreateCrisesTable extends Migration
             $table->string('status');
             $table->longText('description')->nullable();
             $table->string('address');
-            $table->integer('lat');
-            $table->integer('lng');
 
             $table->string('crisis_type');
 

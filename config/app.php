@@ -166,7 +166,7 @@ return [
         * Other Service Providers...
         */
         Nexmo\Laravel\NexmoServiceProvider::class,
-		
+        App\Services\GoogleServiceProvider::class,
 		Thujohn\Twitter\TwitterServiceProvider::class,
 
     ],

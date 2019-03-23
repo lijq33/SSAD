@@ -98,11 +98,13 @@ class SubscriberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($telephone_number)
+    public function destroy(Request $request)
     {
         $data = request()->all();
 
-        Subscriber::find($data);
+        Subscriber::with('name', $data['name']) 
+            ->with('telephone_number', $data['telephone_number'])
+            ->with('email', $data['email']);
     }
 
 }

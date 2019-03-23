@@ -6,6 +6,8 @@ use Tests\TestCase;
 use App\User;
 use App\Crisis;
 USE Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Events\CrisisUpdated;
+use Illuminate\Support\Facades\Event;
 
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,7 +17,26 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 class UpdateCrisisTest extends TestCase
 {
     use DatabaseMigrations;
+
+    public $password = '12345!qW';
+
     
+    public function setUp()
+    {
+        parent::setUp();
+
+        Event::fake();
+    }
+
+    
+    /** @test */
+    public function it_can_dispatch_an_CrisisUpdated_event_when_crisis_get_updated()
+    {
+        $this->it_can_update_a_new_crisis_as_CrisisManager();
+        Event::assertDispatched(CrisisUpdated::class);
+    
+    }
+
     /** @test */
     public function it_can_update_a_new_crisis_as_CrisisManager()
     {
@@ -28,7 +49,7 @@ class UpdateCrisisTest extends TestCase
 
         $login = $this->post('/api/auth/login',[
             'nric' => $user->nric,
-            'password' => '123123',
+            'password' => $this->password,
         ]);
 
         $login->assertStatus(200);
@@ -62,7 +83,7 @@ class UpdateCrisisTest extends TestCase
 
             $login = $this->post('/api/auth/login',[
                 'nric' => $user->nric,
-                'password' => '123123',
+                'password' => $this->password,
             ]);
 
             $login->assertStatus(200);

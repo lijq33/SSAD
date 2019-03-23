@@ -8,7 +8,7 @@ USE Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class UserTest extends TestCase
+class SubscriberTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -82,6 +82,15 @@ class UserTest extends TestCase
     /** @test */
     public function it_can_unsubscribe_to_sms()
     {
-        
+        $this->it_can_subscribe_to_sms();
+
+        $response = $this->post('/api/auth/subscriber/delete', [
+            'email' => 'test@test.com',
+            'name' => 'testing name',
+            'telephone_number' => '98765432',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertSuccessful();
     }
 }
