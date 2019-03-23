@@ -84,6 +84,10 @@ class SubscriberController extends Controller
 
         Subscriber::newSubscription($data);
         
+        $sms = new SMS();
+        $content = "Hi ".$data['name'].". You have subscribed to crisis alert SMS Service.";
+        $sms->sendSMS($data['telephone_number'],  $content);
+
         return response()->json([
             'message' => 'You have successfully subscribe to our services. You will be redirected shortly',
             'url' => $this->redirectTo
@@ -102,9 +106,26 @@ class SubscriberController extends Controller
     {
         $data = request()->all();
 
-        Subscriber::with('name', $data['name']) 
-            ->with('telephone_number', $data['telephone_number'])
-            ->with('email', $data['email']);
+        $subscribe = Subscriber::where('name', $data['name']) 
+            ->where('telephone_number', $data['telephone_number'])
+            ->where('email', $data['email'])
+            ->get();
+  
+        if($subscribe->isEmpty()){
+            return response()->json([
+                'message' => 'You have not subscribe to our service.',
+            ], 422);
+        }
+        $subscribe->delete();
+
+        $sms = new SMS();
+        $content = "Hi ".$data['name'].". You have unsubscribed to crisis alert SMS Service.";
+        $sms->sendSMS($data['telephone_number'],  $content);
+    
+        return response()->json([
+            'message' => 'You have unsubscribe to our services. You will be redirected shortly',
+            'url' => $this->redirectTo
+        ], 200);
     }
 
 }

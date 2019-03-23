@@ -18,14 +18,14 @@ class SubscriberTest extends TestCase
         $response = $this->post('/api/auth/subscriber', [
             'email' => 'test@test.com',
             'name' => 'testing name',
-            'telephone_number' => '98765432',
+            'telephone_number' => '96325376',
         ]);
 
         $response->assertStatus(200);
         $response->assertSuccessful();
 
         $this->assertDatabaseHas('subscribers', [
-            'telephone_number' => '98765432',
+            'telephone_number' => '96325376',
         ]);
     }
 
@@ -35,20 +35,20 @@ class SubscriberTest extends TestCase
         $response = $this->post('/api/auth/subscriber', [
             'email' => 'test1@test.com',
             'name' => 'testing name',
-            'telephone_number' => '98765432',
+            'telephone_number' => '96325376',
         ]);
 
         $response->assertStatus(200);
         $response->assertSuccessful();
 
         $this->assertDatabaseHas('subscribers', [
-            'telephone_number' => '98765432',
+            'telephone_number' => '96325376',
         ]);
 
         $response = $this->post('/api/auth/subscriber', [
             'email' => 'test2@test.com',
             'name' => 'testing name',
-            'telephone_number' => '98765432',
+            'telephone_number' => '96325376',
         ]);
 
         $response->assertStatus(422);
@@ -60,14 +60,14 @@ class SubscriberTest extends TestCase
         $response = $this->post('/api/auth/subscriber', [
             'email' => 'test@test.com',
             'name' => 'testing name',
-            'telephone_number' => '98765432',
+            'telephone_number' => '96325376',
         ]);
 
         $response->assertStatus(200);
         $response->assertSuccessful();
 
         $this->assertDatabaseHas('subscribers', [
-            'telephone_number' => '98765432',
+            'telephone_number' => '96325376',
         ]);
 
         $response = $this->post('/api/auth/subscriber', [
@@ -87,10 +87,25 @@ class SubscriberTest extends TestCase
         $response = $this->post('/api/auth/subscriber/delete', [
             'email' => 'test@test.com',
             'name' => 'testing name',
-            'telephone_number' => '98765432',
+            'telephone_number' => '96325376',
         ]);
 
         $response->assertStatus(200);
         $response->assertSuccessful();
+
+        $this->assertDatabaseMissing('subscribers', [
+            'telephone_number' => '96325376',
+        ]);
+    }
+    /** @test */
+    public function it_cannot_unsubscribe_to_sms_when_not_subscribed()
+    {
+        $response = $this->post('/api/auth/subscriber/delete', [
+            'email' => 'test@test.com',
+            'name' => 'testing name',
+            'telephone_number' => '12341234',
+        ]);
+
+        $response->assertStatus(401);
     }
 }

@@ -23,6 +23,16 @@
                         <li>
                             <router-link to="/subscribe" class="nav-link">Subscribe</router-link>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+                                Subscription
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <router-link to="/subscribe" class="nav-link">Subscribe</router-link>
+                                <router-link to="/unsubscribe" class="nav-link">Unsubscribe</router-link>
+                            </div>
+                        </li>
                     </template>
 
                     <template v-if = "isCallCenterOperator">
@@ -96,6 +106,7 @@
         name: 'app-header',
         methods: {
             logout() {
+                this.axios.post('/api/auth/logout');
                 this.$store.commit('logout');
                 this.$router.push('/login');
             }

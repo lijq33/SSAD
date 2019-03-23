@@ -11,7 +11,11 @@ export const routes = [
     },
     {
         path : '/subscribe',
-        component: require('./views/Subscriber.vue')
+        component: require('./views/Subscribe.vue')
+    },  
+    {
+        path : '/unsubscribe',
+        component: require('./views/Unsubscribe.vue')
     },  
     //account manager
     {

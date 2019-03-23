@@ -50,6 +50,18 @@ class UserTest extends TestCase
     }
 
     /** @test*/
+    public function it_can_log_a_user_out()
+    {
+        $this->loginWithAccountManager();
+
+        $response = $this->post('/api/auth/logout');
+
+        $response->assertStatus(200);
+        $response->assertJson(['message' => 'Successfully logged out']);
+    }
+
+        
+    /** @test*/
     public function it_cannot_log_a_user_in_with_incorrect_credentials()
     {
         $user = factory(User::class)
