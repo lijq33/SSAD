@@ -11,8 +11,13 @@ add:
 NEXMO_API_KEY=6e2a812f
 NEXMO_API_SECRET=bWjtpcyA22k3yjlq
 BUGSNAG_API_KEY=9ee055d7d91335afdfefd7e8cdedbefb
-FACEBOOK_PAGE_ID=342236433072588
 run php artisan jwt:secret
+
+FACEBOOK_PAGE_ID=342236433072588
+FACEBOOK_CLIENT_ID=610989759339386
+FACEBOOK_CLIENT_SECRET=9900d6676b7faad607a63cdb60518f14
+FACEBOOK_ACCESS_TOKEN=EAAIrsSORG3oBAFlRZANTDB8svZB9naEZCNehPLJBkxUbQ20S1FhGIbb17k48vHZCPIOylTWb3w9hqTbhfDZBfCZCKkjlLYZBElPJmVuNcWyGq56vlNfEv0qz9q4M9ZAMZAn0p49mxxEGFOLBbcBJKxx9GieYsKqFz4KZA9odMTsHNzAgZDZD
+
 
 #starting the services
 composer require guzzlehttp/guzzle
@@ -182,3 +187,10 @@ Example.
 The current user has an id of 1 - Call center Ops. However when he post the data to the server, he stat that he has an id of 2 - SuperAdmin. Hence, we shouldn't trust user input. Thus, we always fetch the current user at the backend, where user input is not required.         
 $user = new User();
 $data['id'] = $user->fetchUser()['id'];
+
+#Password
+minimum length of password is 8 and it should include:
+    Uppercase characters (A – Z)
+    Lowercase characters (a – z)
+    Numerical digits (0 – 9)
+    Non-alphanumeric (!, $, #, %)

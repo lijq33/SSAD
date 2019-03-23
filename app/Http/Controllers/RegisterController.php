@@ -72,7 +72,7 @@ class RegisterController extends Controller
                         'min:8',
                         'confirmed',
                         'max:30',
-                        'regex:/^.*(?=.{5,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/'
+                        'regex:/^.*(?=.{5,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@#$%^&*()]).*$/'
                     ),
             'email' => 'bail|required|string|email|max:255|unique:users',
             'name' => 'bail|required|string|max:255',

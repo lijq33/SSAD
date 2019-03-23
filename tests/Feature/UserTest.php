@@ -26,7 +26,7 @@ class UserTest extends TestCase
 
         $login = $this->post('/api/auth/login',[
             'nric' => $user->nric,
-            'password' => '123123',
+            'password' => '12345!qW',
         ]);
 
         $login->assertStatus(200);
@@ -83,7 +83,7 @@ class UserTest extends TestCase
             
         $login = $this->post('/api/auth/login',[
             'nric' => $user->nric,
-            'password' => '123123',
+            'password' => '12345!qW',
         ]);
 
         $login->assertStatus(200);
@@ -97,8 +97,8 @@ class UserTest extends TestCase
                 'nric' => $nric,
                 'email' => $this->faker->email(),
                 'name' => $this->faker->firstName(),
-                'password' => '123456',
-                'password_confirmation' => '123456',
+                'password' => '12345!qW',
+                'password_confirmation' => '12345!qW',
                 'telephone_number' => random_int(90000000 ,99999999),
                 'roles' => $role,
             ]);
@@ -124,14 +124,14 @@ class UserTest extends TestCase
                 
             $login = $this->post('/api/auth/login',[
                 'nric' => $user->nric,
-                'password' => '123123',
+                'password' => '12345!qW',
             ]);
 
             $login->assertStatus(200);
 
             $nric = "S".random_int(9000000 ,9999999)."Z";
 
-            $response = $this->post('/api/register', [
+            $response = $this->post('/api/auth/register', [
                 'nric' => $nric,
                 'email' => $this->faker->email(),
                 'name' => $this->faker->firstName(),
@@ -158,14 +158,14 @@ class UserTest extends TestCase
         
         $login = $this->post('/api/auth/login',[
             'nric' => $user->nric,
-            'password' => '123123',
+            'password' => '12345!qW',
         ]);
 
         $login->assertStatus(200);
 
         $email = $this->faker->email();
 
-        $response = $this->post('/api/register', [
+        $response = $this->post('/api/auth/register', [
             'nric' =>  "S9765432Z",
             'email' => $email,
             'name' => $this->faker->firstName(),
@@ -181,7 +181,7 @@ class UserTest extends TestCase
             'nric' =>  "S9765432Z",
         ]);
 
-        $response = $this->post('/api/register', [
+        $response = $this->post('/api/auth/register', [
             'nric' =>  "S9765431Z",
             'email' => $email,
             'name' => $this->faker->firstName(),
@@ -203,13 +203,13 @@ class UserTest extends TestCase
         
         $login = $this->post('/api/auth/login',[
             'nric' => $user->nric,
-            'password' => '123123',
+            'password' => '12345!qW',
         ]);
 
         $login->assertStatus(200);
 
         //Short NRIC
-        $response = $this->post('/api/register', [
+        $response = $this->post('/api/auth/register', [
             'nric' =>  "S976543Z",
             'email' => "test@test.com",
             'name' => $this->faker->firstName(),
@@ -226,7 +226,7 @@ class UserTest extends TestCase
         ]);
 
         //Long NRIC
-        $response = $this->post('/api/register', [
+        $response = $this->post('/api/auth/register', [
             'nric' =>  "S97654322Z",
             'email' => "test@test.com",
             'name' => $this->faker->firstName(),
@@ -243,7 +243,7 @@ class UserTest extends TestCase
         ]);
         
         //Empty NRIC
-        $response = $this->post('/api/register', [
+        $response = $this->post('/api/auth/register', [
             'nric' =>  "",
             'email' => "test@test.com",
             'name' => $this->faker->firstName(),
@@ -270,13 +270,13 @@ class UserTest extends TestCase
         
         $login = $this->post('/api/auth/login',[
             'nric' => $user->nric,
-            'password' => '123123',
+            'password' => '12345!qW',
         ]);
 
         $login->assertStatus(200);
 
         //Short telephone
-        $response = $this->post('/api/register', [
+        $response = $this->post('/api/auth/register', [
             'nric' =>  "S976543Z",
             'email' => "test@test.com",
             'name' => $this->faker->firstName(),
@@ -293,7 +293,7 @@ class UserTest extends TestCase
         ]);
 
         //Long telephone
-        $response = $this->post('/api/register', [
+        $response = $this->post('/api/auth/register', [
             'nric' =>  "S976543Z",
             'email' => "test@test.com",
             'name' => $this->faker->firstName(),
@@ -310,7 +310,7 @@ class UserTest extends TestCase
         ]);
         
         //Empty telephone
-        $response = $this->post('/api/register', [
+        $response = $this->post('/api/auth/register', [
             'nric' =>  "S9876543Z",
             'email' => "test@test.com",
             'name' => $this->faker->firstName(),
@@ -327,7 +327,7 @@ class UserTest extends TestCase
         ]);
     
         //Alphable in telephone
-        $response = $this->post('/api/register', [
+        $response = $this->post('/api/auth/register', [
             'nric' =>  "S9876543Z",
             'email' => "test@test.com",
             'name' => $this->faker->firstName(),
@@ -353,13 +353,13 @@ class UserTest extends TestCase
         
         $login = $this->post('/api/auth/login',[
             'nric' => $user->nric,
-            'password' => '123123',
+            'password' => '12345!qW',
         ]);
 
         $login->assertStatus(200);
 
         //Short telephone
-        $response = $this->post('/api/register', [
+        $response = $this->post('/api/auth/register', [
             'nric' =>  "S976543Z",
             'email' => "test@test.com",
             'name' => $this->faker->firstName(),
