@@ -100,6 +100,8 @@ class UpdateCrisisTest extends TestCase
                 'status' => 'resolved',
                 'description' => 'updated description',
             ]);
+
+            $this->post('/api/auth/logout');
         }
 
     }

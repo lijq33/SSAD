@@ -41,29 +41,6 @@ class SubscriberController extends Controller
         $this->middleware('guest');
     }
 
-    // public function index()
-    // {
-    //     $crisis = \App\Crisis::find(1)->first();
-
-    //     event(new CrisisCreated($crisis));
-
-    //     $subscribers = Subscriber::all();
-        
-    //     if($subscribers->isEmpty()){
-    //         var_dump("empty");
-    //         return;
-    //     }
-
-
-    //     foreach($subscribers as $subscriber){
-    //         var_dump($subscriber->telephone_number);
-    //         var_dump($subscriber->name);
-    //         // $content = $event->crisis;
-    //         // $sms->sendSMS($subscriber->telephone_number,  $content);
-    //     }
-    // }
-
-
     /**
      * Create a new user instance after a valid registration.
      *
@@ -108,14 +85,14 @@ class SubscriberController extends Controller
 
         $subscribe = Subscriber::where('name', $data['name']) 
             ->where('telephone_number', $data['telephone_number'])
-            ->where('email', $data['email'])
-            ->get();
+            ->where('email', $data['email']);
   
-        if($subscribe->isEmpty()){
+        if($subscribe->get()->isEmpty()){
             return response()->json([
                 'message' => 'You have not subscribe to our service.',
             ], 422);
         }
+
         $subscribe->delete();
 
         $sms = new SMS();

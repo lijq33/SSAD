@@ -23,8 +23,6 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('me', 'AuthController@me');
     Route::post('subscriber', 'SubscriberController@store');
     Route::post('subscriber/delete', 'SubscriberController@destroy');
-    // Route::get('subscriber', 'SubscriberController@index');
-
 });
 
 

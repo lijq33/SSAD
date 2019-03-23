@@ -106,6 +106,6 @@ class SubscriberTest extends TestCase
             'telephone_number' => '12341234',
         ]);
 
-        $response->assertStatus(401);
+        $response->assertStatus(422);
     }
 }
