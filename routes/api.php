@@ -20,6 +20,12 @@ Route::get('address/autocomplete/{id}.json', ['as' => 'json.autocomplete.address
 Route::get('address/geocode/{query}.json', ['as' => 'json.geocode.address', 'uses' => 'MapsController@geocode']);
 
 
+Route::get('crisis/gasLeak', 'CrisisController@gasLeakCrisis');
+Route::get('crisis/fire', 'CrisisController@fireCrisis');
+Route::get('crisis/dengue', 'CrisisController@dengueCrisis');
+
+
+
 Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');

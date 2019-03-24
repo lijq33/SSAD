@@ -106,7 +106,7 @@
         name: 'app-header',
         methods: {
             logout() {
-                this.axios.post('/api/auth/logout');
+                axios.post('/api/auth/logout');
                 this.$store.commit('logout');
                 this.$router.push('/login');
             }

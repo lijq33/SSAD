@@ -127,4 +127,47 @@ class CrisisController extends Controller
             'message' => 'Crisis has been archived'
         ]);
     }
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function dengueCrisis()
+    {
+        $crises = Crisis::where('crisis_type', 'Dengue');
+
+        return response()->json([
+            'crises' => $crises,
+        ], 200);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function fireCrisis()
+    {
+        $crises = Crisis::where('crisis_type', 'Fire Outbreak');
+
+        return response()->json([
+            'crises' => $crises,
+        ], 200);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function gasLeakCrisis()
+    {
+        $crises = Crisis::where('crisis_type', 'Gas Leak');
+
+        return response()->json([
+            'crises' => $crises,
+        ], 200);
+    }
+
 }

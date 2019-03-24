@@ -6,10 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\Agency;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Map;
 
 class Crisis extends Model
 {
     use SoftDeletes;
+
+    protected $appends = ['lat', 'lng'];
+
+    
+    public function getLatAttribute(){
+        $response = Map::findLocation($this->attributes['postal_code']);
+        return $response['lat'];
+    }
+
+    
+    public function getLngAttribute(){
+        $response = Map::findLocation($this->attributes['postal_code']);
+        return $response['lng'];
+    }
 
     /**
      * Get the user that submitted the crisis.
