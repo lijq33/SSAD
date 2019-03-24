@@ -4,29 +4,7 @@
     <b-button @click="drawCirle">Draw circle</b-button>
 
     <div v-if="drawCircle.enableCircleDrawing">
-
-      <!-- Address -->
-      <div class="form-group row">
-        <label
-          for="Address"
-          class="col-md-1 col-form-label"
-        >
-          Address:
-        </label>
-        <div class="col-md-6">
-          <input
-            type="text"
-            class="tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic"
-            id="Address"
-            v-model="form.address"
-            placeholder=""
-            required
-            autofocus
-            disabled
-          >
-        </div>
-      </div>
-
+ 
       <vue-slider
         v-model="drawCircle.circleRadiusValue"
         :min="minValue"
@@ -48,7 +26,11 @@
           ></swatches>
         </div>
       </div>
+
+      <b-button variant="primary" >Save</b-button>
     </div>
+
+    
 
   </div>
 </template>
@@ -60,7 +42,6 @@ import Swatches from "vue-swatches";
 import "vue-swatches/dist/vue-swatches.min.css";
 
 export default {
-  props: ["circleFullAddress"],
 
   components: {
     VueSlider,
@@ -71,9 +52,6 @@ export default {
     return {
       minValue: 0,
       maxValue: 21,
-      form: {
-        address: ""
-      },
       drawCircle: {
         enableCircleDrawing: false,
         circleDataChangedType: null,

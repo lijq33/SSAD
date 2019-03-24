@@ -116,11 +116,19 @@
                                                 Location:
                                             </label>
                                             <div class = "col-md-6">
-                                                <GmapAutocomplete
-                                                    class="tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64"
-                                                    @place_changed="setPlace"
-                                                    ref="autocomplete"
-                                                ></GmapAutocomplete>
+                                                <div v-if= "form.crisisType == 'Dengue'" >
+                                                    <!-- dengue -->
+                                                    <button class = "btn btn-primary" style = "margin-right:5px;" @click = "displayModal">
+                                                        Open Map
+                                                    </button>
+                                                </div>
+                                                <div v-else>
+                                                    <GmapAutocomplete
+                                                        class="tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64"
+                                                        @place_changed="setPlace"
+                                                        ref="autocomplete"
+                                                    ></GmapAutocomplete>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -173,9 +181,11 @@
                                         />
                                         <div class = "tw-text-red" v-if = "error['crisisType'] != undefined">
                                             <span> {{this.error['crisisType'].toString()}} </span>   
-                                        </div>
-                                    </div>
+                                        </div> 
+                                    </div>  
                                 </div>
+
+                                
 
                                 <!-- Description -->
                                 <div class = "card">
@@ -219,6 +229,16 @@
 
         <!--just a postal code helper without map reference -->
         <div id="service-helper"></div>
+
+        <!-- dengue map -->
+        	<div>
+			<map-modal
+				:dengue = "dengue"
+				:show-modal = "showModal"
+				@hideModal = "hideModal"
+			></map-modal>
+		</div>
+
     </div>
 </template>
 
@@ -226,12 +246,14 @@
     import 'vue-popperjs/dist/css/vue-popper.css';
     import Popper from 'vue-popperjs';
     import moment from 'moment';
+    import MapModal from '../components/MapModal.vue';
     
     export default {
         name: "NewCrisis",
 
         components: {
-            'popper': Popper
+            'popper': Popper,
+			'map-modal': MapModal,
         },
         
         data() {
@@ -248,6 +270,9 @@
                 isLoading: false,
                 error: [],
 
+                showModal: null,
+                dengue: null,
+                
                 form: {
                     name:'',
                     telephoneNumber:'',
@@ -258,6 +283,11 @@
                     description: '',
                     assistanceRequired: [],
                     crisisType: null,
+                    
+                    lat: '',
+                    lng: '',
+
+                    geocode:'',
                 }
             }
         },
@@ -300,6 +330,9 @@
                         }
                     });
 
+                    scope.form.lat = place.geometry.location.lat();
+                    scope.form.lng = place.geometry.location.lng();
+
                     var pos = {
                         lat: place.geometry.location.lat(),
                         lng: place.geometry.location.lng()
@@ -318,7 +351,7 @@
             submitCrisis() {
                 // this.isLoading = true;
                 this.message = "";
-                this.error = [];
+                this.error = "";
 
                 axios.post('/api/crisis', this.form)
                 .then(response => {
@@ -335,6 +368,8 @@
 
             resetFields() {
                 var scope = this; 
+                
+                this.$refs.autocomplete.$el.value = '';
 
                 Object.keys(this.form).forEach(function(key,index) {
                     scope.form[key] = '';
@@ -342,7 +377,17 @@
 
                 this.form.crisisType= null;
                 this.form.assistanceRequired= [];
-            }
+            },
+
+            displayModal() {
+				this.showModal = true;
+			},
+
+			hideModal() {
+				this.showModal = false;
+			},
+
+
 
         },
     }
