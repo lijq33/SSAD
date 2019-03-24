@@ -258,11 +258,6 @@
                     description: '',
                     assistanceRequired: [],
                     crisisType: null,
-                    
-                    lat: '',
-                    lng: '',
-
-                    geocode:'',
                 }
             }
         },
@@ -305,9 +300,6 @@
                         }
                     });
 
-                    scope.form.lat = place.geometry.location.lat();
-                    scope.form.lng = place.geometry.location.lng();
-
                     var pos = {
                         lat: place.geometry.location.lat(),
                         lng: place.geometry.location.lng()
@@ -326,7 +318,7 @@
             submitCrisis() {
                 // this.isLoading = true;
                 this.message = "";
-                this.error = "";
+                this.error = [];
 
                 axios.post('/api/crisis', this.form)
                 .then(response => {
