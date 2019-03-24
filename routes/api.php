@@ -15,6 +15,10 @@ use Illuminate\Http\Request;
 
 //edit, create, store, update, destory, show, index
 
+Route::get('address/postal_code/{id}.json', ['as' => 'json.postal_code', 'uses' => 'MapsController@getAddress']);
+Route::get('address/autocomplete/{id}.json', ['as' => 'json.autocomplete.address', 'uses' => 'MapsController@autocomplete']);
+Route::get('address/geocode/{query}.json', ['as' => 'json.geocode.address', 'uses' => 'MapsController@geocode']);
+
 
 Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('login', 'AuthController@login');
@@ -40,9 +44,6 @@ Route::group(['middleware' => 'auth.crisismanager'], function ($router) {
 Route::group(['middleware' => 'auth.accountmanager'], function ($router) {
     Route::resource('register', 'RegisterController', ['except' => ['create', 'edit']]);
 });
-
-
-
 
 // 'auth.user'
 // 'auth.ccoperator'
