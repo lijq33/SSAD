@@ -135,7 +135,7 @@ class CrisisController extends Controller
     */
     public function dengueCrisis()
     {
-        $crises = Crisis::where('crisis_type', 'Dengue');
+        $crises = Crisis::where('crisis_type', 'Dengue')->get();
 
         return response()->json([
             'crises' => $crises,
@@ -149,7 +149,7 @@ class CrisisController extends Controller
     */
     public function fireCrisis()
     {
-        $crises = Crisis::where('crisis_type', 'Fire Outbreak');
+        $crises = Crisis::where('crisis_type', 'Fire Outbreak')->get();
 
         return response()->json([
             'crises' => $crises,
@@ -163,7 +163,7 @@ class CrisisController extends Controller
     */
     public function gasLeakCrisis()
     {
-        $crises = Crisis::where('crisis_type', 'Gas Leak');
+        $crises = Crisis::where('crisis_type', 'Gas Leak')->get();
 
         return response()->json([
             'crises' => $crises,

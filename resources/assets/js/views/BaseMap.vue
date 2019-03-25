@@ -1,106 +1,145 @@
 <template>
   <div>
 
-    <!-- draw circle -->
-    <draw-circle :circle-full-address="drawCircle.circleFullAddress" @get-circle-drawing="handleCircleData"/>
+    <!--autosearch -->
+    <auto-search @get-search-data="handleSearchData" @clear-Search="clearSearch"/>
+   
 
+    <!-- drawing tools extension -->
+   <div v-if= "enableDrawingToolsExtension" >
+      <b-card no-body>
+        <b-tabs pills card v-model="tabValue">
+           <!-- draw circle -->
+          <b-tab title="Circle" @click="getTabInfo('circleDrawingTools')"><draw-circle :circle-full-address="drawCircle.circleFullAddress" @get-circle-drawing="handleCircleData"/></b-tab>
+          <!-- <b-tab title="Rectangle" active>Tab Contents 2</b-tab> -->
+          <b-tab title="Square">Tab Contents 2</b-tab>
+        </b-tabs>
+      </b-card>
+    </div>
+    <div v-else>
+       <b-button variant="primary" @click="enableDrawingBtn">Enable Drawing Extension</b-button>
+    </div>
+  
+  
+    <!--toggle map @get-toggle-data="handleToggleData" -->
+    <toggle-map />
+
+    
+    <!-- google base map -->
     <GmapMap
       ref="mapRef"
       style="width: auto; height: 600px;"
       :zoom="zoom_lvl"
       :center="sgcoord"
     >
-      <!-- <gmap-info-window
-        :options="infoOptions"
-        :position="infoWindowPos"
-        :opened="infoWinOpen"
-        @closeclick="infoWinOpen=false"
-      >
-        <span v-html="infoContent"></span>
-      </gmap-info-window>
-
-      <GmapMarker
-        v-for="(marker, index) in markers"
-        :key="index"
-        :position="marker.position"
-        :clickable="true"
-        @click="toggleInfoWindow(marker,index)"
-      />
-
-      <GmapMarker
-        v-if="this.place"
-        label="★"
-        :position="{ lat: this.place.position.lat, lng: this.place.position.lng }"
-        :clickable="true"
-        @click="toggleInfoWindow(place,99)"
-      /> -->
-
     </GmapMap>
  
   </div>
 </template>
 
 <script>
-import bCollapse from "bootstrap-vue/es/components/collapse/collapse";
-import { ButtonGroup } from "bootstrap-vue/es/components";
 import { Modal } from "bootstrap-vue/es/components";
 import * as turf from "@turf/turf";
 import DrawCircle from './DrawCircle';
+import AutoSearchComplete from './AutoSearchComplete'
+import ToggleMap from './ToggleCrisisMap';
 
 export default {
-  props: ["_place", "clearSearch","toggleData"],
+  props: ["searchData","toggleData"],
 
   components: {
-    "b-collapse": bCollapse,
-    drawCircle:DrawCircle
+    drawCircle:DrawCircle,
+    autoSearch:AutoSearchComplete,
+    toggleMap:ToggleMap
   },
 
   data() {
     return {
+      searchMarker:null,
       drawCircle:{marker:null,circle:null,draggableMarkerListener:null,clickMarkerListener:null,circleFullAddress:''},
-      clearSearchVal: false,
       isLoading: false,
       zoom_lvl: 12,
       sgcoord: { lat: 1.3521, lng: 103.8198 },
       markers: [],
-      place: null,
-      nearbyplaces: [],
-      bookAptBtnStatus: true,
-      showAptBtnStatus: false,
-      selectedPlace: null,
-      infoContent: "",
-      infoWindowPos: null,
-      infoWinOpen: false,
-      currentMidx: null,
-      access_token: "",
-      childData: null,
-      modalShow: false,
-      infoOptions: {
-        pixelOffset: {
-          width: 0,
-          height: -35
-        }
-      }
+      enableDrawingToolsExtension:false,
+      tabValue:0
     };
   },
-  description: "",
-
   methods: {
-    enableCircleDrawing(circleData){
-      
-      var scope = this;
+    haveExistingSearchMarker(circleData){
 
-      if(circleData.enableCircleDrawing){
+      var scope =this;
 
-           this.$refs.mapRef.$mapPromise.then(map => {
+       this.$refs.mapRef.$mapPromise.then(map => {
+         console.log("have search marker")
 
+          if(scope.searchMarker){
 
-         scope.drawCircle.clickMarkerListener= google.maps.event.addListener(map, "click", function(
+               scope.drawCircle.marker = new google.maps.Marker({
+              draggable: true,
+              position: scope.searchMarker.position,
+              map: map
+            });
+
+            scope.drawCircle.circle = new google.maps.Circle({
+            path: google.maps.SymbolPath.CIRCLE,
+            strokeColor: circleData.circleFillColor,
+            strokeOpacity: 1,
+            strokeWeight: 1,
+            fillColor: circleData.circleFillColor,
+            fillOpacity: 0.35,
+            map: map,
+            center: scope.searchMarker.position,
+            radius: circleData.circleRadiusValue
+          });
+
+          //remove search marker from map
+              scope.searchMarker.setMap(null);
+              scope.searchMarker=null;
+
+             //attach draggend listener
+            scope.drawCircle.draggableMarkerListener = google.maps.event.addListener(scope.drawCircle.marker, "dragend", function(marker) {
+            
+            var latLng = marker.latLng;
+            var currentLatitude = latLng.lat();
+            var currentLongitude = latLng.lng();
+
+             scope.drawCircle.circle.setOptions({center:{lat:currentLatitude,lng:currentLongitude}});       
+
+            new google.maps.Geocoder().geocode(
+              {
+                location: {
+                  lat: currentLatitude,
+                  lng: currentLongitude
+                }
+              },
+              function(results, status) {
+                if (status === "OK") {
+                  scope.drawCircle.circleFullAddress = results[0].formatted_address;  
+
+                }
+              }
+            );
+          });
+
+          }
+
+       });
+
+    },
+    noExistingSearchMarker(circleData){
+
+      var scope= this;
+
+       this.$refs.mapRef.$mapPromise.then(map => {
+
+          console.log("no search marker");
+
+		scope.drawCircle.clickMarkerListener= google.maps.event.addListener(map, "click", function(
           event
         ) {
-          console.log("click");
+          
           scope.drawCircle.marker = new google.maps.Marker({
-            icon:'https://cdn4.iconfinder.com/data/icons/cologne/32x32/flag.png',
             draggable: true,
             position: event.latLng,
             map: map
@@ -131,7 +170,8 @@ export default {
                 }
               }
             );
-         
+
+              
             scope.drawCircle.draggableMarkerListener = google.maps.event.addListener(scope.drawCircle.marker, "dragend", function(marker) {
             
             var latLng = marker.latLng;
@@ -164,7 +204,128 @@ export default {
           } 
         });
 
-      });
+       })
+
+    },
+    getTabInfo: function(event) {
+      console.log(event)
+    },
+    enableDrawingBtn(){
+      console.log("click")
+      this.enableDrawingToolsExtension = true;
+    },
+    clearSearch() {
+      //remove search marker
+      if(this.searchMarker){
+        this.searchMarker.setMap(null);
+        this.searchMarker = null;
+      } 
+    },
+    handleSearchData(searchData){
+
+      var pos = {
+        lat:searchData.lat,
+        lng:searchData.lng
+      }
+
+      this.$refs.mapRef.$mapPromise.then(map => {
+      
+        if(!this.searchMarker){
+              //create search marker
+            this.searchMarker = new google.maps.Marker({
+            animation: google.maps.Animation.DROP,
+            position:  pos,
+            map: map
+          });
+        }else{ 
+          //just change latlng
+          this.searchMarker.setPosition(pos); 
+        }  
+
+      }); 
+
+    },
+    retrieveAddressFromBackEnd(postalCode){
+
+       axios.get('/api/crisis/gasLeak')
+				.then((res) => {	
+					 console.log(res) 
+					
+				}).catch((error) => {
+					console.log(error)
+				}).then(() => {
+					 
+        });
+
+         axios.get('/api/crisis/dengue')
+				.then((res) => {	
+					 console.log(res) 
+					
+				}).catch((error) => {
+					console.log(error)
+				}).then(() => {
+					 
+        });
+
+        
+         axios.get('/api/crisis/fire')
+				.then((res) => {	
+					 console.log(res) 
+					
+				}).catch((error) => {
+					console.log(error)
+				}).then(() => {
+					 
+        });
+
+
+      // axios.get('/api/address/postal_code/'+'419786'+'.json')
+			// 	.then((res) => {	
+			// 		 console.log(res.data) 
+					
+			// 	}).catch((error) => {
+			// 		console.log(error)
+			// 	}).then(() => {
+					 
+      //   });
+
+      //  $.ajax({
+      //           url: "/api/address/postal_code/419786.json",
+      //           type: "GET",
+      //           dataType:"json",
+      //           success: function (data, status, jqXHR) { 
+      //              console.log(jqXHR)
+      //             console.log(data)
+                    
+      //           },
+      //           error: function (jqXHR, status, err) {
+      //               console.log(err);
+      //           },
+      //           complete: function (jqXHR, status) {
+                 
+      //           }
+      //       });  
+
+
+    },
+
+    enableCircleDrawing(circleData){
+      
+      var scope = this;
+
+      if(circleData.enableCircleDrawing){
+
+        //if have existing search marker
+        if(scope.searchMarker){
+
+        scope.haveExistingSearchMarker(circleData);
+
+        }else{
+
+          //start of no search marker
+          scope.noExistingSearchMarker(circleData);
+        }
+  
 
        if(scope.drawCircle.clickMarkerListener != null ){
           google.maps.event.removeListener( scope.drawCircle.clickMarkerListener);
@@ -316,39 +477,22 @@ export default {
     },
     setMapZoomLvl(zoomlvl) {
       this.zoom_lvl = zoomlvl;
-    },
-    toggleInfoWindow: function(marker, idx) {
-      this.infoWindowPos = marker.position;
-      this.infoContent = marker.infoText;
-
-      //check if its the same marker that was selected if yes toggle
-      if (this.currentMidx == idx) {
-        this.infoWinOpen = !this.infoWinOpen;
-      }
-      //if different marker set infowindow to open and reset current marker index
-      else {
-        this.infoWinOpen = true;
-        this.currentMidx = idx;
-      }
-
-      //zoom to clicked markers or from right info panel
-      //this.setMapZoomLvl(18);
     }
   },
   watch: {
-    _place: function(place) {
-      // watch it
-
-      if (place.id) {
-        this.place = null;
-
-        var pos = {
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng()
-        };
-
+    searchData: function(search) {
+        
+        this.searchMarker = null;
+ 
+        //create search marker
+        this.searchMarker = new google.maps.Marker({
+            draggable: true,
+            position: event.latLng,
+            map: map
+          });
+ 
         //add to place
-        this.place = {
+        this.searchMarker = {
           position: {
             lat: place.geometry.location.lat(),
             lng: place.geometry.location.lng()
@@ -360,14 +504,7 @@ export default {
 
         //set zoom lvl
         this.setMapZoomLvl(17);
-      }
-    },
-    clearSearch(newValue, oldValue) {
-      this.clearSearchVal = newValue;
-    },
-    clearSearchVal() {
-      //clear search place marker
-      this.place = null;
+      
     },
     toggleData(newValue, oldValue) {
        var scope = this;
@@ -418,128 +555,3 @@ export default {
 };
 </script>
 
-<style>
-	.scrollbar {
-	float: left;
-	height: 550px;
-	background: #fff;
-	overflow-y: scroll;
-	margin-bottom: 25px;
-	}
-	.force-overflow {
-	min-height: 450px;
-	}
-
-	.scrollbar-primary::-webkit-scrollbar {
-	width: 12px;
-	background-color: #f5f5f5;
-	}
-
-	.scrollbar-primary::-webkit-scrollbar-thumb {
-	border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-	background-color: #4285f4;
-	}
-
-	.scrollbar-danger::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-	background-color: #f5f5f5;
-	border-radius: 10px;
-	}
-
-	.scrollbar-danger::-webkit-scrollbar {
-	width: 12px;
-	background-color: #f5f5f5;
-	}
-
-	.scrollbar-danger::-webkit-scrollbar-thumb {
-	border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-	background-color: #ff3547;
-	}
-
-	.scrollbar-warning::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-	background-color: #f5f5f5;
-	border-radius: 10px;
-	}
-
-	.scrollbar-warning::-webkit-scrollbar {
-	width: 12px;
-	background-color: #f5f5f5;
-	}
-
-	.scrollbar-warning::-webkit-scrollbar-thumb {
-	border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-	background-color: #ff8800;
-	}
-
-	.scrollbar-success::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-	background-color: #f5f5f5;
-	border-radius: 10px;
-	}
-
-	.scrollbar-success::-webkit-scrollbar {
-	width: 12px;
-	background-color: #f5f5f5;
-	}
-
-	.scrollbar-success::-webkit-scrollbar-thumb {
-	border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-	background-color: #00c851;
-	}
-
-	.scrollbar-info::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-	background-color: #f5f5f5;
-	border-radius: 10px;
-	}
-
-	.scrollbar-info::-webkit-scrollbar {
-	width: 12px;
-	background-color: #f5f5f5;
-	}
-
-	.scrollbar-info::-webkit-scrollbar-thumb {
-	border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-	background-color: #33b5e5;
-	}
-
-	.scrollbar-default::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-	background-color: #f5f5f5;
-	border-radius: 10px;
-	}
-
-	.scrollbar-default::-webkit-scrollbar {
-	width: 12px;
-	background-color: #f5f5f5;
-	}
-
-	.scrollbar-default::-webkit-scrollbar-thumb {
-	border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-	background-color: #2bbbad;
-	}
-
-	.scrollbar-secondary::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-	background-color: #f5f5f5;
-	border-radius: 10px;
-	}
-
-	.scrollbar-secondary::-webkit-scrollbar {
-	width: 12px;
-	background-color: #f5f5f5;
-	}
-
-	.scrollbar-secondary::-webkit-scrollbar-thumb {
-	border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-	background-color: #aa66cc;
-	}
-</style>

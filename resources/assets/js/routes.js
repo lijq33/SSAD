@@ -57,7 +57,7 @@ export const routes = [
     },
     {
         path : '/map',
-        component: require('./views/DisplayMap.vue'),
+        component: require('./views/BaseMap.vue'),
     }
 
 
