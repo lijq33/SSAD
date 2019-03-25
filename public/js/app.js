@@ -92409,19 +92409,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -92445,7 +92432,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       isLoading: false,
       zoom_lvl: 12,
       sgcoord: { lat: 1.3521, lng: 103.8198 },
-      markers: [],
+      markers: { twoHrWeatherMarkers: [] },
       enableDrawingToolsExtension: false,
       tabs: [],
       tabCounter: 0
@@ -92453,6 +92440,43 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   methods: {
+    handleClearToggleData: function handleClearToggleData(clearToggleData) {
+
+      //empty markers
+      if (clearToggleData === "hideDegueData") {
+        scope.showDegueData(element);
+      } else if (clearToggleData === "hideFireData") {
+        scope.showFireData(element);
+      } else if (clearToggleData === "hideGasLeakData") {
+        scope.showGasLeakData(element);
+      } else if (clearToggleData === "hideHazeData") {
+        scope.showHazeData(element);
+      } else if (clearToggleData === "hideRainData") {
+        scope.showRainData(element);
+      } else if (clearToggleData === "hideTwoHrWeatherData") {
+        console.log("clear 2h weather");
+
+        this.removeMarkers(this.markers.twoHrWeatherMarkers);
+        this.markers.twoHrWeatherMarkers = [];
+      }
+    },
+    handleToggleData: function handleToggleData(toggleData) {
+
+      if (toggleData.displayId === "showDegueData") {
+        scope.showDegueData(element);
+      } else if (toggleData.displayId === "showFireData") {
+        scope.showFireData(element);
+      } else if (toggleData.displayId === "showGasLeakData") {
+        scope.showGasLeakData(element);
+      } else if (toggleData.displayId === "showHazeData") {
+        scope.showHazeData(element);
+      } else if (toggleData.displayId === "showRainData") {
+        scope.showRainData(element);
+      } else if (toggleData.displayId === "showTwoHrWeatherData") {
+
+        this.showTwoHrWeatherData(toggleData);
+      }
+    },
     getMountedComponent: function getMountedComponent(component) {
 
       //get the first active component
@@ -92469,6 +92493,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       if (!this.enableDrawingToolsExtension) {
         this.enableDrawingToolsExtension = true;
+      } else {
+        this.enableDrawingToolsExtension = false;
       }
 
       //this.tabs.push(this.tabCounter++)
@@ -92677,34 +92703,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }).catch(function (error) {
         console.log(error);
       }).then(function () {});
-
-      // axios.get('/api/address/postal_code/'+'419786'+'.json')
-      // 	.then((res) => {	
-      // 		 console.log(res.data) 
-
-      // 	}).catch((error) => {
-      // 		console.log(error)
-      // 	}).then(() => {
-
-      //   });
-
-      //  $.ajax({
-      //           url: "/api/address/postal_code/419786.json",
-      //           type: "GET",
-      //           dataType:"json",
-      //           success: function (data, status, jqXHR) { 
-      //              console.log(jqXHR)
-      //             console.log(data)
-
-      //           },
-      //           error: function (jqXHR, status, err) {
-      //               console.log(err);
-      //           },
-      //           complete: function (jqXHR, status) {
-
-      //           }
-      //       });  
-
     },
     enableCircleDrawing: function enableCircleDrawing(circleData) {
 
@@ -92759,10 +92757,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.circleRadiusValue(circleData);
       }
     },
-    removeMarkers: function removeMarkers(markerType) {
+    removeMarkers: function removeMarkers(removeMarkersType) {
 
-      for (var i = 0; i < this.markers.length; i++) {
-        this.markers[i].setMap(null);
+      for (var i = 0; i < removeMarkersType.length; i++) {
+        removeMarkersType[i].setMap(null);
       }
     },
     notContainedIn: function notContainedIn(arr) {
@@ -92788,52 +92786,44 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     showGasLeakData: function showGasLeakData() {},
     showHazeData: function showHazeData() {},
     showRainData: function showRainData() {},
-    showTwoHrWeatherData: function showTwoHrWeatherData(markerType) {
+    showTwoHrWeatherData: function showTwoHrWeatherData(data) {
+
       var scope = this;
       var infowindow = new google.maps.InfoWindow({
         content: ''
       });
 
-      $.ajax({
-        url: "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast",
-        type: "GET",
-        success: function success(data, status, jqXHR) {
+      console.log(data);
 
-          data.area_metadata.forEach(function (element, index) {
+      data.area_metadata.forEach(function (element, index) {
 
-            scope.$refs.mapRef.$mapPromise.then(function (map) {
+        scope.$refs.mapRef.$mapPromise.then(function (map) {
 
-              var marker = new google.maps.Marker({
-                markerType: markerType,
-                animation: google.maps.Animation.DROP,
-                position: { lat: element.label_location.latitude, lng: element.label_location.longitude },
-                map: map,
-                title: ''
-              });
-
-              scope.markers.push(marker);
-
-              google.maps.event.addListener(marker, 'click', function (marker, index) {
-                return function () {
-
-                  infowindow.setContent('<div id="content">' + '<div id="siteNotice">' + '</div>' + '<h6>' + element.name + '</h6>' + '<div id="bodyContent">' + data.items[0].forecasts[index].forecast + '</div>' + '</div>');
-                  infowindow.open(map, marker);
-
-                  //one animation
-                  for (var i = 0; i < scope.markers.length; i++) {
-                    scope.markers[i].setAnimation(null);
-                  }
-
-                  marker.setAnimation(google.maps.Animation.BOUNCE);
-                };
-              }(marker, index));
-            });
+          var marker = new google.maps.Marker({
+            icon: element.iconUrl,
+            markerDisplayId: element.displayId,
+            animation: google.maps.Animation.DROP,
+            position: { lat: element.label_location.latitude, lng: element.label_location.longitude },
+            map: map
           });
-        },
-        error: function error(jqXHR, status, err) {
-          console.log(err);
-        },
-        complete: function complete(jqXHR, status) {}
+
+          scope.markers.twoHrWeatherMarkers.push(marker);
+
+          google.maps.event.addListener(marker, 'click', function (marker, index) {
+            return function () {
+
+              infowindow.setContent('<div id="content">' + '<div id="siteNotice">' + '</div>' + '<h6>' + element.name + '</h6>' + '<div id="bodyContent">' + data.items[0].forecasts[index].forecast + '</div>' + '</div>');
+              infowindow.open(map, marker);
+
+              //one animation
+              for (var i = 0; i < scope.markers.twoHrWeatherMarkers.length; i++) {
+                scope.markers.twoHrWeatherMarkers[i].setAnimation(null);
+              }
+
+              marker.setAnimation(google.maps.Animation.BOUNCE);
+            };
+          }(marker, index));
+        });
       });
     },
     panMap: function panMap(lat, lng) {
@@ -92871,51 +92861,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       //set zoom lvl
       this.setMapZoomLvl(17);
-    },
-    toggleData: function toggleData(newValue, oldValue) {
-      var scope = this;
-
-      if (oldValue == null) {
-        console.log("add the first time");
-        newValue.forEach(function (element) {
-          if (element === "showDegueData") {
-            scope.showDegueData(element);
-          } else if (element === "showFireData") {
-            scope.showFireData(element);
-          } else if (element === "showGasLeakData") {
-            scope.showGasLeakData(element);
-          } else if (element === "showHazeData") {
-            scope.showHazeData(element);
-          } else if (element === "showRainData") {
-            scope.showRainData(element);
-          } else if (element === "showTwoHrWeatherData") {
-            scope.showTwoHrWeatherData(element);
-          }
-        });
-      } else {
-
-        if (newValue.length > oldValue.length) {
-          console.log("add");
-          console.log(newValue.filter(scope.notContainedIn(oldValue)).concat(oldValue.filter(scope.notContainedIn(newValue))));
-          newValue.forEach(function (element) {
-            if (element === "showDegueData") {
-              scope.showDegueData(element);
-            } else if (element === "showFireData") {
-              scope.showFireData(element);
-            } else if (element === "showGasLeakData") {
-              scope.showGasLeakData(element);
-            } else if (element === "showHazeData") {
-              scope.showHazeData(element);
-            } else if (element === "showRainData") {
-              scope.showRainData(element);
-            } else if (element === "showTwoHrWeatherData") {
-              scope.showTwoHrWeatherData(element);
-            }
-          });
-        } else {
-          scope.removeMarkers(newValue.filter(scope.notContainedIn(oldValue)).concat(oldValue.filter(scope.notContainedIn(newValue)))[0]);
-        }
-      }
     }
   }
 });
@@ -93593,21 +93538,58 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      selected: [], // Must be an array reference!
-      crisisOptions: [{ text: 'Degue', value: 'showDegueData' }, { text: 'Fire', value: 'showFireData' }, { text: 'Gas Leak', value: 'showGasLeakData' }],
-      weatherOptions: [{ text: '(2H) Weather Forecast', value: 'showTwoHrWeatherData' }, { text: 'Haze', value: 'showHazeData' }, { text: 'Rain', value: 'showRainData' }]
+      selectTwoHrWeather: ''
     };
   },
 
+  methods: {
+    removeCrisisDataFromFrontend: function removeCrisisDataFromFrontend(removeData) {
+      this.$emit("clear-toggle-data", removeData);
+    },
+    getCrisisDataFromBackEnd: function getCrisisDataFromBackEnd(url, display_id, icon_url) {
+
+      var scope = this;
+
+      $.ajax({
+        url: url,
+        type: "GET",
+        success: function success(data, status, jqXHR) {
+          data["displayId"] = display_id;
+          data["iconUrl"] = icon_url;
+          scope.$emit("get-toggle-data", data);
+        },
+        error: function error(jqXHR, status, err) {
+          console.log(err);
+        },
+        complete: function complete(jqXHR, status) {}
+      });
+    }
+  },
   watch: {
-    selected: function selected() {
-      this.$emit('get-toggle-data', this.selected);
+    selectTwoHrWeather: function selectTwoHrWeather() {
+      var request = "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast";
+      var markerIconUrl = 'https://dl1.cbsistatic.com/i/r/2017/09/19/0f80371a-9957-4ddf-bc62-070369dbe346/thumbnail/32x32/8c6b0a337bb7a17ab30adc42e01b40ec/iconimg199915.png';
+
+      if (this.selectTwoHrWeather.includes("show")) {
+        this.getCrisisDataFromBackEnd(request, this.selectTwoHrWeather, markerIconUrl);
+      } else {
+        this.removeCrisisDataFromFrontend(this.selectTwoHrWeather);
+      }
     }
   }
 });
@@ -93633,33 +93615,7 @@ var render = function() {
               "b-tabs",
               { attrs: { card: "" } },
               [
-                _c(
-                  "b-tab",
-                  { attrs: { title: "Crisis", active: "" } },
-                  [
-                    _c(
-                      "b-form-group",
-                      [
-                        _c("b-form-checkbox-group", {
-                          attrs: {
-                            switches: "",
-                            name: "crisisSwitch",
-                            options: _vm.crisisOptions
-                          },
-                          model: {
-                            value: _vm.selected,
-                            callback: function($$v) {
-                              _vm.selected = $$v
-                            },
-                            expression: "selected"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                ),
+                _c("b-tab", { attrs: { title: "Crisis", active: "" } }),
                 _vm._v(" "),
                 _c(
                   "b-tab",
@@ -93668,20 +93624,29 @@ var render = function() {
                     _c(
                       "b-form-group",
                       [
-                        _c("b-form-checkbox-group", {
-                          attrs: {
-                            switches: "",
-                            name: "weatherSwitch",
-                            options: _vm.weatherOptions
-                          },
-                          model: {
-                            value: _vm.selected,
-                            callback: function($$v) {
-                              _vm.selected = $$v
+                        _c(
+                          "b-form-checkbox",
+                          {
+                            attrs: {
+                              id: "showTwoHrWeatherDataId",
+                              name: "showTwoHrWeatherDataId",
+                              value: "showTwoHrWeatherData",
+                              "unchecked-value": "hideTwoHrWeatherData"
                             },
-                            expression: "selected"
-                          }
-                        })
+                            model: {
+                              value: _vm.selectTwoHrWeather,
+                              callback: function($$v) {
+                                _vm.selectTwoHrWeather = $$v
+                              },
+                              expression: "selectTwoHrWeather"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                  (2H) Weather Forecast\n                "
+                            )
+                          ]
+                        )
                       ],
                       1
                     )
@@ -93757,23 +93722,47 @@ var render = function() {
                   )
                 : _vm._e(),
               _vm._v(" "),
+              _vm.enableDrawingToolsExtension
+                ? _c("b-tab", { attrs: { title: "Square" } }, [
+                    _vm._v("square")
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               _c(
                 "template",
                 { slot: "tabs" },
                 [
-                  _c(
-                    "b-nav-item",
-                    {
-                      attrs: { href: "#" },
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return _vm.newTab($event)
-                        }
-                      }
-                    },
-                    [_c("b", [_vm._v("Enable Drawing Extension")])]
-                  )
+                  !_vm.enableDrawingToolsExtension
+                    ? _c(
+                        "b-nav-item",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.newTab($event)
+                            }
+                          }
+                        },
+                        [_c("b", [_vm._v("Enable Drawing Extension")])]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.enableDrawingToolsExtension
+                    ? _c(
+                        "b-nav-item",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.newTab($event)
+                            }
+                          }
+                        },
+                        [_c("b", [_vm._v("Hide")])]
+                      )
+                    : _vm._e()
                 ],
                 1
               )
@@ -93783,6 +93772,13 @@ var render = function() {
         ],
         1
       ),
+      _vm._v(" "),
+      _c("toggle-map", {
+        on: {
+          "get-toggle-data": _vm.handleToggleData,
+          "clear-toggle-data": _vm.handleClearToggleData
+        }
+      }),
       _vm._v(" "),
       _c("GmapMap", {
         ref: "mapRef",

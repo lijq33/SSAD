@@ -4,39 +4,26 @@
     <!--autosearch -->
     <auto-search :circle-full-address="drawCircle.circleFullAddress"  @get-search-data="handleSearchData" @clear-Search="clearSearch"/>
    
-
     <!-- drawing tools extension -->
     <b-card no-body>
      
       <b-tabs card>
-        <!-- Render Tabs, supply a unique `key` to each tab -->
-        <!-- <b-tab v-for="i in tabs" :key="`dyntab-${i}`" :title="`Tab ${i}`">
-          Tab Contents {{ i }}
-          <b-button size="sm" variant="danger" class="float-right" @click="() => closeTab(i)">
-            Close tab
-          </b-button>
-        </b-tab> -->
-
+        <!--circle-->
         <b-tab v-if ="enableDrawingToolsExtension" title="Circle" @click="getTabInfo('circleDrawingTools')" @is-mounted="getMountedComponent" ><draw-circle @get-circle-drawing="handleCircleData"/></b-tab>
 
-        <!-- New Tab Button (Using tabs slot) -->
-        <template slot="tabs">
-          <b-nav-item @click.prevent="newTab" href="#"><b>Enable Drawing Extension</b></b-nav-item>
+        <b-tab v-if ="enableDrawingToolsExtension" title="Square">square</b-tab>
+        <!-- show and hide extension -->
+        <template slot="tabs"> 
+          <b-nav-item v-if ="!enableDrawingToolsExtension" @click.prevent="newTab" href="#"><b>Enable Drawing Extension</b></b-nav-item>
+          <b-nav-item v-if ="enableDrawingToolsExtension" @click.prevent="newTab" href="#"><b>Hide</b></b-nav-item>
         </template>
 
-        <!-- Render this if no tabs -->
-        <!-- <div v-if ="enableDrawingToolsExtension" slot="empty" class="text-center text-muted">
-          There are no open tabs <br />
-          Open a new tab using the <b>Enable Drawing Extension</b> button above.
-        </div> -->
       </b-tabs>
     </b-card>
   
-  
-    <!--toggle map @get-toggle-data="handleToggleData" 
-    <toggle-map />-->
-
-    
+    <!-- crisis -->
+    <toggle-map @get-toggle-data="handleToggleData"  @clear-toggle-data="handleClearToggleData"/>
+     
     <!-- google base map -->
     <GmapMap
       ref="mapRef"
@@ -72,13 +59,52 @@ export default {
       isLoading: false,
       zoom_lvl: 12,
       sgcoord: { lat: 1.3521, lng: 103.8198 },
-      markers: [],
+      markers: {twoHrWeatherMarkers:[]},
       enableDrawingToolsExtension:false,
       tabs: [],
         tabCounter: 0
     };
   },
   methods: {
+    handleClearToggleData(clearToggleData){
+        
+      //empty markers
+     if(clearToggleData === "hideDegueData"){
+        scope.showDegueData(element);
+      }else if (clearToggleData === "hideFireData"){
+          scope.showFireData(element);
+      }else if (clearToggleData === "hideGasLeakData"){
+        scope.showGasLeakData(element);
+      }else if (clearToggleData === "hideHazeData"){
+        scope.showHazeData(element);
+      }else if(clearToggleData === "hideRainData"){
+          scope.showRainData(element);
+      }else if(clearToggleData === "hideTwoHrWeatherData"){
+        console.log("clear 2h weather")
+
+           this.removeMarkers(this.markers.twoHrWeatherMarkers);
+           this.markers.twoHrWeatherMarkers=[];
+      } 
+       
+    },
+    handleToggleData(toggleData){
+        
+       if(toggleData.displayId === "showDegueData"){
+        scope.showDegueData(element);
+      }else if (toggleData.displayId === "showFireData"){
+          scope.showFireData(element);
+      }else if (toggleData.displayId === "showGasLeakData"){
+        scope.showGasLeakData(element);
+      }else if (toggleData.displayId === "showHazeData"){
+        scope.showHazeData(element);
+      }else if(toggleData.displayId === "showRainData"){
+          scope.showRainData(element);
+      }else if(toggleData.displayId === "showTwoHrWeatherData"){
+       
+          this.showTwoHrWeatherData(toggleData);
+      } 
+
+    },
     getMountedComponent(component){
 
       //get the first active component
@@ -95,6 +121,8 @@ export default {
 
         if(!this.enableDrawingToolsExtension){
           this.enableDrawingToolsExtension = true;
+        }else{
+          this.enableDrawingToolsExtension = false;
         }
 
         //this.tabs.push(this.tabCounter++)
@@ -340,34 +368,6 @@ export default {
         });
 
 
-      // axios.get('/api/address/postal_code/'+'419786'+'.json')
-			// 	.then((res) => {	
-			// 		 console.log(res.data) 
-					
-			// 	}).catch((error) => {
-			// 		console.log(error)
-			// 	}).then(() => {
-					 
-      //   });
-
-      //  $.ajax({
-      //           url: "/api/address/postal_code/419786.json",
-      //           type: "GET",
-      //           dataType:"json",
-      //           success: function (data, status, jqXHR) { 
-      //              console.log(jqXHR)
-      //             console.log(data)
-                    
-      //           },
-      //           error: function (jqXHR, status, err) {
-      //               console.log(err);
-      //           },
-      //           complete: function (jqXHR, status) {
-                 
-      //           }
-      //       });  
-
-
     },
 
     enableCircleDrawing(circleData){
@@ -432,12 +432,12 @@ export default {
         }
       
     },
-    removeMarkers(markerType){
+    removeMarkers(removeMarkersType){
     
-      for(var i=0; i<this.markers.length; i++){
-        this.markers[i].setMap(null);
+      for(var i=0; i<removeMarkersType.length; i++){  
+          removeMarkersType[i].setMap(null);  
     }
-
+ 
     },
     notContainedIn(arr) {
     return function arrNotContains(element) {
@@ -471,64 +471,55 @@ export default {
     showRainData(){
 
     },
-    showTwoHrWeatherData(markerType){
+    showTwoHrWeatherData(data){
+     
       var scope = this;
        var infowindow = new google.maps.InfoWindow({
              content:''
        });
 
-      $.ajax({
-                url: "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast",
-                type: "GET",
-                success: function (data, status, jqXHR) { 
+       console.log(data)
 
-                   data.area_metadata.forEach((element,index) => {  
+        data.area_metadata.forEach((element,index) => {  
 
-                     scope.$refs.mapRef.$mapPromise.then(map => {
- 
-                      var marker = new google.maps.Marker({
-                        markerType:markerType,
-                        animation: google.maps.Animation.DROP,
-                      position:  {lat: element.label_location.latitude, lng: element.label_location.longitude},
-                      map: map,
-                      title: ''
-                    });
+        scope.$refs.mapRef.$mapPromise.then(map => {
 
-                    scope.markers.push(marker);
+        var marker = new google.maps.Marker({
+            icon:element.iconUrl,
+            markerDisplayId:element.displayId,
+            animation: google.maps.Animation.DROP,
+            position:  {lat: element.label_location.latitude, lng: element.label_location.longitude},
+            map: map,
+        });
 
-                     google.maps.event.addListener(marker, 'click', (function(marker, index) {
-                      return function() {
-                         
-                          infowindow.setContent('<div id="content">'+
-                                  '<div id="siteNotice">'+
-                                  '</div>'+
-                                  '<h6>'+element.name+'</h6>'+
-                                  '<div id="bodyContent">'+data.items[0].forecasts[index].forecast+
-                                  '</div>'+
-                                  '</div>'); 
-                          infowindow.open(map, marker);
+      scope.markers.twoHrWeatherMarkers.push(marker);
+
+        google.maps.event.addListener(marker, 'click', (function(marker, index) {
+        return function() {
+            
+            infowindow.setContent('<div id="content">'+
+                    '<div id="siteNotice">'+
+                    '</div>'+
+                    '<h6>'+element.name+'</h6>'+
+                    '<div id="bodyContent">'+data.items[0].forecasts[index].forecast+
+                    '</div>'+
+                    '</div>'); 
+            infowindow.open(map, marker);
 
 
-                          //one animation
-                           for(var i=0; i<scope.markers.length; i++){
-                              scope.markers[i].setAnimation(null);
-                          }
+            //one animation
+              for(var i=0; i<scope.markers.twoHrWeatherMarkers.length; i++){
+                scope.markers.twoHrWeatherMarkers[i].setAnimation(null);
+            }
 
-                           marker.setAnimation(google.maps.Animation.BOUNCE);
-                         
-                      }
-                    })(marker, index));
- 
-                    });
-                    });  
-                },
-                error: function (jqXHR, status, err) {
-                    console.log(err);
-                },
-                complete: function (jqXHR, status) {
-                 
-                }
-            });  
+              marker.setAnimation(google.maps.Animation.BOUNCE);
+            
+        }
+      })(marker, index));
+
+      });
+      });
+
     },
     panMap(lat, lng) {
       //pan to any location on the map by giving lat and lng coordinates
@@ -566,51 +557,6 @@ export default {
         //set zoom lvl
         this.setMapZoomLvl(17);
       
-    },
-    toggleData(newValue, oldValue) {
-       var scope = this;
-
-       if(oldValue == null){
-         console.log("add the first time");
-         newValue.forEach(element => {
-                  if(element === "showDegueData"){
-                    scope.showDegueData(element);
-                  }else if (element === "showFireData"){
-                      scope.showFireData(element);
-                  }else if (element === "showGasLeakData"){
-                    scope.showGasLeakData(element);
-                  }else if (element === "showHazeData"){
-                    scope.showHazeData(element);
-                  }else if(element === "showRainData"){
-                      scope.showRainData(element);
-                  }else if(element === "showTwoHrWeatherData"){
-                      scope.showTwoHrWeatherData(element);
-                  } 
-           });
-       }else{
-
-         if(newValue.length > oldValue.length){
-           console.log("add")
-           console.log(newValue.filter(scope.notContainedIn(oldValue)).concat(oldValue.filter(scope.notContainedIn(newValue))));
-               newValue.forEach(element => {
-                  if(element === "showDegueData"){
-                    scope.showDegueData(element);
-                  }else if (element === "showFireData"){
-                      scope.showFireData(element);
-                  }else if (element === "showGasLeakData"){
-                    scope.showGasLeakData(element);
-                  }else if (element === "showHazeData"){
-                    scope.showHazeData(element);
-                  }else if(element === "showRainData"){
-                      scope.showRainData(element);
-                  }else if(element === "showTwoHrWeatherData"){
-                      scope.showTwoHrWeatherData(element);
-                  } 
-                });
-          }else{     
-              scope.removeMarkers(newValue.filter(scope.notContainedIn(oldValue)).concat(oldValue.filter(scope.notContainedIn(newValue)))[0])
-          }  
-       }
     }
   } 
 };
