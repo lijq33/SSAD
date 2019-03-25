@@ -92420,6 +92420,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -92445,11 +92457,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       sgcoord: { lat: 1.3521, lng: 103.8198 },
       markers: [],
       enableDrawingToolsExtension: false,
-      tabValue: 0
+      tabs: [],
+      tabCounter: 0
     };
   },
 
   methods: {
+    getMountedComponent: function getMountedComponent(component) {
+
+      //get the first active component
+      console.log(component);
+    },
+    closeTab: function closeTab(x) {
+      for (var i = 0; i < this.tabs.length; i++) {
+        if (this.tabs[i] === x) {
+          this.tabs.splice(i, 1);
+        }
+      }
+    },
+    newTab: function newTab() {
+
+      if (!this.enableDrawingToolsExtension) {
+        this.enableDrawingToolsExtension = true;
+      }
+
+      //this.tabs.push(this.tabCounter++)
+    },
     haveExistingSearchMarker: function haveExistingSearchMarker(circleData) {
 
       var scope = this;
@@ -92490,6 +92523,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             scope.drawCircle.circle.setOptions({ center: { lat: currentLatitude, lng: currentLongitude } });
 
+            //update full address
+            //pass by props 
             new google.maps.Geocoder().geocode({
               location: {
                 lat: currentLatitude,
@@ -92579,15 +92614,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.enableDrawingToolsExtension = true;
     },
     clearSearch: function clearSearch() {
+
+      //reset components
+      this.enableDrawingToolsExtension = false;
+
       //remove search marker
       if (this.searchMarker) {
         this.searchMarker.setMap(null);
         this.searchMarker = null;
       }
+
+      //clear drawcircle
+      if (this.drawCircle) {
+        this.drawCircle.marker.setMap(null);
+        this.drawCircle.circle.setMap(null);
+        this.drawCircle.circleFullAddress = '';
+        google.maps.event.removeListener(this.drawCircle.draggableMarkerListener);
+        google.maps.event.removeListener(this.drawCircle.draggableMarkerListener);
+
+        if (this.drawCircle.clickMarkerListener) {
+          google.maps.event.removeListener(this.drawCircle.clickMarkerListener);
+        }
+      }
     },
     handleSearchData: function handleSearchData(searchData) {
-      var _this = this;
 
+      var scope = this;
       var pos = {
         lat: searchData.lat,
         lng: searchData.lng
@@ -92595,16 +92647,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       this.$refs.mapRef.$mapPromise.then(function (map) {
 
-        if (!_this.searchMarker) {
-          //create search marker
-          _this.searchMarker = new google.maps.Marker({
-            animation: google.maps.Animation.DROP,
-            position: pos,
-            map: map
-          });
+        if (!scope.searchMarker) {
+
+          //check if cirlc is available
+          if (scope.drawCircle.marker) {
+
+            scope.drawCircle.marker.setPosition(pos);
+            scope.drawCircle.circle.setOptions({ center: pos });
+          } else {
+            //create search marker
+            scope.searchMarker = new google.maps.Marker({
+              animation: google.maps.Animation.DROP,
+              position: pos,
+              map: map
+            });
+          }
         } else {
           //just change latlng
-          _this.searchMarker.setPosition(pos);
+          scope.searchMarker.setPosition(pos);
         }
       });
     },
@@ -92971,10 +93031,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -92982,6 +93038,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    //tell base map which componet will appear first
+    //console.log("mounted draw circle");
+    //enable drawing
+
+    if (this.drawCircle.enableCircleDrawing) {
+      this.drawCircle.enableCircleDrawing = false;
+    } else {
+      this.drawCircle.enableCircleDrawing = true;
+    }
+    this.minValue = 0;
+    this.drawCircle.circleRadiusValue = 0;
+    this.drawCircle.circleDataChangedType = "enableCircleDrawing";
+
+    //emit to base map
+    this.passDataToBaseMap();
+
+    this.$emit("is-mounted", "circleDrawingTools");
+  },
+  destroyed: function destroyed() {
+    console.log("destory circle compoent");
+  },
 
   components: {
     VueSlider: __WEBPACK_IMPORTED_MODULE_0_vue_slider_component___default.a,
@@ -93016,27 +93094,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.drawCircle.circleDataChangedType = "circleRadiusValue";
       this.passDataToBaseMap();
     },
-    drawCirle: function drawCirle() {
-      //enable drawing
-
-      if (this.drawCircle.enableCircleDrawing) {
-        this.drawCircle.enableCircleDrawing = false;
-      } else {
-        this.drawCircle.enableCircleDrawing = true;
-      }
-      this.minValue = 0;
-      this.drawCircle.circleRadiusValue = 0;
-      this.drawCircle.circleDataChangedType = "enableCircleDrawing";
-
-      //emit to base map
-      this.passDataToBaseMap();
-    }
+    drawCirle: function drawCirle() {}
   },
-  watch: {
-    circleFullAddress: function circleFullAddress(newValue) {
-      this.form.address = newValue;
-    }
-  }
+  watch: {}
 });
 
 /***/ }),
@@ -93155,67 +93215,59 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("b-button", { on: { click: _vm.drawCirle } }, [_vm._v("Draw circle")]),
-      _vm._v(" "),
-      _vm.drawCircle.enableCircleDrawing
-        ? _c(
-            "div",
-            [
-              _c("vue-slider", {
-                attrs: {
-                  min: _vm.minValue,
-                  max: _vm.maxValue,
-                  interval: 1,
-                  clickable: false
+  return _c("div", [
+    _vm.drawCircle.enableCircleDrawing
+      ? _c(
+          "div",
+          [
+            _c("vue-slider", {
+              attrs: {
+                min: _vm.minValue,
+                max: _vm.maxValue,
+                interval: 1,
+                clickable: false
+              },
+              on: { change: _vm.changeCircleRadius },
+              model: {
+                value: _vm.drawCircle.circleRadiusValue,
+                callback: function($$v) {
+                  _vm.$set(_vm.drawCircle, "circleRadiusValue", $$v)
                 },
-                on: { change: _vm.changeCircleRadius },
-                model: {
-                  value: _vm.drawCircle.circleRadiusValue,
-                  callback: function($$v) {
-                    _vm.$set(_vm.drawCircle, "circleRadiusValue", $$v)
-                  },
-                  expression: "drawCircle.circleRadiusValue"
-                }
-              }),
-              _vm._v(
-                _vm._s(this.drawCircle.circleRadiusValue) + " metres\n\n    "
-              ),
-              _c("div", { staticClass: "form__field" }, [
-                _vm._m(0),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "form__input" },
-                  [
-                    _c("swatches", {
-                      attrs: { "popover-to": "right" },
-                      on: { input: _vm.changeCircleColor },
-                      model: {
-                        value: _vm.drawCircle.circleFillColor,
-                        callback: function($$v) {
-                          _vm.$set(_vm.drawCircle, "circleFillColor", $$v)
-                        },
-                        expression: "drawCircle.circleFillColor"
-                      }
-                    })
-                  ],
-                  1
-                )
-              ]),
+                expression: "drawCircle.circleRadiusValue"
+              }
+            }),
+            _vm._v(
+              _vm._s(this.drawCircle.circleRadiusValue) + " metres\n\n    "
+            ),
+            _c("div", { staticClass: "form__field" }, [
+              _vm._m(0),
               _vm._v(" "),
-              _c("b-button", { attrs: { variant: "primary" } }, [
-                _vm._v("Save")
-              ])
-            ],
-            1
-          )
-        : _vm._e()
-    ],
-    1
-  )
+              _c(
+                "div",
+                { staticClass: "form__input" },
+                [
+                  _c("swatches", {
+                    attrs: { "popover-to": "right" },
+                    on: { input: _vm.changeCircleColor },
+                    model: {
+                      value: _vm.drawCircle.circleFillColor,
+                      callback: function($$v) {
+                        _vm.$set(_vm.drawCircle, "circleFillColor", $$v)
+                      },
+                      expression: "drawCircle.circleFillColor"
+                    }
+                  })
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c("b-button", { attrs: { variant: "primary" } }, [_vm._v("Save")])
+          ],
+          1
+        )
+      : _vm._e()
+  ])
 }
 var staticRenderFns = [
   function() {
@@ -93326,6 +93378,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -93376,6 +93437,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			this.$refs.autocomplete.$el.value = "";
 			this.$emit("clear-Search");
 		}
+	},
+	watch: {
+		circleFullAddress: function circleFullAddress(newValue) {
+			this.form.address = newValue;
+		}
 	}
 });
 
@@ -93388,22 +93454,32 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c(
-      "div",
-      [
-        _vm._v("Search : "),
-        _c("GmapAutocomplete", {
-          ref: "autocomplete",
-          staticClass: "tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64",
-          on: { place_changed: _vm.setPlace }
-        }),
-        _vm._v(" "),
-        _c("b-button", { on: { click: _vm.clearSearch } }, [
-          _vm._v("Clear Search")
-        ])
-      ],
-      1
-    ),
+    _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        { staticClass: "col-md-1 col-form-label", attrs: { for: "search" } },
+        [_vm._v("\n          Search :\n        ")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c(
+          "div",
+          [
+            _c("GmapAutocomplete", {
+              ref: "autocomplete",
+              staticClass:
+                "tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64",
+              on: { place_changed: _vm.setPlace }
+            }),
+            _vm._v(" "),
+            _c("b-button", { on: { click: _vm.clearSearch } }, [
+              _vm._v("Clear Search")
+            ])
+          ],
+          1
+        )
+      ])
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "form-group row" }, [
       _c(
@@ -93412,7 +93488,7 @@ var render = function() {
         [_vm._v("\n          Address:\n        ")]
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-6" }, [
+      _c("div", { staticClass: "col-md-5" }, [
         _c("input", {
           directives: [
             {
@@ -93424,14 +93500,7 @@ var render = function() {
           ],
           staticClass:
             "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic",
-          attrs: {
-            type: "text",
-            id: "Address",
-            placeholder: "",
-            required: "",
-            autofocus: "",
-            disabled: ""
-          },
+          attrs: { type: "text", id: "Address", placeholder: "", disabled: "" },
           domProps: { value: _vm.form.address },
           on: {
             input: function($event) {
@@ -93662,83 +93731,68 @@ var render = function() {
     "div",
     [
       _c("auto-search", {
+        attrs: { "circle-full-address": _vm.drawCircle.circleFullAddress },
         on: {
           "get-search-data": _vm.handleSearchData,
           "clear-Search": _vm.clearSearch
         }
       }),
       _vm._v(" "),
-      _vm.enableDrawingToolsExtension
-        ? _c(
-            "div",
+      _c(
+        "b-card",
+        { attrs: { "no-body": "" } },
+        [
+          _c(
+            "b-tabs",
+            { attrs: { card: "" } },
             [
-              _c(
-                "b-card",
-                { attrs: { "no-body": "" } },
-                [
-                  _c(
-                    "b-tabs",
+              _vm.enableDrawingToolsExtension
+                ? _c(
+                    "b-tab",
                     {
-                      attrs: { pills: "", card: "" },
-                      model: {
-                        value: _vm.tabValue,
-                        callback: function($$v) {
-                          _vm.tabValue = $$v
+                      attrs: { title: "Circle" },
+                      on: {
+                        click: function($event) {
+                          return _vm.getTabInfo("circleDrawingTools")
                         },
-                        expression: "tabValue"
+                        "is-mounted": _vm.getMountedComponent
                       }
                     },
                     [
-                      _c(
-                        "b-tab",
-                        {
-                          attrs: { title: "Circle" },
-                          on: {
-                            click: function($event) {
-                              return _vm.getTabInfo("circleDrawingTools")
-                            }
-                          }
-                        },
-                        [
-                          _c("draw-circle", {
-                            attrs: {
-                              "circle-full-address":
-                                _vm.drawCircle.circleFullAddress
-                            },
-                            on: { "get-circle-drawing": _vm.handleCircleData }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c("b-tab", { attrs: { title: "Square" } }, [
-                        _vm._v("Tab Contents 2")
-                      ])
+                      _c("draw-circle", {
+                        on: { "get-circle-drawing": _vm.handleCircleData }
+                      })
                     ],
                     1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c(
+                "template",
+                { slot: "tabs" },
+                [
+                  _c(
+                    "b-nav-item",
+                    {
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.newTab($event)
+                        }
+                      }
+                    },
+                    [_c("b", [_vm._v("Enable Drawing Extension")])]
                   )
                 ],
                 1
               )
             ],
-            1
+            2
           )
-        : _c(
-            "div",
-            [
-              _c(
-                "b-button",
-                {
-                  attrs: { variant: "primary" },
-                  on: { click: _vm.enableDrawingBtn }
-                },
-                [_vm._v("Enable Drawing Extension")]
-              )
-            ],
-            1
-          ),
-      _vm._v(" "),
-      _c("toggle-map"),
+        ],
+        1
+      ),
       _vm._v(" "),
       _c("GmapMap", {
         ref: "mapRef",

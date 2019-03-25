@@ -1,15 +1,26 @@
 <template>
   <div>
     <!-- search -->
-    <div>Search : <GmapAutocomplete
+
+       <div class="form-group row">
+        <label
+          for="search"
+          class="col-md-1 col-form-label"
+        >
+          Search :
+        </label>
+        <div class="col-md-6">
+          <div> <GmapAutocomplete
         class="tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64"
         @place_changed="setPlace"
         ref="autocomplete"
       ></GmapAutocomplete>
 
-      <b-button @click="clearSearch">Clear Search</b-button>
-    </div>
-
+        <b-button @click="clearSearch">Clear Search</b-button>
+      </div>
+        </div>
+      </div>
+ 
 	 <!-- Address -->
       <div class="form-group row">
         <label
@@ -18,15 +29,13 @@
         >
           Address:
         </label>
-        <div class="col-md-6">
+        <div class="col-md-5">
           <input
             type="text"
             class="tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic"
             id="Address"
             v-model="form.address"
             placeholder=""
-            required
-            autofocus
             disabled
           >
         </div>
@@ -87,6 +96,11 @@ export default {
       this.$refs.autocomplete.$el.value = ""; 
 		this.$emit("clear-Search");
       
+    }
+  },
+  watch:{
+      circleFullAddress(newValue) {
+      this.form.address = newValue;
     }
   }
 };

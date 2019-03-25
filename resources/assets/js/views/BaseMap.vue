@@ -2,27 +2,39 @@
   <div>
 
     <!--autosearch -->
-    <auto-search @get-search-data="handleSearchData" @clear-Search="clearSearch"/>
+    <auto-search :circle-full-address="drawCircle.circleFullAddress"  @get-search-data="handleSearchData" @clear-Search="clearSearch"/>
    
 
     <!-- drawing tools extension -->
-   <div v-if= "enableDrawingToolsExtension" >
-      <b-card no-body>
-        <b-tabs pills card v-model="tabValue">
-           <!-- draw circle -->
-          <b-tab title="Circle" @click="getTabInfo('circleDrawingTools')"><draw-circle :circle-full-address="drawCircle.circleFullAddress" @get-circle-drawing="handleCircleData"/></b-tab>
-          <!-- <b-tab title="Rectangle" active>Tab Contents 2</b-tab> -->
-          <b-tab title="Square">Tab Contents 2</b-tab>
-        </b-tabs>
-      </b-card>
-    </div>
-    <div v-else>
-       <b-button variant="primary" @click="enableDrawingBtn">Enable Drawing Extension</b-button>
-    </div>
+    <b-card no-body>
+     
+      <b-tabs card>
+        <!-- Render Tabs, supply a unique `key` to each tab -->
+        <!-- <b-tab v-for="i in tabs" :key="`dyntab-${i}`" :title="`Tab ${i}`">
+          Tab Contents {{ i }}
+          <b-button size="sm" variant="danger" class="float-right" @click="() => closeTab(i)">
+            Close tab
+          </b-button>
+        </b-tab> -->
+
+        <b-tab v-if ="enableDrawingToolsExtension" title="Circle" @click="getTabInfo('circleDrawingTools')" @is-mounted="getMountedComponent" ><draw-circle @get-circle-drawing="handleCircleData"/></b-tab>
+
+        <!-- New Tab Button (Using tabs slot) -->
+        <template slot="tabs">
+          <b-nav-item @click.prevent="newTab" href="#"><b>Enable Drawing Extension</b></b-nav-item>
+        </template>
+
+        <!-- Render this if no tabs -->
+        <!-- <div v-if ="enableDrawingToolsExtension" slot="empty" class="text-center text-muted">
+          There are no open tabs <br />
+          Open a new tab using the <b>Enable Drawing Extension</b> button above.
+        </div> -->
+      </b-tabs>
+    </b-card>
   
   
-    <!--toggle map @get-toggle-data="handleToggleData" -->
-    <toggle-map />
+    <!--toggle map @get-toggle-data="handleToggleData" 
+    <toggle-map />-->
 
     
     <!-- google base map -->
@@ -62,10 +74,31 @@ export default {
       sgcoord: { lat: 1.3521, lng: 103.8198 },
       markers: [],
       enableDrawingToolsExtension:false,
-      tabValue:0
+      tabs: [],
+        tabCounter: 0
     };
   },
   methods: {
+    getMountedComponent(component){
+
+      //get the first active component
+      console.log(component)
+    },
+     closeTab(x) {
+        for (let i = 0; i < this.tabs.length; i++) {
+          if (this.tabs[i] === x) {
+            this.tabs.splice(i, 1)
+          }
+        }
+      },
+      newTab() {
+
+        if(!this.enableDrawingToolsExtension){
+          this.enableDrawingToolsExtension = true;
+        }
+
+        //this.tabs.push(this.tabCounter++)
+      },
     haveExistingSearchMarker(circleData){
 
       var scope =this;
@@ -106,6 +139,8 @@ export default {
 
              scope.drawCircle.circle.setOptions({center:{lat:currentLatitude,lng:currentLongitude}});       
 
+             //update full address
+             //pass by props 
             new google.maps.Geocoder().geocode(
               {
                 location: {
@@ -215,14 +250,32 @@ export default {
       this.enableDrawingToolsExtension = true;
     },
     clearSearch() {
+
+      //reset components
+      this.enableDrawingToolsExtension = false
+
       //remove search marker
       if(this.searchMarker){
         this.searchMarker.setMap(null);
         this.searchMarker = null;
       } 
+
+      //clear drawcircle
+      if(this.drawCircle){
+        this.drawCircle.marker.setMap(null);
+        this.drawCircle.circle.setMap(null);
+        this.drawCircle.circleFullAddress='';
+        google.maps.event.removeListener(this.drawCircle.draggableMarkerListener);
+        google.maps.event.removeListener(this.drawCircle.draggableMarkerListener);
+
+        if(this.drawCircle.clickMarkerListener){
+           google.maps.event.removeListener(this.drawCircle.clickMarkerListener);
+        } 
+      }
     },
     handleSearchData(searchData){
-
+      
+      var scope = this;
       var pos = {
         lat:searchData.lat,
         lng:searchData.lng
@@ -230,16 +283,24 @@ export default {
 
       this.$refs.mapRef.$mapPromise.then(map => {
       
-        if(!this.searchMarker){
-              //create search marker
-            this.searchMarker = new google.maps.Marker({
+        if(!scope.searchMarker){
+
+          //check if cirlc is available
+          if(scope.drawCircle.marker){
+            
+            scope.drawCircle.marker.setPosition(pos);
+             scope.drawCircle.circle.setOptions({center:pos});       
+          }else{
+               //create search marker
+            scope.searchMarker = new google.maps.Marker({
             animation: google.maps.Animation.DROP,
             position:  pos,
             map: map
           });
+          } 
         }else{ 
           //just change latlng
-          this.searchMarker.setPosition(pos); 
+          scope.searchMarker.setPosition(pos); 
         }  
 
       }); 

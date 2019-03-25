@@ -1,8 +1,6 @@
 <template>
   <div>
 
-    <b-button @click="drawCirle">Draw circle</b-button>
-
     <div v-if="drawCircle.enableCircleDrawing">
  
       <vue-slider
@@ -29,9 +27,7 @@
 
       <b-button variant="primary" >Save</b-button>
     </div>
-
-    
-
+ 
   </div>
 </template>
 
@@ -43,6 +39,28 @@ import "vue-swatches/dist/vue-swatches.min.css";
 
 export default {
 
+  mounted(){
+    //tell base map which componet will appear first
+    //console.log("mounted draw circle");
+    //enable drawing
+
+      if (this.drawCircle.enableCircleDrawing) {
+        this.drawCircle.enableCircleDrawing = false;
+      } else {
+        this.drawCircle.enableCircleDrawing = true;
+      }
+      this.minValue = 0;
+      this.drawCircle.circleRadiusValue = 0;
+      this.drawCircle.circleDataChangedType = "enableCircleDrawing";
+
+      //emit to base map
+      this.passDataToBaseMap();
+
+    this.$emit("is-mounted", "circleDrawingTools");
+  },
+  destroyed(){
+    console.log("destory circle compoent")
+  },
   components: {
     VueSlider,
     Swatches
@@ -76,25 +94,11 @@ export default {
       this.passDataToBaseMap();
     },
     drawCirle() {
-      //enable drawing
-
-      if (this.drawCircle.enableCircleDrawing) {
-        this.drawCircle.enableCircleDrawing = false;
-      } else {
-        this.drawCircle.enableCircleDrawing = true;
-      }
-      this.minValue = 0;
-      this.drawCircle.circleRadiusValue = 0;
-      this.drawCircle.circleDataChangedType = "enableCircleDrawing";
-
-      //emit to base map
-      this.passDataToBaseMap();
+      
     }
   },
   watch: {
-    circleFullAddress(newValue) {
-      this.form.address = newValue;
-    }
+  
   }
 };
 </script>
