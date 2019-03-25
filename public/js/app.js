@@ -92192,6 +92192,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             axios.get('/api/crisis/archive').then(function (res) {
+                console.log(res);
                 _this.crises = res.data.crises;
             }).catch(function (error) {
                 _this.error = error.response.data.errors;
@@ -92249,7 +92250,7 @@ var render = function() {
         _c(
           "tbody",
           _vm._l(_vm.crises, function(crisis, index) {
-            return _c("tr", { key: index + crisis.health_service_type }, [
+            return _c("tr", { key: index + crisis }, [
               _c("td", [_vm._v(_vm._s(crisis.date))]),
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(crisis.time))]),
