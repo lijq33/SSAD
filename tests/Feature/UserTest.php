@@ -20,15 +20,14 @@ class UserTest extends TestCase
     public function loginWithAccountManager()
     {
         $user = factory(User::class)
-        ->states('AccountManager')
-        ->create();
+            ->states('AccountManager')
+            ->create();
 
         $this->post('/api/auth/login',[
             'nric' => $user->nric,
             'password' => $this->password,
         ]);
     }
-
 
     /** @test*/
     public function it_can_log_a_user_in()
@@ -549,7 +548,7 @@ class UserTest extends TestCase
         ]);
 
         $response->assertStatus(422);
-
+            
         $this->assertDatabaseMissing('users', [
             'nric' =>  $this->nric,
         ]);

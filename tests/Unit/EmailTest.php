@@ -13,8 +13,20 @@ class EmailTest extends TestCase
      *
      * @return void
      */
-    public function testExample()
+    public function it_can_generate_pdf()
     {
-        $this->assertTrue(true);
+        //generate pdf
+        //assert that pdf have been generated
+    }
+
+    
+    /** @test */
+    public function it_can_send_email(){
+        
+    }
+    
+    /** @test */
+    public function it_cannot_send_email_when_pdf(){
+        
     }
 }
