@@ -1,22 +1,24 @@
 <template>
 <div>
     <!-- for updating crisis status -->
-  <div class="form-group row tw-flex tw-justify-center">
-            <label class="col-md-4 col-form-label">
-                Crisis Status :
-            </label>
-            <input type="text"  v-model="updatedStatus"
-                class="col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-bg-grey-light"
-                
-            >
+<div class="form-group row justify-content-center">
+        <label class="col-md-4 col-form-label">
+            Crisis Status :
+        </label>
+        <div class="col-md-6">
+        <b-form-select v-model = "updatedStatus" :options = "options"  class="form-control"
+        />
         </div>
+         </div>
+        
+           
         <!-- for updating crisis description -->
         <div class="form-group row tw-flex tw-justify-center">
             <label class="col-md-4 col-form-label">
                 Description :
             </label>
             <textarea  v-model="updatedDescription"
-                class = "col-md-6 tw-flex tw-items-center tw-border-grey tw-rounded tw-bg-grey-light tw-py-2"
+                class = "col-md-6 tw-flex tw-items-center tw-border tw-border-grey tw-rounded tw-bg-white"
                 
             >
             </textarea>
@@ -41,6 +43,12 @@
                 updatedStatus: '',
                 updatedDescription: '',
                 error: '',
+
+                options: [
+                    { value: 'registered', text: 'registered' },
+                    { value: 'attending', text: 'attending' },
+                    { value: 'resolved', text: 'resolved' }
+                ],
 
             }
         },
