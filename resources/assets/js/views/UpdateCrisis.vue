@@ -1,17 +1,16 @@
 <template>
-<div>
-    <!-- for updating crisis status -->
-<div class="form-group row justify-content-center">
-        <label class="col-md-4 col-form-label">
-            Crisis Status :
-        </label>
-        <div class="col-md-6">
-        <b-form-select v-model = "updatedStatus" :options = "options"  class="form-control"
-        />
+    <div>
+        <!-- for updating crisis status -->
+        <div class="form-group row justify-content-center">
+            <label class="col-md-4 col-form-label">
+                Crisis Status :
+            </label>
+            <div class="col-md-6">
+                <b-form-select v-model = "updatedStatus" :options = "options"  class="form-control"
+                />
+            </div>
         </div>
-         </div>
-        
-           
+            
         <!-- for updating crisis description -->
         <div class="form-group row tw-flex tw-justify-center">
             <label class="col-md-4 col-form-label">
@@ -19,7 +18,6 @@
             </label>
             <textarea  v-model="updatedDescription"
                 class = "col-md-6 tw-flex tw-items-center tw-border tw-border-grey tw-rounded tw-bg-white"
-                
             >
             </textarea>
         </div>
@@ -30,11 +28,9 @@
         </div>
 
     </div>
-
 </template>
 
 <script>
-    
     export default {
         props: ['crisis'],
 
@@ -52,9 +48,7 @@
 
             }
         },
-        mounted(){
-         
-        },
+   
         watch: {
             crisis() {
                 this.updatedStatus = this.crisis.status;
@@ -63,31 +57,22 @@
             },
         },
 
-
-
-        computed: {
-         
-        },
-
         methods: {
-
-    
             updateCrisis(){
-                    axios.post('/api/crisis/'+this.crisis.id, {
-                        status : this.updatedStatus,
-                        description : this.updatedDescription,
-                    })
-                    .then((res) => {
-                        this.$emit('updateSuccess');
-                     })
-                     .catch((error) => {
-                         this.error = error.response;
-                     })
+                axios.post('/api/crisis/'+this.crisis.id, {
+                    status : this.updatedStatus,
+                    description : this.updatedDescription,
+                })
+                .then((res) => {
+                    this.$emit('updateSuccess');
+                })
+                .catch((error) => {
+                    this.error = error.response;
+                })
             
             },
 
             hideModal() {
-               
                 this.$emit('hideModal');
             },
         }
