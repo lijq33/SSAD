@@ -91708,8 +91708,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 
 
@@ -91832,8 +91830,6 @@ var render = function() {
                 _c("td", [_vm._v(_vm._s(crisis.crisis_type))]),
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(crisis.description))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(crisis.assistance_required))]),
                 _vm._v(" "),
                 _c("td", [
                   _vm._v(
@@ -92039,8 +92035,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Crisis Type")]),
         _vm._v(" "),
         _c("th", [_vm._v("Description")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Assistance Requested")]),
         _vm._v(" "),
         _c("th", [_vm._v("Location")]),
         _vm._v(" "),
@@ -92259,8 +92253,6 @@ var render = function() {
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(crisis.description))]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(crisis.assistance_required))]),
-              _vm._v(" "),
               _c("td", [
                 _vm._v(
                   _vm._s(crisis.address) + " " + _vm._s(crisis.postal_code)
@@ -92296,8 +92288,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Crisis Type")]),
         _vm._v(" "),
         _c("th", [_vm._v("Description")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Assistance Requested")]),
         _vm._v(" "),
         _c("th", [_vm._v("Location")]),
         _vm._v(" "),

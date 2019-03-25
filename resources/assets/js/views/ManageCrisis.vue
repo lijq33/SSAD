@@ -8,7 +8,6 @@
                     <th>Time</th>
                     <th>Crisis Type</th>
                     <th>Description</th>
-                    <th>Assistance Requested</th>
                     <th>Location</th>
                     <th>Status</th>
                     <th>Reported By</th>
@@ -22,7 +21,6 @@
                     <td>{{crisis.time}}</td>
                     <td>{{crisis.crisis_type}}</td>
                     <td>{{crisis.description}}</td>
-                    <td>{{crisis.assistance_required}}</td>
                     <td>{{crisis.address}} {{crisis.postal_code}}</td>
                     <td class = "tw-capitalize">{{crisis.status}}</td>
                     <td>{{crisis.name}}</td>
