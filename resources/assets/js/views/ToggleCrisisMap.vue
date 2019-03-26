@@ -70,7 +70,7 @@
       
       selectTwoHrWeather(){ 
         var request = "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast";
-        var markerIconUrl = 'https://dl1.cbsistatic.com/i/r/2017/09/19/0f80371a-9957-4ddf-bc62-070369dbe346/thumbnail/32x32/8c6b0a337bb7a17ab30adc42e01b40ec/iconimg199915.png';
+        var markerIconUrl = 'https://cdn0.iconfinder.com/data/icons/fatcow/32x32/weather_cloudy.png';
 
         if(this.selectTwoHrWeather.includes("show")){
            this.getCrisisDataFromBackEnd(request,this.selectTwoHrWeather,markerIconUrl);

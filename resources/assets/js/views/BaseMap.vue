@@ -44,7 +44,6 @@ import AutoSearchComplete from './AutoSearchComplete'
 import ToggleMap from './ToggleCrisisMap';
 
 export default {
-  props: ["searchData","toggleData"],
 
   mounted(){ 
     var scope = this;
@@ -63,7 +62,7 @@ export default {
 
   data() {
     return {
-      markerInfoWindow:"99",
+      markerInfoWindow:null,
       searchMarker:null,
       drawCircle:{marker:null,circle:null,draggableMarkerListener:null,clickMarkerListener:null,circleFullAddress:''},
       isLoading: false,
@@ -328,14 +327,12 @@ export default {
           if(scope.drawCircle.marker){
             
             scope.drawCircle.marker.setPosition(pos);
-             scope.drawCircle.circle.setOptions({center:pos});       
+             scope.drawCircle.circle.setOptions({center:pos});     
+
           }else{
                //create search marker
-            scope.searchMarker = new google.maps.Marker({
-            animation: google.maps.Animation.DROP,
-            position:  pos,
-            map: map
-          });
+               scope.searchMarker = ""
+              scope.addMarker("Variable",scope.searchMarker,{ position:  pos},null);
           } 
         }else{ 
           //just change latlng
@@ -450,11 +447,6 @@ export default {
     }
  
     },
-    notContainedIn(arr) {
-    return function arrNotContains(element) {
-        return arr.indexOf(element) === -1;
-    };
-    },
     showDegueData(){
       console.log("show fire data on the map!")
 
@@ -482,18 +474,14 @@ export default {
     showRainData(){
 
     }, 
-     addMarker(markerVar,element,infowindow){
-       var scope =this;
-
-       //if want to assign to a variable 
-        if(markerVar){
-         
+     addMarker(markerVarType,markerVar,element,infowindow){
+          var scope =this; 
+          
            this.$refs.mapRef.$mapPromise.then(map => {
-           
-                      
+                 
           //new marker
          var temp = new google.maps.Marker({
-                icon:element.iconUrl ? element.iconUrl:'',
+                icon:element.icon ? element.icon:'',
                 draggable:element.draggable? element.draggable:false,
                 markerDisplayId:element.displayId? element.displayId:'' ,
                 animation: element.animation? element.animation:google.maps.Animation.DROP,
@@ -502,6 +490,7 @@ export default {
             });  
 
 
+        if(infowindow){
             //attach infowindow
           var contentString = '<div id="iw-container">' +
               '<div class="iw-title">'+infowindow.infoWindowTitle+'</div>' +
@@ -516,24 +505,34 @@ export default {
             scope.markerInfoWindow.open(map, this);
           });
 
-             markerVar.push(temp);
-              
+          }
+ 
+         // if want to assign to a array 
+        if(markerVarType === "Array"){ 
+           markerVar.push(temp);
+
+        }else{
+          console.log("a variable");
+          scope.searchMarker = temp;     
+        }
+       
         });   
-        } 
-         
+          
     },
     showTwoHrWeatherData(data){
        
       var scope = this;
  
         data.area_metadata.forEach((element,index) => {  
- 
           //add marker to twoHrWeatherMarkers variable
           //param(variable,icon,inforwindow content)
         scope.addMarker(
+        "Array",
         scope.markers.twoHrWeatherMarkers,
-        {icon:element.iconUrl,
-        markerDisplayId:element.displayId,position:  {lat: element.label_location.latitude, lng: element.label_location.longitude},},
+        {
+        icon:data.iconUrl,
+        markerDisplayId:element.displayId,
+        position:  {lat: element.label_location.latitude, lng: element.label_location.longitude}},
         {infoWindowTitle:element.name,infoWindowBody:data.items[0].forecasts[index].forecast}
         );
    
@@ -551,32 +550,7 @@ export default {
     }
   },
   watch: {
-    searchData: function(search) {
-        
-        this.searchMarker = null;
- 
-        //create search marker
-        this.searchMarker = new google.maps.Marker({
-            draggable: true,
-            position: event.latLng,
-            map: map
-          });
- 
-        //add to place
-        this.searchMarker = {
-          position: {
-            lat: place.geometry.location.lat(),
-            lng: place.geometry.location.lng()
-          },
-          infoText: place.formatted_address
-        };
-
-        this.panMap(pos.lat, pos.lng);
-
-        //set zoom lvl
-        this.setMapZoomLvl(17);
-      
-    }
+    
   } 
 };
 </script>

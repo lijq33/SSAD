@@ -92454,8 +92454,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["searchData", "toggleData"],
-
   mounted: function mounted() {
     var scope = this;
     this.$refs.mapRef.$mapPromise.then(function (map) {
@@ -92474,7 +92472,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   data: function data() {
     return {
-      markerInfoWindow: "99",
+      markerInfoWindow: null,
       searchMarker: null,
       drawCircle: { marker: null, circle: null, draggableMarkerListener: null, clickMarkerListener: null, circleFullAddress: '' },
       isLoading: false,
@@ -92720,11 +92718,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             scope.drawCircle.circle.setOptions({ center: pos });
           } else {
             //create search marker
-            scope.searchMarker = new google.maps.Marker({
-              animation: google.maps.Animation.DROP,
-              position: pos,
-              map: map
-            });
+            scope.searchMarker = "";
+            scope.addMarker("Variable", scope.searchMarker, { position: pos }, null);
           }
         } else {
           //just change latlng
@@ -92811,11 +92806,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         removeMarkersType[i].setMap(null);
       }
     },
-    notContainedIn: function notContainedIn(arr) {
-      return function arrNotContains(element) {
-        return arr.indexOf(element) === -1;
-      };
-    },
     showDegueData: function showDegueData() {
       console.log("show fire data on the map!");
 
@@ -92834,24 +92824,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     showGasLeakData: function showGasLeakData() {},
     showHazeData: function showHazeData() {},
     showRainData: function showRainData() {},
-    addMarker: function addMarker(markerVar, element, infowindow) {
+    addMarker: function addMarker(markerVarType, markerVar, element, infowindow) {
       var scope = this;
 
-      //if want to assign to a variable 
-      if (markerVar) {
+      this.$refs.mapRef.$mapPromise.then(function (map) {
 
-        this.$refs.mapRef.$mapPromise.then(function (map) {
+        //new marker
+        var temp = new google.maps.Marker({
+          icon: element.icon ? element.icon : '',
+          draggable: element.draggable ? element.draggable : false,
+          markerDisplayId: element.displayId ? element.displayId : '',
+          animation: element.animation ? element.animation : google.maps.Animation.DROP,
+          position: element.position,
+          map: map
+        });
 
-          //new marker
-          var temp = new google.maps.Marker({
-            icon: element.iconUrl ? element.iconUrl : '',
-            draggable: element.draggable ? element.draggable : false,
-            markerDisplayId: element.displayId ? element.displayId : '',
-            animation: element.animation ? element.animation : google.maps.Animation.DROP,
-            position: element.position,
-            map: map
-          });
-
+        if (infowindow) {
           //attach infowindow
           var contentString = '<div id="iw-container">' + '<div class="iw-title">' + infowindow.infoWindowTitle + '</div>' + '<div class="iw-content">' + '<div class="iw-subTitle">' + infowindow.infoWindowBody + '</div>' + '</div>' + '<div class="iw-bottom-gradient"></div>' + '</div>';
 
@@ -92859,21 +92847,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             scope.markerInfoWindow.setContent(contentString);
             scope.markerInfoWindow.open(map, this);
           });
+        }
 
+        // if want to assign to a array 
+        if (markerVarType === "Array") {
           markerVar.push(temp);
-        });
-      }
+        } else {
+          console.log("a variable");
+          scope.searchMarker = temp;
+        }
+      });
     },
     showTwoHrWeatherData: function showTwoHrWeatherData(data) {
 
       var scope = this;
 
       data.area_metadata.forEach(function (element, index) {
-
         //add marker to twoHrWeatherMarkers variable
         //param(variable,icon,inforwindow content)
-        scope.addMarker(scope.markers.twoHrWeatherMarkers, { icon: element.iconUrl,
-          markerDisplayId: element.displayId, position: { lat: element.label_location.latitude, lng: element.label_location.longitude } }, { infoWindowTitle: element.name, infoWindowBody: data.items[0].forecasts[index].forecast });
+        scope.addMarker("Array", scope.markers.twoHrWeatherMarkers, {
+          icon: data.iconUrl,
+          markerDisplayId: element.displayId,
+          position: { lat: element.label_location.latitude, lng: element.label_location.longitude } }, { infoWindowTitle: element.name, infoWindowBody: data.items[0].forecasts[index].forecast });
       });
     },
     panMap: function panMap(lat, lng) {
@@ -92886,33 +92881,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.zoom_lvl = zoomlvl;
     }
   },
-  watch: {
-    searchData: function searchData(search) {
-
-      this.searchMarker = null;
-
-      //create search marker
-      this.searchMarker = new google.maps.Marker({
-        draggable: true,
-        position: event.latLng,
-        map: map
-      });
-
-      //add to place
-      this.searchMarker = {
-        position: {
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng()
-        },
-        infoText: place.formatted_address
-      };
-
-      this.panMap(pos.lat, pos.lng);
-
-      //set zoom lvl
-      this.setMapZoomLvl(17);
-    }
-  }
+  watch: {}
 });
 
 /***/ }),
@@ -93633,7 +93602,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   watch: {
     selectTwoHrWeather: function selectTwoHrWeather() {
       var request = "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast";
-      var markerIconUrl = 'https://dl1.cbsistatic.com/i/r/2017/09/19/0f80371a-9957-4ddf-bc62-070369dbe346/thumbnail/32x32/8c6b0a337bb7a17ab30adc42e01b40ec/iconimg199915.png';
+      var markerIconUrl = 'https://cdn0.iconfinder.com/data/icons/fatcow/32x32/weather_cloudy.png';
 
       if (this.selectTwoHrWeather.includes("show")) {
         this.getCrisisDataFromBackEnd(request, this.selectTwoHrWeather, markerIconUrl);
