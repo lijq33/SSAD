@@ -46,6 +46,15 @@ import ToggleMap from './ToggleCrisisMap';
 export default {
   props: ["searchData","toggleData"],
 
+  mounted(){ 
+    var scope = this;
+       this.$refs.mapRef.$mapPromise.then(map => {
+          scope.markerInfoWindow = new google.maps.InfoWindow({
+          content: ''
+        });
+       }); 
+  },
+
   components: {
     drawCircle:DrawCircle,
     autoSearch:AutoSearchComplete,
@@ -54,6 +63,7 @@ export default {
 
   data() {
     return {
+      markerInfoWindow:"99",
       searchMarker:null,
       drawCircle:{marker:null,circle:null,draggableMarkerListener:null,clickMarkerListener:null,circleFullAddress:''},
       isLoading: false,
@@ -66,6 +76,7 @@ export default {
     };
   },
   methods: {
+   
     handleClearToggleData(clearToggleData){
         
       //empty markers
@@ -470,54 +481,62 @@ export default {
     },
     showRainData(){
 
+    }, 
+     addMarker(markerVar,element,infowindow){
+       var scope =this;
+
+       //if want to assign to a variable 
+        if(markerVar){
+         
+           this.$refs.mapRef.$mapPromise.then(map => {
+           
+                      
+          //new marker
+         var temp = new google.maps.Marker({
+                icon:element.iconUrl ? element.iconUrl:'',
+                draggable:element.draggable? element.draggable:false,
+                markerDisplayId:element.displayId? element.displayId:'' ,
+                animation: element.animation? element.animation:google.maps.Animation.DROP,
+                position:  element.position,
+                map: map,
+            });  
+
+
+            //attach infowindow
+          var contentString = '<div id="iw-container">' +
+              '<div class="iw-title">'+infowindow.infoWindowTitle+'</div>' +
+              '<div class="iw-content">' +
+                '<div class="iw-subTitle">'+infowindow.infoWindowBody+'</div>' +
+              '</div>' +
+              '<div class="iw-bottom-gradient"></div>' +
+            '</div>';
+
+            google.maps.event.addListener(temp, 'click', function() {
+            scope.markerInfoWindow.setContent(contentString);
+            scope.markerInfoWindow.open(map, this);
+          });
+
+             markerVar.push(temp);
+              
+        });   
+        } 
+         
     },
     showTwoHrWeatherData(data){
-     
+       
       var scope = this;
-       var infowindow = new google.maps.InfoWindow({
-             content:''
-       });
-
-       console.log(data)
-
+ 
         data.area_metadata.forEach((element,index) => {  
-
-        scope.$refs.mapRef.$mapPromise.then(map => {
-
-        var marker = new google.maps.Marker({
-            icon:element.iconUrl,
-            markerDisplayId:element.displayId,
-            animation: google.maps.Animation.DROP,
-            position:  {lat: element.label_location.latitude, lng: element.label_location.longitude},
-            map: map,
-        });
-
-      scope.markers.twoHrWeatherMarkers.push(marker);
-
-        google.maps.event.addListener(marker, 'click', (function(marker, index) {
-        return function() {
-            
-            infowindow.setContent('<div id="content">'+
-                    '<div id="siteNotice">'+
-                    '</div>'+
-                    '<h6>'+element.name+'</h6>'+
-                    '<div id="bodyContent">'+data.items[0].forecasts[index].forecast+
-                    '</div>'+
-                    '</div>'); 
-            infowindow.open(map, marker);
-
-
-            //one animation
-              for(var i=0; i<scope.markers.twoHrWeatherMarkers.length; i++){
-                scope.markers.twoHrWeatherMarkers[i].setAnimation(null);
-            }
-
-              marker.setAnimation(google.maps.Animation.BOUNCE);
-            
-        }
-      })(marker, index));
-
-      });
+ 
+          //add marker to twoHrWeatherMarkers variable
+          //param(variable,icon,inforwindow content)
+        scope.addMarker(
+        scope.markers.twoHrWeatherMarkers,
+        {icon:element.iconUrl,
+        markerDisplayId:element.displayId,position:  {lat: element.label_location.latitude, lng: element.label_location.longitude},},
+        {infoWindowTitle:element.name,infoWindowBody:data.items[0].forecasts[index].forecast}
+        );
+   
       });
 
     },
@@ -562,3 +581,45 @@ export default {
 };
 </script>
 
+<style>
+#iw-container .iw-title {
+	font-family: 'Open Sans Condensed', sans-serif;
+	font-size: 22px;
+	font-weight: 400;
+	padding: 10px;
+	background-color: #48b5e9;
+	color: white;
+	margin: 0;
+	border-radius: 2px 2px 0 0;
+}
+#iw-container .iw-content {
+	font-size: 13px;
+	line-height: 18px;
+	font-weight: 400;
+	margin-right: 1px;
+	padding: 15px 5px 20px 15px;
+	max-height: 140px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+.iw-content img {
+	float: right;
+	margin: 0 5px 5px 10px;	
+}
+.iw-subTitle {
+	font-size: 16px;
+	font-weight: 700;
+	padding: 5px 0;
+}
+.iw-bottom-gradient {
+	position: absolute;
+	width: 326px;
+	height: 25px;
+	bottom: 10px;
+	right: 18px;
+	background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+	background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+	background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+	background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+}
+</style>
