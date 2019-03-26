@@ -36,16 +36,19 @@ class SendEmail implements ShouldQueue
         //y = total number of crisis 
         //x = time
         //graph 2
-        
-        //get data from database
 
-        $crises = \App\Crisis::with('user:id,name')->get();
+        $crises = \App\Crisis::get();
 
         $data = [
-            'data'=> $crises,
+            'crises' => $crises,
         ];
+
         $pdf = PDF::loadView('pdf.template', $data)->save(public_path().'/KeyIndicators.pdf');
 
         \Mail::to('test@testingemail.com')->send(new DataUpdate());
     }
 }
+?>
+<script>
+
+</script>
