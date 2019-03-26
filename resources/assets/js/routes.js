@@ -6,6 +6,10 @@ export const routes = [
         component: require('./views/Home.vue')
     },
     {
+        path : '/pubcrisis',
+        component: require('./views/PublicCrisis.vue')
+    },
+    {
         path : '/login',
         component: require('./views/Login.vue')
     },
