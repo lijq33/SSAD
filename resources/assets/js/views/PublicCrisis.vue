@@ -53,6 +53,9 @@
                             </div>
                         </div>
 
+                        <!--just a postal code helper without map reference -->
+                        <div id="service-helper"></div>
+
                         <!-- Date -->
                     <div class = "form-group row">
                         <label for = "date" class = "col-md-4 col-form-label text-md-right">
@@ -115,9 +118,9 @@
                 </label>
             
                 <div v-if = "form.image === ''" class = "col-md-6">
-                    <input accept = "image/*" type = "file" class = "upload-image-input tw-hidden" >
-                    <button class = "tw-p-4 hover:tw-bg-blue-dark tw-bg-blue tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded" 
-                        >
+                    <input accept = "image/*" type = "file" class = "upload-image-input tw-hidden" @change = "onFileSelected">
+                    <button class = "btn btn-primary" 
+                         @click = "uploadImage">
                         Select An Image
                     </button>
 
@@ -127,7 +130,7 @@
                     <div class = "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden">
                         <img :src = "form.image" class = "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center" />
                     </div>
-                    <button class = "tw-p-4 hover:tw-bg-blue-dark tw-bg-blue tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded">
+                    <button class = "btn btn-primary" @click = "removeImage">
                         Upload Another Image Instead
                     </button>
                 </div>
@@ -137,11 +140,11 @@
              <div class="form-group row tw-my-6">
             <div class="col-md-6 offset-md-4">
                 <div v-if = "!isLoading">
-                    <button type="submit" class="tw-p-4 hover:tw-bg-blue-dark tw-bg-blue tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded">
+                    <button type="submit" class="btn btn-primary">
                         Submit
                     </button>
 
-                    <button type="submit" class="tw-p-4 hover:tw-bg-blue-dark tw-bg-blue tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded">
+                    <button type="submit" class="btn btn-primary">
                         Reset
                     </button>
                 </div>
@@ -199,8 +202,6 @@
                     lng: '',
 
                     geocode:'',
-
-                     error: [],
                 }
                
             }
@@ -208,25 +209,54 @@
 
         methods: {
 
-             bestAddressMatch(geocoder, pos, serviceFormatedAddress,matchPostalCode){ 
+             uploadImage(e) {
+                document.querySelector('.upload-image-input').click();
+            },
+
+            removeImage(){
+                this.form.image = '';
+                this.form.selectedFile = null;
+            },
+            
+            createImage(file) {
+                let reader = new FileReader();
+
+                reader.onload = (e) => {
+                    this.form.image = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            },
+
+            onFileSelected (event) {
+                let files = event.target.files || event.dataTransfer.files;
+
+                if (!files.length)
+                    return;
+
+                this.form.selectedFile = files[0];
+                
+                this.createImage(this.form.selectedFile);
+            },
+
+             bestAddressMatch(geocoder, pos, serviceFormatedAddress){ 
                 var scope = this;
                 var foundBestMatch = false;
                 
                 geocoder.geocode({ location: pos }, function(results, status) {
                     if (status === "OK") {
                         results.forEach(element => {
-                            if(element.formatted_address.includes(matchPostalCode)){
+                            if(element.formatted_address.includes(serviceFormatedAddress)){
                                     foundBestMatch = true;
                                 if(element.formatted_address.length > serviceFormatedAddress.length){
-                                    scope.form.address = element.formatted_address; 
+                                    scope.form.location = element.formatted_address; 
                                 }else{
-                                    scope.form.address = serviceFormatedAddress; 
+                                    scope.form.location = serviceFormatedAddress; 
                                 }  
                             } 
                         });  
 
                         if(!foundBestMatch){
-                            scope.form.address = serviceFormatedAddress; 
+                            scope.form.location = serviceFormatedAddress; 
                         }
 
                     }
@@ -237,14 +267,6 @@
                 var scope = this;
 
                 if (place.id) { 
-                    var matchPostalCode;
-                    place.address_components.forEach(address_component => {
-                        if(address_component.types[0] == 'postal_code'){
-                            matchPostalCode = address_component.long_name;
-                            scope.form.postalCode = address_component.short_name;
-                        }
-                    });
-
                     scope.form.lat = place.geometry.location.lat();
                     scope.form.lng = place.geometry.location.lng();
 
@@ -257,7 +279,7 @@
 
                     service.getDetails({ placeId: place.place_id }, function(place, status) {
                         if (status === google.maps.places.PlacesServiceStatus.OK) {
-                            scope.bestAddressMatch(new google.maps.Geocoder(), pos, place.formatted_address, matchPostalCode); 
+                            scope.bestAddressMatch(new google.maps.Geocoder(), pos, place.formatted_address); 
                         }
                     });
                 }
