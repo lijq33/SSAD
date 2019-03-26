@@ -28,6 +28,6 @@ class DataUpdate extends Mailable
     public function build()
     {
 
-        return $this->view('emails.auto')->attach(public_path().'/myfile.pdf');
+        return $this->view('emails.template')->attach(public_path().'/KeyIndicators.pdf');
     }
 }

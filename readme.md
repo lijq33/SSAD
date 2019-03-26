@@ -120,7 +120,7 @@ Central Processing Unit
 CallCentreUI
 
 Weather - Data.gov.sg / Yahoo! Weather RSS Feed
-Email - Mail Swift
+Email - Mail trap
 
 
 

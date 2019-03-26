@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->job(new SendEmail)->everyMinute();
-
+        // $schedule->job(new SendEmail);
         //$schedule->command('\Mail::to($user)->send(new DataUpdate($user));')->everyThirtyMinutes();
     }
 
