@@ -61,7 +61,7 @@ Weather:
 air temperature - https://api.data.gov.sg/v1/environment/air-temperature
 rainfall - https://api.data.gov.sg/v1/environment/rainfall
 relative humidity - https://api.data.gov.sg/v1/environment/relative-humidity
-weather-forecast - https://api.data.gov.sg/v1/environment/(2-hour/24-hour/4-day)-weather-forecast
+weather-forecast - https://api.data.gov.sg/v1/environment/(2-hour/24-hour/4-day)-weather-forecast (2hr done)
 
 Haze:
 pm2.5 - https://api.data.gov.sg/v1/environment/pm25
