@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use App\Agency;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Map;
+use Intervention\Image\Facades\Image;
+
 
 class Crisis extends Model
 {
@@ -51,7 +53,8 @@ class Crisis extends Model
         'date' => 'bail|required|date_format:d/m/Y|before:tomorrow',
         'time' => 'required',
         'address' => 'required',
-        'crisisType' => 'required', //add in for Enum
+        'crisisType' => 'required|in:Fire Outbreak,Dengue,Gas Leak',
+        'image' => 'mimes:jpeg,bmp,png'
     ];
 
     /**
@@ -60,12 +63,22 @@ class Crisis extends Model
      * @var array
     */
     protected $fillable = ['user_id', 'name', 'telephone_number', 'postal_code', 'date', 'time', 'address',
-                            'crisis_type', 'status', 'description', 'twitter_post_id', 'facebook_post_id'];
+                            'crisis_type', 'status', 'description', 'image', 'facebook_post_id'];
 
     public static function newCrisis($data){
 
         $data['date'] = (Carbon::parse($data['date'])->format('Y/m/d'));
         $data['time'] = (Carbon::parse($data['time'])->format('H:i:s'));
+
+        $imageName = null;
+
+        if ($data['image'] !== "null"){        
+            $imageName = str_random(40);
+            $image = Image::make($data['image']->getRealPath());
+            // $image->resize(320, 240);
+            $image->save(public_path('crisis\\') .  $imageName . ".{$data['image']->getClientOriginalExtension()}"); // Original Image
+            $imageName = $imageName.".".$data['image']->getClientOriginalExtension();
+        }
 
         $crisis = Crisis::create([
             'name' => $data['name'],
@@ -80,6 +93,7 @@ class Crisis extends Model
             
             'status' => 'registered',
             'description' => $data['description'],
+            'image' => $imageName
         ]);
 
         return $crisis;

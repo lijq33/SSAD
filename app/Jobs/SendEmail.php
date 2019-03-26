@@ -48,7 +48,3 @@ class SendEmail implements ShouldQueue
         \Mail::to('test@testingemail.com')->send(new DataUpdate());
     }
 }
-?>
-<script>
-
-</script>

@@ -17,7 +17,7 @@ class UsersTableSeeder extends Seeder
             'name' => Str::random(10),
             'nric' => 'S1234566Z',
             'email' => Str::random(10).'@gmail.com',
-            'password' => bcrypt('123123'),
+            'password' => bcrypt('12345!qW'),
             'telephone_number' => random_int(90000000 ,99999999),
             'roles' => 'CallCenterOperator'
         ]);
@@ -26,7 +26,7 @@ class UsersTableSeeder extends Seeder
             'name' => Str::random(10),
             'nric' => 'S1234567Z',
             'email' => Str::random(10).'@gmail.com',
-            'password' => bcrypt('123123'),
+            'password' => bcrypt('12345!qW'),
             'telephone_number' => random_int(90000000 ,99999999),
             'roles' => 'CrisisManager'
         ]);
@@ -35,7 +35,7 @@ class UsersTableSeeder extends Seeder
             'name' => Str::random(10),
             'nric' => 'S1234568Z',
             'email' => Str::random(10).'@gmail.com',
-            'password' => bcrypt('123123'),
+            'password' => bcrypt('12345!qW'),
             'telephone_number' => random_int(90000000 ,99999999),
             'roles' => 'CivilDefencesAdmin'
         ]);
@@ -44,7 +44,7 @@ class UsersTableSeeder extends Seeder
             'name' => Str::random(10),
             'nric' => 'S1234569Z',
             'email' => Str::random(10).'@gmail.com',
-            'password' => bcrypt('123123'),
+            'password' => bcrypt('12345!qW'),
             'telephone_number' => random_int(90000000 ,99999999),
             'roles' => 'AccountManager'
         ]);

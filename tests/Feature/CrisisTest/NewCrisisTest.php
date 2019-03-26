@@ -24,7 +24,7 @@ class NewCrisisTest extends TestCase
     {
         parent::setUp();
 
-        Event::fake();
+        // Event::fake();
     }
 
 

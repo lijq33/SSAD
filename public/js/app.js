@@ -80529,6 +80529,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -80555,6 +80581,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             showModal: null,
             dengue: null,
 
+            image: '',
+
+            //data to be submitted
+            selectedFile: null,
             form: {
                 name: '',
                 telephoneNumber: '',
@@ -80564,12 +80594,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 postalCode: '',
                 description: '',
                 assistanceRequired: [],
-                crisisType: null,
-
-                lat: '',
-                lng: '',
-
-                geocode: ''
+                crisisType: null
             }
         };
     },
@@ -80611,9 +80636,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     }
                 });
 
-                scope.form.lat = place.geometry.location.lat();
-                scope.form.lng = place.geometry.location.lng();
-
                 var pos = {
                     lat: place.geometry.location.lat(),
                     lng: place.geometry.location.lng()
@@ -80633,13 +80655,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             // this.isLoading = true;
             this.message = "";
-            this.error = "";
+            this.error = [];
 
-            axios.post('/api/crisis', this.form).then(function (response) {
+            var fd = new FormData();
+
+            fd.append('image', this.selectedFile);
+            fd.append('name', this.form.name);
+            fd.append('telephoneNumber', this.form.telephoneNumber);
+            fd.append('date', this.form.date);
+            fd.append('time', this.form.time);
+            fd.append('address', this.form.address);
+            fd.append('postalCode', this.form.postalCode);
+            fd.append('description', this.form.description);
+            fd.append('assistanceRequired', this.form.assistanceRequired);
+            fd.append('crisisType', this.form.crisisType);
+
+            var config = {
+                headers: { 'content-type': 'multipart/form-data' }
+            };
+
+            axios.post('/api/crisis', fd, config).then(function (response) {
                 _this.message = response.data.message;
                 $('html, body').animate({ scrollTop: 0 }, 'slow');
                 _this.isLoading = false;
-                // this.resetFields();
+                _this.resetFields();
             }).catch(function (error) {
                 _this.error = error.response.data.errors;
                 _this.isLoading = false;
@@ -80662,6 +80701,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         hideModal: function hideModal() {
             this.showModal = false;
+        },
+
+
+        //Images related methods
+        uploadImage: function uploadImage(e) {
+            document.querySelector('.upload-image-input').click();
+        },
+        removeImage: function removeImage() {
+            this.image = '';
+            this.selectedFile = null;
+        },
+        createImage: function createImage(file) {
+            var _this2 = this;
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                _this2.image = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
+        onFileSelected: function onFileSelected(event) {
+            var files = event.target.files || event.dataTransfer.files;
+
+            if (!files.length) return;
+
+            this.selectedFile = files[0];
+
+            this.createImage(this.selectedFile);
         }
     }
 });
@@ -91481,6 +91549,74 @@ var render = function() {
                             ])
                           : _vm._e()
                       ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-md-4 col-form-label text-md-right",
+                          attrs: { for: "image" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                        Crisis Image\n                                    "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm.image === ""
+                        ? _c("div", { staticClass: "col-md-6" }, [
+                            _c("input", {
+                              staticClass: "upload-image-input tw-hidden",
+                              attrs: { accept: "image/*", type: "file" },
+                              on: { change: _vm.onFileSelected }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "tw-p-4 hover:tw-bg-teal-dark tw-bg-teal tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded",
+                                on: { click: _vm.uploadImage }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                            Select A Image\n                                        "
+                                )
+                              ]
+                            )
+                          ])
+                        : _c("div", { staticClass: "col-md-6" }, [
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden"
+                              },
+                              [
+                                _c("img", {
+                                  staticClass:
+                                    "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center",
+                                  attrs: { src: _vm.image }
+                                })
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "tw-p-4 hover:tw-bg-teal-dark tw-bg-teal tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded",
+                                on: { click: _vm.removeImage }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                            Choose Another Image\n                                        "
+                                )
+                              ]
+                            )
+                          ])
                     ])
                   ])
                 ]),
