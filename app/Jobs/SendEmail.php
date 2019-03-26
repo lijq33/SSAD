@@ -49,6 +49,3 @@ class SendEmail implements ShouldQueue
     }
 }
 ?>
-<script>
-
-</script>
