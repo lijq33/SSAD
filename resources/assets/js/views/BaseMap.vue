@@ -1,30 +1,22 @@
 <template>
   <div>
 
-    <!--autosearch -->
+    <b-container >
+  <b-row>
+    <b-col cols="8">
+      <!--autosearch -->
     <auto-search :circle-full-address="drawCircle.circleFullAddress"  @get-search-data="handleSearchData" @clear-Search="clearSearch"/>
-   
-    <!-- drawing tools extension -->
-    <b-card no-body>
-     
-      <b-tabs card>
-        <!--circle-->
-        <b-tab v-if ="enableDrawingToolsExtension" title="Circle" @click="getTabInfo('circleDrawingTools')" @is-mounted="getMountedComponent" ><draw-circle @get-circle-drawing="handleCircleData"/></b-tab>
+    </b-col>
 
-        <b-tab v-if ="enableDrawingToolsExtension" title="Square">square</b-tab>
-        <!-- show and hide extension -->
-        <template slot="tabs"> 
-          <b-nav-item v-if ="!enableDrawingToolsExtension" @click.prevent="newTab" href="#"><b>Enable Drawing Extension</b></b-nav-item>
-          <b-nav-item v-if ="enableDrawingToolsExtension" @click.prevent="newTab" href="#"><b>Hide</b></b-nav-item>
-        </template>
+    <b-col cols="4">
+      <!-- crisis -->
+      <toggle-map @get-toggle-data="handleToggleData"  @clear-toggle-data="handleClearToggleData"/>
+    </b-col>
+  </b-row>
 
-      </b-tabs>
-    </b-card>
-  
-    <!-- crisis -->
-    <toggle-map @get-toggle-data="handleToggleData"  @clear-toggle-data="handleClearToggleData"/>
-     
-    <!-- google base map -->
+  <b-row>
+    <b-col cols="12" md="8">
+       <!-- google base map -->
     <GmapMap
       ref="mapRef"
       style="width: auto; height: 600px;"
@@ -32,6 +24,28 @@
       :center="sgcoord"
     >
     </GmapMap>
+    </b-col>
+
+    <b-col cols="6" md="4">
+     
+    <draw-tool 
+    :selected-shape = "selectedShape"
+    :enable-drawing="enableDrawingToolsExtension" 
+    :circle-drawing-center="localDrawCircle.center"
+    :circle-drawing-radius="localDrawCircle.radius"
+    @get-updated-drawing="handleCircleData" 
+    @get-backend-data="handleBackendData"
+    >
+    </draw-tool>
+      
+    </b-col>
+
+  </b-row>
+
+ 
+</b-container>
+  
+      <button id="delete-button" @click="deleteSelectedShape">Delete Selected Shape</button>
  
   </div>
 </template>
@@ -39,23 +53,122 @@
 <script>
 import { Modal } from "bootstrap-vue/es/components";
 import * as turf from "@turf/turf";
-import DrawCircle from './DrawCircle';
+import DrawTool from './DrawingTool';
 import AutoSearchComplete from './AutoSearchComplete'
 import ToggleMap from './ToggleCrisisMap';
 
 export default {
 
+
   mounted(){ 
     var scope = this;
        this.$refs.mapRef.$mapPromise.then(map => {
+          
+       }); 
+
+
+        this.$refs.mapRef.$mapPromise.then(map => {
+
           scope.markerInfoWindow = new google.maps.InfoWindow({
           content: ''
         });
-       }); 
+
+            var polyOptions = {
+              strokeColor: '#E84B3C',
+              fillColor: '#E84B3C',
+              strokeWeight: 1,
+              fillOpacity: 0.35, 
+              editable: true,
+              draggable: true
+            };
+
+            scope.drawingManager = new google.maps.drawing.DrawingManager({
+                    drawingMode: google.maps.drawing.OverlayType.null,
+                    drawingControlOptions: {
+                      position: google.maps.ControlPosition.TOP_CENTER, 
+                    },
+                    markerOptions: {
+                        draggable: true
+                    },
+                    polylineOptions: {
+                        editable: true,
+                        draggable: true
+                    },
+                    rectangleOptions: polyOptions,
+                    circleOptions: polyOptions,
+                    polygonOptions: polyOptions,
+                    map: map
+                });
+
+                  google.maps.event.addListener(scope.drawingManager, 'overlaycomplete', function (e) {
+                    
+                    var newShape = e.overlay;
+                    
+                    newShape.type = e.type;
+                    
+                    if (e.type !== google.maps.drawing.OverlayType.MARKER) {
+                        // Switch back to non-drawing mode after drawing a shape.
+                        scope.drawingManager.setDrawingMode(null);
+
+                        // Add an event listener that selects the newly-drawn shape when the user
+                        // mouses down on it.
+                        google.maps.event.addListener(newShape, 'click', function (e) {
+                            if (e.vertex !== undefined) {
+                                if (newShape.type === google.maps.drawing.OverlayType.POLYGON) {
+                                    var path = newShape.getPaths().getAt(e.path);
+                                    path.removeAt(e.vertex);
+                                    if (path.length < 3) {
+                                        newShape.setMap(null);
+                                    }
+                                }
+                                if (newShape.type === google.maps.drawing.OverlayType.POLYLINE) {
+                                    var path = newShape.getPath();
+                                    path.removeAt(e.vertex);
+                                    if (path.length < 2) {
+                                        newShape.setMap(null);
+                                    }
+                                }
+                            }
+                            scope.setSelection(newShape);
+                        });
+
+                      //add radius listener 
+                      google.maps.event.addListener(newShape , 'radius_changed', function(event) {
+                       scope.localDrawCircle.radius = newShape.radius; 
+                      });
+
+                      //add re-center listener
+                      google.maps.event.addListener(newShape, 'center_changed', function(event) {
+            
+                      scope.localDrawCircle.center = newShape.center;
+          
+                      });
+
+
+                        scope.setSelection(newShape);
+                    }
+                    else {
+                        google.maps.event.addListener(newShape, 'click', function (e) {
+                            scope.setSelection(newShape);
+                        });
+                        scope.setSelection(newShape);
+                    }
+
+                    // Clear the current selection when the drawing mode is changed, or when the
+                // map is clicked.
+                google.maps.event.addListener(scope.drawingManager, 'drawingmode_changed', scope.clearSelection);
+                google.maps.event.addListener(map, 'click', scope.clearSelection);
+                //google.maps.event.addDomListener(document.getElementById('delete-button'), 'click', deleteSelectedShape);
+                });
+
+                  
+
+          });
+
   },
 
   components: {
-    drawCircle:DrawCircle,
+    drawTool:DrawTool,
     autoSearch:AutoSearchComplete,
     toggleMap:ToggleMap
   },
@@ -69,18 +182,38 @@ export default {
       zoom_lvl: 12,
       sgcoord: { lat: 1.3521, lng: 103.8198 },
       markers: {twoHrWeatherMarkers:[]},
+      polygon:{dengueData:[]},
       enableDrawingToolsExtension:false,
-      tabs: [],
-        tabCounter: 0
+      drawingTool:null,
+      localDrawCircle:{center:null,radius:null,localCircleRadiusListener:null,localCircleCenterListener:null},
+      drawingManager:null,
+      selectedShape:null
+ 
     };
   },
   methods: {
+    handleBackendData(backendData){ 
+ 
+     
+  
+    },
+    removePolygon(polygonVar,polygonData){
+
+
+        for(var i=0; i<polygonData.length; i++){  
+  
+            if(polygonVar == "hideDengueData"){
+              polygonData[i].setMap(null);  
+            }    
+          } 
+    },
    
     handleClearToggleData(clearToggleData){
         
       //empty markers
-     if(clearToggleData === "hideDegueData"){
-        scope.showDegueData(element);
+     if(clearToggleData === "hideDengueData"){
+        this.removePolygon(clearToggleData,this.polygon.dengueData);
+        this.polygon.dengueData = [];
       }else if (clearToggleData === "hideFireData"){
           scope.showFireData(element);
       }else if (clearToggleData === "hideGasLeakData"){
@@ -100,7 +233,8 @@ export default {
     handleToggleData(toggleData){
         
        if(toggleData.displayId === "showDegueData"){
-        scope.showDegueData(element);
+
+        this.showDengueData(toggleData);
       }else if (toggleData.displayId === "showFireData"){
           scope.showFireData(element);
       }else if (toggleData.displayId === "showGasLeakData"){
@@ -119,23 +253,74 @@ export default {
 
       //get the first active component
       console.log(component)
-    },
-     closeTab(x) {
-        for (let i = 0; i < this.tabs.length; i++) {
-          if (this.tabs[i] === x) {
-            this.tabs.splice(i, 1)
-          }
+    }, 
+    deleteSelectedShape () {
+        if (this.selectedShape) {
+            this.selectedShape.setMap(null);
         }
-      },
-      newTab() {
+    },
+    clearSelection () {
+        if (this.selectedShape) {
+            if (this.selectedShape.type !== 'marker') {
+                this.selectedShape.setEditable(false);
+            }
+            console.log("set selected null")
+            this.selectedShape = null;
+        }
+    },
+    setSelection (shape) {
+                if (shape.type !== 'marker') {
+                   console.log("base map selected")
+                    this.clearSelection();
+                    shape.setEditable(true);
+                    //selectColor(shape.get('fillColor') || shape.get('strokeColor'));
+                }
+                
+                this.selectedShape = shape;
+            },
+      enableDrawingTool() {
+
+        var scope = this;
 
         if(!this.enableDrawingToolsExtension){
           this.enableDrawingToolsExtension = true;
+
+   
         }else{
           this.enableDrawingToolsExtension = false;
+ 
+        
         }
 
         //this.tabs.push(this.tabCounter++)
+      },
+      addDraggendListener(draggendVar){
+             //attach draggend listener
+             google.maps.event.addListener(draggendVar, "dragend", function(marker) {
+            
+            var latLng = marker.latLng;
+            var currentLatitude = latLng.lat();
+            var currentLongitude = latLng.lng();
+        console.log(currentLatitude)
+            // scope.drawCircle.circle.setOptions({center:{lat:currentLatitude,lng:currentLongitude}});       
+
+             //update full address
+             //pass by props 
+            // new google.maps.Geocoder().geocode(
+            //   {
+            //     location: {
+            //       lat: currentLatitude,
+            //       lng: currentLongitude
+            //     }
+            //   },
+            //   function(results, status) {
+            //     if (status === "OK") {
+            //       scope.drawCircle.circleFullAddress = results[0].formatted_address;  
+
+            //     }
+            //   }
+            // );
+          });
       },
     haveExistingSearchMarker(circleData){
 
@@ -283,10 +468,6 @@ export default {
     getTabInfo: function(event) {
       console.log(event)
     },
-    enableDrawingBtn(){
-      console.log("click")
-      this.enableDrawingToolsExtension = true;
-    },
     clearSearch() {
 
       //reset components
@@ -313,33 +494,28 @@ export default {
     },
     handleSearchData(searchData){
       
-      var scope = this;
+       
       var pos = {
         lat:searchData.lat,
         lng:searchData.lng
       }
 
       this.$refs.mapRef.$mapPromise.then(map => {
-      
-        if(!scope.searchMarker){
+ 
+        if(!this.searchMarker){
 
-          //check if cirlc is available
-          if(scope.drawCircle.marker){
-            
-            scope.drawCircle.marker.setPosition(pos);
-             scope.drawCircle.circle.setOptions({center:pos});     
-
-          }else{
-               //create search marker
-               scope.searchMarker = ""
-              scope.addMarker("Variable",scope.searchMarker,{ position:  pos},null);
-          } 
+          //create search marker
+             this.searchMarker = new google.maps.Marker({
+              draggable: true,
+              position: pos,
+              map: map
+            });    
+               
         }else{ 
           //just change latlng
-          scope.searchMarker.setPosition(pos); 
+          this.searchMarker.setPosition(pos); 
         }  
-
-      }); 
+      })
 
     },
     retrieveAddressFromBackEnd(postalCode){
@@ -377,67 +553,21 @@ export default {
 
 
     },
+    clearLocalCircleDrawing(){
 
-    enableCircleDrawing(circleData){
-      
-      var scope = this;
+      this.localDrawCircle.localCircleCenterListener = null;
+      this.localDrawCircle.localCircleRadiusListener = null;
 
-      if(circleData.enableCircleDrawing){
-
-        //if have existing search marker
-        if(scope.searchMarker){
-
-        scope.haveExistingSearchMarker(circleData);
-
-        }else{
-
-          //start of no search marker
-          scope.noExistingSearchMarker(circleData);
-        }
-  
-
-       if(scope.drawCircle.clickMarkerListener != null ){
-          google.maps.event.removeListener( scope.drawCircle.clickMarkerListener);
-            
-        } 
-
-      }else{
-        //remove circle listener
-        //remove marker & circle
-
-        if(scope.drawCircle.marker != null || scope.drawCircle.circle != null){
-          scope.drawCircle.marker.setMap(null);
-          scope.drawCircle.circle.setMap(null);
-        google.maps.event.removeListener(scope.drawCircle.draggableMarkerListener);
-        }
-
-        this.drawCircle.circleFullAddress = ''; 
-         
-      }
-
-    },
-    circleFillColor(circleData){
-
-      if(this.drawCircle.circle != null){
-       this.drawCircle.circle.setOptions({fillColor: circleData.circleFillColor,strokeColor: circleData.circleFillColor});   
-      }
-
-    },
-     circleRadiusValue(circleData){
-        if(this.drawCircle.circle != null){
-        this.drawCircle.circle.setOptions({radius:circleData.circleRadiusValue});   
-        } 
-       
     },
     handleCircleData(circleData){
-        
-        if(circleData.circleDataChangedType =="enableCircleDrawing" || !circleData.circleDataChangedType =="enableCircleDrawing"){
-          this.enableCircleDrawing(circleData);
-        }else if(circleData.circleDataChangedType == "circleFillColor"){
-          this.circleFillColor(circleData);
-        }else if(circleData.circleDataChangedType == "circleRadiusValue"){
-          this.circleRadiusValue(circleData);
-        }
+         
+         this.selectedShape.setOptions({
+           center:circleData.center,
+           radius:parseFloat(circleData.circleRadiusValue),
+           fillColor: circleData.circleFillColor,
+           strokeColor: circleData.circleFillColor
+           });   
+         
       
     },
     removeMarkers(removeMarkersType){
@@ -447,19 +577,41 @@ export default {
     }
  
     },
-    showDegueData(){
-      console.log("show fire data on the map!")
+    showDengueData(dengue){
+     var scope = this;
+      this.$refs.mapRef.$mapPromise.then(map => {
+            dengue.forEach((element,index) => {  
 
-      	// axios.get('/api/crisis')
-				// .then((res) => {	
-				// 	 console.log(res) 
-					
-				// }).catch((error) => {
-				// 	console.log(error)
-				// }).then(() => {
-					 
-        // });
-        
+             
+        //     strokeColor: '#E84B3C',
+        //     fillColor: '#E84B3C',
+        //     strokeWeight: 1,
+        //     fillOpacity: 0.35, 
+        //     clickable: false,
+        //     editable: true,
+        //     zIndex: 1
+      
+              if(element.type=="circle"){
+
+                  var temp = new google.maps.Circle({
+                  path: google.maps.SymbolPath.CIRCLE,
+                  strokeColor: element.fillColor,
+                  strokeOpacity: 1,
+                  strokeWeight: 1,
+                  fillColor:element.fillColor,
+                  fillOpacity: 0.35,
+                  map: map,
+                  center: element.center,
+                  radius: element.radius,
+                });
+
+                scope.polygon.dengueData.push(temp);
+              }
+
+            });
+
+         });
+       
         
     },
     showFireData(){
@@ -478,10 +630,13 @@ export default {
           var scope =this; 
           
            this.$refs.mapRef.$mapPromise.then(map => {
-                 
+            
           //new marker
          var temp = new google.maps.Marker({
-                icon:element.icon ? element.icon:'',
+                icon: {
+                  url: element.icon ? element.icon:'',
+                  scaledSize: new google.maps.Size(32, 32)
+                },
                 draggable:element.draggable? element.draggable:false,
                 markerDisplayId:element.displayId? element.displayId:'' ,
                 animation: element.animation? element.animation:google.maps.Animation.DROP,
@@ -500,7 +655,7 @@ export default {
               '<div class="iw-bottom-gradient"></div>' +
             '</div>';
 
-            google.maps.event.addListener(temp, 'click', function() {
+            google.maps.event.addListener(temp, 'mouseover', function() {
             scope.markerInfoWindow.setContent(contentString);
             scope.markerInfoWindow.open(map, this);
           });
@@ -509,12 +664,8 @@ export default {
  
          // if want to assign to a array 
         if(markerVarType === "Array"){ 
-           markerVar.push(temp);
-
-        }else{
-          console.log("a variable");
-          scope.searchMarker = temp;     
-        }
+           markerVar.push(temp); 
+        } 
        
         });   
           
@@ -556,6 +707,10 @@ export default {
 </script>
 
 <style>
+.mapClass{
+  width:20%
+}
+
 #iw-container .iw-title {
 	font-family: 'Open Sans Condensed', sans-serif;
 	font-size: 22px;

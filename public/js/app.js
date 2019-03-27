@@ -38797,7 +38797,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vuex
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_7_vue2_google_maps__, {
     load: {
         key: 'AIzaSyAIAkiam90N9R-_Nh72fL6MpGJpKUBDWgQ',
-        libraries: 'places'
+        libraries: 'places,drawing'
     }
 });
 
@@ -92388,7 +92388,7 @@ exports = module.exports = __webpack_require__(8)(false);
 
 
 // module
-exports.push([module.i, "\n#iw-container .iw-title {\n  font-family: 'Open Sans Condensed', sans-serif;\n  font-size: 22px;\n  font-weight: 400;\n  padding: 10px;\n  background-color: #48b5e9;\n  color: white;\n  margin: 0;\n  border-radius: 2px 2px 0 0;\n}\n#iw-container .iw-content {\n  font-size: 13px;\n  line-height: 18px;\n  font-weight: 400;\n  margin-right: 1px;\n  padding: 15px 5px 20px 15px;\n  max-height: 140px;\n  overflow-y: auto;\n  overflow-x: hidden;\n}\n.iw-content img {\n  float: right;\n  margin: 0 5px 5px 10px;\n}\n.iw-subTitle {\n  font-size: 16px;\n  font-weight: 700;\n  padding: 5px 0;\n}\n.iw-bottom-gradient {\n  position: absolute;\n  width: 326px;\n  height: 25px;\n  bottom: 10px;\n  right: 18px;\n  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(rgba(255, 255, 255, 1)));\n  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);\n  background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);\n}\n", ""]);
+exports.push([module.i, "\n.mapClass {\n  width: 20%;\n}\n#iw-container .iw-title {\n  font-family: 'Open Sans Condensed', sans-serif;\n  font-size: 22px;\n  font-weight: 400;\n  padding: 10px;\n  background-color: #48b5e9;\n  color: white;\n  margin: 0;\n  border-radius: 2px 2px 0 0;\n}\n#iw-container .iw-content {\n  font-size: 13px;\n  line-height: 18px;\n  font-weight: 400;\n  margin-right: 1px;\n  padding: 15px 5px 20px 15px;\n  max-height: 140px;\n  overflow-y: auto;\n  overflow-x: hidden;\n}\n.iw-content img {\n  float: right;\n  margin: 0 5px 5px 10px;\n}\n.iw-subTitle {\n  font-size: 16px;\n  font-weight: 700;\n  padding: 5px 0;\n}\n.iw-bottom-gradient {\n  position: absolute;\n  width: 326px;\n  height: 25px;\n  bottom: 10px;\n  right: 18px;\n  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(rgba(255, 255, 255, 1)));\n  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);\n  background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);\n}\n", ""]);
 
 // exports
 
@@ -92402,12 +92402,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bootstrap_vue_es_components__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__turf_turf__ = __webpack_require__(394);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__turf_turf___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__turf_turf__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__DrawCircle__ = __webpack_require__(395);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__DrawCircle___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__DrawCircle__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__DrawingTool__ = __webpack_require__(395);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__DrawingTool___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__DrawingTool__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__AutoSearchComplete__ = __webpack_require__(404);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__AutoSearchComplete___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__AutoSearchComplete__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ToggleCrisisMap__ = __webpack_require__(407);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ToggleCrisisMap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__ToggleCrisisMap__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -92456,16 +92470,104 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var scope = this;
+    this.$refs.mapRef.$mapPromise.then(function (map) {});
+
     this.$refs.mapRef.$mapPromise.then(function (map) {
+
       scope.markerInfoWindow = new google.maps.InfoWindow({
         content: ''
+      });
+
+      var polyOptions = {
+        strokeColor: '#E84B3C',
+        fillColor: '#E84B3C',
+        strokeWeight: 1,
+        fillOpacity: 0.35,
+        editable: true,
+        draggable: true
+      };
+
+      scope.drawingManager = new google.maps.drawing.DrawingManager({
+        drawingMode: google.maps.drawing.OverlayType.null,
+        drawingControlOptions: {
+          position: google.maps.ControlPosition.TOP_CENTER
+        },
+        markerOptions: {
+          draggable: true
+        },
+        polylineOptions: {
+          editable: true,
+          draggable: true
+        },
+        rectangleOptions: polyOptions,
+        circleOptions: polyOptions,
+        polygonOptions: polyOptions,
+        map: map
+      });
+
+      google.maps.event.addListener(scope.drawingManager, 'overlaycomplete', function (e) {
+
+        var newShape = e.overlay;
+
+        newShape.type = e.type;
+
+        if (e.type !== google.maps.drawing.OverlayType.MARKER) {
+          // Switch back to non-drawing mode after drawing a shape.
+          scope.drawingManager.setDrawingMode(null);
+
+          // Add an event listener that selects the newly-drawn shape when the user
+          // mouses down on it.
+          google.maps.event.addListener(newShape, 'click', function (e) {
+            if (e.vertex !== undefined) {
+              if (newShape.type === google.maps.drawing.OverlayType.POLYGON) {
+                var path = newShape.getPaths().getAt(e.path);
+                path.removeAt(e.vertex);
+                if (path.length < 3) {
+                  newShape.setMap(null);
+                }
+              }
+              if (newShape.type === google.maps.drawing.OverlayType.POLYLINE) {
+                var path = newShape.getPath();
+                path.removeAt(e.vertex);
+                if (path.length < 2) {
+                  newShape.setMap(null);
+                }
+              }
+            }
+            scope.setSelection(newShape);
+          });
+
+          //add radius listener 
+          google.maps.event.addListener(newShape, 'radius_changed', function (event) {
+            scope.localDrawCircle.radius = newShape.radius;
+          });
+
+          //add re-center listener
+          google.maps.event.addListener(newShape, 'center_changed', function (event) {
+
+            scope.localDrawCircle.center = newShape.center;
+          });
+
+          scope.setSelection(newShape);
+        } else {
+          google.maps.event.addListener(newShape, 'click', function (e) {
+            scope.setSelection(newShape);
+          });
+          scope.setSelection(newShape);
+        }
+
+        // Clear the current selection when the drawing mode is changed, or when the
+        // map is clicked.
+        google.maps.event.addListener(scope.drawingManager, 'drawingmode_changed', scope.clearSelection);
+        google.maps.event.addListener(map, 'click', scope.clearSelection);
+        //google.maps.event.addDomListener(document.getElementById('delete-button'), 'click', deleteSelectedShape);
       });
     });
   },
 
 
   components: {
-    drawCircle: __WEBPACK_IMPORTED_MODULE_2__DrawCircle___default.a,
+    drawTool: __WEBPACK_IMPORTED_MODULE_2__DrawingTool___default.a,
     autoSearch: __WEBPACK_IMPORTED_MODULE_3__AutoSearchComplete___default.a,
     toggleMap: __WEBPACK_IMPORTED_MODULE_4__ToggleCrisisMap___default.a
   },
@@ -92479,18 +92581,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       zoom_lvl: 12,
       sgcoord: { lat: 1.3521, lng: 103.8198 },
       markers: { twoHrWeatherMarkers: [] },
+      polygon: { dengueData: [] },
       enableDrawingToolsExtension: false,
-      tabs: [],
-      tabCounter: 0
+      drawingTool: null,
+      localDrawCircle: { center: null, radius: null, localCircleRadiusListener: null, localCircleCenterListener: null },
+      drawingManager: null,
+      selectedShape: null
+
     };
   },
 
   methods: {
+    handleBackendData: function handleBackendData(backendData) {},
+    removePolygon: function removePolygon(polygonVar, polygonData) {
+
+      for (var i = 0; i < polygonData.length; i++) {
+
+        if (polygonVar == "hideDengueData") {
+          polygonData[i].setMap(null);
+        }
+      }
+    },
     handleClearToggleData: function handleClearToggleData(clearToggleData) {
 
       //empty markers
-      if (clearToggleData === "hideDegueData") {
-        scope.showDegueData(element);
+      if (clearToggleData === "hideDengueData") {
+        this.removePolygon(clearToggleData, this.polygon.dengueData);
+        this.polygon.dengueData = [];
       } else if (clearToggleData === "hideFireData") {
         scope.showFireData(element);
       } else if (clearToggleData === "hideGasLeakData") {
@@ -92509,7 +92626,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     handleToggleData: function handleToggleData(toggleData) {
 
       if (toggleData.displayId === "showDegueData") {
-        scope.showDegueData(element);
+
+        this.showDengueData(toggleData);
       } else if (toggleData.displayId === "showFireData") {
         scope.showFireData(element);
       } else if (toggleData.displayId === "showGasLeakData") {
@@ -92528,14 +92646,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       //get the first active component
       console.log(component);
     },
-    closeTab: function closeTab(x) {
-      for (var i = 0; i < this.tabs.length; i++) {
-        if (this.tabs[i] === x) {
-          this.tabs.splice(i, 1);
-        }
+    deleteSelectedShape: function deleteSelectedShape() {
+      if (this.selectedShape) {
+        this.selectedShape.setMap(null);
       }
     },
-    newTab: function newTab() {
+    clearSelection: function clearSelection() {
+      if (this.selectedShape) {
+        if (this.selectedShape.type !== 'marker') {
+          this.selectedShape.setEditable(false);
+        }
+        console.log("set selected null");
+        this.selectedShape = null;
+      }
+    },
+    setSelection: function setSelection(shape) {
+      if (shape.type !== 'marker') {
+        console.log("base map selected");
+        this.clearSelection();
+        shape.setEditable(true);
+        //selectColor(shape.get('fillColor') || shape.get('strokeColor'));
+      }
+
+      this.selectedShape = shape;
+    },
+    enableDrawingTool: function enableDrawingTool() {
+
+      var scope = this;
 
       if (!this.enableDrawingToolsExtension) {
         this.enableDrawingToolsExtension = true;
@@ -92544,6 +92681,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
 
       //this.tabs.push(this.tabCounter++)
+    },
+    addDraggendListener: function addDraggendListener(draggendVar) {
+      //attach draggend listener
+      google.maps.event.addListener(draggendVar, "dragend", function (marker) {
+
+        var latLng = marker.latLng;
+        var currentLatitude = latLng.lat();
+        var currentLongitude = latLng.lng();
+        console.log(currentLatitude);
+        // scope.drawCircle.circle.setOptions({center:{lat:currentLatitude,lng:currentLongitude}});       
+
+        //update full address
+        //pass by props 
+        // new google.maps.Geocoder().geocode(
+        //   {
+        //     location: {
+        //       lat: currentLatitude,
+        //       lng: currentLongitude
+        //     }
+        //   },
+        //   function(results, status) {
+        //     if (status === "OK") {
+        //       scope.drawCircle.circleFullAddress = results[0].formatted_address;  
+
+        //     }
+        //   }
+        // );
+      });
     },
     haveExistingSearchMarker: function haveExistingSearchMarker(circleData) {
 
@@ -92671,10 +92836,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     getTabInfo: function getTabInfo(event) {
       console.log(event);
     },
-    enableDrawingBtn: function enableDrawingBtn() {
-      console.log("click");
-      this.enableDrawingToolsExtension = true;
-    },
     clearSearch: function clearSearch() {
 
       //reset components
@@ -92700,8 +92861,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
     },
     handleSearchData: function handleSearchData(searchData) {
+      var _this = this;
 
-      var scope = this;
       var pos = {
         lat: searchData.lat,
         lng: searchData.lng
@@ -92709,21 +92870,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       this.$refs.mapRef.$mapPromise.then(function (map) {
 
-        if (!scope.searchMarker) {
+        if (!_this.searchMarker) {
 
-          //check if cirlc is available
-          if (scope.drawCircle.marker) {
-
-            scope.drawCircle.marker.setPosition(pos);
-            scope.drawCircle.circle.setOptions({ center: pos });
-          } else {
-            //create search marker
-            scope.searchMarker = "";
-            scope.addMarker("Variable", scope.searchMarker, { position: pos }, null);
-          }
+          //create search marker
+          _this.searchMarker = new google.maps.Marker({
+            draggable: true,
+            position: pos,
+            map: map
+          });
         } else {
           //just change latlng
-          scope.searchMarker.setPosition(pos);
+          _this.searchMarker.setPosition(pos);
         }
       });
     },
@@ -92747,58 +92904,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         console.log(error);
       }).then(function () {});
     },
-    enableCircleDrawing: function enableCircleDrawing(circleData) {
+    clearLocalCircleDrawing: function clearLocalCircleDrawing() {
 
-      var scope = this;
-
-      if (circleData.enableCircleDrawing) {
-
-        //if have existing search marker
-        if (scope.searchMarker) {
-
-          scope.haveExistingSearchMarker(circleData);
-        } else {
-
-          //start of no search marker
-          scope.noExistingSearchMarker(circleData);
-        }
-
-        if (scope.drawCircle.clickMarkerListener != null) {
-          google.maps.event.removeListener(scope.drawCircle.clickMarkerListener);
-        }
-      } else {
-        //remove circle listener
-        //remove marker & circle
-
-        if (scope.drawCircle.marker != null || scope.drawCircle.circle != null) {
-          scope.drawCircle.marker.setMap(null);
-          scope.drawCircle.circle.setMap(null);
-          google.maps.event.removeListener(scope.drawCircle.draggableMarkerListener);
-        }
-
-        this.drawCircle.circleFullAddress = '';
-      }
-    },
-    circleFillColor: function circleFillColor(circleData) {
-
-      if (this.drawCircle.circle != null) {
-        this.drawCircle.circle.setOptions({ fillColor: circleData.circleFillColor, strokeColor: circleData.circleFillColor });
-      }
-    },
-    circleRadiusValue: function circleRadiusValue(circleData) {
-      if (this.drawCircle.circle != null) {
-        this.drawCircle.circle.setOptions({ radius: circleData.circleRadiusValue });
-      }
+      this.localDrawCircle.localCircleCenterListener = null;
+      this.localDrawCircle.localCircleRadiusListener = null;
     },
     handleCircleData: function handleCircleData(circleData) {
 
-      if (circleData.circleDataChangedType == "enableCircleDrawing" || !circleData.circleDataChangedType == "enableCircleDrawing") {
-        this.enableCircleDrawing(circleData);
-      } else if (circleData.circleDataChangedType == "circleFillColor") {
-        this.circleFillColor(circleData);
-      } else if (circleData.circleDataChangedType == "circleRadiusValue") {
-        this.circleRadiusValue(circleData);
-      }
+      this.selectedShape.setOptions({
+        center: circleData.center,
+        radius: parseFloat(circleData.circleRadiusValue),
+        fillColor: circleData.circleFillColor,
+        strokeColor: circleData.circleFillColor
+      });
     },
     removeMarkers: function removeMarkers(removeMarkersType) {
 
@@ -92806,19 +92924,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         removeMarkersType[i].setMap(null);
       }
     },
-    showDegueData: function showDegueData() {
-      console.log("show fire data on the map!");
+    showDengueData: function showDengueData(dengue) {
+      var scope = this;
+      this.$refs.mapRef.$mapPromise.then(function (map) {
+        dengue.forEach(function (element, index) {
 
-      // axios.get('/api/crisis')
-      // .then((res) => {	
-      // 	 console.log(res) 
+          //     strokeColor: '#E84B3C',
+          //     fillColor: '#E84B3C',
+          //     strokeWeight: 1,
+          //     fillOpacity: 0.35, 
+          //     clickable: false,
+          //     editable: true,
+          //     zIndex: 1
 
-      // }).catch((error) => {
-      // 	console.log(error)
-      // }).then(() => {
+          if (element.type == "circle") {
 
-      // });
+            var temp = new google.maps.Circle({
+              path: google.maps.SymbolPath.CIRCLE,
+              strokeColor: element.fillColor,
+              strokeOpacity: 1,
+              strokeWeight: 1,
+              fillColor: element.fillColor,
+              fillOpacity: 0.35,
+              map: map,
+              center: element.center,
+              radius: element.radius
+            });
 
+            scope.polygon.dengueData.push(temp);
+          }
+        });
+      });
     },
     showFireData: function showFireData() {},
     showGasLeakData: function showGasLeakData() {},
@@ -92831,7 +92967,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         //new marker
         var temp = new google.maps.Marker({
-          icon: element.icon ? element.icon : '',
+          icon: {
+            url: element.icon ? element.icon : '',
+            scaledSize: new google.maps.Size(32, 32)
+          },
           draggable: element.draggable ? element.draggable : false,
           markerDisplayId: element.displayId ? element.displayId : '',
           animation: element.animation ? element.animation : google.maps.Animation.DROP,
@@ -92843,7 +92982,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           //attach infowindow
           var contentString = '<div id="iw-container">' + '<div class="iw-title">' + infowindow.infoWindowTitle + '</div>' + '<div class="iw-content">' + '<div class="iw-subTitle">' + infowindow.infoWindowBody + '</div>' + '</div>' + '<div class="iw-bottom-gradient"></div>' + '</div>';
 
-          google.maps.event.addListener(temp, 'click', function () {
+          google.maps.event.addListener(temp, 'mouseover', function () {
             scope.markerInfoWindow.setContent(contentString);
             scope.markerInfoWindow.open(map, this);
           });
@@ -92852,9 +92991,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         // if want to assign to a array 
         if (markerVarType === "Array") {
           markerVar.push(temp);
-        } else {
-          console.log("a variable");
-          scope.searchMarker = temp;
         }
       });
     },
@@ -92917,7 +93053,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/views/DrawCircle.vue"
+Component.options.__file = "resources/assets/js/views/DrawingTool.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -92926,9 +93062,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-614de747", Component.options)
+    hotAPI.createRecord("data-v-348b035a", Component.options)
   } else {
-    hotAPI.reload("data-v-614de747", Component.options)
+    hotAPI.reload("data-v-348b035a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -92985,6 +93121,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -92992,24 +93144,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['enableDrawing', 'circleDrawingCenter', 'circleDrawingRadius', 'selectedShape'],
+
   mounted: function mounted() {
+
     //tell base map which componet will appear first
     //console.log("mounted draw circle");
     //enable drawing
 
-    if (this.drawCircle.enableCircleDrawing) {
-      this.drawCircle.enableCircleDrawing = false;
-    } else {
-      this.drawCircle.enableCircleDrawing = true;
-    }
-    this.minValue = 0;
-    this.drawCircle.circleRadiusValue = 0;
-    this.drawCircle.circleDataChangedType = "enableCircleDrawing";
+    // if (this.drawCircle.enableCircleDrawing) {
+    //   this.drawCircle.enableCircleDrawing = false;
+    // } else {
+    //   this.drawCircle.enableCircleDrawing = true;
+    // }
+    // this.minValue = 0;
+    // this.drawCircle.circleRadiusValue = 0;
+    // this.drawCircle.circleDataChangedType = "enableCircleDrawing";
 
-    //emit to base map
-    this.passDataToBaseMap();
+    // //emit to base map
+    // this.passDataToBaseMap();
 
-    this.$emit("is-mounted", "circleDrawingTools");
+    // this.$emit("get-backend-data", sampleData);
   },
   destroyed: function destroyed() {
     console.log("destory circle compoent");
@@ -93022,35 +93177,101 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   //drawCircle:{enableCircleDrawing:false,marker:null,circle:null,cirleDistanceValue: 0,circleFillColor:'#E84B3C'},
   data: function data() {
     return {
+
+      localDrawing: this.drawingEvent,
+      localEnableDrawing: false,
       minValue: 0,
-      maxValue: 21,
+      maxValue: 21000,
       drawCircle: {
+        type: 'circle',
         enableCircleDrawing: false,
-        circleDataChangedType: null,
         circleRadiusValue: 0,
-        circleFillColor: "#E84B3C"
-      }
+        circleFillColor: "#E84B3C",
+        center: { lat: '', lng: '' },
+        postData: false
+      },
+      tabs: [],
+      tabCounter: 0
     };
   },
 
 
   methods: {
+    newTab: function newTab() {
+      if (this.localEnableDrawing) {
+        this.this.localEnableDrawing = false;
+      } else {
+        this.localEnableDrawing = true;
+      }
+    },
+    saveCircleData: function saveCircleData() {
+
+      this.drawCircle.postData = true;
+
+      this.passDataToBaseMap();
+      console.log(this.drawCircle);
+    },
+    processCircleDrawing: function processCircleDrawing(circle) {
+
+      console.log(circle);
+
+      this.drawCircle.circleRadiusValue = circle.radius.toFixed(0);
+      this.drawCircle.center.lat = circle.center.lat();
+      this.drawCircle.center.lng = circle.center.lng();
+      this.drawCircle.circleFillColor = circle.fillColor;
+    },
+    closeTab: function closeTab(x) {
+      for (var i = 0; i < this.tabs.length; i++) {
+        if (this.tabs[i] === x) {
+          this.tabs.splice(i, 1);
+        }
+      }
+    },
     passDataToBaseMap: function passDataToBaseMap() {
-      this.$emit("get-circle-drawing", this.drawCircle);
+      this.$emit("get-updated-drawing", this.drawCircle);
     },
     changeCircleColor: function changeCircleColor(color) {
       this.drawCircle.circleFillColor = color;
-      this.drawCircle.circleDataChangedType = "circleFillColor";
       this.passDataToBaseMap();
     },
     changeCircleRadius: function changeCircleRadius(radius) {
-      this.drawCircle.circleRadiusValue = radius * 1000;
-      this.drawCircle.circleDataChangedType = "circleRadiusValue";
+      this.drawCircle.circleRadiusValue = radius;
       this.passDataToBaseMap();
-    },
-    drawCirle: function drawCirle() {}
+    }
   },
-  watch: {}
+  watch: {
+    selectedShape: function selectedShape(newValue) {
+      //receive shape
+
+      //if is circle
+
+      if (newValue == null) {
+        console.log("not selected shape");
+
+        //reset
+        if (this.drawCircle.enableCircleDrawing) {
+          this.drawCircle.enableCircleDrawing = false;
+        }
+      } else if (newValue.type == "circle") {
+
+        this.drawCircle.enableCircleDrawing = true;
+        this.processCircleDrawing(newValue);
+      }
+    },
+    circleDrawingRadius: function circleDrawingRadius(newValue, oldValue) {
+      console.log("radius changed");
+      this.drawCircle.circleRadiusValue = newValue.toFixed(0);
+    },
+    circleDrawingCenter: function circleDrawingCenter(newValue, oldValue) {
+
+      this.drawCircle.center.lat = newValue.lat();
+      this.drawCircle.center.lng = newValue.lng();
+    },
+    enableDrawing: function enableDrawing(newValue) {
+      console.log(newValue);
+    }
+  },
+  computed: {}
 });
 
 /***/ }),
@@ -93169,76 +93390,102 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm.drawCircle.enableCircleDrawing
-      ? _c(
-          "div",
-          [
-            _c("vue-slider", {
-              attrs: {
-                min: _vm.minValue,
-                max: _vm.maxValue,
-                interval: 1,
-                clickable: false
-              },
-              on: { change: _vm.changeCircleRadius },
-              model: {
-                value: _vm.drawCircle.circleRadiusValue,
-                callback: function($$v) {
-                  _vm.$set(_vm.drawCircle, "circleRadiusValue", $$v)
-                },
-                expression: "drawCircle.circleRadiusValue"
-              }
-            }),
-            _vm._v(
-              _vm._s(this.drawCircle.circleRadiusValue) + " metres\n\n    "
-            ),
-            _c("div", { staticClass: "form__field" }, [
-              _vm._m(0),
+  return _c(
+    "div",
+    [
+      _c(
+        "b-card",
+        { attrs: { "no-body": "" } },
+        [
+          _c(
+            "b-tabs",
+            { attrs: { card: "" } },
+            [
+              _vm.drawCircle.enableCircleDrawing
+                ? _c(
+                    "b-tab",
+                    { attrs: { title: "Circle" } },
+                    [
+                      _c("vue-slider", {
+                        attrs: {
+                          min: _vm.minValue,
+                          max: _vm.maxValue,
+                          interval: 1000,
+                          clickable: false
+                        },
+                        on: { change: _vm.changeCircleRadius },
+                        model: {
+                          value: _vm.drawCircle.circleRadiusValue,
+                          callback: function($$v) {
+                            _vm.$set(_vm.drawCircle, "circleRadiusValue", $$v)
+                          },
+                          expression: "drawCircle.circleRadiusValue"
+                        }
+                      }),
+                      _vm._v(
+                        _vm._s(this.drawCircle.circleRadiusValue) +
+                          " metres\n\n    "
+                      ),
+                      _c("div", { staticClass: "form__field" }, [
+                        _c("div", { staticClass: "form__label" }, [
+                          _c("strong", [_vm._v("Please choose a color:")])
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "form__input" },
+                          [
+                            _c("swatches", {
+                              attrs: { "popover-to": "right" },
+                              on: { input: _vm.changeCircleColor },
+                              model: {
+                                value: _vm.drawCircle.circleFillColor,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.drawCircle,
+                                    "circleFillColor",
+                                    $$v
+                                  )
+                                },
+                                expression: "drawCircle.circleFillColor"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "b-button",
+                        {
+                          attrs: { variant: "primary" },
+                          on: { click: _vm.saveCircleData }
+                        },
+                        [_vm._v("Save")]
+                      )
+                    ],
+                    1
+                  )
+                : _vm._e(),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "form__input" },
-                [
-                  _c("swatches", {
-                    attrs: { "popover-to": "right" },
-                    on: { input: _vm.changeCircleColor },
-                    model: {
-                      value: _vm.drawCircle.circleFillColor,
-                      callback: function($$v) {
-                        _vm.$set(_vm.drawCircle, "circleFillColor", $$v)
-                      },
-                      expression: "drawCircle.circleFillColor"
-                    }
-                  })
-                ],
-                1
-              )
-            ]),
-            _vm._v(" "),
-            _c("b-button", { attrs: { variant: "primary" } }, [_vm._v("Save")])
-          ],
-          1
-        )
-      : _vm._e()
-  ])
+              _c("template", { slot: "tabs" })
+            ],
+            2
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form__label" }, [
-      _c("strong", [_vm._v("Please choose a color:")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-614de747", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-348b035a", module.exports)
   }
 }
 
@@ -93412,10 +93659,10 @@ var render = function() {
       _c(
         "label",
         { staticClass: "col-md-1 col-form-label", attrs: { for: "search" } },
-        [_vm._v("\n          Search :\n        ")]
+        [_vm._v("\n          Search:\n        ")]
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-6" }, [
+      _c("div", { staticClass: "col-md-10" }, [
         _c(
           "div",
           [
@@ -93424,11 +93671,7 @@ var render = function() {
               staticClass:
                 "tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64",
               on: { place_changed: _vm.setPlace }
-            }),
-            _vm._v(" "),
-            _c("b-button", { on: { click: _vm.clearSearch } }, [
-              _vm._v("Clear Search")
-            ])
+            })
           ],
           1
         )
@@ -93566,13 +93809,76 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
+
+
+var sampleData = [{
+  id: 1,
+  type: 'circle',
+  center: { lat: 1.349245, lng: 103.763015 },
+  radius: 3000,
+  fillColor: "#E84B3C"
+}, {
+  id: 2,
+  type: 'circle',
+  center: { lat: 1.335515, lng: 103.844727 },
+  radius: 5000,
+  fillColor: "##8E43AD"
+}, {
+  id: 3,
+  type: 'circle',
+  center: { lat: 1.380822, lng: 103.851595 },
+  radius: 2000,
+  fillColor: "#F39C19"
+}];
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      selectTwoHrWeather: ''
+      selectTwoHrWeather: '',
+      selectDengue: ''
     };
   },
 
@@ -93600,9 +93906,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   },
   watch: {
+    selectDengue: function selectDengue() {
+      var request = sampleData;
+
+      if (this.selectDengue.includes("show")) {
+        request["displayId"] = this.selectDengue;
+        this.$emit("get-toggle-data", request);
+        //this.getCrisisDataFromBackEnd('',this.selectDengue,'');
+      } else {
+        this.removeCrisisDataFromFrontend(this.selectDengue);
+      }
+    },
     selectTwoHrWeather: function selectTwoHrWeather() {
       var request = "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast";
-      var markerIconUrl = 'https://cdn0.iconfinder.com/data/icons/fatcow/32x32/weather_cloudy.png';
+      var markerIconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/PC.png';
 
       if (this.selectTwoHrWeather.includes("show")) {
         this.getCrisisDataFromBackEnd(request, this.selectTwoHrWeather, markerIconUrl);
@@ -93634,7 +93951,42 @@ var render = function() {
               "b-tabs",
               { attrs: { card: "" } },
               [
-                _c("b-tab", { attrs: { title: "Crisis", active: "" } }),
+                _c(
+                  "b-tab",
+                  { attrs: { title: "Crisis", active: "" } },
+                  [
+                    _c(
+                      "b-form-group",
+                      [
+                        _c(
+                          "b-form-checkbox",
+                          {
+                            attrs: {
+                              id: "showDengueDataId",
+                              name: "showDengueDataId",
+                              value: "showDegueData",
+                              "unchecked-value": "hideDengueData"
+                            },
+                            model: {
+                              value: _vm.selectDengue,
+                              callback: function($$v) {
+                                _vm.selectDengue = $$v
+                              },
+                              expression: "selectDengue"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                  Dengue\n                "
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                ),
                 _vm._v(" "),
                 _c(
                   "b-tab",
@@ -93665,7 +94017,151 @@ var render = function() {
                               "\n                  (2H) Weather Forecast\n                "
                             )
                           ]
-                        )
+                        ),
+                        _vm._v(" "),
+                        _vm.selectTwoHrWeather == "showTwoHrWeatherData"
+                          ? _c(
+                              "div",
+                              [
+                                _c(
+                                  "b-button",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "b-toggle",
+                                        rawName: "v-b-toggle.collapse1",
+                                        modifiers: { collapse1: true }
+                                      }
+                                    ],
+                                    attrs: {
+                                      size: "sm",
+                                      variant: "outline-primary"
+                                    }
+                                  },
+                                  [_vm._v("Legend +")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "b-collapse",
+                                  {
+                                    staticClass: "mt-2",
+                                    attrs: { id: "collapse1" }
+                                  },
+                                  [
+                                    _c("b-card", [
+                                      _c(
+                                        "div",
+                                        { staticClass: "row legend-list2" },
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "col-xs-6 col-md-3"
+                                            },
+                                            [
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "force-col-xs-3 col-xs-3"
+                                                },
+                                                [
+                                                  _c("img", {
+                                                    staticClass: "image",
+                                                    attrs: {
+                                                      src:
+                                                        "https://www.nea.gov.sg/assets/images/icons/weather/pn.png",
+                                                      alt: "{forecast} icon"
+                                                    }
+                                                  })
+                                                ]
+                                              ),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "force-col-xs-9 col-xs-9 legend-desciption"
+                                                },
+                                                [_vm._v("Partly Cloudy")]
+                                              )
+                                            ]
+                                          ),
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "col-xs-6 col-md-3"
+                                            },
+                                            [
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "force-col-xs-3 col-xs-3"
+                                                },
+                                                [
+                                                  _c("img", {
+                                                    staticClass: "image",
+                                                    attrs: {
+                                                      src:
+                                                        "https://www.nea.gov.sg/assets/images/icons/weather/pc.png",
+                                                      alt: "Partly Cloudy icon"
+                                                    }
+                                                  })
+                                                ]
+                                              ),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "force-col-xs-9 col-xs-9 legend-desciption"
+                                                },
+                                                [_vm._v("Partly Cloudy")]
+                                              )
+                                            ]
+                                          ),
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass: "col-xs-6 col-md-3"
+                                            },
+                                            [
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "force-col-xs-3 col-xs-3"
+                                                },
+                                                [
+                                                  _c("img", {
+                                                    staticClass: "image",
+                                                    attrs: {
+                                                      src:
+                                                        "https://www.nea.gov.sg/assets/images/icons/weather/tl.png",
+                                                      alt: "Thundery icon"
+                                                    }
+                                                  })
+                                                ]
+                                              ),
+                                              _c(
+                                                "div",
+                                                {
+                                                  staticClass:
+                                                    "force-col-xs-9 col-xs-9 legend-desciption"
+                                                },
+                                                [_vm._v("Thundery Showers")]
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          : _vm._e()
                       ],
                       1
                     )
@@ -93704,106 +94200,96 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("auto-search", {
-        attrs: { "circle-full-address": _vm.drawCircle.circleFullAddress },
-        on: {
-          "get-search-data": _vm.handleSearchData,
-          "clear-Search": _vm.clearSearch
-        }
-      }),
-      _vm._v(" "),
       _c(
-        "b-card",
-        { attrs: { "no-body": "" } },
+        "b-container",
         [
           _c(
-            "b-tabs",
-            { attrs: { card: "" } },
+            "b-row",
             [
-              _vm.enableDrawingToolsExtension
-                ? _c(
-                    "b-tab",
-                    {
-                      attrs: { title: "Circle" },
-                      on: {
-                        click: function($event) {
-                          return _vm.getTabInfo("circleDrawingTools")
-                        },
-                        "is-mounted": _vm.getMountedComponent
-                      }
+              _c(
+                "b-col",
+                { attrs: { cols: "8" } },
+                [
+                  _c("auto-search", {
+                    attrs: {
+                      "circle-full-address": _vm.drawCircle.circleFullAddress
                     },
-                    [
-                      _c("draw-circle", {
-                        on: { "get-circle-drawing": _vm.handleCircleData }
-                      })
-                    ],
-                    1
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.enableDrawingToolsExtension
-                ? _c("b-tab", { attrs: { title: "Square" } }, [
-                    _vm._v("square")
-                  ])
-                : _vm._e(),
+                    on: {
+                      "get-search-data": _vm.handleSearchData,
+                      "clear-Search": _vm.clearSearch
+                    }
+                  })
+                ],
+                1
+              ),
               _vm._v(" "),
               _c(
-                "template",
-                { slot: "tabs" },
+                "b-col",
+                { attrs: { cols: "4" } },
                 [
-                  !_vm.enableDrawingToolsExtension
-                    ? _c(
-                        "b-nav-item",
-                        {
-                          attrs: { href: "#" },
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.newTab($event)
-                            }
-                          }
-                        },
-                        [_c("b", [_vm._v("Enable Drawing Extension")])]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.enableDrawingToolsExtension
-                    ? _c(
-                        "b-nav-item",
-                        {
-                          attrs: { href: "#" },
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.newTab($event)
-                            }
-                          }
-                        },
-                        [_c("b", [_vm._v("Hide")])]
-                      )
-                    : _vm._e()
+                  _c("toggle-map", {
+                    on: {
+                      "get-toggle-data": _vm.handleToggleData,
+                      "clear-toggle-data": _vm.handleClearToggleData
+                    }
+                  })
                 ],
                 1
               )
             ],
-            2
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-row",
+            [
+              _c(
+                "b-col",
+                { attrs: { cols: "12", md: "8" } },
+                [
+                  _c("GmapMap", {
+                    ref: "mapRef",
+                    staticStyle: { width: "auto", height: "600px" },
+                    attrs: { zoom: _vm.zoom_lvl, center: _vm.sgcoord }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-col",
+                { attrs: { cols: "6", md: "4" } },
+                [
+                  _c("draw-tool", {
+                    attrs: {
+                      "selected-shape": _vm.selectedShape,
+                      "enable-drawing": _vm.enableDrawingToolsExtension,
+                      "circle-drawing-center": _vm.localDrawCircle.center,
+                      "circle-drawing-radius": _vm.localDrawCircle.radius
+                    },
+                    on: {
+                      "get-updated-drawing": _vm.handleCircleData,
+                      "get-backend-data": _vm.handleBackendData
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
           )
         ],
         1
       ),
       _vm._v(" "),
-      _c("toggle-map", {
-        on: {
-          "get-toggle-data": _vm.handleToggleData,
-          "clear-toggle-data": _vm.handleClearToggleData
-        }
-      }),
-      _vm._v(" "),
-      _c("GmapMap", {
-        ref: "mapRef",
-        staticStyle: { width: "auto", height: "600px" },
-        attrs: { zoom: _vm.zoom_lvl, center: _vm.sgcoord }
-      })
+      _c(
+        "button",
+        {
+          attrs: { id: "delete-button" },
+          on: { click: _vm.deleteSelectedShape }
+        },
+        [_vm._v("Delete Selected Shape")]
+      )
     ],
     1
   )
