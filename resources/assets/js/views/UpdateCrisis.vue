@@ -1,8 +1,8 @@
 <template>
     <div>
         <!-- for updating crisis status -->
-        <div class="form-group row justify-content-center">
-            <label class="col-md-4 col-form-label">
+        <div class="form-group row">
+            <label class="col-md-4 col-form-label text-md-right">
                 Crisis Status :
             </label>
             <div class="col-md-6">
@@ -12,14 +12,16 @@
         </div>
             
         <!-- for updating crisis description -->
-        <div class="form-group row tw-flex tw-justify-center">
-            <label class="col-md-4 col-form-label">
+        <div class="form-group row">
+            <label class="col-md-4 col-form-label text-md-right">
                 Description :
             </label>
+            <div class="col-md-6">
             <textarea  v-model="updatedDescription"
-                class = "col-md-6 tw-flex tw-items-center tw-border tw-border-grey tw-rounded tw-bg-white"
+               class = "form-control" rows = "3" style = "max-width:100%"
             >
             </textarea>
+            </div>
         </div>
 
         <div class = "tw-flex tw-justify-end tw-m-4 tw-border-t tw-border-grey tw-pt-4">

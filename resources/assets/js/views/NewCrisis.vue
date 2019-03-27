@@ -201,6 +201,32 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group row">
+                                    <label for="image" class="col-md-4 col-form-label text-md-right">
+                                        Crisis Image
+                                    </label>
+                                
+                                    <div v-if = "image === ''" class = "col-md-6">
+                                        <input accept = "image/*" type = "file" class = "upload-image-input tw-hidden" @change = "onFileSelected" >
+
+                                        <button class = "tw-p-4 hover:tw-bg-teal-dark tw-bg-teal tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded" 
+                                            @click = "uploadImage">
+                                            Select A Image
+                                        </button>
+                                    </div>
+                                    
+                                    <div v-else class = "col-md-6">
+                                        <div class = "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden">
+                                            <img :src = "image" class = "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center" />
+                                        </div>
+
+                                        <button class = "tw-p-4 hover:tw-bg-teal-dark tw-bg-teal tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded" 
+                                            @click = "removeImage">
+                                            Choose Another Image
+                                        </button>
+                                    </div>
+                                </div>   
+
                             </div>
                         </div>
 
@@ -273,8 +299,12 @@
                 showModal: null,
                 dengue: null,
                 
-                form: {
-                    name:'',
+                image: '',
+
+                //data to be submitted
+                selectedFile: null,
+                form:{
+                     name:'',
                     telephoneNumber:'',
                     date:'',
                     time:'',
@@ -283,11 +313,6 @@
                     description: '',
                     assistanceRequired: [],
                     crisisType: null,
-                    
-                    lat: '',
-                    lng: '',
-
-                    geocode:'',
                 }
             }
         },
@@ -330,9 +355,6 @@
                         }
                     });
 
-                    scope.form.lat = place.geometry.location.lat();
-                    scope.form.lng = place.geometry.location.lng();
-
                     var pos = {
                         lat: place.geometry.location.lat(),
                         lng: place.geometry.location.lng()
@@ -350,15 +372,32 @@
 
             submitCrisis() {
                 // this.isLoading = true;
-                this.message = "";
-                this.error = "";
+                this.message = "";                
+                this.error = [];
 
-                axios.post('/api/crisis', this.form)
+                const fd = new FormData();
+                
+                fd.append('image', this.selectedFile);
+                fd.append('name', this.form.name);
+                fd.append('telephoneNumber', this.form.telephoneNumber);
+                fd.append('date', this.form.date);
+                fd.append('time', this.form.time);
+                fd.append('address', this.form.address);
+                fd.append('postalCode', this.form.postalCode);
+                fd.append('description', this.form.description);
+                fd.append('assistanceRequired', this.form.assistanceRequired);
+                fd.append('crisisType', this.form.crisisType);
+
+                const config = {
+                    headers: { 'content-type': 'multipart/form-data' }
+                };
+
+                axios.post('/api/crisis', fd, config)
                 .then(response => {
                     this.message = response.data.message;
                     $('html, body').animate({ scrollTop: 0 }, 'slow');
                     this.isLoading = false;
-                    // this.resetFields();
+                    this.resetFields();
                 })
                 .catch((error) => {
                     this.error = error.response.data.errors;
@@ -385,9 +424,38 @@
 
 			hideModal() {
 				this.showModal = false;
-			},
+            },
+            
+            //Images related methods
+            uploadImage(e) {
+                document.querySelector('.upload-image-input').click();
+            },
+
+            removeImage(){
+                this.image = '';
+                this.selectedFile = null;
+            },
+            
+            createImage(file) {
+                let reader = new FileReader();
+
+                reader.onload = (e) => {
+                    this.image = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            },
 
 
+            onFileSelected (event) {
+                let files = event.target.files || event.dataTransfer.files;
+
+                if (!files.length)
+                    return;
+
+                this.selectedFile = files[0];
+                
+                this.createImage(this.selectedFile);
+            }
 
         },
     }

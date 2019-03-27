@@ -76821,6 +76821,9 @@ var routes = [{
     path: '/',
     component: __webpack_require__(250)
 }, {
+    path: '/pubcrisis',
+    component: __webpack_require__(479)
+}, {
     path: '/login',
     component: __webpack_require__(253)
 }, {
@@ -79801,6 +79804,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['crisis'],
@@ -79853,8 +79858,8 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "form-group row justify-content-center" }, [
-      _c("label", { staticClass: "col-md-4 col-form-label" }, [
+    _c("div", { staticClass: "form-group row" }, [
+      _c("label", { staticClass: "col-md-4 col-form-label text-md-right" }, [
         _vm._v("\n            Crisis Status :\n        ")
       ]),
       _vm._v(" "),
@@ -79878,32 +79883,35 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "form-group row tw-flex tw-justify-center" }, [
-      _c("label", { staticClass: "col-md-4 col-form-label" }, [
+    _c("div", { staticClass: "form-group row" }, [
+      _c("label", { staticClass: "col-md-4 col-form-label text-md-right" }, [
         _vm._v("\n            Description :\n        ")
       ]),
       _vm._v(" "),
-      _c("textarea", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.updatedDescription,
-            expression: "updatedDescription"
-          }
-        ],
-        staticClass:
-          "col-md-6 tw-flex tw-items-center tw-border tw-border-grey tw-rounded tw-bg-white",
-        domProps: { value: _vm.updatedDescription },
-        on: {
-          input: function($event) {
-            if ($event.target.composing) {
-              return
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("textarea", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.updatedDescription,
+              expression: "updatedDescription"
             }
-            _vm.updatedDescription = $event.target.value
+          ],
+          staticClass: "form-control",
+          staticStyle: { "max-width": "100%" },
+          attrs: { rows: "3" },
+          domProps: { value: _vm.updatedDescription },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.updatedDescription = $event.target.value
+            }
           }
-        }
-      })
+        })
+      ])
     ]),
     _vm._v(" "),
     _c(
@@ -80529,6 +80537,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -80555,6 +80589,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             showModal: null,
             dengue: null,
 
+            image: '',
+
+            //data to be submitted
+            selectedFile: null,
             form: {
                 name: '',
                 telephoneNumber: '',
@@ -80564,12 +80602,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 postalCode: '',
                 description: '',
                 assistanceRequired: [],
-                crisisType: null,
-
-                lat: '',
-                lng: '',
-
-                geocode: ''
+                crisisType: null
             }
         };
     },
@@ -80611,9 +80644,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     }
                 });
 
-                scope.form.lat = place.geometry.location.lat();
-                scope.form.lng = place.geometry.location.lng();
-
                 var pos = {
                     lat: place.geometry.location.lat(),
                     lng: place.geometry.location.lng()
@@ -80633,13 +80663,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             // this.isLoading = true;
             this.message = "";
-            this.error = "";
+            this.error = [];
 
-            axios.post('/api/crisis', this.form).then(function (response) {
+            var fd = new FormData();
+
+            fd.append('image', this.selectedFile);
+            fd.append('name', this.form.name);
+            fd.append('telephoneNumber', this.form.telephoneNumber);
+            fd.append('date', this.form.date);
+            fd.append('time', this.form.time);
+            fd.append('address', this.form.address);
+            fd.append('postalCode', this.form.postalCode);
+            fd.append('description', this.form.description);
+            fd.append('assistanceRequired', this.form.assistanceRequired);
+            fd.append('crisisType', this.form.crisisType);
+
+            var config = {
+                headers: { 'content-type': 'multipart/form-data' }
+            };
+
+            axios.post('/api/crisis', fd, config).then(function (response) {
                 _this.message = response.data.message;
                 $('html, body').animate({ scrollTop: 0 }, 'slow');
                 _this.isLoading = false;
-                // this.resetFields();
+                _this.resetFields();
             }).catch(function (error) {
                 _this.error = error.response.data.errors;
                 _this.isLoading = false;
@@ -80662,6 +80709,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         hideModal: function hideModal() {
             this.showModal = false;
+        },
+
+
+        //Images related methods
+        uploadImage: function uploadImage(e) {
+            document.querySelector('.upload-image-input').click();
+        },
+        removeImage: function removeImage() {
+            this.image = '';
+            this.selectedFile = null;
+        },
+        createImage: function createImage(file) {
+            var _this2 = this;
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                _this2.image = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
+        onFileSelected: function onFileSelected(event) {
+            var files = event.target.files || event.dataTransfer.files;
+
+            if (!files.length) return;
+
+            this.selectedFile = files[0];
+
+            this.createImage(this.selectedFile);
         }
     }
 });
@@ -91481,6 +91557,74 @@ var render = function() {
                             ])
                           : _vm._e()
                       ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-md-4 col-form-label text-md-right",
+                          attrs: { for: "image" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                        Crisis Image\n                                    "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm.image === ""
+                        ? _c("div", { staticClass: "col-md-6" }, [
+                            _c("input", {
+                              staticClass: "upload-image-input tw-hidden",
+                              attrs: { accept: "image/*", type: "file" },
+                              on: { change: _vm.onFileSelected }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "tw-p-4 hover:tw-bg-teal-dark tw-bg-teal tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded",
+                                on: { click: _vm.uploadImage }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                            Select A Image\n                                        "
+                                )
+                              ]
+                            )
+                          ])
+                        : _c("div", { staticClass: "col-md-6" }, [
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden"
+                              },
+                              [
+                                _c("img", {
+                                  staticClass:
+                                    "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center",
+                                  attrs: { src: _vm.image }
+                                })
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "tw-p-4 hover:tw-bg-teal-dark tw-bg-teal tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded",
+                                on: { click: _vm.removeImage }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                            Choose Another Image\n                                        "
+                                )
+                              ]
+                            )
+                          ])
                     ])
                   ])
                 ]),
@@ -94606,6 +94750,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'app-header',
@@ -94694,6 +94844,21 @@ var render = function() {
                   _vm._v(" "),
                   !_vm.currentUser
                     ? [
+                        _c(
+                          "li",
+                          [
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "nav-link",
+                                attrs: { to: "/pubcrisis" }
+                              },
+                              [_vm._v("Crisis Now!")]
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
                         _c(
                           "li",
                           [
@@ -99008,6 +99173,780 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 478 */,
+/* 479 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(4)
+/* script */
+var __vue_script__ = __webpack_require__(480)
+/* template */
+var __vue_template__ = __webpack_require__(481)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/PublicCrisis.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-16f6d5df", Component.options)
+  } else {
+    hotAPI.reload("data-v-16f6d5df", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 480 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_popperjs__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_popperjs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_moment__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: "PublicCrisis",
+    components: {
+        'popper': __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default.a
+    },
+
+    data: function data() {
+        return {
+            date: __WEBPACK_IMPORTED_MODULE_2_moment___default()().format("DD/MM/YYYY"),
+
+            isLoading: false,
+
+            options: [{ value: null, text: 'Please select an option' }, { value: 'Fire Outbreak', text: 'Fire Outbreak' }, { value: 'Dengue', text: 'Dengue' }, { value: 'Gas Leak', text: 'Gas Leak' }],
+
+            form: {
+                name: '',
+                telephoneNumber: '',
+                location: '',
+                description: '',
+                crisisType: null,
+                date: '',
+                time: '',
+
+                image: '',
+                selectedFile: null,
+
+                lat: '',
+                lng: '',
+
+                geocode: ''
+            }
+
+        };
+    },
+
+
+    methods: {
+        submitCrisis: function submitCrisis() {
+            var _this = this;
+
+            this.isLoading = true;
+            var fd = new FormData();
+
+            fd.append('image', this.selectedFile);
+            fd.append('name', this.form.name);
+            fd.append('telephoneNumber', this.form.telephoneNumber);
+            fd.append('date', this.form.date);
+            fd.append('time', this.form.time);
+            fd.append('location', this.form.location);
+            fd.append('description', this.form.description);
+            fd.append('crisisType', this.form.crisisType);
+
+            var config = {
+                headers: { 'content-type': 'multipart/form-data' }
+            };
+
+            // need to change to new address for public 
+            axios.post('/api/crisis', fd, config).then(function (response) {
+                $('html, body').animate({ scrollTop: 0 }, 'slow');
+                _this.isLoading = false;
+                _this.resetFields();
+            }).catch(function (error) {
+                _this.isLoading = false;
+            });
+        },
+        resetFields: function resetFields() {
+            var scope = this;
+
+            this.$refs.autocomplete.$el.value = '';
+
+            Object.keys(this.form).forEach(function (key, index) {
+                scope.form[key] = '';
+            });
+
+            this.form.crisisType = null;
+        },
+        uploadImage: function uploadImage(e) {
+            document.querySelector('.upload-image-input').click();
+        },
+        removeImage: function removeImage() {
+            this.form.image = '';
+            this.form.selectedFile = null;
+        },
+        createImage: function createImage(file) {
+            var _this2 = this;
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                _this2.form.image = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
+        onFileSelected: function onFileSelected(event) {
+            var files = event.target.files || event.dataTransfer.files;
+
+            if (!files.length) return;
+
+            this.form.selectedFile = files[0];
+
+            this.createImage(this.form.selectedFile);
+        },
+        bestAddressMatch: function bestAddressMatch(geocoder, pos, serviceFormatedAddress) {
+            var scope = this;
+            var foundBestMatch = false;
+
+            geocoder.geocode({ location: pos }, function (results, status) {
+                if (status === "OK") {
+                    results.forEach(function (element) {
+                        if (element.formatted_address.includes(serviceFormatedAddress)) {
+                            foundBestMatch = true;
+                            if (element.formatted_address.length > serviceFormatedAddress.length) {
+                                scope.form.location = element.formatted_address;
+                            } else {
+                                scope.form.location = serviceFormatedAddress;
+                            }
+                        }
+                    });
+
+                    if (!foundBestMatch) {
+                        scope.form.location = serviceFormatedAddress;
+                    }
+                }
+            });
+        },
+        setPlace: function setPlace(place) {
+            var scope = this;
+
+            if (place.id) {
+                scope.form.lat = place.geometry.location.lat();
+                scope.form.lng = place.geometry.location.lng();
+
+                var pos = {
+                    lat: place.geometry.location.lat(),
+                    lng: place.geometry.location.lng()
+                };
+
+                var service = new google.maps.places.PlacesService($('#service-helper').get(0));
+
+                service.getDetails({ placeId: place.place_id }, function (place, status) {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        scope.bestAddressMatch(new google.maps.Geocoder(), pos, place.formatted_address);
+                    }
+                });
+            }
+        }
+    }
+
+});
+
+/***/ }),
+/* 481 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-8" }, [
+        _c("div", { staticClass: "card tw-mb-6" }, [
+          _c("div", { staticClass: "card-header tw-text-grey-darker" }, [
+            _vm._v("Submit a Crisis Now")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 col-form-label text-md-right",
+                  attrs: { for: "name" }
+                },
+                [
+                  _vm._v(
+                    "\n                            Full Name\n                        "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.name,
+                      expression: "form.name"
+                    }
+                  ],
+                  staticClass:
+                    "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+                  attrs: {
+                    type: "text",
+                    id: "name",
+                    placeholder: "John Doe",
+                    required: "",
+                    autofocus: ""
+                  },
+                  domProps: { value: _vm.form.name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "name", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 col-form-label text-md-right",
+                  attrs: { for: "telephone_number" }
+                },
+                [
+                  _vm._v(
+                    "\n                            Telephone Number\n                        "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.telephoneNumber,
+                      expression: "form.telephoneNumber"
+                    }
+                  ],
+                  staticClass:
+                    "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+                  attrs: {
+                    type: "text",
+                    id: "telephone_number",
+                    placeholder: "9512 2314",
+                    required: "",
+                    autofocus: ""
+                  },
+                  domProps: { value: _vm.form.telephoneNumber },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "telephoneNumber", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 col-form-label text-md-right",
+                  attrs: { for: "location" }
+                },
+                [_vm._v("Location")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-md-6" },
+                [
+                  _c("GmapAutocomplete", {
+                    ref: "autocomplete",
+                    staticClass:
+                      "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+                    on: { place_changed: _vm.setPlace }
+                  })
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { attrs: { id: "service-helper" } }),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 col-form-label text-md-right",
+                  attrs: { for: "date" }
+                },
+                [_vm._v("\n                        Date\n                    ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-md-6" },
+                [
+                  _c("date-picker", {
+                    attrs: { required: "required", date: _vm.date },
+                    model: {
+                      value: _vm.form.date,
+                      callback: function($$v) {
+                        _vm.$set(_vm.form, "date", $$v)
+                      },
+                      expression: "form.date"
+                    }
+                  })
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 col-form-label text-md-right",
+                  attrs: { for: "time" }
+                },
+                [_vm._v("\n                        Time\n                    ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-md-6" },
+                [
+                  _c("time-picker", {
+                    attrs: {
+                      id: "time",
+                      required: "required",
+                      useContainer: true
+                    },
+                    model: {
+                      value: _vm.form.time,
+                      callback: function($$v) {
+                        _vm.$set(_vm.form, "time", $$v)
+                      },
+                      expression: "form.time"
+                    }
+                  })
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 col-form-label text-md-right",
+                  attrs: { for: "crisis_type" }
+                },
+                [
+                  _vm._v(
+                    "\n                            Type of Crisis\n                        "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-md-6" },
+                [
+                  _c("b-form-select", {
+                    attrs: { options: _vm.options },
+                    model: {
+                      value: _vm.form.crisisType,
+                      callback: function($$v) {
+                        _vm.$set(_vm.form, "crisisType", $$v)
+                      },
+                      expression: "form.crisisType"
+                    }
+                  })
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 col-form-label text-md-right",
+                  attrs: { for: "description" }
+                },
+                [
+                  _vm._v(
+                    "\n                           Description of The Event\n                        "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.description,
+                      expression: "form.description"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  staticStyle: { "max-width": "100%" },
+                  attrs: { rows: "3" },
+                  domProps: { value: _vm.form.description },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "description", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row" }, [
+              _c(
+                "label",
+                {
+                  staticClass: "col-md-4 col-form-label text-md-right",
+                  attrs: { for: "crisis image" }
+                },
+                [_vm._v("\n                Upload an Image \n            ")]
+              ),
+              _vm._v(" "),
+              _vm.form.image === ""
+                ? _c("div", { staticClass: "col-md-6" }, [
+                    _c("input", {
+                      staticClass: "upload-image-input tw-hidden",
+                      attrs: { accept: "image/*", type: "file" },
+                      on: { change: _vm.onFileSelected }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        on: { click: _vm.uploadImage }
+                      },
+                      [
+                        _vm._v(
+                          "\n                    Select An Image\n                "
+                        )
+                      ]
+                    )
+                  ])
+                : _c("div", { staticClass: "col-md-6" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden"
+                      },
+                      [
+                        _c("img", {
+                          staticClass:
+                            "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center",
+                          attrs: { src: _vm.form.image }
+                        })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        on: { click: _vm.removeImage }
+                      },
+                      [
+                        _vm._v(
+                          "\n                    Upload Another Image Instead\n                "
+                        )
+                      ]
+                    )
+                  ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group row tw-my-6" }, [
+              _c("div", { staticClass: "col-md-6 offset-md-4" }, [
+                !_vm.isLoading
+                  ? _c("div", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "submit" },
+                          on: { click: _vm.submitCrisis }
+                        },
+                        [
+                          _vm._v(
+                            "\n                    Submit\n                "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "submit" },
+                          on: {
+                            click: function($event) {
+                              return _vm.resetFields()
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                    Reset\n                "
+                          )
+                        ]
+                      )
+                    ])
+                  : _c("div", [
+                      _c("img", {
+                        attrs: {
+                          src: "/assets/img/loader.gif",
+                          alt: "Loading..."
+                        }
+                      })
+                    ])
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-16f6d5df", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

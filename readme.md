@@ -4,17 +4,6 @@ Composer Update
 npm install
 Open mysql, create a schema name 'ssad'
 
-##.env
-NEXMO_API_KEY=6e2a812f
-NEXMO_API_SECRET=bWjtpcyA22k3yjlq
-BUGSNAG_API_KEY=9ee055d7d91335afdfefd7e8cdedbefb
-run php artisan jwt:secret
-
-FACEBOOK_PAGE_ID=342236433072588
-FACEBOOK_CLIENT_ID=610989759339386
-FACEBOOK_CLIENT_SECRET=9900d6676b7faad607a63cdb60518f14
-FACEBOOK_ACCESS_TOKEN=EAAIrsSORG3oBAFlRZANTDB8svZB9naEZCNehPLJBkxUbQ20S1FhGIbb17k48vHZCPIOylTWb3w9hqTbhfDZBfCZCKkjlLYZBElPJmVuNcWyGq56vlNfEv0qz9q4M9ZAMZAn0p49mxxEGFOLBbcBJKxx9GieYsKqFz4KZA9odMTsHNzAgZDZD
-
 
 #starting the services
 composer require guzzlehttp/guzzle
@@ -80,7 +69,7 @@ reading for air pollution (http://www.nea.gov.sg/psi/).
 Jian Hao: The Prime Minister’s Office shall receive a status report summarizing key indicators and trends over email every 30 minutes.
 
 Tools:
-Mailswift
+Mailtrap
 Jasper Report: https://github.com/PHPJasper/phpjasper-laravel
 Laravel Report Generators https://github.com/Jimmy-JS/laravel-report-generator/blob/master/readme.md
 
@@ -88,42 +77,42 @@ Laravel Report Generators https://github.com/Jimmy-JS/laravel-report-generator/b
 Dengue: Periodically
 Fire/Other Crisis: Immediately
 
-Vick & Jay: The CMS shall provide useful information such as location of Civil Defence shelters and updates to the public through social media periodically.
-
 CD Shelter: 
 https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b6d4-b963c7bb1c09
 
-#Updating a crisis
-Prash
-
-##Completed Functionalities
-Submit new crisis
-Create Accounts
-Subscribing
-Archiving a crisis
 
 ##COMMENTS
 uncomment eventserviceprovided to get sms to work.
 remove test
 
+
 ##Tools
+@programming team, those who use any external api/tools pls update here
 SMS - Nexmo
 Database - MySQL
 MapUI - Google Maps API
-
-Facebook - Facebook API
-Twitter - Twitter API
-
-Reporting - JasperReports
+Facebook - 
+Twitter -
+Reporting - 
+Weather - https://www.nea.gov.sg/
+Email - Mailtrap
 
 Central Processing Unit 
 CallCentreUI
 
-Weather - Data.gov.sg / Yahoo! Weather RSS Feed
-Email - Mail trap
 
 
 
+
+
+#things to do
+reporting crisis - public interface - prash
+facebook - post picture 
+map - xy
+graph - for crisis manager to view the stats of crisis
+https://madewithvuejs.com/charts
+graph - for email
+deployment to google
 
 
 
@@ -135,6 +124,24 @@ Email - Mail trap
 Mapservice
 SMS 
 Mail
+
+
+
+
+
+##.env
+NEXMO_API_KEY=6e2a812f
+NEXMO_API_SECRET=bWjtpcyA22k3yjlq
+BUGSNAG_API_KEY=9ee055d7d91335afdfefd7e8cdedbefb
+run php artisan jwt:secret
+
+FACEBOOK_PAGE_ID=342236433072588
+FACEBOOK_CLIENT_ID=610989759339386
+FACEBOOK_CLIENT_SECRET=9900d6676b7faad607a63cdb60518f14
+FACEBOOK_ACCESS_TOKEN=EAAIrsSORG3oBAFlRZANTDB8svZB9naEZCNehPLJBkxUbQ20S1FhGIbb17k48vHZCPIOylTWb3w9hqTbhfDZBfCZCKkjlLYZBElPJmVuNcWyGq56vlNfEv0qz9q4M9ZAMZAn0p49mxxEGFOLBbcBJKxx9GieYsKqFz4KZA9odMTsHNzAgZDZD
+
+
+
 
 
 ##Non-Functional Requirement - Security

@@ -24,9 +24,16 @@ class GraphController extends Controller
         $this->api = $fb;
     }
  
-    public function publishToPage($message){
+    public function publishToPage($message, $imageName){
+      
         try{
-            $post= $this->api->post('/'.env('FACEBOOK_PAGE_ID').'/feed',array('message' => $message)
+        
+            $img = $this->api->fileToUpload(public_path().'\crisis\\'.$imageName);
+            var_dump(public_path().'\assets\img\\'.$imageName);
+            var_dump($img);
+
+           
+            $post= $this->api->post('/'.env('FACEBOOK_PAGE_ID').'/photos',array('message' => $message, 'attached_media' => $img)
             ,env('FACEBOOK_ACCESS_TOKEN'));
            
             $post= $post->getGraphNode()->asArray();
