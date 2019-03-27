@@ -140,11 +140,11 @@
              <div class="form-group row tw-my-6">
             <div class="col-md-6 offset-md-4">
                 <div v-if = "!isLoading">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" @click = "submitCrisis">
                         Submit
                     </button>
 
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" @click = "resetFields()">
                         Reset
                     </button>
                 </div>
@@ -208,6 +208,48 @@
         }, 
 
         methods: {
+
+            submitCrisis() {
+                this.isLoading = true;
+                const fd = new FormData();
+                
+                fd.append('image', this.selectedFile);
+                fd.append('name', this.form.name);
+                fd.append('telephoneNumber', this.form.telephoneNumber);
+                fd.append('date', this.form.date);
+                fd.append('time', this.form.time);
+                fd.append('location', this.form.location);
+                fd.append('description', this.form.description);
+                fd.append('crisisType', this.form.crisisType);
+
+                const config = {
+                    headers: { 'content-type': 'multipart/form-data' }
+                };
+
+                // need to change to new address for public 
+                axios.post('/api/crisis', fd, config)
+                .then(response => {
+                    $('html, body').animate({ scrollTop: 0 }, 'slow');
+                    this.isLoading = false;
+                    this.resetFields();
+                })
+                .catch((error) => {
+                    this.isLoading = false;
+                });
+            },
+
+              resetFields() {
+                var scope = this; 
+                
+                this.$refs.autocomplete.$el.value = '';
+
+                Object.keys(this.form).forEach(function(key,index) {
+                    scope.form[key] = '';
+                });
+
+                this.form.crisisType= null;
+                
+            },
 
              uploadImage(e) {
                 document.querySelector('.upload-image-input').click();

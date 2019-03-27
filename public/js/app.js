@@ -77313,6 +77313,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     methods: {
+        submitCrisis: function submitCrisis() {
+            var _this = this;
+
+            var fd = new FormData();
+
+            fd.append('image', this.selectedFile);
+            fd.append('name', this.form.name);
+            fd.append('telephoneNumber', this.form.telephoneNumber);
+            fd.append('date', this.form.date);
+            fd.append('time', this.form.time);
+            fd.append('location', this.form.location);
+            fd.append('description', this.form.description);
+            fd.append('crisisType', this.form.crisisType);
+
+            var config = {
+                headers: { 'content-type': 'multipart/form-data' }
+            };
+
+            axios.post('/api/crisis', fd, config).then(function (response) {
+                _this.message = response.data.message;
+                $('html, body').animate({ scrollTop: 0 }, 'slow');
+                _this.isLoading = false;
+                _this.resetFields();
+            }).catch(function (error) {
+                _this.error = error.response.data.errors;
+                _this.isLoading = false;
+            });
+        },
+        resetFields: function resetFields() {
+            var scope = this;
+
+            this.$refs.autocomplete.$el.value = '';
+
+            Object.keys(this.form).forEach(function (key, index) {
+                scope.form[key] = '';
+            });
+
+            this.form.crisisType = null;
+        },
         uploadImage: function uploadImage(e) {
             document.querySelector('.upload-image-input').click();
         },
@@ -77321,12 +77360,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.form.selectedFile = null;
         },
         createImage: function createImage(file) {
-            var _this = this;
+            var _this2 = this;
 
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                _this.form.image = e.target.result;
+                _this2.form.image = e.target.result;
             };
             reader.readAsDataURL(file);
         },
@@ -78113,7 +78152,8 @@ var render = function() {
                         "button",
                         {
                           staticClass: "btn btn-primary",
-                          attrs: { type: "submit" }
+                          attrs: { type: "submit" },
+                          on: { click: _vm.submitCrisis }
                         },
                         [
                           _vm._v(
@@ -78126,7 +78166,12 @@ var render = function() {
                         "button",
                         {
                           staticClass: "btn btn-primary",
-                          attrs: { type: "submit" }
+                          attrs: { type: "submit" },
+                          on: {
+                            click: function($event) {
+                              return _vm.resetFields()
+                            }
+                          }
                         },
                         [
                           _vm._v(
