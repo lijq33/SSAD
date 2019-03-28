@@ -172,27 +172,13 @@
 
                             <!-- beginning of crisis type column -->
                             <div class = "col-md-6">
-                                <!-- Crisis Type dropdown -->
-                                <div class = "card tw-mb-6">
-                                    <div class = "card-body">
-                                        <h5 class = "card-title"> Type of Crisis:</h5>
-                                        <b-form-select v-model = "form.crisisType" :options = "options" 
-                                            :class = "{ 'tw-border-red-light' : error['crisisType'] != undefined}"
-                                        />
-                                        <div class = "tw-text-red" v-if = "error['crisisType'] != undefined">
-                                            <span> {{this.error['crisisType'].toString()}} </span>   
-                                        </div> 
-                                    </div>  
-                                </div>
-
                                 
-
                                 <!-- Description -->
-                                <div class = "card">
+                                <div class = "card" style="height:304px">
                                     <div class = "card-body">
                                         <h5 class = "card-title"> Description:</h5>
                                         <textarea v-model = "form.description"
-                                            class = "form-control" rows = "3" style = "max-width:100%"
+                                            class = "form-control" rows = "3" style = "max-width:100%; height:80%"
                                             :class = "{ 'tw-border-red-light' : error['description'] != undefined}"
                                         />
                                         <div class = "tw-text-red" v-if = "error['description'] != undefined">
@@ -236,6 +222,20 @@
                                     </div>
                                  </div>
                             </div>
+                             <!-- Crisis Type dropdown -->
+                              <div class = "col-md-6">
+                                <div class = "card tw-mb-6" style="height:130px">
+                                    <div class = "card-body">
+                                        <h5 class = "card-title"> Type of Crisis:</h5>
+                                        <b-form-select v-model = "form.crisisType" :options = "options" 
+                                            :class = "{ 'tw-border-red-light' : error['crisisType'] != undefined}"
+                                        />
+                                        <div class = "tw-text-red" v-if = "error['crisisType'] != undefined">
+                                            <span> {{this.error['crisisType'].toString()}} </span>   
+                                        </div> 
+                                    </div>  
+                                </div>
+                                </div>
                         </div>
 
 

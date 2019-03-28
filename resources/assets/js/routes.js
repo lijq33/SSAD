@@ -51,6 +51,13 @@ export const routes = [
             requiresAuthCrisisManager: true
         }
     },
+    {
+        path : '/crisis/managePublic',
+        component: require('./views/ManagePublicCrisis.vue'),
+        meta: {
+            requiresAuthCrisisManager: true
+        }
+    },
   
     {
         path : '/crisis/archive',
