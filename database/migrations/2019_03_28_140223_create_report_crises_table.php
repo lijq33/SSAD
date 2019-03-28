@@ -14,29 +14,27 @@ class CreateReportCrisesTable extends Migration
     public function up()
     {
         Schema::create('report_crises', function (Blueprint $table) {
-            Schema::create('crises', function (Blueprint $table) {
-                $table->increments('id');
-                $table->integer('user_id')->unsigned();
-                $table->foreign('user_id')
-                    ->references('id')->on('users');
-                $table->string('name');
-                $table->integer('telephone_number');
-                $table->integer('postal_code');
-                $table->date('date');
-                $table->time('time');
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')
+                ->references('id')->on('users');
+            $table->string('name');
+            $table->integer('telephone_number');
+            $table->integer('postal_code');
+            $table->date('date');
+            $table->time('time');
                 
-                $table->string('status');
-                $table->longText('description')->nullable();
-                $table->string('address');
+            $table->string('status');
+            $table->longText('description')->nullable();
+            $table->string('address');
     
-                $table->string('crisis_type');
+            $table->string('crisis_type');
     
-                $table->string('image')->nullable(); 
-                $table->string('facebook_post_id')->nullable();
+            $table->string('image')->nullable(); 
+            $table->string('facebook_post_id')->nullable();
     
-                $table->softDeletes();
-                $table->timestamps();
-            });
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
