@@ -30,15 +30,14 @@ class SendFacebookCrisisCreatedNotification
     {
         $graph = new GraphController();
         $crisis = $event->crisis;
+
+
         $message = "On  ".$crisis->date. " at ".$crisis->time . " there is a " . $crisis->crisis_type
          . " at " . $crisis->address. ". " . $crisis->description;
-        
-        $postid = $graph->publishToPage($message);
 
+        $image = $crisis->image;
+        $postid = $graph->publishToPage($message,  $image);
         $updateCrisis = Crisis::find($crisis->id);
-
         $updateCrisis->update(['facebook_post_id' => $postid]);
-
-
     }
 }

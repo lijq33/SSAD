@@ -17,9 +17,15 @@
                     </li>
                     <!-- Only when not logged in -->
                     <template v-if = "!currentUser">
+                        <!-- For public to submit crisis themselves -->
                         <li>
+                            <router-link to="/pubcrisis" class="nav-link">Crisis Now!</router-link>
+                        </li>
+                        <!-- Login to CCO, CM, AM etc -->
+                         <li>
                             <router-link to="/login" class="nav-link">Login</router-link>
                         </li>
+                        <!-- Subscribe to crisis alerts -->
                         <li>
                             <router-link to="/subscribe" class="nav-link">Subscribe</router-link>
                         </li>

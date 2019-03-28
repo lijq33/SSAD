@@ -66,7 +66,9 @@ class CrisisController extends Controller
      
         $crisis = Crisis::newCrisis($data);
 
-        foreach($data['assistanceRequired'] as $assistance){
+        $assistances = explode(',', $data['assistanceRequired']);
+
+        foreach($assistances as $assistance){
             $crisis->agency()->attach($assistance);
         }
 

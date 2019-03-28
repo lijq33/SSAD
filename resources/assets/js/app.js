@@ -23,7 +23,7 @@ Vue.use(Vuex);
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyAIAkiam90N9R-_Nh72fL6MpGJpKUBDWgQ',
-    libraries: 'places',
+    libraries: 'places,drawing',
   },
 });
 
