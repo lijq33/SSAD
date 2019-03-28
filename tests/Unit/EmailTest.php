@@ -19,10 +19,12 @@ class EmailTest extends TestCase
      */
     
     /** @test */
-    public function it_can_send_email(){
+    public function it_can_send_email_to_the_correct_user(){
         \Mail::fake();
         \Mail::to('test@testingemail.com')->send(new DataUpdate());
-        \Mail::assertSent(DataUpdate::class, 1);
+        \Mail::assertSent(DataUpdate::class, function ($mail) {
+            return $mail->hasTo('test@testingemail.com');
+        });
     }
     
     /** @test */
