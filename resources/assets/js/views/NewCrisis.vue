@@ -80,7 +80,7 @@
 
                             <!-- Assistance -->
                             <div class = "col-md-6">
-                                <div class = "card">
+                                <div class = "card" style="height:194px">
                                     <div class = "card-body">
                                         <h5 class = "card-title">Assistance Required:</h5>
 
@@ -108,7 +108,7 @@
                         <!-- Location and Crisis Type row -->
                         <div class = "form-group row">
                             <div class = "col-md-6">
-                                <div class = "card">
+                                <div class = "card" style = "height:304px">
                                     <div class = "card-body">
                                         <h5 class = "card-title">Location</h5>
                                         <div class = "form-group row">
@@ -200,35 +200,44 @@
                                         </div>
                                     </div>
                                 </div>
+                        
+                            </div>
+                        </div>
 
-                                <div class="form-group row">
-                                    <label for="image" class="col-md-4 col-form-label text-md-right">
-                                        Crisis Image
-                                    </label>
-                                
-                                    <div v-if = "image === ''" class = "col-md-6">
+                        <div class = "form-group row">
+                            <div class = "col-md-6">
+                                 <div class = "card">
+                                    <div class = "card-body">
+                                        <h5 class = "card-title"> Crisis Image </h5>
+                                        <div class="form-group row">
+                                        <label class="col-md-7 col-form-label">
+                                            Please upload an image of the crisis:
+                                            </label>
+                                    <div v-if = "image === ''" >
                                         <input accept = "image/*" type = "file" class = "upload-image-input tw-hidden" @change = "onFileSelected" >
 
-                                        <button class = "tw-p-4 hover:tw-bg-teal-dark tw-bg-teal tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded" 
+                                        <button class = "btn btn-primary" 
                                             @click = "uploadImage">
-                                            Select A Image
+                                            Select An Image
                                         </button>
                                     </div>
                                     
                                     <div v-else class = "col-md-6">
-                                        <div class = "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden">
+                                        <div class = "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden" style="width:500px; height:300px">
                                             <img :src = "image" class = "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center" />
                                         </div>
 
-                                        <button class = "tw-p-4 hover:tw-bg-teal-dark tw-bg-teal tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded" 
+                                        <button class = "btn btn-primary" 
                                             @click = "removeImage">
                                             Choose Another Image
                                         </button>
                                     </div>
-                                </div>   
-
+                                        </div>
+                                    </div>
+                                 </div>
                             </div>
                         </div>
+
 
                         <!-- button group -->
                         <div class = "form-group row tw-my-6">
