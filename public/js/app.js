@@ -76859,6 +76859,12 @@ var routes = [{
         requiresAuthCrisisManager: true
     }
 }, {
+    path: '/crisis/managePublic',
+    component: __webpack_require__(482),
+    meta: {
+        requiresAuthCrisisManager: true
+    }
+}, {
     path: '/crisis/archive',
     component: __webpack_require__(390),
     meta: {
@@ -92278,100 +92284,62 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-md-6" }, [
-                    _c("div", { staticClass: "card tw-mb-6" }, [
-                      _c(
-                        "div",
-                        { staticClass: "card-body" },
-                        [
+                    _c(
+                      "div",
+                      { staticClass: "card", staticStyle: { height: "304px" } },
+                      [
+                        _c("div", { staticClass: "card-body" }, [
                           _c("h5", { staticClass: "card-title" }, [
-                            _vm._v(" Type of Crisis:")
+                            _vm._v(" Description:")
                           ]),
                           _vm._v(" "),
-                          _c("b-form-select", {
+                          _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.description,
+                                expression: "form.description"
+                              }
+                            ],
+                            staticClass: "form-control",
                             class: {
                               "tw-border-red-light":
-                                _vm.error["crisisType"] != undefined
+                                _vm.error["description"] != undefined
                             },
-                            attrs: { options: _vm.options },
-                            model: {
-                              value: _vm.form.crisisType,
-                              callback: function($$v) {
-                                _vm.$set(_vm.form, "crisisType", $$v)
-                              },
-                              expression: "form.crisisType"
+                            staticStyle: { "max-width": "100%", height: "80%" },
+                            attrs: { rows: "3" },
+                            domProps: { value: _vm.form.description },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form,
+                                  "description",
+                                  $event.target.value
+                                )
+                              }
                             }
                           }),
                           _vm._v(" "),
-                          _vm.error["crisisType"] != undefined
+                          _vm.error["description"] != undefined
                             ? _c("div", { staticClass: "tw-text-red" }, [
                                 _c("span", [
                                   _vm._v(
                                     " " +
                                       _vm._s(
-                                        this.error["crisisType"].toString()
+                                        this.error["description"].toString()
                                       ) +
                                       " "
                                   )
                                 ])
                               ])
                             : _vm._e()
-                        ],
-                        1
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "card" }, [
-                      _c("div", { staticClass: "card-body" }, [
-                        _c("h5", { staticClass: "card-title" }, [
-                          _vm._v(" Description:")
-                        ]),
-                        _vm._v(" "),
-                        _c("textarea", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.description,
-                              expression: "form.description"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: {
-                            "tw-border-red-light":
-                              _vm.error["description"] != undefined
-                          },
-                          staticStyle: { "max-width": "100%" },
-                          attrs: { rows: "3" },
-                          domProps: { value: _vm.form.description },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.form,
-                                "description",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _vm.error["description"] != undefined
-                          ? _c("div", { staticClass: "tw-text-red" }, [
-                              _c("span", [
-                                _vm._v(
-                                  " " +
-                                    _vm._s(
-                                      this.error["description"].toString()
-                                    ) +
-                                    " "
-                                )
-                              ])
-                            ])
-                          : _vm._e()
-                      ])
-                    ])
+                        ])
+                      ]
+                    )
                   ])
                 ]),
                 _vm._v(" "),
@@ -92451,6 +92419,57 @@ var render = function() {
                         ])
                       ])
                     ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "card tw-mb-6",
+                        staticStyle: { height: "130px" }
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "card-body" },
+                          [
+                            _c("h5", { staticClass: "card-title" }, [
+                              _vm._v(" Type of Crisis:")
+                            ]),
+                            _vm._v(" "),
+                            _c("b-form-select", {
+                              class: {
+                                "tw-border-red-light":
+                                  _vm.error["crisisType"] != undefined
+                              },
+                              attrs: { options: _vm.options },
+                              model: {
+                                value: _vm.form.crisisType,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.form, "crisisType", $$v)
+                                },
+                                expression: "form.crisisType"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.error["crisisType"] != undefined
+                              ? _c("div", { staticClass: "tw-text-red" }, [
+                                  _c("span", [
+                                    _vm._v(
+                                      " " +
+                                        _vm._s(
+                                          this.error["crisisType"].toString()
+                                        ) +
+                                        " "
+                                    )
+                                  ])
+                                ])
+                              : _vm._e()
+                          ],
+                          1
+                        )
+                      ]
+                    )
                   ])
                 ]),
                 _vm._v(" "),
@@ -93371,7 +93390,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bootstrap_vue_es_components__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__turf_turf__ = __webpack_require__(397);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__turf_turf___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__turf_turf__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__DrawingTool__ = __webpack_require__(482);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__DrawingTool__ = __webpack_require__(398);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__DrawingTool___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__DrawingTool__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__AutoSearchComplete__ = __webpack_require__(407);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__AutoSearchComplete___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__AutoSearchComplete__);
@@ -93997,8 +94016,253 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /***/ }),
-/* 398 */,
-/* 399 */,
+/* 398 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(4)
+/* script */
+var __vue_script__ = __webpack_require__(399)
+/* template */
+var __vue_template__ = __webpack_require__(406)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/DrawingTool.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-348b035a", Component.options)
+  } else {
+    hotAPI.reload("data-v-348b035a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 399 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_slider_component__ = __webpack_require__(400);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_slider_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_slider_component__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_slider_component_theme_antd_css__ = __webpack_require__(401);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_slider_component_theme_antd_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_slider_component_theme_antd_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_swatches__ = __webpack_require__(403);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_swatches___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_swatches__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_swatches_dist_vue_swatches_min_css__ = __webpack_require__(404);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_swatches_dist_vue_swatches_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_swatches_dist_vue_swatches_min_css__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['enableDrawing', 'circleDrawingCenter', 'circleDrawingRadius', 'selectedShape'],
+
+  mounted: function mounted() {
+
+    //tell base map which componet will appear first
+    //console.log("mounted draw circle");
+    //enable drawing
+
+    // if (this.drawCircle.enableCircleDrawing) {
+    //   this.drawCircle.enableCircleDrawing = false;
+    // } else {
+    //   this.drawCircle.enableCircleDrawing = true;
+    // }
+    // this.minValue = 0;
+    // this.drawCircle.circleRadiusValue = 0;
+    // this.drawCircle.circleDataChangedType = "enableCircleDrawing";
+
+    // //emit to base map
+    // this.passDataToBaseMap();
+
+    // this.$emit("get-backend-data", sampleData);
+  },
+  destroyed: function destroyed() {
+    console.log("destory circle compoent");
+  },
+
+  components: {
+    VueSlider: __WEBPACK_IMPORTED_MODULE_0_vue_slider_component___default.a,
+    Swatches: __WEBPACK_IMPORTED_MODULE_2_vue_swatches___default.a
+  },
+  //drawCircle:{enableCircleDrawing:false,marker:null,circle:null,cirleDistanceValue: 0,circleFillColor:'#E84B3C'},
+  data: function data() {
+    return {
+
+      localDrawing: this.drawingEvent,
+      localEnableDrawing: false,
+      minValue: 0,
+      maxValue: 21000,
+      drawCircle: {
+        type: 'circle',
+        enableCircleDrawing: false,
+        circleRadiusValue: 0,
+        circleFillColor: "#E84B3C",
+        center: { lat: '', lng: '' },
+        postData: false
+      },
+      tabs: [],
+      tabCounter: 0
+    };
+  },
+
+
+  methods: {
+    newTab: function newTab() {
+      if (this.localEnableDrawing) {
+        this.this.localEnableDrawing = false;
+      } else {
+        this.localEnableDrawing = true;
+      }
+    },
+    saveCircleData: function saveCircleData() {
+
+      this.drawCircle.postData = true;
+
+      this.passDataToBaseMap();
+      console.log(this.drawCircle);
+    },
+    processCircleDrawing: function processCircleDrawing(circle) {
+
+      console.log(circle);
+
+      this.drawCircle.circleRadiusValue = circle.radius.toFixed(0);
+      this.drawCircle.center.lat = circle.center.lat();
+      this.drawCircle.center.lng = circle.center.lng();
+      this.drawCircle.circleFillColor = circle.fillColor;
+    },
+    closeTab: function closeTab(x) {
+      for (var i = 0; i < this.tabs.length; i++) {
+        if (this.tabs[i] === x) {
+          this.tabs.splice(i, 1);
+        }
+      }
+    },
+    passDataToBaseMap: function passDataToBaseMap() {
+      this.$emit("get-updated-drawing", this.drawCircle);
+    },
+    changeCircleColor: function changeCircleColor(color) {
+      this.drawCircle.circleFillColor = color;
+      this.passDataToBaseMap();
+    },
+    changeCircleRadius: function changeCircleRadius(radius) {
+      this.drawCircle.circleRadiusValue = radius;
+      this.passDataToBaseMap();
+    }
+  },
+  watch: {
+    selectedShape: function selectedShape(newValue) {
+      //receive shape
+
+      //if is circle
+
+      if (newValue == null) {
+        console.log("not selected shape");
+
+        //reset
+        if (this.drawCircle.enableCircleDrawing) {
+          this.drawCircle.enableCircleDrawing = false;
+        }
+      } else if (newValue.type == "circle") {
+
+        this.drawCircle.enableCircleDrawing = true;
+        this.processCircleDrawing(newValue);
+      }
+    },
+    circleDrawingRadius: function circleDrawingRadius(newValue, oldValue) {
+      console.log("radius changed");
+      this.drawCircle.circleRadiusValue = newValue.toFixed(0);
+    },
+    circleDrawingCenter: function circleDrawingCenter(newValue, oldValue) {
+
+      this.drawCircle.center.lat = newValue.lat();
+      this.drawCircle.center.lng = newValue.lng();
+    },
+    enableDrawing: function enableDrawing(newValue) {
+      console.log(newValue);
+    }
+  },
+  computed: {}
+});
+
+/***/ }),
 /* 400 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -94107,7 +94371,113 @@ exports.push([module.i, "fieldset[disabled] .vue-swatches{pointer-events:none}.v
 
 
 /***/ }),
-/* 406 */,
+/* 406 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "b-card",
+        { attrs: { "no-body": "" } },
+        [
+          _c(
+            "b-tabs",
+            { attrs: { card: "" } },
+            [
+              _vm.drawCircle.enableCircleDrawing
+                ? _c(
+                    "b-tab",
+                    { attrs: { title: "Circle" } },
+                    [
+                      _c("vue-slider", {
+                        attrs: {
+                          min: _vm.minValue,
+                          max: _vm.maxValue,
+                          interval: 1000,
+                          clickable: false
+                        },
+                        on: { change: _vm.changeCircleRadius },
+                        model: {
+                          value: _vm.drawCircle.circleRadiusValue,
+                          callback: function($$v) {
+                            _vm.$set(_vm.drawCircle, "circleRadiusValue", $$v)
+                          },
+                          expression: "drawCircle.circleRadiusValue"
+                        }
+                      }),
+                      _vm._v(
+                        _vm._s(this.drawCircle.circleRadiusValue) +
+                          " metres\n\n    "
+                      ),
+                      _c("div", { staticClass: "form__field" }, [
+                        _c("div", { staticClass: "form__label" }, [
+                          _c("strong", [_vm._v("Please choose a color:")])
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "form__input" },
+                          [
+                            _c("swatches", {
+                              attrs: { "popover-to": "right" },
+                              on: { input: _vm.changeCircleColor },
+                              model: {
+                                value: _vm.drawCircle.circleFillColor,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.drawCircle,
+                                    "circleFillColor",
+                                    $$v
+                                  )
+                                },
+                                expression: "drawCircle.circleFillColor"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "b-button",
+                        {
+                          attrs: { variant: "primary" },
+                          on: { click: _vm.saveCircleData }
+                        },
+                        [_vm._v("Save")]
+                      )
+                    ],
+                    1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("template", { slot: "tabs" })
+            ],
+            2
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-348b035a", module.exports)
+  }
+}
+
+/***/ }),
 /* 407 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -95230,6 +95600,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'app-header',
@@ -95497,6 +95868,15 @@ var render = function() {
                                   attrs: { to: "/crisis/manage" }
                                 },
                                 [_vm._v("Manage Crisis")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "nav-link",
+                                  attrs: { to: "/crisis/managePublic" }
+                                },
+                                [_vm._v("Approve Crisis")]
                               ),
                               _vm._v(" "),
                               _c(
@@ -99675,7 +100055,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/views/DrawingTool.vue"
+Component.options.__file = "resources/assets/js/views/ManagePublicCrisis.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -99684,9 +100064,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-348b035a", Component.options)
+    hotAPI.createRecord("data-v-9c40d5b8", Component.options)
   } else {
-    hotAPI.reload("data-v-348b035a", Component.options)
+    hotAPI.reload("data-v-9c40d5b8", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -99702,14 +100082,12 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_slider_component__ = __webpack_require__(400);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_slider_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_slider_component__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_slider_component_theme_antd_css__ = __webpack_require__(401);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_slider_component_theme_antd_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_slider_component_theme_antd_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_swatches__ = __webpack_require__(403);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_swatches___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_swatches__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_swatches_dist_vue_swatches_min_css__ = __webpack_require__(404);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_swatches_dist_vue_swatches_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_swatches_dist_vue_swatches_min_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_popperjs_dist_css_vue_popper_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_popperjs__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_popperjs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ApproveCrisis__ = __webpack_require__(485);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ApproveCrisis___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__ApproveCrisis__);
 //
 //
 //
@@ -99759,141 +100137,97 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
+//
+//
+//
+//
 
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['enableDrawing', 'circleDrawingCenter', 'circleDrawingRadius', 'selectedShape'],
-
-  mounted: function mounted() {
-
-    //tell base map which componet will appear first
-    //console.log("mounted draw circle");
-    //enable drawing
-
-    // if (this.drawCircle.enableCircleDrawing) {
-    //   this.drawCircle.enableCircleDrawing = false;
-    // } else {
-    //   this.drawCircle.enableCircleDrawing = true;
-    // }
-    // this.minValue = 0;
-    // this.drawCircle.circleRadiusValue = 0;
-    // this.drawCircle.circleDataChangedType = "enableCircleDrawing";
-
-    // //emit to base map
-    // this.passDataToBaseMap();
-
-    // this.$emit("get-backend-data", sampleData);
-  },
-  destroyed: function destroyed() {
-    console.log("destory circle compoent");
-  },
-
-  components: {
-    VueSlider: __WEBPACK_IMPORTED_MODULE_0_vue_slider_component___default.a,
-    Swatches: __WEBPACK_IMPORTED_MODULE_2_vue_swatches___default.a
-  },
-  //drawCircle:{enableCircleDrawing:false,marker:null,circle:null,cirleDistanceValue: 0,circleFillColor:'#E84B3C'},
-  data: function data() {
-    return {
-
-      localDrawing: this.drawingEvent,
-      localEnableDrawing: false,
-      minValue: 0,
-      maxValue: 21000,
-      drawCircle: {
-        type: 'circle',
-        enableCircleDrawing: false,
-        circleRadiusValue: 0,
-        circleFillColor: "#E84B3C",
-        center: { lat: '', lng: '' },
-        postData: false
-      },
-      tabs: [],
-      tabCounter: 0
-    };
-  },
-
-
-  methods: {
-    newTab: function newTab() {
-      if (this.localEnableDrawing) {
-        this.this.localEnableDrawing = false;
-      } else {
-        this.localEnableDrawing = true;
-      }
+    components: {
+        'popper': __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default.a,
+        'approve-crisis': __WEBPACK_IMPORTED_MODULE_2__ApproveCrisis___default.a
     },
-    saveCircleData: function saveCircleData() {
 
-      this.drawCircle.postData = true;
+    mounted: function mounted() {
+        this.getCrisis();
 
-      this.passDataToBaseMap();
-      console.log(this.drawCircle);
+        setTimeout(function () {
+            $("#crisis").DataTable();
+        }, 2000);
     },
-    processCircleDrawing: function processCircleDrawing(circle) {
+    data: function data() {
+        return {
+            crises: [],
 
-      console.log(circle);
-
-      this.drawCircle.circleRadiusValue = circle.radius.toFixed(0);
-      this.drawCircle.center.lat = circle.center.lat();
-      this.drawCircle.center.lng = circle.center.lng();
-      this.drawCircle.circleFillColor = circle.fillColor;
+            modalShow: false,
+            message: '',
+            error: '',
+            approveCrisis: '',
+            crisisStatus: '',
+            crisisDesc: ''
+        };
     },
-    closeTab: function closeTab(x) {
-      for (var i = 0; i < this.tabs.length; i++) {
-        if (this.tabs[i] === x) {
-          this.tabs.splice(i, 1);
+
+
+    methods: {
+        approve: function approve(crisis) {
+            this.$refs.approveModalRef.show();
+            this.approveCrisis = crisis;
+        },
+        getCrisis: function getCrisis() {
+            var _this = this;
+
+            axios.get('/api/crisis').then(function (res) {
+                _this.crises = res.data.crises;
+            }).catch(function (error) {
+                _this.error = error.response.data.errors;
+            });
+        },
+
+
+        /* archive(crisis) {
+            this.modalShow = true;
+            var scope = this;
+            
+            let promise = new Promise(function(resolve, reject) {
+                let archiveButton = document.getElementById('archiveButton');
+                archiveButton.addEventListener("click",function(){
+                    scope.modalShow = false;
+                    resolve();
+                });
+                let dontArchiveButton = document.getElementById('dontArchiveButton');
+                dontArchiveButton.addEventListener("click",function(){
+                    scope.modalShow = false;
+                    reject();
+                });
+             });
+            
+            promise.then(function() { 
+                axios.delete('/api/crisis/'+crisis.id)
+                .then((res) => {
+                    scope.message = "We've successfully archive the crisis!";
+                    scope.crisis = [];
+                    scope.getcrisis();
+                })
+                .catch((error) => {
+                    scope.error = error.response;
+                })
+            });
+        }, */
+        approveSuccess: function approveSuccess() {
+            this.message = "The Crisis has been approved!";
+            this.hideModal();
+            this.getCrisis();
+            this.crisis = [];
+        },
+        hideModal: function hideModal() {
+            this.$refs.approveModalRef.hide();
         }
-      }
-    },
-    passDataToBaseMap: function passDataToBaseMap() {
-      this.$emit("get-updated-drawing", this.drawCircle);
-    },
-    changeCircleColor: function changeCircleColor(color) {
-      this.drawCircle.circleFillColor = color;
-      this.passDataToBaseMap();
-    },
-    changeCircleRadius: function changeCircleRadius(radius) {
-      this.drawCircle.circleRadiusValue = radius;
-      this.passDataToBaseMap();
     }
-  },
-  watch: {
-    selectedShape: function selectedShape(newValue) {
-      //receive shape
-
-      //if is circle
-
-      if (newValue == null) {
-        console.log("not selected shape");
-
-        //reset
-        if (this.drawCircle.enableCircleDrawing) {
-          this.drawCircle.enableCircleDrawing = false;
-        }
-      } else if (newValue.type == "circle") {
-
-        this.drawCircle.enableCircleDrawing = true;
-        this.processCircleDrawing(newValue);
-      }
-    },
-    circleDrawingRadius: function circleDrawingRadius(newValue, oldValue) {
-      console.log("radius changed");
-      this.drawCircle.circleRadiusValue = newValue.toFixed(0);
-    },
-    circleDrawingCenter: function circleDrawingCenter(newValue, oldValue) {
-
-      this.drawCircle.center.lat = newValue.lat();
-      this.drawCircle.center.lng = newValue.lng();
-    },
-    enableDrawing: function enableDrawing(newValue) {
-      console.log(newValue);
-    }
-  },
-  computed: {}
 });
 
 /***/ }),
@@ -99907,85 +100241,115 @@ var render = function() {
   return _c(
     "div",
     [
+      _c("flash", { attrs: { message: _vm.message } }),
+      _vm._v(" "),
       _c(
-        "b-card",
-        { attrs: { "no-body": "" } },
+        "table",
+        {
+          staticClass: "table table-striped table-bordered",
+          staticStyle: { width: "100%" },
+          attrs: { id: "example" }
+        },
         [
+          _vm._m(0),
+          _vm._v(" "),
           _c(
-            "b-tabs",
-            { attrs: { card: "" } },
-            [
-              _vm.drawCircle.enableCircleDrawing
-                ? _c(
-                    "b-tab",
-                    { attrs: { title: "Circle" } },
+            "tbody",
+            _vm._l(_vm.crises, function(crisis, index) {
+              return _c("tr", { key: index + crisis }, [
+                _c("td", [_vm._v(_vm._s(crisis.date))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(crisis.time))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(crisis.crisis_type))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(crisis.description))]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    _vm._s(crisis.address) + " " + _vm._s(crisis.postal_code)
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "tw-capitalize" }, [
+                  _vm._v(_vm._s(crisis.status))
+                ]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(crisis.name))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(crisis.user.name))]),
+                _vm._v(" "),
+                _c("td", [
+                  _c(
+                    "span",
+                    {
+                      staticClass: "tw-flex tw-justify-around tw-items-center"
+                    },
                     [
-                      _c("vue-slider", {
-                        attrs: {
-                          min: _vm.minValue,
-                          max: _vm.maxValue,
-                          interval: 1000,
-                          clickable: false
-                        },
-                        on: { change: _vm.changeCircleRadius },
-                        model: {
-                          value: _vm.drawCircle.circleRadiusValue,
-                          callback: function($$v) {
-                            _vm.$set(_vm.drawCircle, "circleRadiusValue", $$v)
-                          },
-                          expression: "drawCircle.circleRadiusValue"
-                        }
-                      }),
-                      _vm._v(
-                        _vm._s(this.drawCircle.circleRadiusValue) +
-                          " metres\n\n    "
-                      ),
-                      _c("div", { staticClass: "form__field" }, [
-                        _c("div", { staticClass: "form__label" }, [
-                          _c("strong", [_vm._v("Please choose a color:")])
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "form__input" },
-                          [
-                            _c("swatches", {
-                              attrs: { "popover-to": "right" },
-                              on: { input: _vm.changeCircleColor },
-                              model: {
-                                value: _vm.drawCircle.circleFillColor,
-                                callback: function($$v) {
-                                  _vm.$set(
-                                    _vm.drawCircle,
-                                    "circleFillColor",
-                                    $$v
-                                  )
-                                },
-                                expression: "drawCircle.circleFillColor"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ]),
-                      _vm._v(" "),
                       _c(
-                        "b-button",
+                        "popper",
                         {
-                          attrs: { variant: "primary" },
-                          on: { click: _vm.saveCircleData }
+                          attrs: {
+                            trigger: "hover",
+                            options: { placement: "bottom" }
+                          }
                         },
-                        [_vm._v("Save")]
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "popper tw-font-hairline tw-text-grey-dark"
+                            },
+                            [
+                              _vm._v(
+                                "\n                               Approve Crisis\n                            "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            { attrs: { slot: "reference" }, slot: "reference" },
+                            [
+                              _c("i", {
+                                staticClass: "fas fa-check",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.approve(crisis)
+                                  }
+                                }
+                              })
+                            ]
+                          )
+                        ]
                       )
                     ],
                     1
                   )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("template", { slot: "tabs" })
-            ],
-            2
+                ])
+              ])
+            }),
+            0
           )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "approveModalRef",
+          attrs: {
+            size: "lg",
+            "hide-footer": "",
+            title: "Please add on to the Crisis Details:"
+          }
+        },
+        [
+          _c("approve-crisis", {
+            attrs: { crisis: _vm.approveCrisis },
+            on: { hideModal: _vm.hideModal, approveSuccess: _vm.approveSuccess }
+          })
         ],
         1
       )
@@ -99993,13 +100357,427 @@ var render = function() {
     1
   )
 }
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Date")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Time")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Crisis Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Description")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Location")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Status")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Reported By")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Submitted By")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Approval")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-9c40d5b8", module.exports)
+  }
+}
+
+/***/ }),
+/* 485 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(4)
+/* script */
+var __vue_script__ = __webpack_require__(486)
+/* template */
+var __vue_template__ = __webpack_require__(487)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/views/ApproveCrisis.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1ca41fad", Component.options)
+  } else {
+    hotAPI.reload("data-v-1ca41fad", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 486 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['crisis'],
+
+    data: function data() {
+        return {
+            assistanceRequired: [],
+            error: ''
+
+        };
+    },
+
+
+    watch: {
+        crisis: function crisis() {}
+    },
+
+    methods: {
+        approveCrisis: function approveCrisis() {
+            /*   axios.post('/api/crisis/'+this.crisis.id, {
+                  status : this.updatedStatus,
+                  description : this.updatedDescription,
+              })
+              .then((res) => {
+                  this.$emit('approveSuccess');
+              })
+              .catch((error) => {
+                  this.error = error.response;
+              }) */
+
+            this.$emit('approveSuccess');
+        },
+        hideModal: function hideModal() {
+            this.$emit('hideModal');
+        }
+    }
+
+});
+
+/***/ }),
+/* 487 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticStyle: { margin: "auto" } }, [
+    _c("div", { staticClass: "form-group row" }, [
+      _c("h5", { staticClass: "col-md-4 card-title" }, [
+        _vm._v("\n            Assistance Required :\n        ")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("div", { staticClass: "form-check" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.assistanceRequired,
+                expression: "assistanceRequired"
+              }
+            ],
+            staticClass: "form-check-input",
+            attrs: { type: "checkbox", id: "Emergency Ambulance", value: "1" },
+            domProps: {
+              checked: Array.isArray(_vm.assistanceRequired)
+                ? _vm._i(_vm.assistanceRequired, "1") > -1
+                : _vm.assistanceRequired
+            },
+            on: {
+              change: function($event) {
+                var $$a = _vm.assistanceRequired,
+                  $$el = $event.target,
+                  $$c = $$el.checked ? true : false
+                if (Array.isArray($$a)) {
+                  var $$v = "1",
+                    $$i = _vm._i($$a, $$v)
+                  if ($$el.checked) {
+                    $$i < 0 && (_vm.assistanceRequired = $$a.concat([$$v]))
+                  } else {
+                    $$i > -1 &&
+                      (_vm.assistanceRequired = $$a
+                        .slice(0, $$i)
+                        .concat($$a.slice($$i + 1)))
+                  }
+                } else {
+                  _vm.assistanceRequired = $$c
+                }
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "label",
+            {
+              staticClass: "form-check-label",
+              attrs: { for: "Emergency Ambulance" }
+            },
+            [_vm._v("Emergency Ambulance")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-check" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.assistanceRequired,
+                expression: "assistanceRequired"
+              }
+            ],
+            staticClass: "form-check-input",
+            attrs: { type: "checkbox", id: "Rescue", value: "2" },
+            domProps: {
+              checked: Array.isArray(_vm.assistanceRequired)
+                ? _vm._i(_vm.assistanceRequired, "2") > -1
+                : _vm.assistanceRequired
+            },
+            on: {
+              change: function($event) {
+                var $$a = _vm.assistanceRequired,
+                  $$el = $event.target,
+                  $$c = $$el.checked ? true : false
+                if (Array.isArray($$a)) {
+                  var $$v = "2",
+                    $$i = _vm._i($$a, $$v)
+                  if ($$el.checked) {
+                    $$i < 0 && (_vm.assistanceRequired = $$a.concat([$$v]))
+                  } else {
+                    $$i > -1 &&
+                      (_vm.assistanceRequired = $$a
+                        .slice(0, $$i)
+                        .concat($$a.slice($$i + 1)))
+                  }
+                } else {
+                  _vm.assistanceRequired = $$c
+                }
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "label",
+            { staticClass: "form-check-label", attrs: { for: "Rescue" } },
+            [_vm._v("Rescue & Evac")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-check" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.assistanceRequired,
+                expression: "assistanceRequired"
+              }
+            ],
+            staticClass: "form-check-input",
+            attrs: { type: "checkbox", id: "Fire-Fighting", value: "3" },
+            domProps: {
+              checked: Array.isArray(_vm.assistanceRequired)
+                ? _vm._i(_vm.assistanceRequired, "3") > -1
+                : _vm.assistanceRequired
+            },
+            on: {
+              change: function($event) {
+                var $$a = _vm.assistanceRequired,
+                  $$el = $event.target,
+                  $$c = $$el.checked ? true : false
+                if (Array.isArray($$a)) {
+                  var $$v = "3",
+                    $$i = _vm._i($$a, $$v)
+                  if ($$el.checked) {
+                    $$i < 0 && (_vm.assistanceRequired = $$a.concat([$$v]))
+                  } else {
+                    $$i > -1 &&
+                      (_vm.assistanceRequired = $$a
+                        .slice(0, $$i)
+                        .concat($$a.slice($$i + 1)))
+                  }
+                } else {
+                  _vm.assistanceRequired = $$c
+                }
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "label",
+            {
+              staticClass: "form-check-label",
+              attrs: { for: "Fire-Fighting" }
+            },
+            [_vm._v("Fire-Fighting")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-check" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.assistanceRequired,
+                expression: "assistanceRequired"
+              }
+            ],
+            staticClass: "form-check-input",
+            attrs: { type: "checkbox", id: "GasLeak", value: "4" },
+            domProps: {
+              checked: Array.isArray(_vm.assistanceRequired)
+                ? _vm._i(_vm.assistanceRequired, "4") > -1
+                : _vm.assistanceRequired
+            },
+            on: {
+              change: function($event) {
+                var $$a = _vm.assistanceRequired,
+                  $$el = $event.target,
+                  $$c = $$el.checked ? true : false
+                if (Array.isArray($$a)) {
+                  var $$v = "4",
+                    $$i = _vm._i($$a, $$v)
+                  if ($$el.checked) {
+                    $$i < 0 && (_vm.assistanceRequired = $$a.concat([$$v]))
+                  } else {
+                    $$i > -1 &&
+                      (_vm.assistanceRequired = $$a
+                        .slice(0, $$i)
+                        .concat($$a.slice($$i + 1)))
+                  }
+                } else {
+                  _vm.assistanceRequired = $$c
+                }
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "label",
+            { staticClass: "form-check-label", attrs: { for: "GasLeak" } },
+            [_vm._v("Gas Leak Control")]
+          )
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass:
+          "tw-flex tw-justify-end tw-m-4 tw-border-t tw-border-grey tw-pt-4"
+      },
+      [
+        _c(
+          "button",
+          {
+            staticClass: "tw-mr-2 btn btn-secondary",
+            on: {
+              click: function($event) {
+                return _vm.hideModal()
+              }
+            }
+          },
+          [_vm._v("Cancel")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "tw-ml-2 btn btn-primary",
+            on: {
+              click: function($event) {
+                return _vm.approveCrisis()
+              }
+            }
+          },
+          [_vm._v("Approve")]
+        )
+      ]
+    )
+  ])
+}
 var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-348b035a", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-1ca41fad", module.exports)
   }
 }
 

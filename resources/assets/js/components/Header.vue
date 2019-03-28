@@ -61,6 +61,7 @@
 
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <router-link to="/crisis/manage" class="nav-link">Manage Crisis</router-link>
+                                 <router-link to="/crisis/managePublic" class="nav-link">Approve Crisis</router-link>
                                 <router-link to="/crisis/archive" class="nav-link">View Archived Crisis</router-link>
                             </div>
                         </li>
