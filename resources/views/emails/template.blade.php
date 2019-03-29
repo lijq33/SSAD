@@ -8,9 +8,12 @@
 
 </head>
 <body>
+        Dear Prime Minister,<br><br>
 
-    <h1>Test</h1>
-
+        The following attached file is the summary report consisting of the Key Indicators and Trends collected over the past 30mins. 
+        <br><br>
+        With regards,<br>
+        TeamTen
 </body>
 
 </html>

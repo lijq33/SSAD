@@ -7,7 +7,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Mail\DataUpdate;
+use App\Mail\TeamTenReport;
 use PDF;
 
 class SendEmail implements ShouldQueue
@@ -45,6 +45,6 @@ class SendEmail implements ShouldQueue
 
         $pdf = PDF::loadView('pdf.template', $data)->save(public_path().'/KeyIndicators.pdf');
 
-        \Mail::to('test@testingemail.com')->send(new DataUpdate());
+        \Mail::to('pm@primeminister.com')->send(new TeamTenReport());
     }
 }
