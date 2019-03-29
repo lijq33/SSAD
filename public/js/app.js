@@ -94349,7 +94349,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       isLoading: false,
       zoom_lvl: 12,
       sgcoord: { lat: 1.3521, lng: 103.8198 },
-      markers: { twoHrWeatherMarkers: [], fireMarkers: [] },
+      markers: { twoHrWeatherMarkers: [], fireMarkers: [], gasLeakMarkers: [] },
       polygon: { dengueData: [] },
       enableDrawingToolsExtension: false,
       drawingTool: null,
@@ -94396,7 +94396,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.removeMarkers(this.markers.fireMarkers);
         this.markers.fireMarkers = [];
       } else if (clearToggleData === "hideGasLeakData") {
-        scope.showGasLeakData(element);
+        this.removeMarkers(this.markers.gasLeakMarkers);
+        this.markers.gasLeakMarkers = [];
       } else if (clearToggleData === "hideHazeData") {
         scope.showHazeData(element);
       } else if (clearToggleData === "hideRainData") {
@@ -94416,11 +94417,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       } else if (toggleData.displayId === "showFireData") {
         this.showFireData(toggleData);
       } else if (toggleData.displayId === "showGasLeakData") {
-        scope.showGasLeakData(element);
+        this.showGasLeakData(toggleData);
       } else if (toggleData.displayId === "showHazeData") {
-        scope.showHazeData(element);
+        //scope.showHazeData(element);
       } else if (toggleData.displayId === "showRainData") {
-        scope.showRainData(element);
+        //scope.showRainData(element);
       } else if (toggleData.displayId === "showTwoHrWeatherData") {
 
         this.showTwoHrWeatherData(toggleData);
@@ -94715,6 +94716,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     removeMarkers: function removeMarkers(removeMarkersType) {
+      console.log("remove ");
 
       for (var i = 0; i < removeMarkersType.length; i++) {
         removeMarkersType[i].setMap(null);
@@ -94755,22 +94757,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     showFireData: function showFireData(fireData) {
 
       var scope = this;
-      console.log(fireData);
+
       fireData.crises.forEach(function (element, index) {
 
-        console.log(element);
         //add marker to twoHrWeatherMarkers variable
         //param(variable,icon,inforwindow content)
+
+
         scope.addMarker("Array", scope.markers.fireMarkers, {
           icon: fireData.iconUrl,
           markerDisplayId: element.id,
-          position: { lat: element.lat, lng: element.lng } }, { infoWindowTitle: element.name, infoWindowBody: element.description });
+          position: { lat: element.lat, lng: element.lng }
+        }, { infoWindowTitle: element.name,
+          infoWindowBody: element
+        });
       });
 
       //this.addMarker("Array",this.markers.fireMarkers,)
       //addMarker(markerVarType,markerVar,element,infowindow)
     },
-    showGasLeakData: function showGasLeakData() {},
+    showGasLeakData: function showGasLeakData(gasLeakData) {
+
+      var scope = this;
+      console.log(gasLeakData);
+      gasLeakData.crises.forEach(function (element, index) {
+
+        //add marker to twoHrWeatherMarkers variable
+        //param(variable,icon,inforwindow content)
+        scope.addMarker("Array", scope.markers.gasLeakMarkers, {
+          icon: gasLeakData.iconUrl,
+          markerDisplayId: element.id,
+          position: { lat: element.lat, lng: element.lng } }, { infoWindowTitle: element.name, infoWindowBody: element.description });
+      });
+    },
     showHazeData: function showHazeData() {},
     showRainData: function showRainData() {},
     addMarker: function addMarker(markerVarType, markerVar, element, infowindow) {
@@ -94792,8 +94811,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         if (infowindow) {
+          console.log(infowindow);
           //attach infowindow
-          var contentString = '<div id="iw-container">' + '<div class="iw-title">' + infowindow.infoWindowTitle + '</div>' + '<div class="iw-content">' + '<div class="iw-subTitle">' + infowindow.infoWindowBody + '</div>' + '</div>' + '<div class="iw-bottom-gradient"></div>' + '</div>';
+          var contentString = '<div id="iw-container">' + '<div class="iw-title">' + infowindow.infoWindowTitle + '</div>' + '<div class="iw-content">' + '<div class="iw-subTitle">' + infowindow.infoWindowBody.description + '</div>' + '<img src = "/crisis/' + infowindow.infoWindowBody.image + '" alt="fire image"/>' + '</div>';
+          '<div class="iw-bottom-gradient"></div>' + '</div>';
 
           google.maps.event.addListener(temp, 'mouseover', function () {
             scope.markerInfoWindow.setContent(contentString);
@@ -95897,6 +95918,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -95926,7 +95958,8 @@ var sampleData = [{
     return {
       selectTwoHrWeather: '',
       selectDengue: '',
-      selectFire: ''
+      selectFire: '',
+      selectGasLeak: ''
     };
   },
 
@@ -95944,6 +95977,7 @@ var sampleData = [{
         success: function success(data, status, jqXHR) {
           data["displayId"] = display_id;
           data["iconUrl"] = icon_url;
+          console.log(data);
           scope.$emit("get-toggle-data", data);
         },
         error: function error(jqXHR, status, err) {
@@ -95954,8 +95988,19 @@ var sampleData = [{
     }
   },
   watch: {
-    selectFire: function selectFire() {
+    selectGasLeak: function selectGasLeak() {
+      var request = "/api/crisis/gasLeak";
+      var markerIconUrl = 'https://images.vexels.com/media/users/3/150012/isolated/preview/bf8475104937ca2ee44090829f4efa3a-small-gas-cylinder-icon-by-vexels.png';
 
+      if (this.selectGasLeak.includes("show")) {
+        //request["displayId"] = this.selectDengue; 
+
+        this.getCrisisDataFromBackEnd(request, this.selectGasLeak, markerIconUrl);
+      } else {
+        this.removeCrisisDataFromFrontend(this.selectGasLeak);
+      }
+    },
+    selectFire: function selectFire() {
       var request = "/api/crisis/fire";
       var markerIconUrl = 'https://cdn0.iconfinder.com/data/icons/fatcow/32/fire.png';
 
@@ -96061,6 +96106,30 @@ var render = function() {
                             }
                           },
                           [_vm._v("\n                  Fire\n                ")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-checkbox",
+                          {
+                            attrs: {
+                              id: "showGasLeakDataId",
+                              name: "showGasLeakDataId",
+                              value: "showGasLeakData",
+                              "unchecked-value": "hideGasLeakData"
+                            },
+                            model: {
+                              value: _vm.selectGasLeak,
+                              callback: function($$v) {
+                                _vm.selectGasLeak = $$v
+                              },
+                              expression: "selectGasLeak"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                  Gas Leakage\n                "
+                            )
+                          ]
                         )
                       ],
                       1
@@ -96278,103 +96347,99 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c(
-        "b-container",
-        [
-          _c(
-            "b-row",
-            [
-              _c(
-                "b-col",
-                { attrs: { cols: "8" } },
-                [
-                  _c("auto-search", {
-                    attrs: {
-                      "circle-full-address": _vm.drawCircle.circleFullAddress
-                    },
-                    on: {
-                      "get-search-data": _vm.handleSearchData,
-                      "clear-Search": _vm.clearSearch
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "b-col",
-                { attrs: { cols: "4" } },
-                [
-                  _c("toggle-map", {
-                    on: {
-                      "get-toggle-data": _vm.handleToggleData,
-                      "clear-toggle-data": _vm.handleClearToggleData
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "b-row",
-            [
-              _c(
-                "b-col",
-                { attrs: { cols: "12", md: "8" } },
-                [
-                  _c("GmapMap", {
-                    ref: "mapRef",
-                    staticStyle: { width: "auto", height: "600px" },
-                    attrs: { zoom: _vm.zoom_lvl, center: _vm.sgcoord }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "b-col",
-                { attrs: { cols: "6", md: "4" } },
-                [
-                  _c("draw-tool", {
-                    attrs: {
-                      "selected-shape": _vm.selectedShape,
-                      "enable-drawing": _vm.enableDrawingToolsExtension,
-                      "circle-drawing-center": _vm.localDrawCircle.center,
-                      "circle-drawing-radius": _vm.localDrawCircle.radius,
-                      "marker-drawing": _vm.localDrawMarker.position
-                    },
-                    on: {
-                      "get-updated-drawing": _vm.handleCircleData,
-                      "get-backend-data": _vm.handleBackendData
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          attrs: { id: "delete-button" },
-          on: { click: _vm.deleteSelectedShape }
-        },
-        [_vm._v("Delete Selected Shape")]
-      )
-    ],
-    1
-  )
+  return _c("div", { staticClass: "tw-w-full" }, [
+    _c(
+      "div",
+      [
+        _c(
+          "b-row",
+          [
+            _c(
+              "b-col",
+              { attrs: { cols: "8" } },
+              [
+                _c("auto-search", {
+                  attrs: {
+                    "circle-full-address": _vm.drawCircle.circleFullAddress
+                  },
+                  on: {
+                    "get-search-data": _vm.handleSearchData,
+                    "clear-Search": _vm.clearSearch
+                  }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-col",
+              { attrs: { cols: "4" } },
+              [
+                _c("toggle-map", {
+                  on: {
+                    "get-toggle-data": _vm.handleToggleData,
+                    "clear-toggle-data": _vm.handleClearToggleData
+                  }
+                })
+              ],
+              1
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "b-row",
+          [
+            _c(
+              "b-col",
+              { attrs: { cols: "12", md: "8" } },
+              [
+                _c("GmapMap", {
+                  ref: "mapRef",
+                  staticStyle: { width: "auto", height: "600px" },
+                  attrs: { zoom: _vm.zoom_lvl, center: _vm.sgcoord }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-col",
+              { attrs: { cols: "6", md: "4" } },
+              [
+                _c("draw-tool", {
+                  attrs: {
+                    "selected-shape": _vm.selectedShape,
+                    "enable-drawing": _vm.enableDrawingToolsExtension,
+                    "circle-drawing-center": _vm.localDrawCircle.center,
+                    "circle-drawing-radius": _vm.localDrawCircle.radius,
+                    "marker-drawing": _vm.localDrawMarker.position
+                  },
+                  on: {
+                    "get-updated-drawing": _vm.handleCircleData,
+                    "get-backend-data": _vm.handleBackendData
+                  }
+                })
+              ],
+              1
+            )
+          ],
+          1
+        )
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        attrs: { id: "delete-button" },
+        on: { click: _vm.deleteSelectedShape }
+      },
+      [_vm._v("Delete Selected Shape")]
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -97317,7 +97382,7 @@ var render = function() {
     ),
     _vm._v(" "),
     _c("div", { staticClass: "tw-flex tw-justify-center tw-py-10" }, [
-      _c("div", { staticClass: "tw-container" }, [_c("router-view")], 1)
+      _c("div", { staticClass: "container" }, [_c("router-view")], 1)
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "tw-pin-b" }, [_c("Footer")], 1)
