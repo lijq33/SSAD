@@ -19,7 +19,8 @@
         "popper.js": "^1.12",
         "tailwindcss": "^0.7.4",
         "vue": "^2.6.4",
-        "vue-router": "^3.0.1"
+        "vue-router": "^3.0.1",
+        "vuetable-2": "^1.7.5"
     },
     "dependencies": {
         "@turf/turf": "^5.1.6",
@@ -31,6 +32,7 @@
         "open": "0.0.5",
         "simplebar": "^3.0.0-beta.4",
         "validate.js": "^0.12.0",
+        "vue-bootstrap4-table": "^1.1.2",
         "vue-good-wizard": "^1.4.1",
         "vue-grecaptcha": "^1.0.1",
         "vue-popperjs": "^1.5.0",
@@ -39,6 +41,7 @@
         "vue-slider-component": "^3.0.16",
         "vue-swatches": "^1.0.3",
         "vue2-google-maps": "^0.10.6",
+        "vuedraggable": "^2.20.0",
         "vuex": "^3.0.1"
     }
 }

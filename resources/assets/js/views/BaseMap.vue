@@ -33,6 +33,7 @@
     :enable-drawing="enableDrawingToolsExtension" 
     :circle-drawing-center="localDrawCircle.center"
     :circle-drawing-radius="localDrawCircle.radius"
+    :marker-drawing="localDrawMarker.position"
     @get-updated-drawing="handleCircleData" 
     @get-backend-data="handleBackendData"
     >
@@ -62,9 +63,16 @@ export default {
 
   mounted(){ 
     var scope = this;
-       this.$refs.mapRef.$mapPromise.then(map => {
+        //  this.$refs.mapRef.$mapPromise.then(map => {
+        //   map.data.setControls(['Point', 'LineString', 'Polygon']);
+        //   map.data.setStyle({
+        //     editable: true,
+        //     draggable: true
+        //   });
+
+        //   scope.bindDataLayerListeners(map.data);
+        //  });
           
-       }); 
 
 
         this.$refs.mapRef.$mapPromise.then(map => {
@@ -105,11 +113,12 @@ export default {
                     var newShape = e.overlay;
                     
                     newShape.type = e.type;
-                    
-                    if (e.type !== google.maps.drawing.OverlayType.MARKER) {
-                        // Switch back to non-drawing mode after drawing a shape.
-                        scope.drawingManager.setDrawingMode(null);
 
+                    // Switch back to non-drawing mode after drawing a shape, inclcude marker
+                        scope.drawingManager.setDrawingMode(null);
+                        
+                    if (e.type !== google.maps.drawing.OverlayType.MARKER) {
+                        
                         // Add an event listener that selects the newly-drawn shape when the user
                         // mouses down on it.
                         google.maps.event.addListener(newShape, 'click', function (e) {
@@ -148,9 +157,32 @@ export default {
                         scope.setSelection(newShape);
                     }
                     else {
-                        google.maps.event.addListener(newShape, 'click', function (e) {
+                      //marker selection99
+
+                      //attach infowindow
+
+                       var contentString = '<div id="iw-container">' +
+                          '<div class="iw-title">'+"sdfsdf"+'</div>' +
+                          '<div class="iw-content">' +
+                            '<div class="iw-subTitle">'+"8899"+'</div>' +
+                          '</div>' +
+                          '<div class="iw-bottom-gradient"></div>' +
+                        '</div>';
+
+                        google.maps.event.addListener(newShape, 'click', function() {
+                        scope.markerInfoWindow.setContent(contentString);
+                        scope.markerInfoWindow.open(map, this);
+                      });
+
+                        google.maps.event.addListener(newShape, 'click', function (e) { 
                             scope.setSelection(newShape);
                         });
+
+                         google.maps.event.addListener(newShape, "dragend", function(e) {
+
+                            scope.localDrawMarker.position=e.latLng;
+                         });
+
                         scope.setSelection(newShape);
                     }
 
@@ -175,6 +207,7 @@ export default {
 
   data() {
     return {
+      geoJson:[],
       markerInfoWindow:null,
       searchMarker:null,
       drawCircle:{marker:null,circle:null,draggableMarkerListener:null,clickMarkerListener:null,circleFullAddress:''},
@@ -187,11 +220,29 @@ export default {
       drawingTool:null,
       localDrawCircle:{center:null,radius:null,localCircleRadiusListener:null,localCircleCenterListener:null},
       drawingManager:null,
-      selectedShape:null
+      selectedShape:null,
+      localDrawMarker:{position:null}
  
     };
   },
   methods: {
+    bindDataLayerListeners(dataLayer) {
+        dataLayer.addListener('addfeature', this.refreshGeoJsonFromData);
+        //dataLayer.addListener('removefeature', this.refreshGeoJsonFromData);
+        dataLayer.addListener('setgeometry', this.refreshGeoJsonFromData);
+      } ,
+        refreshGeoJsonFromData() {
+          var scope = this;
+      this.$refs.mapRef.$mapPromise.then(map => {
+          map.data.toGeoJson(function(geoJson) {
+        scope.geoJson.value = JSON.stringify(scope.geoJson, null, 2);
+         console.log("2")
+        
+      });
+
+      })
+ 
+    },
     handleBackendData(backendData){ 
  
      
@@ -262,17 +313,19 @@ export default {
     clearSelection () {
         if (this.selectedShape) {
             if (this.selectedShape.type !== 'marker') {
+              console.log("not marker")
                 this.selectedShape.setEditable(false);
             }
-            console.log("set selected null")
+           
             this.selectedShape = null;
         }
     },
     setSelection (shape) {
                 if (shape.type !== 'marker') {
-                   console.log("base map selected")
+                   console.log("998")
                     this.clearSelection();
                     shape.setEditable(true);
+                    
                     //selectColor(shape.get('fillColor') || shape.get('strokeColor'));
                 }
                 
@@ -295,13 +348,24 @@ export default {
         //this.tabs.push(this.tabCounter++)
       },
       addDraggendListener(draggendVar){
+        var scope = this;
              //attach draggend listener
-             google.maps.event.addListener(draggendVar, "dragend", function(marker) {
+             google.maps.event.addListener(draggendVar, "dragend", function(e) {
             
-            var latLng = marker.latLng;
+            var latLng = e.latLng;
             var currentLatitude = latLng.lat();
             var currentLongitude = latLng.lng();
-        console.log(currentLatitude)
+        
+        
+
+         //var temp = draggendVar;
+
+        draggendVar.setPosition({lat:currentLatitude,lng:currentLongitude}); 
+         var temp = draggendVar;
+         // draggendVar = null;
+          //draggendVar.setMap(null);
+         scope.clearSelection();
+          scope.setSelection(temp);
             // scope.drawCircle.circle.setOptions({center:{lat:currentLatitude,lng:currentLongitude}});       
 
              //update full address
@@ -702,7 +766,14 @@ export default {
   },
   watch: {
     
-  } 
+  },
+   computed: {
+     computedGeoJson:function () {
+      console.log("computed")
+      return this.geoJson
+    }
+
+   }
 };
 </script>
 

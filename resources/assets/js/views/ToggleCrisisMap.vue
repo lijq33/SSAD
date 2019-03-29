@@ -5,6 +5,7 @@
                 <b-tabs card>
                 <b-tab title="Crisis" active>
 
+                      <!--dengue-->
                    <b-form-group>
                       <b-form-checkbox
                       id="showDengueDataId"
@@ -14,6 +15,17 @@
                       unchecked-value="hideDengueData"
                        >
                       Dengue
+                    </b-form-checkbox>
+
+                    <!--Fire-->
+                    <b-form-checkbox
+                      id="showFireDataId"
+                      name="showFireDataId"
+                      v-model="selectFire"
+                      value="showFireData"
+                      unchecked-value="hideFireData"
+                       >
+                      Fire
                     </b-form-checkbox>
  
                   </b-form-group>
@@ -104,7 +116,8 @@
     data() {
       return {
         selectTwoHrWeather:'',
-        selectDengue:''
+        selectDengue:'',
+        selectFire:''
       }
     },
     methods:{
@@ -135,6 +148,19 @@
       }
     },
     watch:{
+      selectFire(){
+
+        var request = "/api/crisis/fire"
+
+          if(this.selectFire.includes("show")){
+           //request["displayId"] = this.selectDengue; 
+           this.$emit("get-toggle-data", request);
+           //this.getCrisisDataFromBackEnd('',this.selectDengue,'');
+        }else{
+          this.removeCrisisDataFromFrontend(this.selectFire);
+        } 
+
+      },
       selectDengue(){
         var request = sampleData;
 

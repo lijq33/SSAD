@@ -1,11 +1,55 @@
 <template>
   <div>
+<!-- 
+    <vue-bootstrap4-table id="markerIdTable"
+    :classes="classes"
+    :rows="rows" 
+    :columns="columns" 
+    :config="config">
+   </vue-bootstrap4-table> -->
 
+<template>
+  <div>
+    <b-table :items="items" :fields="fields" striped>
+      <template slot="show_details" slot-scope="row">
+        <b-button size="sm" @click="row.toggleDetails" class="mr-2">
+          {{ row.detailsShowing ? 'Hide' : 'Show'}} Details
+        </b-button>
+
+        <!-- As `row.showDetails` is one-way, we call the toggleDetails function on @change -->
+        <b-form-checkbox v-model="row.detailsShowing" @change="row.toggleDetails">
+          Details via check
+        </b-form-checkbox>
+      </template>
+
+      <template slot="row-details" slot-scope="row">
+        <b-card>
+          <!-- <b-row class="mb-2">
+            <b-col sm="3" class="text-sm-right"><b>Age:</b></b-col>
+            <b-col>{{ row.item.age }}</b-col>
+          </b-row>
+
+          <b-row class="mb-2">
+            <b-col sm="3" class="text-sm-right"><b>Is Active:</b></b-col>
+            <b-col>{{ row.item.isActive }}</b-col>
+          </b-row> -->
+
+          <b-button size="sm" @click="row.toggleDetails">Hide Details</b-button>
+        </b-card>
+      </template>
+    </b-table>
+  </div>
+</template>
 
      <!-- drawing tools extension -->
     <b-card no-body>
-     
+   
       <b-tabs card>
+        <!--marker-->
+        <b-tab v-if="enableMarkerDrawing" title="Marker">
+          <h6>{{this.markerGeoJson.geometry.coordinates}}</h6>
+        </b-tab>
+
         <!--circle-->
         <b-tab v-if="drawCircle.enableCircleDrawing" title="Circle">
           <vue-slider
@@ -48,15 +92,15 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import VueSlider from "vue-slider-component";
 import "vue-slider-component/theme/antd.css";
 import Swatches from "vue-swatches";
 import "vue-swatches/dist/vue-swatches.min.css";
-
-
+ import VueBootstrap4Table from 'vue-bootstrap4-table'
 
 export default {
-     props: ['enableDrawing','circleDrawingCenter','circleDrawingRadius','selectedShape'],
+     props: ['enableDrawing','circleDrawingCenter','circleDrawingRadius','selectedShape','markerDrawing'],
 
   mounted(){
 
@@ -84,12 +128,41 @@ export default {
   },
   components: {
     VueSlider,
-    Swatches
+    Swatches,
+    VueBootstrap4Table
   },
   //drawCircle:{enableCircleDrawing:false,marker:null,circle:null,cirleDistanceValue: 0,circleFillColor:'#E84B3C'},
   data() {
     return {
-      
+     fields: ['id', 'event', 'show_details'],
+        items: [
+          {
+            isActive: false,
+            id: 1,
+            event: '445',
+            _showDetails: false
+          }
+        ],
+       rows: [],
+    columns: [{
+            label: "id",
+            name: "id",
+            sort: true,
+        },
+        {
+            label: "First Name",
+            name: "name.first_name",
+            sort: true,
+        }],
+    config: {
+        checkbox_rows: true,
+        rows_selectable: false,
+          pagination: false, // default true
+            pagination_info: false,
+          global_search: {
+            visibility: false,
+            }  
+      },
       localDrawing:this.drawingEvent,
       localEnableDrawing:false,
       minValue: 0,
@@ -102,12 +175,24 @@ export default {
         center:{lat:'',lng:''},
         postData:false
       },
-        tabs: [],
-        tabCounter: 0
+      tabs: [],
+      tabCounter: 0,
+      markerUID:null,
+      enableMarkerDrawing: false,
+      markerGeoJson: {
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: []  
+        }
+      }
     };
   },
 
   methods: {
+    rowSelected(items) {
+        this.selected = items
+      },
     newTab(){
       if(this.localEnableDrawing){
         this.this.localEnableDrawing = false;
@@ -123,6 +208,41 @@ export default {
       this.passDataToBaseMap();
       console.log(this.drawCircle)
 
+    },
+    processMarkerDrawing(marker){
+      console.log(marker)
+        this.markerGeoJson.geometry.coordinates=[marker.position.lng(),marker.position.lat()]
+        this.markerUID=marker.closure_uid_342722430;
+
+        var found = false;
+
+         this.items.forEach((element,index) => {  
+           
+        if(element.id === marker.closure_uid_342722430){
+          console.log(element.id)
+
+          found = true;
+        }
+
+         });
+
+      if(found){
+          console.log("1212")
+      }else{
+      console.log("add marker to item")
+      
+        //add to table
+            this.items.push({
+                isActive: false,
+                id: marker.closure_uid_342722430,
+                event: marker.closure_uid_342722430,
+                _showDetails: true
+            })
+
+      }
+          
+
+       
     },
     processCircleDrawing(circle){
      
@@ -154,22 +274,31 @@ export default {
     }
   },
   watch: { 
+    markerDrawing(newValue){
+     this.markerGeoJson.geometry.coordinates=[newValue.lng(),newValue.lat()]
+    },
     selectedShape(newValue){
       //receive shape
-
       //if is circle
+      console.log("nevalue selected shape")
 
       if(newValue == null){
-        console.log("not selected shape") 
+        console.log("not selected shape");
+         this.drawCircle.enableCircleDrawing = false;
+       this.enableMarkerDrawing = false;
 
-        //reset
-        if(this.drawCircle.enableCircleDrawing){
-          this.drawCircle.enableCircleDrawing = false
-        }
+        
       }else  if (newValue.type == "circle") {
        
        this.drawCircle.enableCircleDrawing = true;
+       this.enableMarkerDrawing = false;
        this.processCircleDrawing(newValue);
+      }else if (newValue.type == "marker"){
+
+        this.enableMarkerDrawing = true;
+         this.drawCircle.enableCircleDrawing = false;
+        this.processMarkerDrawing(newValue);
+         
       }
     },
      circleDrawingRadius(newValue,oldValue){
