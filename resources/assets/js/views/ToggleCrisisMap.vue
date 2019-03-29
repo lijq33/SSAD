@@ -136,7 +136,7 @@
                   data["displayId"] = display_id; 
                   data["iconUrl"] = icon_url;
                   scope.$emit("get-toggle-data", data);
-                     
+                       
                 },
                 error: function (jqXHR, status, err) {
                     console.log(err);
@@ -149,13 +149,16 @@
     },
     watch:{
       selectFire(){
+    
 
-        var request = "/api/crisis/fire"
+        var request = "/api/crisis/fire";
+         var markerIconUrl = 'https://cdn0.iconfinder.com/data/icons/fatcow/32/fire.png';
 
           if(this.selectFire.includes("show")){
            //request["displayId"] = this.selectDengue; 
-           this.$emit("get-toggle-data", request);
-           //this.getCrisisDataFromBackEnd('',this.selectDengue,'');
+            
+           this.getCrisisDataFromBackEnd(request,this.selectFire,markerIconUrl); 
+
         }else{
           this.removeCrisisDataFromFrontend(this.selectFire);
         } 
@@ -163,6 +166,7 @@
       },
       selectDengue(){
         var request = sampleData;
+       
 
          if(this.selectDengue.includes("show")){
            request["displayId"] = this.selectDengue; 

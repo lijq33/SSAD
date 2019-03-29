@@ -214,7 +214,7 @@ export default {
       isLoading: false,
       zoom_lvl: 12,
       sgcoord: { lat: 1.3521, lng: 103.8198 },
-      markers: {twoHrWeatherMarkers:[]},
+      markers: {twoHrWeatherMarkers:[],fireMarkers:[]},
       polygon:{dengueData:[]},
       enableDrawingToolsExtension:false,
       drawingTool:null,
@@ -222,7 +222,7 @@ export default {
       drawingManager:null,
       selectedShape:null,
       localDrawMarker:{position:null}
- 
+
     };
   },
   methods: {
@@ -266,7 +266,8 @@ export default {
         this.removePolygon(clearToggleData,this.polygon.dengueData);
         this.polygon.dengueData = [];
       }else if (clearToggleData === "hideFireData"){
-          scope.showFireData(element);
+          this.removeMarkers(this.markers.fireMarkers);
+           this.markers.fireMarkers=[];
       }else if (clearToggleData === "hideGasLeakData"){
         scope.showGasLeakData(element);
       }else if (clearToggleData === "hideHazeData"){
@@ -287,7 +288,7 @@ export default {
 
         this.showDengueData(toggleData);
       }else if (toggleData.displayId === "showFireData"){
-          scope.showFireData(element);
+          this.showFireData(toggleData);
       }else if (toggleData.displayId === "showGasLeakData"){
         scope.showGasLeakData(element);
       }else if (toggleData.displayId === "showHazeData"){
@@ -678,7 +679,28 @@ export default {
        
         
     },
-    showFireData(){
+    showFireData(fireData){
+
+      var scope = this;
+  console.log(fireData)
+         fireData.crises.forEach((element,index) => {  
+ 
+           console.log(element)
+          //add marker to twoHrWeatherMarkers variable
+          //param(variable,icon,inforwindow content)
+          scope.addMarker(
+          "Array",
+          scope.markers.fireMarkers,
+          {
+          icon: fireData.iconUrl,
+          markerDisplayId:element.id,
+          position:  {lat: element.lat, lng: element.lng}},
+          {infoWindowTitle:element.name,infoWindowBody:element.description}
+          ); 
+      });
+       
+       //this.addMarker("Array",this.markers.fireMarkers,)
+        //addMarker(markerVarType,markerVar,element,infowindow)
 
     },
     showGasLeakData(){
