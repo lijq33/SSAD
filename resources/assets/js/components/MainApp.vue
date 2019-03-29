@@ -4,7 +4,7 @@
             <Header />
         </div>
         <div class="tw-flex tw-justify-center tw-py-10">
-            <div class = "tw-container">
+            <div class = "container">
                 <router-view></router-view>
             </div>
         </div>

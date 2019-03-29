@@ -1,7 +1,7 @@
-<template>
-  <div>
+<template class="tw-w-full">
+  <div class="tw-w-full">
 
-    <b-container >
+    <div>
   <b-row>
     <b-col cols="8">
       <!--autosearch -->
@@ -44,7 +44,7 @@
   </b-row>
 
  
-</b-container>
+</div>
   
       <button id="delete-button" @click="deleteSelectedShape">Delete Selected Shape</button>
  
@@ -214,7 +214,7 @@ export default {
       isLoading: false,
       zoom_lvl: 12,
       sgcoord: { lat: 1.3521, lng: 103.8198 },
-      markers: {twoHrWeatherMarkers:[]},
+      markers: {twoHrWeatherMarkers:[],fireMarkers:[],gasLeakMarkers:[]},
       polygon:{dengueData:[]},
       enableDrawingToolsExtension:false,
       drawingTool:null,
@@ -222,7 +222,7 @@ export default {
       drawingManager:null,
       selectedShape:null,
       localDrawMarker:{position:null}
- 
+
     };
   },
   methods: {
@@ -266,9 +266,11 @@ export default {
         this.removePolygon(clearToggleData,this.polygon.dengueData);
         this.polygon.dengueData = [];
       }else if (clearToggleData === "hideFireData"){
-          scope.showFireData(element);
+          this.removeMarkers(this.markers.fireMarkers);
+           this.markers.fireMarkers=[];
       }else if (clearToggleData === "hideGasLeakData"){
-        scope.showGasLeakData(element);
+          this.removeMarkers(this.markers.gasLeakMarkers);
+           this.markers.gasLeakMarkers=[];
       }else if (clearToggleData === "hideHazeData"){
         scope.showHazeData(element);
       }else if(clearToggleData === "hideRainData"){
@@ -287,13 +289,13 @@ export default {
 
         this.showDengueData(toggleData);
       }else if (toggleData.displayId === "showFireData"){
-          scope.showFireData(element);
+          this.showFireData(toggleData);
       }else if (toggleData.displayId === "showGasLeakData"){
-        scope.showGasLeakData(element);
+        this.showGasLeakData(toggleData);
       }else if (toggleData.displayId === "showHazeData"){
-        scope.showHazeData(element);
+        //scope.showHazeData(element);
       }else if(toggleData.displayId === "showRainData"){
-          scope.showRainData(element);
+          //scope.showRainData(element);
       }else if(toggleData.displayId === "showTwoHrWeatherData"){
        
           this.showTwoHrWeatherData(toggleData);
@@ -635,6 +637,7 @@ export default {
       
     },
     removeMarkers(removeMarkersType){
+      console.log("remove ")
     
       for(var i=0; i<removeMarkersType.length; i++){  
           removeMarkersType[i].setMap(null);  
@@ -678,11 +681,53 @@ export default {
        
         
     },
-    showFireData(){
+    showFireData(fireData){
+
+      var scope = this;
+
+         fireData.crises.forEach((element,index) => {  
+ 
+           
+          //add marker to twoHrWeatherMarkers variable
+          //param(variable,icon,inforwindow content)
+
+
+          scope.addMarker(
+          "Array",
+          scope.markers.fireMarkers,
+          {
+          icon: fireData.iconUrl,
+          markerDisplayId:element.id,
+		  position:  {lat: element.lat, lng: element.lng}
+		  },
+		  {infoWindowTitle:element.name,
+		  infoWindowBody:element
+		  }
+          ); 
+      });
+       
+       //this.addMarker("Array",this.markers.fireMarkers,)
+        //addMarker(markerVarType,markerVar,element,infowindow)
 
     },
-    showGasLeakData(){
-
+    showGasLeakData(gasLeakData){
+      
+      var scope = this;
+  console.log(gasLeakData)
+         gasLeakData.crises.forEach((element,index) => {  
+ 
+          //add marker to twoHrWeatherMarkers variable
+          //param(variable,icon,inforwindow content)
+          scope.addMarker(
+          "Array",
+          scope.markers.gasLeakMarkers,
+          {
+          icon: gasLeakData.iconUrl,
+          markerDisplayId:element.id,
+          position:  {lat: element.lat, lng: element.lng}},
+          {infoWindowTitle:element.name,infoWindowBody:element.description}
+          ); 
+      });
     },
     showHazeData(){
 
@@ -710,14 +755,18 @@ export default {
 
 
         if(infowindow){
+          console.log(infowindow)
             //attach infowindow
           var contentString = '<div id="iw-container">' +
               '<div class="iw-title">'+infowindow.infoWindowTitle+'</div>' +
               '<div class="iw-content">' +
-                '<div class="iw-subTitle">'+infowindow.infoWindowBody+'</div>' +
-              '</div>' +
+				'<div class="iw-subTitle">'+infowindow.infoWindowBody.description+'</div>' +
+				'<img src = "/crisis/'+infowindow.infoWindowBody.image+ '" alt="fire image"/>'+
+              '</div>' 
               '<div class="iw-bottom-gradient"></div>' +
-            '</div>';
+		    '</div>';
+		
+		  
 
             google.maps.event.addListener(temp, 'mouseover', function() {
             scope.markerInfoWindow.setContent(contentString);
