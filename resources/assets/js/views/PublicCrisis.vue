@@ -140,7 +140,7 @@
              <div class="form-group row tw-my-6">
             <div class="col-md-6 offset-md-4">
                 <div v-if = "!isLoading">
-                    <button type="submit" class="btn btn-primary" @click = "submitCrisis">
+                    <button type="submit" class="btn btn-primary" @click = "submitPubCrisis">
                         Submit
                     </button>
 
@@ -209,11 +209,11 @@
 
         methods: {
 
-            submitCrisis() {
+            submitPubCrisis() {
                 this.isLoading = true;
                 const fd = new FormData();
                 
-                fd.append('image', this.selectedFile);
+                fd.append('image', this.form.selectedFile);
                 fd.append('name', this.form.name);
                 fd.append('telephoneNumber', this.form.telephoneNumber);
                 fd.append('date', this.form.date);
@@ -227,7 +227,7 @@
                 };
 
                 // need to change to new address for public 
-                axios.post('/api/crisis', fd, config)
+                axios.post('/api/pubcrisis', fd, config)
                 .then(response => {
                     $('html, body').animate({ scrollTop: 0 }, 'slow');
                     this.isLoading = false;

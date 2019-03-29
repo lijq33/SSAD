@@ -10,40 +10,7 @@ use Map;
 use Intervention\Image\Facades\Image;
 
 class ReportCrisis extends Model
-{
-    use SoftDeletes;
-
-    protected $appends = ['lat', 'lng'];
-
-    
-    public function getLatAttribute(){
-        $response = Map::findLocation($this->attributes['postal_code']);
-        return $response['lat'];
-    }
-
-    
-    public function getLngAttribute(){
-        $response = Map::findLocation($this->attributes['postal_code']);
-        return $response['lng'];
-    }
-
-    /**
-     * Get the user that submitted the crisis.
-     */
-    public function user()
-    {
-        return $this->belongsTo('App\User');
-    }
-
-    /**
-     * Get the agency which assistance will be required.
-     */
-    public function agency()
-    {
-        return $this->belongsToMany(Agency::class, 'crisis_agencies', 'crisis_id', 'agency_id');
-    }
-
-   
+{  
     // Add your validation rules here
     public static $rules = [
         'name' => 'bail|required',
@@ -51,7 +18,7 @@ class ReportCrisis extends Model
         'postalCode' => 'bail|required|integer|digits:6',
         'date' => 'bail|required|date_format:d/m/Y|before:tomorrow',
         'time' => 'required',
-        'address' => 'required',
+        'location' => 'required',
         'crisisType' => 'required|in:Fire Outbreak,Dengue,Gas Leak',
         'image' => 'mimes:jpeg,bmp,png'
     ];
@@ -61,10 +28,10 @@ class ReportCrisis extends Model
      *
      * @var array
     */
-    protected $fillable = ['user_id', 'name', 'telephone_number', 'postal_code', 'date', 'time', 'address',
-                            'crisis_type', 'status', 'description', 'image', 'facebook_post_id'];
+    protected $fillable = ['name', 'telephone_number', 'postal_code', 'date', 'time', 'address',
+                            'crisis_type', 'status', 'description', 'image'];
 
-    public static function newCrisis($data){
+    public static function newReportedCrisis($data){
 
         $data['date'] = (Carbon::parse($data['date'])->format('Y/m/d'));
         $data['time'] = (Carbon::parse($data['time'])->format('H:i:s'));
@@ -81,16 +48,15 @@ class ReportCrisis extends Model
 
         $reportCrisis = ReportCrisis::create([
             'name' => $data['name'],
-            'user_id' => $data['id'],
             'telephone_number' => $data['telephoneNumber'],
             'postal_code' => $data['postalCode'],
-            'address' => $data['address'],
+            'address' => $data['location'],
             
             'crisis_type' => $data['crisisType'],
             'date' => $data['date'],
             'time' => $data['time'],
             
-            'status' => 'registered',
+            'status' => 'pending',
             'description' => $data['description'],
             'image' => $imageName
         ]);

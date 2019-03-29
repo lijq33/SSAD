@@ -401,7 +401,7 @@
                     headers: { 'content-type': 'multipart/form-data' }
                 };
 
-                axios.post('/api/crisis', fd, config)
+                axios.post('/api/ccopercrisis', fd, config)
                 .then(response => {
                     this.message = response.data.message;
                     $('html, body').animate({ scrollTop: 0 }, 'slow');
