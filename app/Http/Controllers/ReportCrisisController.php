@@ -6,8 +6,6 @@ use App\ReportCrisis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\User;
-use App\Events\ReportCrisisCreated;
-use App\Events\ReportCrisisUpdated;
 
 class ReportCrisisController extends Controller
 {
@@ -19,20 +17,6 @@ class ReportCrisisController extends Controller
     public function index()
     {
         $reportCrisis = ReportCrisis::with('user:id,name')->get();
-
-        return response()->json([
-            'report_crises' => $reportCrisis,
-        ], 200);
-    }
-
-    /**
-     * Display a listing of the crisis which had been archived.
-     *
-     * @return \Illuminate\Http\Response
-    */
-    public function archive()
-    {
-        $reportCrisis = ReportCrisis::onlyTrashed()->with('user:id,name')->get();
 
         return response()->json([
             'report_crises' => $reportCrisis,
@@ -71,8 +55,6 @@ class ReportCrisisController extends Controller
             $reportCrisis->agency()->attach($assistance);
         }
 
-        event(new ReportCrisisCreated($reportCrisis));
-
         return response()->json([
             'message' => 'You have successfully registered a new crisis!',
         ], 200);
@@ -105,8 +87,6 @@ class ReportCrisisController extends Controller
             'description' => $data['description'],
             'status' => $data['status']
         ]);
-
-        event(new ReportCrisisUpdated($reportCrisis));
 
         return response()->json([
             'message' => 'You have successfully updated a crisis!',

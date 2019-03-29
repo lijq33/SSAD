@@ -31,9 +31,7 @@ class CreateReportCrisesTable extends Migration
             $table->string('crisis_type');
     
             $table->string('image')->nullable(); 
-            $table->string('facebook_post_id')->nullable();
     
-            $table->softDeletes();
             $table->timestamps();
         });
     }

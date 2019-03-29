@@ -24,7 +24,9 @@ Route::get('crisis/gasLeak', 'CrisisController@gasLeakCrisis');
 Route::get('crisis/fire', 'CrisisController@fireCrisis');
 Route::get('crisis/dengue', 'CrisisController@dengueCrisis');
 
-
+Route::get('crisis', 'ReportCrisisController@index');
+Route::post('crisis/{crisis}', 'ReportCrisisController@update');
+Route::delete('crisis/{crisis}', 'ReportCrisisController@destroy');
 
 Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('login', 'AuthController@login');
@@ -34,7 +36,6 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('subscriber', 'SubscriberController@store');
     Route::post('subscriber/delete', 'SubscriberController@destroy');
 });
-
 
 Route::group(['middleware' => 'auth.ccoperator'], function ($router) {
     Route::post('crisis', 'CrisisController@store');
