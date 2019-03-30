@@ -37,13 +37,6 @@ $factory->state(\App\User::class, 'CrisisManager', function ($faker) {
     ];
 });
 
-$factory->state(\App\User::class, 'CivilDefencesAdmin', function ($faker) {
-    return [
-        'roles' => 'CivilDefencesAdmin',
-        'nric' => 'S1234568Z', 
-    ];
-});
-
 $factory->state(\App\User::class, 'AccountManager', function ($faker) {
     return [
         'roles' => 'AccountManager',

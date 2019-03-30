@@ -23,6 +23,7 @@ Route::get('address/geocode/{query}.json', ['as' => 'json.geocode.address', 'use
 Route::get('crisis/gasLeak', 'CrisisController@gasLeakCrisis');
 Route::get('crisis/fire', 'CrisisController@fireCrisis');
 Route::get('crisis/dengue', 'CrisisController@dengueCrisis');
+Route::get('crisis', 'CrisisController@index');
 
 Route::post('report/crisis', 'ReportCrisisController@store');
 
@@ -58,6 +59,5 @@ Route::group(['middleware' => 'auth.accountmanager'], function ($router) {
 
 // 'auth.user'
 // 'auth.ccoperator'
-// 'auth.cdadmin'
 // 'auth.crisismanager'
 // 'auth.accountmanager'

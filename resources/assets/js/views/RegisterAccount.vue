@@ -217,7 +217,6 @@
                     { value: null, text: 'Please select an option' },
                     { value: 'CallCenterOperator', text: 'Call Center Operator' },
                     { value: 'CrisisManager', text: 'Crisis Manager' },
-                    { value: 'CivilDefencesAdmin', text: 'Civil Defences Admin' },
                     { value: 'AccountManager', text: 'Account Manager' }
                 ],
 

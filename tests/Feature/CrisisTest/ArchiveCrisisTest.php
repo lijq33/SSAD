@@ -78,7 +78,7 @@ class ArchiveCrisisTest extends TestCase
     /** @test */
     public function it_cannot_archive_crisis_as_other_roles()
     {
-        $roles = ['CallCenterOperator', 'AccountManager', 'CivilDefencesAdmin'];
+        $roles = ['CallCenterOperator', 'AccountManager'];
 
         foreach($roles as $role){
             $user = factory(User::class)

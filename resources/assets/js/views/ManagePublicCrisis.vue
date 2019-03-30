@@ -78,6 +78,7 @@
                 modalShow: false,
                 message:'',
                 error: '',
+                
                 approveCrisis: '',
                 crisisStatus: '',
                 crisisDesc: '',
