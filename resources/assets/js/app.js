@@ -27,6 +27,7 @@ Vue.use(VueGoogleMaps, {
   },
 });
 
+
 // Vue.component('GRecaptcha', require('./components/GRecaptcha'));
 Vue.component('flash', require('./components/flash'));
 
