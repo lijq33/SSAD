@@ -194,7 +194,7 @@
                     crisisType: null,
                     date: '',
                     time: '',
-
+                    postalCode:'',      
                     image: '',
                     selectedFile: null,
                     
@@ -218,6 +218,7 @@
                 fd.append('telephoneNumber', this.form.telephoneNumber);
                 fd.append('date', this.form.date);
                 fd.append('time', this.form.time);
+                fd.append('postalCode', this.form.postalCode);
                 fd.append('location', this.form.location);
                 fd.append('description', this.form.description);
                 fd.append('crisisType', this.form.crisisType);
@@ -280,14 +281,14 @@
                 this.createImage(this.form.selectedFile);
             },
 
-             bestAddressMatch(geocoder, pos, serviceFormatedAddress){ 
+             bestAddressMatch(geocoder, pos, serviceFormatedAddress, matchPostalCode){ 
                 var scope = this;
                 var foundBestMatch = false;
                 
                 geocoder.geocode({ location: pos }, function(results, status) {
                     if (status === "OK") {
                         results.forEach(element => {
-                            if(element.formatted_address.includes(serviceFormatedAddress)){
+                            if(element.formatted_address.includes(matchPostalCode)){
                                     foundBestMatch = true;
                                 if(element.formatted_address.length > serviceFormatedAddress.length){
                                     scope.form.location = element.formatted_address; 
@@ -309,6 +310,13 @@
                 var scope = this;
 
                 if (place.id) { 
+                      var matchPostalCode;
+                    place.address_components.forEach(address_component => {
+                        if(address_component.types[0] == 'postal_code'){
+                            matchPostalCode = address_component.long_name;
+                            scope.form.postalCode = address_component.short_name;
+                        }
+                    });
                     scope.form.lat = place.geometry.location.lat();
                     scope.form.lng = place.geometry.location.lng();
 
@@ -321,7 +329,7 @@
 
                     service.getDetails({ placeId: place.place_id }, function(place, status) {
                         if (status === google.maps.places.PlacesServiceStatus.OK) {
-                            scope.bestAddressMatch(new google.maps.Geocoder(), pos, place.formatted_address); 
+                            scope.bestAddressMatch(new google.maps.Geocoder(), pos, place.formatted_address, matchPostalCode); 
                         }
                     });
                 }
