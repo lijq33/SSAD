@@ -197,11 +197,6 @@
                     postalCode:'',      
                     image: '',
                     selectedFile: null,
-                    
-                    lat: '',
-                    lng: '',
-
-                    geocode:'',
                 }
                
             }
@@ -228,7 +223,7 @@
                 };
 
                 // need to change to new address for public 
-                axios.post('/api/pubcrisis', fd, config)
+                axios.post('/api/report/crisis', fd, config)
                 .then(response => {
                     $('html, body').animate({ scrollTop: 0 }, 'slow');
                     this.isLoading = false;
@@ -317,8 +312,6 @@
                             scope.form.postalCode = address_component.short_name;
                         }
                     });
-                    scope.form.lat = place.geometry.location.lat();
-                    scope.form.lng = place.geometry.location.lng();
 
                     var pos = {
                         lat: place.geometry.location.lat(),

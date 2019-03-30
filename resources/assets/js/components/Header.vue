@@ -19,16 +19,13 @@
                     <template v-if = "!currentUser">
                         <!-- For public to submit crisis themselves -->
                         <li>
-                            <router-link to="/pubcrisis" class="nav-link">Crisis Now!</router-link>
+                            <router-link to="/report/crisis" class="nav-link">Report Crisis</router-link>
                         </li>
                         <!-- Login to CCO, CM, AM etc -->
                          <li>
                             <router-link to="/login" class="nav-link">Login</router-link>
                         </li>
                         <!-- Subscribe to crisis alerts -->
-                        <li>
-                            <router-link to="/subscribe" class="nav-link">Subscribe</router-link>
-                        </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
                                 Subscription

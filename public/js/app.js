@@ -77306,12 +77306,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 time: '',
                 postalCode: '',
                 image: '',
-                selectedFile: null,
-
-                lat: '',
-                lng: '',
-
-                geocode: ''
+                selectedFile: null
             }
 
         };
@@ -77419,8 +77414,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         scope.form.postalCode = address_component.short_name;
                     }
                 });
-                scope.form.lat = place.geometry.location.lat();
-                scope.form.lng = place.geometry.location.lng();
 
                 var pos = {
                     lat: place.geometry.location.lat(),

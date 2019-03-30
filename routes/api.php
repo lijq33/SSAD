@@ -24,7 +24,7 @@ Route::get('crisis/gasLeak', 'CrisisController@gasLeakCrisis');
 Route::get('crisis/fire', 'CrisisController@fireCrisis');
 Route::get('crisis/dengue', 'CrisisController@dengueCrisis');
 
-Route::post('pubcrisis', 'ReportCrisisController@store');
+Route::post('report/crisis', 'ReportCrisisController@store');
 
 
 Route::group(['prefix' => 'auth'], function ($router) {
@@ -46,9 +46,10 @@ Route::group(['middleware' => 'auth.crisismanager'], function ($router) {
     Route::get('crisis/archive', 'CrisisController@archive');
     Route::post('crisis/{crisis}', 'CrisisController@update');
     Route::delete('crisis/{crisis}', 'CrisisController@destroy');
+
     Route::post('report/crisis/{crisis}', 'ReportCrisisController@update');
     Route::delete('report/crisis/{crisis}', 'ReportCrisisController@destroy');
-    Route::get('/crisis/managePublic', 'ReportCrisisController@index');
+    Route::get('crisis/manage/ReportedCrisis', 'ReportCrisisController@index');
 });
 
 Route::group(['middleware' => 'auth.accountmanager'], function ($router) {
