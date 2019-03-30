@@ -54,7 +54,7 @@
 <script>
     import 'vue-popperjs/dist/css/vue-popper.css';
     import Popper from 'vue-popperjs';
-     import ApproveCrisis from './ApproveCrisis';
+    import ApproveCrisis from './ApproveCrisis';
     
     export default {
             components: {
@@ -66,7 +66,7 @@
             this.getCrisis();
             
             setTimeout(function() { 
-                $("#crisis").DataTable(); 
+                $("#report_crises").DataTable(); 
             }, 2000);
         },
 
@@ -86,13 +86,13 @@
         methods: {
             approve(crisis)
             {
-                 this.$refs.approveModalRef.show()
+                this.$refs.approveModalRef.show()
                 this.approveCrisis = crisis;
             },
             getCrisis() {
-                axios.get('/api/crisis')
+                axios.get('/api/crisis/managePublic')
                 .then((res) => {
-                    this.crises = res.data.crises;
+                    this.crises = res.data.report_crises;
                 })
                 .catch((error) => {
                     this.error = error.response.data.errors;

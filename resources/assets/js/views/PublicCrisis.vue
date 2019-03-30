@@ -19,8 +19,13 @@
                                     id="name" 
                                     v-model = "form.name"
                                     class="tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey" 
+                                     :class = "{ 'tw-border-red-light' : error['name'] != undefined}"
                                     placeholder = "John Doe"
                                     required autofocus>
+                                    <div class = "tw-text-red" v-if = "error['name'] != undefined">
+                                                    <span> {{this.error['name'].toString()}} </span>   
+                                                </div>
+
                             </div>
                         </div>
 
@@ -34,9 +39,13 @@
                                 <input type = "text"
                                     id="telephone_number" 
                                     class="tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey" 
+                                    :class = "{ 'tw-border-red-light' : error['telephoneNumber'] != undefined}"
                                     v-model = "form.telephoneNumber"
                                     placeholder = "9512 2314"
                                     required autofocus>
+                                    <div class = "tw-text-red" v-if = "error['telephoneNumber'] != undefined">
+                                                    <span> {{this.error['telephoneNumber'].toString()}} </span>   
+                                                </div>
                             </div>
                         </div>
 
@@ -63,10 +72,13 @@
                         </label>
                         <div class = "col-md-6">
                             <date-picker v-model = "form.date" required = "required"
-                                                                            
+                                     :class = "{ 'tw-border-red-light' : error['date'] != undefined}"                                         
                                 :date = "date"
                             > 
                             </date-picker>
+                            <div class = "tw-text-red" v-if = "error['date'] != undefined">
+                                                    <span> {{this.error['date'].toString()}} </span>   
+                                                </div>
                             
                         </div>
                     </div>
@@ -78,10 +90,13 @@
                         </label>
                         <div class = "col-md-6">
                             <time-picker id = "time" v-model = "form.time" required = "required" 
-                              
+                               :class = "{ 'tw-border-red-light' : error['time'] != undefined}"
                                 :useContainer = "true"
                             > 
                             </time-picker>
+                             <div class = "tw-text-red" v-if = "error['time'] != undefined">
+                                                    <span> {{this.error['time'].toString()}} </span>   
+                                                </div>
                             
                         </div>
                     </div>
@@ -93,7 +108,10 @@
                                 Type of Crisis
                             </label>
                              <div class="col-md-6">
-                                  <b-form-select v-model = "form.crisisType" :options = "options"  />
+                                  <b-form-select v-model = "form.crisisType" :options = "options"  :class = "{ 'tw-border-red-light' : error['crisisType'] != undefined}"/>
+                                  <div class = "tw-text-red" v-if = "error['crisisType'] != undefined">
+                                            <span> {{this.error['crisisType'].toString()}} </span>   
+                                        </div> 
                                  </div>
                             </div>
 
@@ -106,7 +124,11 @@
                             <div class="col-md-6">
                                  <textarea v-model = "form.description"
                                             class = "form-control" rows = "3" style = "max-width:100%"
+                                             :class = "{ 'tw-border-red-light' : error['description'] != undefined}"
                                         />
+                                         <div class = "tw-text-red" v-if = "error['description'] != undefined">
+                                            <span> {{this.error['description'].toString()}} </span>   
+                                        </div>
 
                             </div>
 
@@ -140,7 +162,7 @@
              <div class="form-group row tw-my-6">
             <div class="col-md-6 offset-md-4">
                 <div v-if = "!isLoading">
-                    <button type="submit" class="btn btn-primary" @click = "submitCrisis">
+                    <button type="submit" class="btn btn-primary" @click = "submitPubCrisis">
                         Submit
                     </button>
 
@@ -176,6 +198,7 @@
         data() {
             return {
                 date: moment().format("DD/MM/YYYY"),
+                error:'',
 
                  isLoading: false,
 
@@ -194,7 +217,7 @@
                     crisisType: null,
                     date: '',
                     time: '',
-
+                    postalCode:'',      
                     image: '',
                     selectedFile: null,
                     
@@ -209,15 +232,17 @@
 
         methods: {
 
-            submitCrisis() {
+            submitPubCrisis() {
                 this.isLoading = true;
+                this.error = [];
                 const fd = new FormData();
                 
-                fd.append('image', this.selectedFile);
+                fd.append('image', this.form.selectedFile);
                 fd.append('name', this.form.name);
                 fd.append('telephoneNumber', this.form.telephoneNumber);
                 fd.append('date', this.form.date);
                 fd.append('time', this.form.time);
+                fd.append('postalCode', this.form.postalCode);
                 fd.append('location', this.form.location);
                 fd.append('description', this.form.description);
                 fd.append('crisisType', this.form.crisisType);
@@ -227,13 +252,14 @@
                 };
 
                 // need to change to new address for public 
-                axios.post('/api/crisis', fd, config)
+                axios.post('/api/pubcrisis', fd, config)
                 .then(response => {
                     $('html, body').animate({ scrollTop: 0 }, 'slow');
                     this.isLoading = false;
                     this.resetFields();
                 })
                 .catch((error) => {
+                     this.error = error.response.data.errors;
                     this.isLoading = false;
                 });
             },
@@ -280,14 +306,14 @@
                 this.createImage(this.form.selectedFile);
             },
 
-             bestAddressMatch(geocoder, pos, serviceFormatedAddress){ 
+             bestAddressMatch(geocoder, pos, serviceFormatedAddress, matchPostalCode){ 
                 var scope = this;
                 var foundBestMatch = false;
                 
                 geocoder.geocode({ location: pos }, function(results, status) {
                     if (status === "OK") {
                         results.forEach(element => {
-                            if(element.formatted_address.includes(serviceFormatedAddress)){
+                            if(element.formatted_address.includes(matchPostalCode)){
                                     foundBestMatch = true;
                                 if(element.formatted_address.length > serviceFormatedAddress.length){
                                     scope.form.location = element.formatted_address; 
@@ -309,6 +335,13 @@
                 var scope = this;
 
                 if (place.id) { 
+                      var matchPostalCode;
+                    place.address_components.forEach(address_component => {
+                        if(address_component.types[0] == 'postal_code'){
+                            matchPostalCode = address_component.long_name;
+                            scope.form.postalCode = address_component.short_name;
+                        }
+                    });
                     scope.form.lat = place.geometry.location.lat();
                     scope.form.lng = place.geometry.location.lng();
 
@@ -321,7 +354,7 @@
 
                     service.getDetails({ placeId: place.place_id }, function(place, status) {
                         if (status === google.maps.places.PlacesServiceStatus.OK) {
-                            scope.bestAddressMatch(new google.maps.Geocoder(), pos, place.formatted_address); 
+                            scope.bestAddressMatch(new google.maps.Geocoder(), pos, place.formatted_address, matchPostalCode); 
                         }
                     });
                 }

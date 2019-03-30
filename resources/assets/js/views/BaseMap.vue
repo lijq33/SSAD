@@ -1,7 +1,7 @@
-<template>
-  <div>
+<template class="tw-w-full">
+  <div class="tw-w-full">
 
-    <b-container >
+    <div>
   <b-row>
     <b-col cols="8">
       <!--autosearch -->
@@ -33,6 +33,7 @@
     :enable-drawing="enableDrawingToolsExtension" 
     :circle-drawing-center="localDrawCircle.center"
     :circle-drawing-radius="localDrawCircle.radius"
+    :marker-drawing="localDrawMarker.position"
     @get-updated-drawing="handleCircleData" 
     @get-backend-data="handleBackendData"
     >
@@ -43,7 +44,7 @@
   </b-row>
 
  
-</b-container>
+</div>
   
       <button id="delete-button" @click="deleteSelectedShape">Delete Selected Shape</button>
  
@@ -62,9 +63,16 @@ export default {
 
   mounted(){ 
     var scope = this;
-       this.$refs.mapRef.$mapPromise.then(map => {
+        //  this.$refs.mapRef.$mapPromise.then(map => {
+        //   map.data.setControls(['Point', 'LineString', 'Polygon']);
+        //   map.data.setStyle({
+        //     editable: true,
+        //     draggable: true
+        //   });
+
+        //   scope.bindDataLayerListeners(map.data);
+        //  });
           
-       }); 
 
 
         this.$refs.mapRef.$mapPromise.then(map => {
@@ -105,11 +113,12 @@ export default {
                     var newShape = e.overlay;
                     
                     newShape.type = e.type;
-                    
-                    if (e.type !== google.maps.drawing.OverlayType.MARKER) {
-                        // Switch back to non-drawing mode after drawing a shape.
-                        scope.drawingManager.setDrawingMode(null);
 
+                    // Switch back to non-drawing mode after drawing a shape, inclcude marker
+                        scope.drawingManager.setDrawingMode(null);
+                        
+                    if (e.type !== google.maps.drawing.OverlayType.MARKER) {
+                        
                         // Add an event listener that selects the newly-drawn shape when the user
                         // mouses down on it.
                         google.maps.event.addListener(newShape, 'click', function (e) {
@@ -148,9 +157,32 @@ export default {
                         scope.setSelection(newShape);
                     }
                     else {
-                        google.maps.event.addListener(newShape, 'click', function (e) {
+                      //marker selection99
+
+                      //attach infowindow
+
+                       var contentString = '<div id="iw-container">' +
+                          '<div class="iw-title">'+"sdfsdf"+'</div>' +
+                          '<div class="iw-content">' +
+                            '<div class="iw-subTitle">'+"8899"+'</div>' +
+                          '</div>' +
+                          '<div class="iw-bottom-gradient"></div>' +
+                        '</div>';
+
+                        google.maps.event.addListener(newShape, 'click', function() {
+                        scope.markerInfoWindow.setContent(contentString);
+                        scope.markerInfoWindow.open(map, this);
+                      });
+
+                        google.maps.event.addListener(newShape, 'click', function (e) { 
                             scope.setSelection(newShape);
                         });
+
+                         google.maps.event.addListener(newShape, "dragend", function(e) {
+
+                            scope.localDrawMarker.position=e.latLng;
+                         });
+
                         scope.setSelection(newShape);
                     }
 
@@ -175,23 +207,42 @@ export default {
 
   data() {
     return {
+      geoJson:[],
       markerInfoWindow:null,
       searchMarker:null,
       drawCircle:{marker:null,circle:null,draggableMarkerListener:null,clickMarkerListener:null,circleFullAddress:''},
       isLoading: false,
       zoom_lvl: 12,
       sgcoord: { lat: 1.3521, lng: 103.8198 },
-      markers: {twoHrWeatherMarkers:[]},
+      markers: {twoHrWeatherMarkers:[],fireMarkers:[],gasLeakMarkers:[]},
       polygon:{dengueData:[]},
       enableDrawingToolsExtension:false,
       drawingTool:null,
       localDrawCircle:{center:null,radius:null,localCircleRadiusListener:null,localCircleCenterListener:null},
       drawingManager:null,
-      selectedShape:null
- 
+      selectedShape:null,
+      localDrawMarker:{position:null}
+
     };
   },
   methods: {
+    bindDataLayerListeners(dataLayer) {
+        dataLayer.addListener('addfeature', this.refreshGeoJsonFromData);
+        //dataLayer.addListener('removefeature', this.refreshGeoJsonFromData);
+        dataLayer.addListener('setgeometry', this.refreshGeoJsonFromData);
+      } ,
+        refreshGeoJsonFromData() {
+          var scope = this;
+      this.$refs.mapRef.$mapPromise.then(map => {
+          map.data.toGeoJson(function(geoJson) {
+        scope.geoJson.value = JSON.stringify(scope.geoJson, null, 2);
+         console.log("2")
+        
+      });
+
+      })
+ 
+    },
     handleBackendData(backendData){ 
  
      
@@ -215,9 +266,11 @@ export default {
         this.removePolygon(clearToggleData,this.polygon.dengueData);
         this.polygon.dengueData = [];
       }else if (clearToggleData === "hideFireData"){
-          scope.showFireData(element);
+          this.removeMarkers(this.markers.fireMarkers);
+           this.markers.fireMarkers=[];
       }else if (clearToggleData === "hideGasLeakData"){
-        scope.showGasLeakData(element);
+          this.removeMarkers(this.markers.gasLeakMarkers);
+           this.markers.gasLeakMarkers=[];
       }else if (clearToggleData === "hideHazeData"){
         scope.showHazeData(element);
       }else if(clearToggleData === "hideRainData"){
@@ -236,13 +289,13 @@ export default {
 
         this.showDengueData(toggleData);
       }else if (toggleData.displayId === "showFireData"){
-          scope.showFireData(element);
+          this.showFireData(toggleData);
       }else if (toggleData.displayId === "showGasLeakData"){
-        scope.showGasLeakData(element);
+        this.showGasLeakData(toggleData);
       }else if (toggleData.displayId === "showHazeData"){
-        scope.showHazeData(element);
+        //scope.showHazeData(element);
       }else if(toggleData.displayId === "showRainData"){
-          scope.showRainData(element);
+          //scope.showRainData(element);
       }else if(toggleData.displayId === "showTwoHrWeatherData"){
        
           this.showTwoHrWeatherData(toggleData);
@@ -262,17 +315,19 @@ export default {
     clearSelection () {
         if (this.selectedShape) {
             if (this.selectedShape.type !== 'marker') {
+              console.log("not marker")
                 this.selectedShape.setEditable(false);
             }
-            console.log("set selected null")
+           
             this.selectedShape = null;
         }
     },
     setSelection (shape) {
                 if (shape.type !== 'marker') {
-                   console.log("base map selected")
+                   console.log("998")
                     this.clearSelection();
                     shape.setEditable(true);
+                    
                     //selectColor(shape.get('fillColor') || shape.get('strokeColor'));
                 }
                 
@@ -295,13 +350,24 @@ export default {
         //this.tabs.push(this.tabCounter++)
       },
       addDraggendListener(draggendVar){
+        var scope = this;
              //attach draggend listener
-             google.maps.event.addListener(draggendVar, "dragend", function(marker) {
+             google.maps.event.addListener(draggendVar, "dragend", function(e) {
             
-            var latLng = marker.latLng;
+            var latLng = e.latLng;
             var currentLatitude = latLng.lat();
             var currentLongitude = latLng.lng();
-        console.log(currentLatitude)
+        
+        
+
+         //var temp = draggendVar;
+
+        draggendVar.setPosition({lat:currentLatitude,lng:currentLongitude}); 
+         var temp = draggendVar;
+         // draggendVar = null;
+          //draggendVar.setMap(null);
+         scope.clearSelection();
+          scope.setSelection(temp);
             // scope.drawCircle.circle.setOptions({center:{lat:currentLatitude,lng:currentLongitude}});       
 
              //update full address
@@ -571,6 +637,7 @@ export default {
       
     },
     removeMarkers(removeMarkersType){
+      console.log("remove ")
     
       for(var i=0; i<removeMarkersType.length; i++){  
           removeMarkersType[i].setMap(null);  
@@ -614,11 +681,53 @@ export default {
        
         
     },
-    showFireData(){
+    showFireData(fireData){
+
+      var scope = this;
+
+         fireData.crises.forEach((element,index) => {  
+ 
+           
+          //add marker to twoHrWeatherMarkers variable
+          //param(variable,icon,inforwindow content)
+
+
+          scope.addMarker(
+          "Array",
+          scope.markers.fireMarkers,
+          {
+          icon: fireData.iconUrl,
+          markerDisplayId:element.id,
+		  position:  {lat: element.lat, lng: element.lng}
+		  },
+		  {infoWindowTitle:element.name,
+		  infoWindowBody:element
+		  }
+          ); 
+      });
+       
+       //this.addMarker("Array",this.markers.fireMarkers,)
+        //addMarker(markerVarType,markerVar,element,infowindow)
 
     },
-    showGasLeakData(){
-
+    showGasLeakData(gasLeakData){
+      
+      var scope = this;
+  console.log(gasLeakData)
+         gasLeakData.crises.forEach((element,index) => {  
+ 
+          //add marker to twoHrWeatherMarkers variable
+          //param(variable,icon,inforwindow content)
+          scope.addMarker(
+          "Array",
+          scope.markers.gasLeakMarkers,
+          {
+          icon: gasLeakData.iconUrl,
+          markerDisplayId:element.id,
+          position:  {lat: element.lat, lng: element.lng}},
+          {infoWindowTitle:element.name,infoWindowBody:element.description}
+          ); 
+      });
     },
     showHazeData(){
 
@@ -646,14 +755,18 @@ export default {
 
 
         if(infowindow){
+          console.log(infowindow)
             //attach infowindow
           var contentString = '<div id="iw-container">' +
               '<div class="iw-title">'+infowindow.infoWindowTitle+'</div>' +
               '<div class="iw-content">' +
-                '<div class="iw-subTitle">'+infowindow.infoWindowBody+'</div>' +
-              '</div>' +
+				'<div class="iw-subTitle">'+infowindow.infoWindowBody.description+'</div>' +
+				'<img src = "/crisis/'+infowindow.infoWindowBody.image+ '" alt="fire image"/>'+
+              '</div>' 
               '<div class="iw-bottom-gradient"></div>' +
-            '</div>';
+		    '</div>';
+		
+		  
 
             google.maps.event.addListener(temp, 'mouseover', function() {
             scope.markerInfoWindow.setContent(contentString);
@@ -702,7 +815,14 @@ export default {
   },
   watch: {
     
-  } 
+  },
+   computed: {
+     computedGeoJson:function () {
+      console.log("computed")
+      return this.geoJson
+    }
+
+   }
 };
 </script>
 

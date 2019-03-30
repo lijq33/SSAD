@@ -5,6 +5,7 @@
                 <b-tabs card>
                 <b-tab title="Crisis" active>
 
+                      <!--dengue-->
                    <b-form-group>
                       <b-form-checkbox
                       id="showDengueDataId"
@@ -14,6 +15,28 @@
                       unchecked-value="hideDengueData"
                        >
                       Dengue
+                    </b-form-checkbox>
+
+                    <!--Fire-->
+                    <b-form-checkbox
+                      id="showFireDataId"
+                      name="showFireDataId"
+                      v-model="selectFire"
+                      value="showFireData"
+                      unchecked-value="hideFireData"
+                       >
+                      Fire
+                    </b-form-checkbox>
+
+                    <!--gas leak control-->
+                    <b-form-checkbox
+                      id="showGasLeakDataId"
+                      name="showGasLeakDataId"
+                      v-model="selectGasLeak"
+                      value="showGasLeakData"
+                      unchecked-value="hideGasLeakData"
+                       >
+                      Gas Leakage
                     </b-form-checkbox>
  
                   </b-form-group>
@@ -104,7 +127,9 @@
     data() {
       return {
         selectTwoHrWeather:'',
-        selectDengue:''
+        selectDengue:'',
+        selectFire:'',
+        selectGasLeak:''
       }
     },
     methods:{
@@ -122,8 +147,9 @@
                 success: function (data, status, jqXHR) {
                   data["displayId"] = display_id; 
                   data["iconUrl"] = icon_url;
+                  console.log(data)
                   scope.$emit("get-toggle-data", data);
-                     
+                       
                 },
                 error: function (jqXHR, status, err) {
                     console.log(err);
@@ -135,8 +161,35 @@
       }
     },
     watch:{
+      selectGasLeak(){ 
+        var request = "/api/crisis/gasLeak";
+         var markerIconUrl = 'https://images.vexels.com/media/users/3/150012/isolated/preview/bf8475104937ca2ee44090829f4efa3a-small-gas-cylinder-icon-by-vexels.png';
+
+          if(this.selectGasLeak.includes("show")){
+           //request["displayId"] = this.selectDengue; 
+            
+           this.getCrisisDataFromBackEnd(request,this.selectGasLeak,markerIconUrl); 
+
+        }else{
+          this.removeCrisisDataFromFrontend(this.selectGasLeak);
+        }  
+      },
+      selectFire(){ 
+        var request = "/api/crisis/fire";
+         var markerIconUrl = 'https://cdn0.iconfinder.com/data/icons/fatcow/32/fire.png';
+
+          if(this.selectFire.includes("show")){
+           //request["displayId"] = this.selectDengue; 
+            
+           this.getCrisisDataFromBackEnd(request,this.selectFire,markerIconUrl); 
+
+        }else{
+          this.removeCrisisDataFromFrontend(this.selectFire);
+        }  
+      },
       selectDengue(){
         var request = sampleData;
+       
 
          if(this.selectDengue.includes("show")){
            request["displayId"] = this.selectDengue; 
