@@ -4,9 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-use App\Agency;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Map;
 use Intervention\Image\Facades\Image;
 
 class ReportCrisis extends Model
@@ -15,7 +12,7 @@ class ReportCrisis extends Model
     public static $rules = [
         'name' => 'bail|required',
         'telephoneNumber' => 'bail|required|integer|digits:8',
-        'postalCode' => 'bail|required|integer|digits:6',
+        // 'postalCode' => 'bail|required|integer|digits:6',
         'date' => 'bail|required|date_format:d/m/Y|before:tomorrow',
         'time' => 'required',
         'location' => 'required',
@@ -42,14 +39,15 @@ class ReportCrisis extends Model
             $imageName = str_random(40);
             $image = Image::make($data['image']->getRealPath());
             // $image->resize(320, 240);
-            $image->save(public_path('reportCrisis\\') .  $imageName . ".{$data['image']->getClientOriginalExtension()}"); // Original Image
+            $image->save(public_path('crisis\\') .  $imageName . ".{$data['image']->getClientOriginalExtension()}"); // Original Image
             $imageName = $imageName.".".$data['image']->getClientOriginalExtension();
         }
 
         $reportCrisis = ReportCrisis::create([
             'name' => $data['name'],
             'telephone_number' => $data['telephoneNumber'],
-            'postal_code' => $data['postalCode'],
+            // 'postal_code' => $data['postalCode'],
+            'postal_code' => '123123',
             'address' => $data['location'],
             
             'crisis_type' => $data['crisisType'],

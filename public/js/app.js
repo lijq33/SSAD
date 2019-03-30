@@ -77319,13 +77319,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     methods: {
-        submitCrisis: function submitCrisis() {
+        submitPubCrisis: function submitPubCrisis() {
             var _this = this;
 
             this.isLoading = true;
             var fd = new FormData();
 
-            fd.append('image', this.selectedFile);
+            fd.append('image', this.form.selectedFile);
             fd.append('name', this.form.name);
             fd.append('telephoneNumber', this.form.telephoneNumber);
             fd.append('date', this.form.date);
@@ -77339,7 +77339,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             };
 
             // need to change to new address for public 
-            axios.post('/api/crisis', fd, config).then(function (response) {
+            axios.post('/api/pubcrisis', fd, config).then(function (response) {
                 $('html, body').animate({ scrollTop: 0 }, 'slow');
                 _this.isLoading = false;
                 _this.resetFields();
@@ -78160,7 +78160,7 @@ var render = function() {
                         {
                           staticClass: "btn btn-primary",
                           attrs: { type: "submit" },
-                          on: { click: _vm.submitCrisis }
+                          on: { click: _vm.submitPubCrisis }
                         },
                         [
                           _vm._v(
@@ -81747,7 +81747,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 headers: { 'content-type': 'multipart/form-data' }
             };
 
-            axios.post('/api/crisis', fd, config).then(function (response) {
+            axios.post('/api/ccopercrisis', fd, config).then(function (response) {
                 _this.message = response.data.message;
                 $('html, body').animate({ scrollTop: 0 }, 'slow');
                 _this.isLoading = false;
@@ -93166,7 +93166,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.getCrisis();
 
         setTimeout(function () {
-            $("#crisis").DataTable();
+            $("#report_crises").DataTable();
         }, 2000);
     },
     data: function data() {
@@ -93191,8 +93191,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         getCrisis: function getCrisis() {
             var _this = this;
 
-            axios.get('/api/crisis').then(function (res) {
-                _this.crises = res.data.crises;
+            axios.get('/api/crisis/managePublic').then(function (res) {
+                _this.crises = res.data.report_crises;
             }).catch(function (error) {
                 _this.error = error.response.data.errors;
             });

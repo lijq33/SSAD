@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth.crisismanager'], function ($router) {
     Route::delete('crisis/{crisis}', 'CrisisController@destroy');
     Route::post('report/crisis/{crisis}', 'ReportCrisisController@update');
     Route::delete('report/crisis/{crisis}', 'ReportCrisisController@destroy');
+    Route::get('/crisis/managePublic', 'ReportCrisisController@index');
 });
 
 Route::group(['middleware' => 'auth.accountmanager'], function ($router) {
