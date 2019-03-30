@@ -218,6 +218,7 @@
                 fd.append('telephoneNumber', this.form.telephoneNumber);
                 fd.append('date', this.form.date);
                 fd.append('time', this.form.time);
+                fd.append('postalCode', this.form.postalCode);
                 fd.append('location', this.form.location);
                 fd.append('description', this.form.description);
                 fd.append('crisisType', this.form.crisisType);
