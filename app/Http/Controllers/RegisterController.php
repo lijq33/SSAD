@@ -77,7 +77,7 @@ class RegisterController extends Controller
             'email' => 'bail|required|string|email|max:255|unique:users',
             'name' => 'bail|required|string|max:255',
             'telephone_number' => 'bail|required|digits:8',
-            'roles' => 'bail|required|in:CallCenterOperator,CrisisManager,CivilDefencesAdmin,AccountManager'
+            'roles' => 'bail|required|in:CallCenterOperator,CrisisManager,AccountManager'
         ];
     
         $messages = [

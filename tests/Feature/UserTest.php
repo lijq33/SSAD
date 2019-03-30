@@ -107,7 +107,7 @@ class UserTest extends TestCase
     {
        $this->loginWithAccountManager();
 
-        $roles = ['CallCenterOperator', 'AccountManager', 'CivilDefencesAdmin', 'AccountManager'];
+        $roles = ['CallCenterOperator', 'AccountManager', 'AccountManager'];
 
         foreach($roles as $role){
             $nric = "S".random_int(9000000 ,9999999)."Z";
@@ -133,7 +133,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_cannot_register_user_if_roles_is_not_AccountManager()
     {
-        $roles = ['CallCenterOperator', 'CrisisManager', 'CivilDefencesAdmin'];
+        $roles = ['CallCenterOperator', 'CrisisManager'];
 
         foreach($roles as $role){
                 

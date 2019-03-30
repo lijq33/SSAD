@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\CrisisUpdated;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Twitter;
 
 class SendTwitterCrisisUpdatedNotification
 {
@@ -26,6 +27,8 @@ class SendTwitterCrisisUpdatedNotification
      */
     public function handle(CrisisUpdated $event)
     {
-        //
+        $crisis = $event->crisis;
+        $content = "There is currently a " . $crisis->crisis_type . " at " . $crisis->address;
+		Twitter::postTweet(array('status' => $content, 'format' => 'json'));
     }
 }

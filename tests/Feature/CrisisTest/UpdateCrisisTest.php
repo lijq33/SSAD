@@ -74,7 +74,7 @@ class UpdateCrisisTest extends TestCase
     {
         $crisis = factory(Crisis::class)
             ->create();
-        $roles = ['CallCenterOperator', 'AccountManager', 'CivilDefencesAdmin'];
+        $roles = ['CallCenterOperator', 'AccountManager'];
 
         foreach($roles as $role){
             $user = factory(User::class)

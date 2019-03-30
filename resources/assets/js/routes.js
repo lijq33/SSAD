@@ -6,7 +6,7 @@ export const routes = [
         component: require('./views/Home.vue')
     },
     {
-        path : '/pubcrisis',
+        path : '/report/crisis',
         component: require('./views/PublicCrisis.vue')
     },
     {

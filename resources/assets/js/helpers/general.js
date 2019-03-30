@@ -2,13 +2,12 @@ export function initialize(store, router) {
     router.beforeEach((to, from, next) => {
         // const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
         const requiresAuthCCOperator = to.matched.some(record => record.meta.requiresAuthCCOperator);
-        const requiresAuthCDAdmin = to.matched.some(record => record.meta.requiresAuthCDAdmin);
         const requiresAuthCrisisManager = to.matched.some(record => record.meta.requiresAuthCrisisManager);
         const requiresAuthAccManager = to.matched.some(record => record.meta.requiresAuthAccManager);
 
         const currentUser = store.state.currentUser;
     
-        const requiresAuth = requiresAuthCCOperator || requiresAuthCDAdmin || requiresAuthCrisisManager || requiresAuthAccManager;
+        const requiresAuth = requiresAuthCCOperator || requiresAuthCrisisManager || requiresAuthAccManager;
 
         
         if(requiresAuth && !currentUser) {
@@ -20,11 +19,7 @@ export function initialize(store, router) {
                 next('/');
             }
 
-            if(requiresAuthCDAdmin && currentUser.roles !== 'CrisisManager'){
-                next('/');
-            }
-
-            if(requiresAuthCrisisManager  && currentUser.roles !== 'CivilDefencesAdmin'){
+            if(requiresAuthCrisisManager  && currentUser.roles !== 'CrisisManager'){
                 next('/');
             }
 
@@ -34,12 +29,6 @@ export function initialize(store, router) {
 
             next();
         }
-
-
-      
-
-       
-
     });
     
     axios.interceptors.response.use(null, (error) => {

@@ -28,7 +28,7 @@ class SendTwitterCrisisCreatedNotification
     public function handle(CrisisCreated $event)
     {
 		$crisis = $event->crisis;
-        $content = "There is currently a " . $crisis->crisis_type . " at " . $crisis->address. ". For more information, visit us at www.CrisisLookOut.com";
+        $content = "There is currently a " . $crisis->crisis_type . " at " . $crisis->address;
 		Twitter::postTweet(array('status' => $content, 'format' => 'json'));
     }
 }

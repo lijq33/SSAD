@@ -115,46 +115,6 @@ class NewCrisisTest extends TestCase
     }
 
     /** @test */
-    public function it_cannot_submit_a_new_crisis_as_CivilDefencesAdmin()
-    {
-        $user = factory(User::class)
-            ->states('CivilDefencesAdmin')
-            ->create();
-
-        $login = $this->post('/api/auth/login',[
-            'nric' => $user->nric,
-            'password' => $this->password,
-        ]);
-
-        $login->assertStatus(200);
-
-        $token = $login->Json(['access_token']);
-
-        $response =$this->post('/api/crisis', [
-            'name' => 'Test',
-            'telephoneNumber' => '98765432',
-            'postalCode' => '123123',
-            'date' => '19/03/2019',
-            'time' => '1:30 PM',
-            'address' => '12312 S Michigan Ave, Chicago, IL 60628, USA',
-            'description' => '123',
-            'crisisType' => 'Fire Outbreak', 
-            'assistanceRequired' => ["1"],
-
-        ]/*, ['HTTP_Authorization' => 'Bearer' .$token]*/);
-
-        $response->assertStatus(401);
-
-        $this->assertDatabaseMissing('crises', [
-            'id' => '1',
-        ]);
-
-        $this->assertDatabaseMissing('crisis_agencies', [
-            'id' => '1',
-        ]);
-    }
-
-    /** @test */
     public function it_cannot_submit_a_new_crisis_as_AccountManager()
     {
         $user = factory(User::class)

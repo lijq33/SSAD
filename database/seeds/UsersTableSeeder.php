@@ -33,15 +33,6 @@ class UsersTableSeeder extends Seeder
 
         DB::table('users')->insert([
             'name' => Str::random(10),
-            'nric' => 'S1234568Z',
-            'email' => Str::random(10).'@gmail.com',
-            'password' => bcrypt('12345!qW'),
-            'telephone_number' => random_int(90000000 ,99999999),
-            'roles' => 'CivilDefencesAdmin'
-        ]);
-
-        DB::table('users')->insert([
-            'name' => Str::random(10),
             'nric' => 'S1234569Z',
             'email' => Str::random(10).'@gmail.com',
             'password' => bcrypt('12345!qW'),
