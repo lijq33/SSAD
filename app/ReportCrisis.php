@@ -46,8 +46,8 @@ class ReportCrisis extends Model
         $reportCrisis = ReportCrisis::create([
             'name' => $data['name'],
             'telephone_number' => $data['telephoneNumber'],
-            // 'postal_code' => $data['postalCode'],
-            'postal_code' => '123123',
+            'postal_code' => $data['postalCode'],
+            //'postal_code' => '123123',
             'address' => $data['location'],
             
             'crisis_type' => $data['crisisType'],

@@ -2,6 +2,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                 <flash :message = "message"></flash>
                 <div class="card tw-mb-6">
                     <!-- Image, Name, Phone, Type of Crisis, Location, Description-->
                     <div class="card-header tw-text-grey-darker">Submit a Crisis Now</div>
@@ -201,6 +202,7 @@
                 error:'',
 
                  isLoading: false,
+                  message: '',    
 
                 options: [
                     { value: null, text: 'Please select an option' },
@@ -234,6 +236,7 @@
 
             submitPubCrisis() {
                 this.isLoading = true;
+                 this.message = ""; 
                 this.error = [];
                 const fd = new FormData();
                 
@@ -254,6 +257,7 @@
                 // need to change to new address for public 
                 axios.post('/api/pubcrisis', fd, config)
                 .then(response => {
+                    this.message = response.data.message;
                     $('html, body').animate({ scrollTop: 0 }, 'slow');
                     this.isLoading = false;
                     this.resetFields();

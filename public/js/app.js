@@ -77277,6 +77277,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -77291,8 +77314,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             date: __WEBPACK_IMPORTED_MODULE_2_moment___default()().format("DD/MM/YYYY"),
+            error: '',
 
             isLoading: false,
+            message: '',
 
             options: [{ value: null, text: 'Please select an option' }, { value: 'Fire Outbreak', text: 'Fire Outbreak' }, { value: 'Dengue', text: 'Dengue' }, { value: 'Gas Leak', text: 'Gas Leak' }],
 
@@ -77323,6 +77348,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             this.isLoading = true;
+            this.message = "";
+            this.error = [];
             var fd = new FormData();
 
             fd.append('image', this.form.selectedFile);
@@ -77341,10 +77368,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             // need to change to new address for public 
             axios.post('/api/pubcrisis', fd, config).then(function (response) {
+                _this.message = response.data.message;
                 $('html, body').animate({ scrollTop: 0 }, 'slow');
                 _this.isLoading = false;
                 _this.resetFields();
             }).catch(function (error) {
+                _this.error = error.response.data.errors;
                 _this.isLoading = false;
             });
         },
@@ -77835,345 +77864,416 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8" }, [
-        _c("div", { staticClass: "card tw-mb-6" }, [
-          _c("div", { staticClass: "card-header tw-text-grey-darker" }, [
-            _vm._v("Submit a Crisis Now")
-          ]),
+      _c(
+        "div",
+        { staticClass: "col-md-8" },
+        [
+          _c("flash", { attrs: { message: _vm.message } }),
           _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "form-group row" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "col-md-4 col-form-label text-md-right",
-                  attrs: { for: "name" }
-                },
-                [
-                  _vm._v(
-                    "\n                            Full Name\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-6" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.form.name,
-                      expression: "form.name"
-                    }
-                  ],
-                  staticClass:
-                    "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
-                  attrs: {
-                    type: "text",
-                    id: "name",
-                    placeholder: "John Doe",
-                    required: "",
-                    autofocus: ""
-                  },
-                  domProps: { value: _vm.form.name },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.form, "name", $event.target.value)
-                    }
-                  }
-                })
-              ])
+          _c("div", { staticClass: "card tw-mb-6" }, [
+            _c("div", { staticClass: "card-header tw-text-grey-darker" }, [
+              _vm._v("Submit a Crisis Now")
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "form-group row" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "col-md-4 col-form-label text-md-right",
-                  attrs: { for: "telephone_number" }
-                },
-                [
-                  _vm._v(
-                    "\n                            Telephone Number\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-6" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.form.telephoneNumber,
-                      expression: "form.telephoneNumber"
-                    }
-                  ],
-                  staticClass:
-                    "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
-                  attrs: {
-                    type: "text",
-                    id: "telephone_number",
-                    placeholder: "9512 2314",
-                    required: "",
-                    autofocus: ""
+            _c("div", { staticClass: "card-body" }, [
+              _c("div", { staticClass: "form-group row" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-md-4 col-form-label text-md-right",
+                    attrs: { for: "name" }
                   },
-                  domProps: { value: _vm.form.telephoneNumber },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+                  [
+                    _vm._v(
+                      "\n                            Full Name\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-6" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.name,
+                        expression: "form.name"
                       }
-                      _vm.$set(_vm.form, "telephoneNumber", $event.target.value)
-                    }
-                  }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group row" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "col-md-4 col-form-label text-md-right",
-                  attrs: { for: "location" }
-                },
-                [_vm._v("Location")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "col-md-6" },
-                [
-                  _c("GmapAutocomplete", {
-                    ref: "autocomplete",
+                    ],
                     staticClass:
                       "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
-                    on: { place_changed: _vm.setPlace }
-                  })
-                ],
-                1
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { attrs: { id: "service-helper" } }),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group row" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "col-md-4 col-form-label text-md-right",
-                  attrs: { for: "date" }
-                },
-                [_vm._v("\n                        Date\n                    ")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "col-md-6" },
-                [
-                  _c("date-picker", {
-                    attrs: { required: "required", date: _vm.date },
-                    model: {
-                      value: _vm.form.date,
-                      callback: function($$v) {
-                        _vm.$set(_vm.form, "date", $$v)
-                      },
-                      expression: "form.date"
-                    }
-                  })
-                ],
-                1
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group row" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "col-md-4 col-form-label text-md-right",
-                  attrs: { for: "time" }
-                },
-                [_vm._v("\n                        Time\n                    ")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "col-md-6" },
-                [
-                  _c("time-picker", {
-                    attrs: {
-                      id: "time",
-                      required: "required",
-                      useContainer: true
+                    class: {
+                      "tw-border-red-light": _vm.error["name"] != undefined
                     },
-                    model: {
-                      value: _vm.form.time,
-                      callback: function($$v) {
-                        _vm.$set(_vm.form, "time", $$v)
-                      },
-                      expression: "form.time"
-                    }
-                  })
-                ],
-                1
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group row" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "col-md-4 col-form-label text-md-right",
-                  attrs: { for: "crisis_type" }
-                },
-                [
-                  _vm._v(
-                    "\n                            Type of Crisis\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "col-md-6" },
-                [
-                  _c("b-form-select", {
-                    attrs: { options: _vm.options },
-                    model: {
-                      value: _vm.form.crisisType,
-                      callback: function($$v) {
-                        _vm.$set(_vm.form, "crisisType", $$v)
-                      },
-                      expression: "form.crisisType"
-                    }
-                  })
-                ],
-                1
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group row" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "col-md-4 col-form-label text-md-right",
-                  attrs: { for: "description" }
-                },
-                [
-                  _vm._v(
-                    "\n                           Description of The Event\n                        "
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-6" }, [
-                _c("textarea", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.form.description,
-                      expression: "form.description"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  staticStyle: { "max-width": "100%" },
-                  attrs: { rows: "3" },
-                  domProps: { value: _vm.form.description },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+                    attrs: {
+                      type: "text",
+                      id: "name",
+                      placeholder: "John Doe",
+                      required: "",
+                      autofocus: ""
+                    },
+                    domProps: { value: _vm.form.name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form, "name", $event.target.value)
                       }
-                      _vm.$set(_vm.form, "description", $event.target.value)
                     }
-                  }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group row" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "col-md-4 col-form-label text-md-right",
-                  attrs: { for: "crisis image" }
-                },
-                [_vm._v("\n                Upload an Image \n            ")]
-              ),
+                  }),
+                  _vm._v(" "),
+                  _vm.error["name"] != undefined
+                    ? _c("div", { staticClass: "tw-text-red" }, [
+                        _c("span", [
+                          _vm._v(
+                            " " + _vm._s(this.error["name"].toString()) + " "
+                          )
+                        ])
+                      ])
+                    : _vm._e()
+                ])
+              ]),
               _vm._v(" "),
-              _vm.form.image === ""
-                ? _c("div", { staticClass: "col-md-6" }, [
-                    _c("input", {
-                      staticClass: "upload-image-input tw-hidden",
-                      attrs: { accept: "image/*", type: "file" },
-                      on: { change: _vm.onFileSelected }
+              _c("div", { staticClass: "form-group row" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-md-4 col-form-label text-md-right",
+                    attrs: { for: "telephone_number" }
+                  },
+                  [
+                    _vm._v(
+                      "\n                            Telephone Number\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-6" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.telephoneNumber,
+                        expression: "form.telephoneNumber"
+                      }
+                    ],
+                    staticClass:
+                      "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+                    class: {
+                      "tw-border-red-light":
+                        _vm.error["telephoneNumber"] != undefined
+                    },
+                    attrs: {
+                      type: "text",
+                      id: "telephone_number",
+                      placeholder: "9512 2314",
+                      required: "",
+                      autofocus: ""
+                    },
+                    domProps: { value: _vm.form.telephoneNumber },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.form,
+                          "telephoneNumber",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm.error["telephoneNumber"] != undefined
+                    ? _c("div", { staticClass: "tw-text-red" }, [
+                        _c("span", [
+                          _vm._v(
+                            " " +
+                              _vm._s(this.error["telephoneNumber"].toString()) +
+                              " "
+                          )
+                        ])
+                      ])
+                    : _vm._e()
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group row" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-md-4 col-form-label text-md-right",
+                    attrs: { for: "location" }
+                  },
+                  [_vm._v("Location")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-md-6" },
+                  [
+                    _c("GmapAutocomplete", {
+                      ref: "autocomplete",
+                      staticClass:
+                        "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey",
+                      on: { place_changed: _vm.setPlace }
+                    })
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { attrs: { id: "service-helper" } }),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group row" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-md-4 col-form-label text-md-right",
+                    attrs: { for: "date" }
+                  },
+                  [
+                    _vm._v(
+                      "\n                        Date\n                    "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-md-6" },
+                  [
+                    _c("date-picker", {
+                      class: {
+                        "tw-border-red-light": _vm.error["date"] != undefined
+                      },
+                      attrs: { required: "required", date: _vm.date },
+                      model: {
+                        value: _vm.form.date,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "date", $$v)
+                        },
+                        expression: "form.date"
+                      }
                     }),
                     _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        on: { click: _vm.uploadImage }
-                      },
-                      [
-                        _vm._v(
-                          "\n                    Select An Image\n                "
-                        )
-                      ]
+                    _vm.error["date"] != undefined
+                      ? _c("div", { staticClass: "tw-text-red" }, [
+                          _c("span", [
+                            _vm._v(
+                              " " + _vm._s(this.error["date"].toString()) + " "
+                            )
+                          ])
+                        ])
+                      : _vm._e()
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group row" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-md-4 col-form-label text-md-right",
+                    attrs: { for: "time" }
+                  },
+                  [
+                    _vm._v(
+                      "\n                        Time\n                    "
                     )
-                  ])
-                : _c("div", { staticClass: "col-md-6" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden",
-                        staticStyle: { width: "400px", height: "200px" }
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-md-6" },
+                  [
+                    _c("time-picker", {
+                      class: {
+                        "tw-border-red-light": _vm.error["time"] != undefined
                       },
-                      [
-                        _c("img", {
-                          staticClass:
-                            "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center",
-                          attrs: { src: _vm.form.image }
-                        })
-                      ]
-                    ),
+                      attrs: {
+                        id: "time",
+                        required: "required",
+                        useContainer: true
+                      },
+                      model: {
+                        value: _vm.form.time,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "time", $$v)
+                        },
+                        expression: "form.time"
+                      }
+                    }),
                     _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        on: { click: _vm.removeImage }
-                      },
-                      [
-                        _vm._v(
-                          "\n                    Upload Another Image Instead\n                "
-                        )
-                      ]
+                    _vm.error["time"] != undefined
+                      ? _c("div", { staticClass: "tw-text-red" }, [
+                          _c("span", [
+                            _vm._v(
+                              " " + _vm._s(this.error["time"].toString()) + " "
+                            )
+                          ])
+                        ])
+                      : _vm._e()
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group row" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-md-4 col-form-label text-md-right",
+                    attrs: { for: "crisis_type" }
+                  },
+                  [
+                    _vm._v(
+                      "\n                            Type of Crisis\n                        "
                     )
-                  ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group row tw-my-6" }, [
-              _c("div", { staticClass: "col-md-6 offset-md-4" }, [
-                !_vm.isLoading
-                  ? _c("div", [
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-md-6" },
+                  [
+                    _c("b-form-select", {
+                      class: {
+                        "tw-border-red-light":
+                          _vm.error["crisisType"] != undefined
+                      },
+                      attrs: { options: _vm.options },
+                      model: {
+                        value: _vm.form.crisisType,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "crisisType", $$v)
+                        },
+                        expression: "form.crisisType"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.error["crisisType"] != undefined
+                      ? _c("div", { staticClass: "tw-text-red" }, [
+                          _c("span", [
+                            _vm._v(
+                              " " +
+                                _vm._s(this.error["crisisType"].toString()) +
+                                " "
+                            )
+                          ])
+                        ])
+                      : _vm._e()
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group row" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-md-4 col-form-label text-md-right",
+                    attrs: { for: "description" }
+                  },
+                  [
+                    _vm._v(
+                      "\n                           Description of The Event\n                        "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-6" }, [
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.description,
+                        expression: "form.description"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    class: {
+                      "tw-border-red-light":
+                        _vm.error["description"] != undefined
+                    },
+                    staticStyle: { "max-width": "100%" },
+                    attrs: { rows: "3" },
+                    domProps: { value: _vm.form.description },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form, "description", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm.error["description"] != undefined
+                    ? _c("div", { staticClass: "tw-text-red" }, [
+                        _c("span", [
+                          _vm._v(
+                            " " +
+                              _vm._s(this.error["description"].toString()) +
+                              " "
+                          )
+                        ])
+                      ])
+                    : _vm._e()
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group row" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "col-md-4 col-form-label text-md-right",
+                    attrs: { for: "crisis image" }
+                  },
+                  [_vm._v("\n                Upload an Image \n            ")]
+                ),
+                _vm._v(" "),
+                _vm.form.image === ""
+                  ? _c("div", { staticClass: "col-md-6" }, [
+                      _c("input", {
+                        staticClass: "upload-image-input tw-hidden",
+                        attrs: { accept: "image/*", type: "file" },
+                        on: { change: _vm.onFileSelected }
+                      }),
+                      _vm._v(" "),
                       _c(
                         "button",
                         {
                           staticClass: "btn btn-primary",
-                          attrs: { type: "submit" },
-                          on: { click: _vm.submitPubCrisis }
+                          on: { click: _vm.uploadImage }
                         },
                         [
                           _vm._v(
-                            "\n                    Submit\n                "
+                            "\n                    Select An Image\n                "
                           )
+                        ]
+                      )
+                    ])
+                  : _c("div", { staticClass: "col-md-6" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden",
+                          staticStyle: { width: "400px", height: "200px" }
+                        },
+                        [
+                          _c("img", {
+                            staticClass:
+                              "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center",
+                            attrs: { src: _vm.form.image }
+                          })
                         ]
                       ),
                       _vm._v(" "),
@@ -78181,33 +78281,68 @@ var render = function() {
                         "button",
                         {
                           staticClass: "btn btn-primary",
-                          attrs: { type: "submit" },
-                          on: {
-                            click: function($event) {
-                              return _vm.resetFields()
-                            }
-                          }
+                          on: { click: _vm.removeImage }
                         },
                         [
                           _vm._v(
-                            "\n                    Reset\n                "
+                            "\n                    Upload Another Image Instead\n                "
                           )
                         ]
                       )
                     ])
-                  : _c("div", [
-                      _c("img", {
-                        attrs: {
-                          src: "/assets/img/loader.gif",
-                          alt: "Loading..."
-                        }
-                      })
-                    ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group row tw-my-6" }, [
+                _c("div", { staticClass: "col-md-6 offset-md-4" }, [
+                  !_vm.isLoading
+                    ? _c("div", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "submit" },
+                            on: { click: _vm.submitPubCrisis }
+                          },
+                          [
+                            _vm._v(
+                              "\n                    Submit\n                "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "submit" },
+                            on: {
+                              click: function($event) {
+                                return _vm.resetFields()
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                    Reset\n                "
+                            )
+                          ]
+                        )
+                      ])
+                    : _c("div", [
+                        _c("img", {
+                          attrs: {
+                            src: "/assets/img/loader.gif",
+                            alt: "Loading..."
+                          }
+                        })
+                      ])
+                ])
               ])
             ])
           ])
-        ])
-      ])
+        ],
+        1
+      )
     ])
   ])
 }
