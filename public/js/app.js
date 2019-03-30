@@ -77304,7 +77304,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 crisisType: null,
                 date: '',
                 time: '',
-
+                postalCode: '',
                 image: '',
                 selectedFile: null,
 
@@ -77384,14 +77384,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.createImage(this.form.selectedFile);
         },
-        bestAddressMatch: function bestAddressMatch(geocoder, pos, serviceFormatedAddress) {
+        bestAddressMatch: function bestAddressMatch(geocoder, pos, serviceFormatedAddress, matchPostalCode) {
             var scope = this;
             var foundBestMatch = false;
 
             geocoder.geocode({ location: pos }, function (results, status) {
                 if (status === "OK") {
                     results.forEach(function (element) {
-                        if (element.formatted_address.includes(serviceFormatedAddress)) {
+                        if (element.formatted_address.includes(matchPostalCode)) {
                             foundBestMatch = true;
                             if (element.formatted_address.length > serviceFormatedAddress.length) {
                                 scope.form.location = element.formatted_address;
@@ -77411,6 +77411,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var scope = this;
 
             if (place.id) {
+                var matchPostalCode;
+                place.address_components.forEach(function (address_component) {
+                    if (address_component.types[0] == 'postal_code') {
+                        matchPostalCode = address_component.long_name;
+                        scope.form.postalCode = address_component.short_name;
+                    }
+                });
                 scope.form.lat = place.geometry.location.lat();
                 scope.form.lng = place.geometry.location.lng();
 
@@ -77423,7 +77430,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 service.getDetails({ placeId: place.place_id }, function (place, status) {
                     if (status === google.maps.places.PlacesServiceStatus.OK) {
-                        scope.bestAddressMatch(new google.maps.Geocoder(), pos, place.formatted_address);
+                        scope.bestAddressMatch(new google.maps.Geocoder(), pos, place.formatted_address, matchPostalCode);
                     }
                 });
             }
