@@ -19,7 +19,7 @@
         "laravel/tinker": "^1.0",
         "nexmo/client": "^1.6",
         "nexmo/laravel": "^1.1",
-        "thujohn/twitter": "dev-master",
+        "thujohn/twitter": "~2.0",
         "tymon/jwt-auth": "^1.0.0"
     },
     "require-dev": {

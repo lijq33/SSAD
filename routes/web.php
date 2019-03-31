@@ -18,6 +18,7 @@ Route::get('{any}', function () {
     return view('index');
 })->where('any', '.*');
 
+
 Route::get('/login/facebook', 'Auth\LoginController@redirectToFacebookProvider');
 
 Route::get('login/facebook/callback', 'Auth\LoginController@handleProviderFacebookCallback');
@@ -35,4 +36,5 @@ Route::group(['middleware' => [
  
     Route::post('/page', 'GraphController@publishToPage');
     Route::post('/page', 'GraphController@updatePost');
+    Route::post('/tweet', 'TwitterController@tweet');
 });
