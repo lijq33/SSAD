@@ -2,13 +2,17 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+
+                <flash :message = "message"></flash>
+
                 <div class="card tw-mb-6">
                     <!-- Image, Name, Phone, Type of Crisis, Location, Description-->
-                    <div class="card-header tw-text-grey-darker">Submit a Crisis Now</div>
+                    <div class="card-header tw-text-grey-darker">
+                        Submit a Crisis Now
+                    </div>
 
+                    <!-- NAME -->
                     <div class="card-body">
-
-                        <!-- NAME -->
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">
                                 Full Name
@@ -19,13 +23,14 @@
                                     id="name" 
                                     v-model = "form.name"
                                     class="tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey" 
-                                     :class = "{ 'tw-border-red-light' : error['name'] != undefined}"
+                                    :class = "{ 'tw-border-red-light' : error['name'] != undefined}"
                                     placeholder = "John Doe"
-                                    required autofocus>
-                                    <div class = "tw-text-red" v-if = "error['name'] != undefined">
-                                                    <span> {{this.error['name'].toString()}} </span>   
-                                                </div>
+                                    required autofocus
+                                >
 
+                                <div class = "tw-text-red" v-if = "error['name'] != undefined">
+                                    <span> {{this.error['name'].toString()}} </span>   
+                                </div>
                             </div>
                         </div>
 
@@ -42,10 +47,12 @@
                                     :class = "{ 'tw-border-red-light' : error['telephoneNumber'] != undefined}"
                                     v-model = "form.telephoneNumber"
                                     placeholder = "9512 2314"
-                                    required autofocus>
-                                    <div class = "tw-text-red" v-if = "error['telephoneNumber'] != undefined">
-                                                    <span> {{this.error['telephoneNumber'].toString()}} </span>   
-                                                </div>
+                                    required autofocus
+                                >
+
+                                <div class = "tw-text-red" v-if = "error['telephoneNumber'] != undefined">
+                                    <span> {{this.error['telephoneNumber'].toString()}} </span>   
+                                </div>
                             </div>
                         </div>
 
@@ -66,119 +73,123 @@
                         <div id="service-helper"></div>
 
                         <!-- Date -->
-                    <div class = "form-group row">
-                        <label for = "date" class = "col-md-4 col-form-label text-md-right">
-                            Date
-                        </label>
-                        <div class = "col-md-6">
-                            <date-picker v-model = "form.date" required = "required"
-                                     :class = "{ 'tw-border-red-light' : error['date'] != undefined}"                                         
-                                :date = "date"
-                            > 
-                            </date-picker>
-                            <div class = "tw-text-red" v-if = "error['date'] != undefined">
-                                                    <span> {{this.error['date'].toString()}} </span>   
-                                                </div>
-                            
-                        </div>
-                    </div>
+                        <div class = "form-group row">
+                            <label for = "date" class = "col-md-4 col-form-label text-md-right">
+                                Date
+                            </label>
+                            <div class = "col-md-6">
+                                <date-picker v-model = "form.date" required = "required"
+                                        :class = "{ 'tw-border-red-light' : error['date'] != undefined}"                                         
+                                    :date = "date"
+                                > 
+                                </date-picker>
 
-                    <!-- Time -->
-                    <div class = "form-group row">
-                        <label for = "time" class = "col-md-4 col-form-label text-md-right">
-                            Time
-                        </label>
-                        <div class = "col-md-6">
-                            <time-picker id = "time" v-model = "form.time" required = "required" 
-                               :class = "{ 'tw-border-red-light' : error['time'] != undefined}"
-                                :useContainer = "true"
-                            > 
-                            </time-picker>
-                             <div class = "tw-text-red" v-if = "error['time'] != undefined">
-                                                    <span> {{this.error['time'].toString()}} </span>   
-                                                </div>
-                            
+                                <div class = "tw-text-red" v-if = "error['date'] != undefined">
+                                    <span> {{this.error['date'].toString()}} </span>   
+                                </div>
+                                
+                            </div>
                         </div>
-                    </div>
 
-                        <!-- beginning of crisis type column -->
-                            <div class = "form-group row">
-                                <!-- Crisis Type dropdown -->
-                                 <label for="crisis_type" class="col-md-4 col-form-label text-md-right">
+                        <!-- Time -->
+                        <div class = "form-group row">
+                            <label for = "time" class = "col-md-4 col-form-label text-md-right">
+                                Time
+                            </label>
+                            <div class = "col-md-6">
+                                <time-picker id = "time" v-model = "form.time" required = "required" 
+                                :class = "{ 'tw-border-red-light' : error['time'] != undefined}"
+                                    :useContainer = "true"
+                                > 
+                                </time-picker>
+
+                                <div class = "tw-text-red" v-if = "error['time'] != undefined">
+                                    <span> {{this.error['time'].toString()}} </span>   
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Crisis Type -->
+                        <div class = "form-group row">
+                            <label for="crisis_type" class="col-md-4 col-form-label text-md-right">
                                 Type of Crisis
                             </label>
-                             <div class="col-md-6">
-                                  <b-form-select v-model = "form.crisisType" :options = "options"  :class = "{ 'tw-border-red-light' : error['crisisType'] != undefined}"/>
-                                  <div class = "tw-text-red" v-if = "error['crisisType'] != undefined">
-                                            <span> {{this.error['crisisType'].toString()}} </span>   
-                                        </div> 
-                                 </div>
+
+                            <div class="col-md-6">
+                                <b-form-select v-model = "form.crisisType" :options = "options"  
+                                    :class = "{ 'tw-border-red-light' : error['crisisType'] != undefined}"
+                                />
+
+                                <div class = "tw-text-red" v-if = "error['crisisType'] != undefined">
+                                    <span> {{this.error['crisisType'].toString()}} </span>   
+                                </div> 
                             </div>
+                        </div>
 
                         <!-- Description -->
-                            <div class = "form-group row">
-                                <!-- Crisis Type dropdown -->
-                                 <label for="description" class="col-md-4 col-form-label text-md-right">
-                               Description of The Event
+                        <div class = "form-group row">
+                            <label for="description" class="col-md-4 col-form-label text-md-right">
+                                Description of The Event
                             </label>
+                            
                             <div class="col-md-6">
-                                 <textarea v-model = "form.description"
-                                            class = "form-control" rows = "3" style = "max-width:100%"
-                                             :class = "{ 'tw-border-red-light' : error['description'] != undefined}"
-                                        />
-                                         <div class = "tw-text-red" v-if = "error['description'] != undefined">
-                                            <span> {{this.error['description'].toString()}} </span>   
-                                        </div>
+                                <textarea v-model = "form.description"
+                                    class = "form-control" rows = "3" style = "max-width:100%"
+                                    :class = "{ 'tw-border-red-light' : error['description'] != undefined}"
+                                />
 
+                                <div class = "tw-text-red" v-if = "error['description'] != undefined">
+                                    <span> {{this.error['description'].toString()}} </span>   
+                                </div>
                             </div>
+                        </div>
 
+                        <!-- Image upload -->
+                        <div class="form-group row">
+                            <label for="crisis image" class="col-md-4 col-form-label text-md-right">
+                                Upload an Image 
+                            </label>
+                    
+                            <div v-if = "form.image === ''" class = "col-md-6">
+                                <input accept = "image/*" type = "file" class = "upload-image-input tw-hidden" @change = "onFileSelected">
+                                
+                                <button class = "btn btn-primary" 
+                                        @click = "uploadImage">
+                                    Select An Image
+                                </button>
                             </div>
-                <!-- Image upload -->
-                <div class="form-group row">
-                <label for="crisis image" class="col-md-4 col-form-label text-md-right">
-                    Upload an Image 
-                </label>
-            
-                <div v-if = "form.image === ''" class = "col-md-6">
-                    <input accept = "image/*" type = "file" class = "upload-image-input tw-hidden" @change = "onFileSelected">
-                    <button class = "btn btn-primary" 
-                         @click = "uploadImage">
-                        Select An Image
-                    </button>
+                        
+                            <div v-else class = "col-md-6">
+                                <div class = "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden" style="width:400px; height:200px">
+                                    <img :src = "form.image" class = "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center" />
+                                </div>
+                                
+                                <button class = "btn btn-primary" @click = "removeImage">
+                                    Upload Another Image Instead
+                                </button>
+                            </div>
+                        </div>  
 
-                </div>
-                
-                <div v-else class = "col-md-6">
-                    <div class = "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden" style="width:400px; height:200px">
-                        <img :src = "form.image" class = "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center" />
-                    </div>
-                    <button class = "btn btn-primary" @click = "removeImage">
-                        Upload Another Image Instead
-                    </button>
-                </div>
+                        <div class="form-group row tw-my-6">
+                            <div class="col-md-6 offset-md-4">
+                                <div v-if = "!isLoading">
+                                    <button type="submit" class="btn btn-primary" @click = "submitPubCrisis">
+                                        Submit
+                                    </button>
 
-            </div>  
+                                    <button type="submit" class="btn btn-primary" @click = "resetFields()">
+                                        Reset
+                                    </button>
+                                </div>
 
-             <div class="form-group row tw-my-6">
-            <div class="col-md-6 offset-md-4">
-                <div v-if = "!isLoading">
-                    <button type="submit" class="btn btn-primary" @click = "submitPubCrisis">
-                        Submit
-                    </button>
-
-                    <button type="submit" class="btn btn-primary" @click = "resetFields()">
-                        Reset
-                    </button>
-                </div>
-                <div v-else>
-                    <img src = "/assets/img/loader.gif" alt = "Loading...">
-                </div>
-            </div>
-        </div>
+                                <div v-else>
+                                    <img src = "/assets/img/loader.gif" alt = "Loading...">
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
-               
             </div>
         </div>
     </div>
@@ -201,6 +212,7 @@
                 error:'',
 
                  isLoading: false,
+                  message: '',    
 
                 options: [
                     { value: null, text: 'Please select an option' },
@@ -220,11 +232,6 @@
                     postalCode:'',      
                     image: '',
                     selectedFile: null,
-                    
-                    lat: '',
-                    lng: '',
-
-                    geocode:'',
                 }
                
             }
@@ -234,6 +241,7 @@
 
             submitPubCrisis() {
                 this.isLoading = true;
+                 this.message = ""; 
                 this.error = [];
                 const fd = new FormData();
                 
@@ -252,8 +260,9 @@
                 };
 
                 // need to change to new address for public 
-                axios.post('/api/pubcrisis', fd, config)
+                axios.post('/api/report/crisis', fd, config)
                 .then(response => {
+                    this.message = response.data.message;
                     $('html, body').animate({ scrollTop: 0 }, 'slow');
                     this.isLoading = false;
                     this.resetFields();
@@ -342,8 +351,6 @@
                             scope.form.postalCode = address_component.short_name;
                         }
                     });
-                    scope.form.lat = place.geometry.location.lat();
-                    scope.form.lng = place.geometry.location.lng();
 
                     var pos = {
                         lat: place.geometry.location.lat(),

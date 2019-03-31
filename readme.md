@@ -31,8 +31,7 @@ php artisan db:seed --class=AgenciesTableSeeder
 ##Type of user
 role 1 - Call Center Operator - able to register a new crisis
 role 2 - Crisis Manager - able to update and archive crisis
-role 3 - Civil Defences Admin - able to keep track which CD shelter is in-charge of the crisis. The status of the CD shelter
-role 4 - Account Manager - able to register and remove new account
+role 3 - Account Manager - able to register and remove new account
 
 #Steps to set up automation of email sending
 Tutorial: https://quantizd.com/how-to-use-laravel-task-scheduler-on-windows-10/

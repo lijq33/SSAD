@@ -45,7 +45,8 @@
             <approve-crisis 
                 :crisis = "approveCrisis"
                 @hideModal = "hideModal"
-                @approveSuccess = "approveSuccess"></approve-crisis>
+                @approveSuccess = "approveSuccess">
+            </approve-crisis>
 
         </b-modal>
     </div>
@@ -77,6 +78,7 @@
                 modalShow: false,
                 message:'',
                 error: '',
+                
                 approveCrisis: '',
                 crisisStatus: '',
                 crisisDesc: '',
@@ -89,8 +91,9 @@
                 this.$refs.approveModalRef.show()
                 this.approveCrisis = crisis;
             },
+
             getCrisis() {
-                axios.get('/api/crisis/managePublic')
+                axios.get('/api/manage/ReportedCrisis')
                 .then((res) => {
                     this.crises = res.data.report_crises;
                 })
@@ -99,36 +102,6 @@
                 })
             },
 
-            /* archive(crisis) {
-                this.modalShow = true;
-                var scope = this;
-                
-                let promise = new Promise(function(resolve, reject) {
-                    let archiveButton = document.getElementById('archiveButton');
-                    archiveButton.addEventListener("click",function(){
-                        scope.modalShow = false;
-                        resolve();
-                    });
-                    let dontArchiveButton = document.getElementById('dontArchiveButton');
-                    dontArchiveButton.addEventListener("click",function(){
-                        scope.modalShow = false;
-                        reject();
-                    });
-
-                });
-                
-                promise.then(function() { 
-                    axios.delete('/api/crisis/'+crisis.id)
-                    .then((res) => {
-                        scope.message = "We've successfully archive the crisis!";
-                        scope.crisis = [];
-                        scope.getcrisis();
-                    })
-                    .catch((error) => {
-                        scope.error = error.response;
-                    })
-                });
-            }, */
             approveSuccess(){
                 this.message = "The Crisis has been approved!";
                 this.hideModal();

@@ -1,0 +1,56 @@
+runtime: php
+env: flex
+
+runtime_config:
+  document_root: public
+
+# Ensure we skip ".env", which is only for local development
+skip_files:
+  - .env
+
+env_variables:
+  # Put production environment variables here.
+  APP_LOG: errorlog
+  APP_KEY: base64:W1S8tu79IcJDqrBgV0983w4oTpQV9wWUPLjza4PhECo=
+  STORAGE_DIR: /tmp
+  APP_DEBUG: true
+
+  CACHE_DRIVER: file
+  SESSION_DRIVER: file
+  
+  MAIL_DRIVER: smtp
+  MAIL_HOST: smtp.mailtrap.io
+  MAIL_PORT: 2525
+  MAIL_USERNAME: 71c1e33fbd3437
+  MAIL_PASSWORD: a8f2cd13afae47
+  MAIL_ENCRYPTION: tls
+
+  JWT_SECRET: y5c3PjWWYf2czAxFjDChefeZd7zRmgpp
+
+  NEXMO_API_KEY: 6e2a812f
+  NEXMO_API_SECRET: bWjtpcyA22k3yjlq
+
+  BUGSNAG_API_KEY: 9ee055d7d91335afdfefd7e8cdedbefb
+
+  FACEBOOK_PAGE_ID: 342236433072588
+  FACEBOOK_CLIENT_ID: 610989759339386
+  FACEBOOK_CLIENT_SECRET: 9900d6676b7faad607a63cdb60518f14
+  FACEBOOK_ACCESS_TOKEN: EAAIrsSORG3oBAFlRZANTDB8svZB9naEZCNehPLJBkxUbQ20S1FhGIbb17k48vHZCPIOylTWb3w9hqTbhfDZBfCZCKkjlLYZBElPJmVuNcWyGq56vlNfEv0qz9q4M9ZAMZAn0p49mxxEGFOLBbcBJKxx9GieYsKqFz4KZA9odMTsHNzAgZDZD
+
+  TWITTER_CONSUMER_KEY: Dyiafv3GNlGGIlLZ0fqCbUzF5 
+  TWITTER_CONSUMER_SECRET: CLuPZe8Soh6f8HwvUqa0SdmT7B6tKkRCUURTEoL5LghXXpg2Ch
+  TWITTER_ACCESS_TOKEN: 1105744338565263360-nKbOjXHmmTwBDUlFUsTGWp3rUb1ymY 
+  TWITTER_ACCESS_TOKEN_SECRET: 1PAWKCy7kOgNCNTDt657YRRA2v45oLRrQa1aV56GsWaDX
+
+  GOOGLE_API_KEY: AIzaSyBYky3Q0f3bK8kZiN6LgvE97Np2Az1jdUg
+
+  ## Set these environment variables according to your CloudSQL configuration.
+  DB_HOST: localhost
+  DB_DATABASE: ssad
+  DB_USERNAME: root
+  DB_PASSWORD: HfPwsztd3D7cwltv
+  DB_SOCKET: "/cloudsql/teamten:asia-east2:ssad"
+
+beta_settings:
+    # e.g. "project:region:cloudsql-instance"
+    cloud_sql_instances: "teamten:asia-east2:ssad"

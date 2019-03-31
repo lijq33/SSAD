@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Providers;
-
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -14,16 +13,16 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'App\Events\CrisisCreated' => [
-            // 'App\Listeners\SendAgenciesSmsCrisisCreatedNotification',
-            // 'App\Listeners\SendSmsCrisisCreatedNotification',
-            // 'App\Listeners\SendFacebookCrisisCreatedNotification',
-            // 'App\Listeners\SendTwitterCrisisCreatedNotification',
+            'App\Listeners\SendAgenciesSmsCrisisCreatedNotification',
+            'App\Listeners\SendSmsCrisisCreatedNotification',
+            'App\Listeners\SendFacebookCrisisCreatedNotification',
+            'App\Listeners\SendTwitterCrisisCreatedNotification',
         ],
 
         'App\Events\CrisisUpdated' => [
-            // 'App\Listeners\SendSmsCrisisUpdatedNotification',
-            // 'App\Listeners\SendFacebookCrisisUpdatedNotification',
-            // 'App\Listeners\SendTwitterCrisisUpdatedNotification',
+            'App\Listeners\SendSmsCrisisUpdatedNotification',
+            'App\Listeners\SendFacebookCrisisUpdatedNotification',
+            'App\Listeners\SendTwitterCrisisUpdatedNotification',
         ]
     ];
 
