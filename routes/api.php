@@ -27,6 +27,11 @@ Route::get('crisis', 'CrisisController@index');
 
 Route::post('report/crisis', 'ReportCrisisController@store');
 
+Route::get('email',function() {
+    return view('SendEmail');
+ });
+ 
+Route::post('sendemail', 'SendEmailController@send');
 
 Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('login', 'AuthController@login');

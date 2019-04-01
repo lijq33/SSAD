@@ -45,6 +45,6 @@ class SendEmail implements ShouldQueue
 
         $pdf = PDF::loadView('pdf.template', $data)->save(public_path().'/KeyIndicators.pdf');
 
-        \Mail::to('pm@primeminister.com')->send(new TeamTenReport());
+        \Mail::to('lijq333@gmail.com')->send(new TeamTenReport());
     }
 }

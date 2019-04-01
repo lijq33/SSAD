@@ -14,6 +14,12 @@
 
 // });
 
+
+
+Route::get('email',function() {
+    return view('SendEmail');
+ });
+
 Route::get('{any}', function () {
     return view('index');
 })->where('any', '.*');
