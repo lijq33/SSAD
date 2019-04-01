@@ -80,6 +80,23 @@
           @dismiss-count-down="countDownChanged"
         />
 
+
+        <!-- create fire/gas markers -->
+        
+        <b-form @submit.prevent="submitCreateMarkers" v-if="enableCreateMarkerForm">
+       
+          <b-form-group id="createMarkerFormId" label="Create Crisis Type:" label-for="createMarkerFormId-3">
+            <b-form-select
+              id="createMarkerFormId-3"
+              v-model="selectedMarkerOpion"
+              :options="createCrisisTypeOptions"
+              required
+            ></b-form-select>
+          </b-form-group> 
+          <b-button type="submit" variant="primary" >Create</b-button>
+          <b-button type="button" variant="secondary" @click="cancelCreateMarkers">Cancel</b-button>
+        </b-form>
+
         <!--fire edit-->
         <b-tab
           v-if="enableFireDrawing"
@@ -111,6 +128,7 @@
                   v-model="fireProperty.status"
                   :options="fireEditOptions"
                   class="form-control"
+                   :disabled="isCrisisManager? false:true"
                 />
               </div>
             </div>
@@ -126,6 +144,7 @@
                   class="form-control"
                   rows="3"
                   style="max-width:100%"
+                  :disabled="isCrisisManager? false:true"
                 >
                     </textarea>
               </div>
@@ -133,7 +152,7 @@
 
             <div class="tw-flex tw-justify-end tw-m-4 tw-border-t tw-border-grey tw-pt-4">
 
-              <button
+              <button v-if="isCrisisManager"
                 class="tw-ml-2 btn btn-primary"
                 @click="updateCrisis()"
               >Update</button>
@@ -174,6 +193,7 @@
                   v-model="gasProperty.status"
                   :options="gasEditOptions"
                   class="form-control"
+                  :disabled="isCrisisManager? false:true"
                 />
               </div>
             </div>
@@ -189,6 +209,7 @@
                   class="form-control"
                   rows="3"
                   style="max-width:100%"
+                  :disabled="isCrisisManager? false:true"
                 >
                     </textarea>
               </div>
@@ -196,7 +217,7 @@
 
             <div class="tw-flex tw-justify-end tw-m-4 tw-border-t tw-border-grey tw-pt-4">
 
-              <button
+              <button v-if="isCrisisManager"
                 class="tw-ml-2 btn btn-primary"
                 @click="updateGasCrisis()"
               >Update</button>
@@ -244,6 +265,14 @@
       </b-tabs>
     </b-card>
 
+        <!-- create markers modal -->
+        <b-modal ref="my-modal" hide-footer title="Create New Crisis" size="xl">
+      <div class="d-block text-center">
+          <new-crisis/>
+      </div>
+      <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Close</b-button>
+    </b-modal>
+
   </div>
 </template>
 
@@ -252,6 +281,7 @@ import Vue from "vue";
 import VueSlider from "vue-slider-component";
 import "vue-slider-component/theme/antd.css";
 import Swatches from "vue-swatches";
+import NewCrisis from './NewCrisis';
 import "vue-swatches/dist/vue-swatches.min.css";
 import { ServerTable, ClientTable, Event } from "vue-tables-2";
 // let tableOptions =[[theme = 'bootstrap3']]
@@ -295,11 +325,16 @@ export default {
   },
   components: {
     VueSlider,
-    Swatches
+    Swatches,
+    'new-crisis':NewCrisis
   },
   //drawCircle:{enableCircleDrawing:false,marker:null,circle:null,cirleDistanceValue: 0,circleFillColor:'#E84B3C'},
   data() {
     return {
+       modalShow: false,
+      enableCreateMarkerForm:false,
+      selectedMarkerOpion:null,
+      createCrisisTypeOptions: [{ text: 'Select One', value: null }, 'Fire Hazard', 'Gas Leakage'],
       myClass: "backColor",
       //circle
       circleColumns: ["id", "radius", "zIndex"],
@@ -365,11 +400,29 @@ export default {
       tabs: [],
       tabCounter: 0,
       dismissSecs: 5,
-      dismissCountDown: 0
+      dismissCountDown: 0,
+      localSelectedShape:null
     };
   },
 
   methods: {
+    showModal() {
+        this.$refs['my-modal'].show()
+      },
+      hideModal() {
+        this.$refs['my-modal'].hide()
+      },
+
+    submitCreateMarkers(){
+       this.showModal();
+
+    },
+    cancelCreateMarkers(){
+
+      this.enableCreateMarkerForm = false;
+
+      this.$emit('cancel-drawing-creation',this.localSelectedShape);
+    },
     countDownChanged(dismissCountDown) {
       this.dismissCountDown = dismissCountDown;
     },
@@ -596,22 +649,25 @@ export default {
       ];
     },
     selectedShape(newValue) {
+
+        this.localSelectedShape = newValue;
+
       //receive shape
       //if is circle
-      // console.log("nevalue selected shape")
-      // if(newValue == null){
-      //   console.log("not selected shape");
-      //    this.drawCircle.enableCircleDrawing = false;
-      //  this.enableMarkerDrawing = false;
-      // }else  if (newValue.type == "circle") {
-      //  this.drawCircle.enableCircleDrawing = true;
-      //  this.enableMarkerDrawing = false;
-      //  this.processCircleDrawing(newValue);
-      // }else if (newValue.type == "marker"){
-      //   this.enableMarkerDrawing = true;
-      //    this.drawCircle.enableCircleDrawing = false;
-      //   this.processMarkerDrawing(newValue);
-      // }
+      console.log("nevalue selected shape")
+      if(newValue == null){
+        console.log("not selected shape");
+        // this.drawCircle.enableCircleDrawing = false;
+      // this.enableMarkerDrawing = false;
+      }else  if (newValue.type == "circle") {
+       this.drawCircle.enableCircleDrawing = true;
+       this.enableMarkerDrawing = false;
+       this.processCircleDrawing(newValue);
+      }else if (newValue.type == "marker"){
+        this.enableCreateMarkerForm = true;
+         //this.drawCircle.enableCircleDrawing = false;
+       // this.processMarkerDrawing(newValue);
+      }
     },
     circleDrawingRadius(newValue, oldValue) {
       console.log("radius changed");
@@ -625,7 +681,29 @@ export default {
       console.log(newValue);
     }
   },
-  computed: {}
+ computed: {
+            currentUser() {
+                return this.$store.getters.currentUser
+            },
+        
+            isCallCenterOperator(){
+                if (!this.currentUser)
+                    return false
+                return this.currentUser.roles == 'CallCenterOperator';
+            },
+                        
+            isCrisisManager(){
+                if (!this.currentUser)
+                    return false
+                return this.currentUser.roles == 'CrisisManager';
+            },
+
+            isAccountManager(){
+                if (!this.currentUser)
+                    return false
+                return this.currentUser.roles == 'AccountManager';
+            },
+        }
 };
 </script>
 
