@@ -266,12 +266,12 @@
     </b-card>
 
         <!-- create markers modal -->
-        <b-modal ref="my-modal" hide-footer title="Create New Crisis" size="xl">
-      <div class="d-block text-center">
-          <new-crisis/>
-      </div>
-      <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Close</b-button>
-    </b-modal>
+        <b-modal ref="my-modal" hide-footer no-close-on-backdrop no-close-on-esc title="Create New Crisis" size="xl">
+       
+          <new-crisis :geo-code-address="geoCodeAddress" :selected-crisis="selectedMarkerOpion" /> 
+         </b-modal>
+
+ 
 
   </div>
 </template>
@@ -331,10 +331,11 @@ export default {
   //drawCircle:{enableCircleDrawing:false,marker:null,circle:null,cirleDistanceValue: 0,circleFillColor:'#E84B3C'},
   data() {
     return {
+      geoCodeAddress:null,
        modalShow: false,
       enableCreateMarkerForm:false,
       selectedMarkerOpion:null,
-      createCrisisTypeOptions: [{ text: 'Select One', value: null }, 'Fire Hazard', 'Gas Leakage'],
+      createCrisisTypeOptions: [{ text: 'Select One', value: null }, 'Fire Outbreak', 'Gas Leak'],
       myClass: "backColor",
       //circle
       circleColumns: ["id", "radius", "zIndex"],
@@ -420,6 +421,8 @@ export default {
     cancelCreateMarkers(){
 
       this.enableCreateMarkerForm = false;
+     this.localSelectedShape=null;
+     this.selectedMarkerOpion=null;
 
       this.$emit('cancel-drawing-creation',this.localSelectedShape);
     },
@@ -588,6 +591,13 @@ export default {
     }
   },
   watch: {
+    selectedMarkerOpion(){
+      if(this.selectedMarkerOpion == "Fire Outbreak"){
+        this.$emit('change-marker-icon','https://cdn0.iconfinder.com/data/icons/fatcow/32/fire.png')
+      }else{
+        this.$emit('change-marker-icon','https://images.vexels.com/media/users/3/150012/isolated/preview/bf8475104937ca2ee44090829f4efa3a-small-gas-cylinder-icon-by-vexels.png')
+      }
+    },
     gasLeakMarkers(marker) {
       var scope = this;
       console.log(marker);
@@ -665,8 +675,9 @@ export default {
        this.processCircleDrawing(newValue);
       }else if (newValue.type == "marker"){
         this.enableCreateMarkerForm = true;
-         //this.drawCircle.enableCircleDrawing = false;
-       // this.processMarkerDrawing(newValue);
+        this.geoCodeAddress = newValue
+        console.log(newValue);
+ 
       }
     },
     circleDrawingRadius(newValue, oldValue) {
