@@ -58,8 +58,6 @@ class GraphController extends Controller
                     ,env('FACEBOOK_ACCESS_TOKEN'));
         
                     $post= $post->getGraphNode()->asArray();
-                    
-
             }
             
         }catch (FacebookSDKException $e){

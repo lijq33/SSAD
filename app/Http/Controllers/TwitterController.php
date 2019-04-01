@@ -21,10 +21,7 @@ class TwitterController extends Controller
 
     $twitter = Twitter::postTweet($newTwitte);
     
-
-    
     return back();
     }
 	
-    	
 }
