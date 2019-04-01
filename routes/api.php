@@ -48,7 +48,7 @@ Route::group(['middleware' => 'auth.ccoperator'], function ($router) {
 
 Route::group(['middleware' => 'auth.crisismanager'], function ($router) {
     Route::post('crisis', 'CrisisController@store');
-    Route::get('crisis', 'CrisisController@index');
+    // Route::get('crisis', 'CrisisController@index');
     Route::get('crisis/archive', 'CrisisController@archive');
     Route::post('crisis/{crisis}', 'CrisisController@update');
     Route::delete('crisis/{crisis}', 'CrisisController@destroy');

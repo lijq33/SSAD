@@ -54,6 +54,7 @@
             @get-updated-fire-drawing="handleFireData"
             @get-updated-gas-drawing="handleGasLeakData"
             @get-backend-data="handleBackendData"
+            @cancel-drawing-creation="handleCancelDrawingCreation"
           >
           </draw-tool>
 
@@ -91,7 +92,12 @@ export default {
     //   scope.bindDataLayerListeners(map.data);
     //  });
 
+   
+
+    
     this.$refs.mapRef.$mapPromise.then(map => {
+
+       if(scope.isCallCenterOperator){
       scope.markerInfoWindow = new google.maps.InfoWindow({
         content: ""
       });
@@ -130,6 +136,11 @@ export default {
           var newShape = e.overlay;
 
           newShape.type = e.type;
+
+          // To hide:
+          scope.drawingManager.setOptions({
+            drawingControl: false
+          });
 
           //push any shape to baseMapAllshape
           e.overlay["id"] = scope.baseMapAllShape.length;
@@ -215,11 +226,16 @@ export default {
             "drawingmode_changed",
             scope.clearSelection
           );
-          google.maps.event.addListener(map, "click", scope.clearSelection);
+          //google.maps.event.addListener(map, "click", scope.clearSelection);
           //google.maps.event.addDomListener(document.getElementById('delete-button'), 'click', deleteSelectedShape);
         }
       );
+
+       }
     });
+
+     
+
   },
 
   components: {
@@ -261,6 +277,29 @@ export default {
     };
   },
   methods: {
+    handleCancelDrawingCreation(cancelDrawingType){
+      console.log("clear393837")
+
+       if (this.selectedShape) {
+        if (this.selectedShape.type !== "marker") {
+       
+          
+        }else{
+
+             console.log("clear selected marker");
+          this.selectedShape.setMap(null);
+
+        }
+
+        this.selectedShape = null;
+        // To show:
+        this.drawingManager.setOptions({
+          drawingControl: true
+        });
+      }
+      
+      
+    },
     bindDataLayerListeners(dataLayer) {
       dataLayer.addListener("addfeature", this.refreshGeoJsonFromData);
       //dataLayer.addListener('removefeature', this.refreshGeoJsonFromData);
@@ -876,7 +915,28 @@ export default {
     computedGeoJson: function() {
       console.log("computed");
       return this.geoJson;
-    }
+    },
+    currentUser() {
+                return this.$store.getters.currentUser
+            },
+        
+            isCallCenterOperator(){
+                if (!this.currentUser)
+                    return false
+                return this.currentUser.roles == 'CallCenterOperator';
+            },
+                        
+            isCrisisManager(){
+                if (!this.currentUser)
+                    return false
+                return this.currentUser.roles == 'CrisisManager';
+            },
+
+            isAccountManager(){
+                if (!this.currentUser)
+                    return false
+                return this.currentUser.roles == 'AccountManager';
+            },
   }
 };
 </script>
