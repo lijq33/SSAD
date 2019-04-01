@@ -14,25 +14,21 @@
 
 // });
 
+
+
+Route::get('email',function() {
+    return view('SendEmail');
+ });
+
 Route::get('{any}', function () {
     return view('index');
 })->where('any', '.*');
 
-Route::get('/login/facebook', 'Auth\LoginController@redirectToFacebookProvider');
 
-Route::get('login/facebook/callback', 'Auth\LoginController@handleProviderFacebookCallback');
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 
 Route::group(['middleware' => [
     'auth'
 ]], function(){
-    Route::get('/user', 'GraphController@retrieveUserProfile');
- 
-    Route::post('/user', 'GraphController@publishToProfile');
- 
-    Route::post('/page', 'GraphController@publishToPage');
-    Route::post('/page', 'GraphController@updatePost');
+    Route::post('/tweet', 'TwitterController@tweet');
 });

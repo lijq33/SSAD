@@ -27,6 +27,11 @@ Route::get('crisis', 'CrisisController@index');
 
 Route::post('report/crisis', 'ReportCrisisController@store');
 
+Route::get('email',function() {
+    return view('SendEmail');
+ });
+ 
+Route::post('sendemail', 'SendEmailController@send');
 
 Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('login', 'AuthController@login');
@@ -43,7 +48,7 @@ Route::group(['middleware' => 'auth.ccoperator'], function ($router) {
 
 Route::group(['middleware' => 'auth.crisismanager'], function ($router) {
     Route::post('crisis', 'CrisisController@store');
-    Route::get('crisis', 'CrisisController@index');
+    // Route::get('crisis', 'CrisisController@index');
     Route::get('crisis/archive', 'CrisisController@archive');
     Route::post('crisis/{crisis}', 'CrisisController@update');
     Route::delete('crisis/{crisis}', 'CrisisController@destroy');
