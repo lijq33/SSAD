@@ -95,6 +95,7 @@ Twitter -
 Reporting - 
 Weather - https://www.nea.gov.sg/
 Email - Mailtrap
+PDF Generator - DOMPDF 
 
 Central Processing Unit 
 CallCentreUI
