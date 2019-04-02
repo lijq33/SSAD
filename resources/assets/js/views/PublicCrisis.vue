@@ -129,7 +129,7 @@
                         <!-- Description -->
                         <div class = "form-group row">
                             <label for="description" class="col-md-4 col-form-label text-md-right">
-                                Description of The Event
+                                Description of The Crisis
                             </label>
                             
                             <div class="col-md-6">
@@ -173,7 +173,7 @@
                         <div class="form-group row tw-my-6">
                             <div class="col-md-6 offset-md-4">
                                 <div v-if = "!isLoading">
-                                    <button type="submit" class="btn btn-primary" @click = "submitPubCrisis">
+                                    <button type="submit" class="btn btn-primary" @click = "reportCrisis">
                                         Submit
                                     </button>
 
@@ -239,9 +239,9 @@
 
         methods: {
 
-            submitPubCrisis() {
+            reportCrisis() {
                 this.isLoading = true;
-                 this.message = ""; 
+                this.message = ""; 
                 this.error = [];
                 const fd = new FormData();
                 
@@ -273,17 +273,15 @@
                 });
             },
 
-              resetFields() {
+            resetFields() {
                 var scope = this; 
-                
-                this.$refs.autocomplete.$el.value = '';
 
                 Object.keys(this.form).forEach(function(key,index) {
                     scope.form[key] = '';
                 });
 
+                this.$refs.autocomplete.$el.value = '';
                 this.form.crisisType= null;
-                
             },
 
              uploadImage(e) {
@@ -315,7 +313,7 @@
                 this.createImage(this.form.selectedFile);
             },
 
-             bestAddressMatch(geocoder, pos, serviceFormatedAddress, matchPostalCode){ 
+            bestAddressMatch(geocoder, pos, serviceFormatedAddress, matchPostalCode){ 
                 var scope = this;
                 var foundBestMatch = false;
                 

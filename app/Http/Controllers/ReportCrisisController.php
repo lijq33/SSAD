@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\User;
 use App\Http\Controllers\CrisisController;
+use App\Crisis;
 
 class ReportCrisisController extends Controller
 {
@@ -59,16 +60,43 @@ class ReportCrisisController extends Controller
      * @param  \App\ReportCrisis  $reportCrisis
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ReportCrisis $reportCrisis)
+    public function update(Request $request, $id)
     {
+        //update
+        $data = request()->all();
 
-        $crisisStore = new CrisisController();
-        $crisisStore->store($request);
+        $reportCrisis = ReportCrisis::whereId($id)->get();
+        $data += $reportCrisis;
+
+        $validator = Validator::make($data = request()->all(), Crisis::$rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+        
+        $user = new User();
+
+        $data['id'] = $user->fetchUser()['id'];
+        $data['date'] = \Carbon\Carbon::createFromFormat('d/m/Y', $data['date']);
+        $data['time'] = \Carbon\Carbon::createFromFormat('g:i A', $data['time']);
+
+
+        $crisis = Crisis::newCrisis($data);
+
+        $assistances = explode(',', $data['assistanceRequired']);
+
+        foreach($assistances as $assistance){
+            $crisis->agency()->attach($assistance);
+        }
+
+        event(new CrisisCreated($crisis));
 
         $reportCrisis->delete();
 
         return response()->json([
-            'message' => 'You have successfully updated a crisis!',
+            'message' => 'You have successfully registered a new crisis!',
         ], 200);
     }
 

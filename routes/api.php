@@ -49,9 +49,9 @@ Route::group(['middleware' => 'auth.crisismanager'], function ($router) {
     Route::post('crisis/{crisis}', 'CrisisController@update');
     Route::delete('crisis/{crisis}', 'CrisisController@destroy');
 
-    Route::post('report/crisis/{crisis}', 'ReportCrisisController@update');
+    Route::patch('report/crisis/{id}', 'ReportCrisisController@update');
     Route::delete('report/crisis/{crisis}', 'ReportCrisisController@destroy');
-    Route::get('crisis/manage/ReportedCrisis', 'ReportCrisisController@index');
+    Route::get('report/crisis', 'ReportCrisisController@index');
 });
 
 Route::group(['middleware' => 'auth.accountmanager'], function ($router) {
