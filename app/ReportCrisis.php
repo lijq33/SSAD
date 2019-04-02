@@ -29,7 +29,6 @@ class ReportCrisis extends Model
                             'crisis_type', 'status', 'description', 'image'];
 
     public static function newReportedCrisis($data){
-
         $data['date'] = (Carbon::parse($data['date'])->format('Y/m/d'));
         $data['time'] = (Carbon::parse($data['time'])->format('H:i:s'));
 
