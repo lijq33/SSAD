@@ -45,7 +45,6 @@ class ArchiveCrisisTest extends TestCase
         ]);
 
         $response = $this->post('/api/auth/logout');
-
     }
 
     /** @test */

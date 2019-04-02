@@ -14,7 +14,7 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'name' => Str::random(10),
+            'name' => 'JinQuan',
             'nric' => 'S1234566Z',
             'email' => Str::random(10).'@gmail.com',
             'password' => bcrypt('12345!qW'),
@@ -23,7 +23,7 @@ class UsersTableSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'name' => Str::random(10),
+            'name' => 'JinQuan',
             'nric' => 'S1234567Z',
             'email' => Str::random(10).'@gmail.com',
             'password' => bcrypt('12345!qW'),
@@ -32,7 +32,7 @@ class UsersTableSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'name' => Str::random(10),
+            'name' => 'JinQuan',
             'nric' => 'S1234569Z',
             'email' => Str::random(10).'@gmail.com',
             'password' => bcrypt('12345!qW'),

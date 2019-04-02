@@ -6,7 +6,6 @@
 
                     <flash :message = "message"></flash>
 
-                     
                     <!-- Personal Particular & Crisis Info -->
                     <div class = "card-body">
                         <div class = "form-group row">
@@ -189,31 +188,32 @@
                                         <label class="col-md-7 col-form-label">
                                             Please upload an image of the crisis:
                                             </label>
-                                    <div v-if = "image === ''" >
-                                        <input accept = "image/*" type = "file" class = "upload-image-input tw-hidden" @change = "onFileSelected" >
+                                        <div v-if = "image === ''" >
+                                            <input accept = "image/*" type = "file" class = "upload-image-input tw-hidden" @change = "onFileSelected" >
 
-                                        <button class = "btn btn-primary" 
-                                            @click = "uploadImage">
-                                            Select An Image
-                                        </button>
-                                    </div>
-                                    
-                                    <div v-else class = "col-md-6">
-                                        <div class = "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden" style="width:500px; height:300px">
-                                            <img :src = "image" class = "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center" />
+                                            <button class = "btn btn-primary" 
+                                                @click = "uploadImage">
+                                                Select An Image
+                                            </button>
                                         </div>
+                                        
+                                        <div v-else class = "col-md-6">
+                                            <div class = "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden" style="width:500px; height:300px">
+                                                <img :src = "image" class = "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center" />
+                                            </div>
 
-                                        <button class = "btn btn-primary" 
-                                            @click = "removeImage">
-                                            Choose Another Image
-                                        </button>
-                                    </div>
+                                            <button class = "btn btn-primary" 
+                                                @click = "removeImage">
+                                                Choose Another Image
+                                            </button>
                                         </div>
+                                    </div>
                                     </div>
                                  </div>
                             </div>
-                             <!-- Crisis Type dropdown -->
-                              <div class = "col-md-6">
+
+                            <!-- Crisis Type dropdown -->
+                            <div class = "col-md-6">
                                 <div class = "card tw-mb-6" style="height:130px">
                                     <div class = "card-body">
                                         <h5 class = "card-title"> Type of Crisis:</h5>
@@ -226,7 +226,7 @@
                                         </div> 
                                     </div>  
                                 </div>
-                                </div>
+                            </div>
                         </div>
 
 
@@ -248,21 +248,21 @@
                                 </div>
                             </div>
 
-                             <b-alert
-            :show="dismissCountDown"
-            dismissible
-            variant="success"
-            @dismissed="dismissCountDown=0"
-            @dismiss-count-down="countDownChanged"
-            >
-            <p>This alert will dismiss after {{ dismissCountDown }} seconds...</p>
-            <b-progress
-                variant="success"
-                :max="dismissSecs"
-                :value="dismissCountDown"
-                height="4px"
-            ></b-progress>
-            </b-alert>
+                            <b-alert
+                                :show="dismissCountDown"
+                                dismissible
+                                variant="success"
+                                @dismissed="dismissCountDown=0"
+                                @dismiss-count-down="countDownChanged"
+                            >
+                                <p>This alert will dismiss after {{ dismissCountDown }} seconds...</p>
+                                <b-progress
+                                    variant="success"
+                                    :max="dismissSecs"
+                                    :value="dismissCountDown"
+                                    height="4px"
+                                ></b-progress>
+                            </b-alert>
 
                         </div>
                     </div>
@@ -347,7 +347,7 @@
                 this.error = [];
 
                 const fd = new FormData();
-                
+
                 fd.append('image', this.selectedFile);
                 fd.append('name', this.form.name);
                 fd.append('telephoneNumber', this.form.telephoneNumber);

@@ -21,13 +21,13 @@ class CreateReportCrisesTable extends Migration
             $table->date('date');
             $table->time('time');
                 
-            $table->string('status');
             $table->longText('description')->nullable();
             $table->string('address');
     
             $table->string('crisis_type');
     
             $table->string('image')->nullable(); 
+            $table->integer('radius')->unsigned()->nullable();
     
             $table->timestamps();
         });

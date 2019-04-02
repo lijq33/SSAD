@@ -7,7 +7,7 @@ export const routes = [
     },
     {
         path : '/report/crisis',
-        component: require('./views/PublicCrisis.vue')
+        component: require('./views/ReportCrisis.vue')
     },
     {
         path : '/login',

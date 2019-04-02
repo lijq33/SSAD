@@ -65,23 +65,22 @@ class ReportCrisisController extends Controller
         //update
         $data = request()->all();
 
-        $reportCrisis = ReportCrisis::whereId($id)->get();
-        $data += $reportCrisis;
+        $reportCrisis = ReportCrisis::whereId($id)->first();
 
-        $validator = Validator::make($data = request()->all(), Crisis::$rules);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-        
         $user = new User();
 
-        $data['id'] = $user->fetchUser()['id'];
-        $data['date'] = \Carbon\Carbon::createFromFormat('d/m/Y', $data['date']);
-        $data['time'] = \Carbon\Carbon::createFromFormat('g:i A', $data['time']);
+        var_dump($reportCrisis['date']);
 
+        $data['id'] = $user->fetchUser()['id'];
+        $data['date'] = $reportCrisis->date;
+        $data['time'] = $reportCrisis['time'];
+        $data['name'] = $reportCrisis['name'];
+        $data['telephone_number'] = $reportCrisis['telephoneNumber'];
+        $data['postal_code'] = $reportCrisis['postalCode'];
+        $data['address'] = $reportCrisis['address'];
+        $data['crisis_type'] = $reportCrisis['crisisType'];
+        $data['radius'] = $reportCrisis['radius'];
+        $data['image'] = $reportCrisis['image'];
 
         $crisis = Crisis::newCrisis($data);
 

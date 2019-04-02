@@ -17,7 +17,8 @@ class ReportCrisis extends Model
         'time' => 'required',
         'location' => 'required',
         'crisisType' => 'required|in:Fire Outbreak,Dengue,Gas Leak',
-        'image' => 'nullable|mimes:jpeg,bmp,png'
+        // 'image' => 'mimes:jpeg,bmp,png',
+        'radius' => 'required_if:crisisType,Dengue'
     ];
 
     /**
@@ -26,7 +27,7 @@ class ReportCrisis extends Model
      * @var array
     */
     protected $fillable = ['name', 'telephone_number', 'postal_code', 'date', 'time', 'address',
-                            'crisis_type', 'status', 'description', 'image'];
+                            'crisis_type', 'description', 'image', 'radius'];
 
     public static function newReportedCrisis($data){
         $data['date'] = (Carbon::parse($data['date'])->format('Y/m/d'));
@@ -52,8 +53,8 @@ class ReportCrisis extends Model
             'date' => $data['date'],
             'time' => $data['time'],
             
-            'status' => 'pending',
             'description' => $data['description'],
+            'radius' => $data['radius'],
             'image' => $imageName
         ]);
 

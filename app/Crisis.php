@@ -54,7 +54,8 @@ class Crisis extends Model
         'time' => 'required',
         'address' => 'required',
         'crisisType' => 'required|in:Fire Outbreak,Dengue,Gas Leak',
-        'image' => 'nullable|mimes:jpeg,bmp,png'
+        // 'image' => 'mimes:jpeg,bmp,png',
+        'radius' => 'required_if:crisisType,Dengue'
     ];
 
     /**
@@ -63,7 +64,7 @@ class Crisis extends Model
      * @var array
     */
     protected $fillable = ['user_id', 'name', 'telephone_number', 'postal_code', 'date', 'time', 'address',
-                            'crisis_type', 'status', 'description', 'image', 'facebook_post_id'];
+                            'crisis_type', 'status', 'description', 'image', 'facebook_post_id', 'radius'];
 
     public static function newCrisis($data){
 
@@ -72,7 +73,7 @@ class Crisis extends Model
 
         $imageName = null;
 
-        if ($data['image'] !== "null"){        
+        if ($data['image'] !== null){        
             $imageName = str_random(40);
             $image = Image::make($data['image']->getRealPath());
             // $image->resize(320, 240);
@@ -93,6 +94,7 @@ class Crisis extends Model
             
             'status' => 'registered',
             'description' => $data['description'],
+            'radius' => $data['radius'],
             'image' => $imageName
         ]);
 

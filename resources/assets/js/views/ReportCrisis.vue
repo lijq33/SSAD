@@ -126,6 +126,27 @@
                             </div>
                         </div>
 
+                        <!-- Radius -->
+                        <div class = "form-group row" v-show = "isDengue">
+                            <label for="radius" class="col-md-4 col-form-label text-md-right">
+                                Area Affected (in meters)
+                            </label>
+
+                            <div class="col-md-6">
+                                <input type = "text"
+                                    id="radius" 
+                                    class="tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey" 
+                                    :class = "{ 'tw-border-red-light' : error['radius'] != undefined}"
+                                    v-model = "form.radius"
+                                    placeholder = "500"
+                                    required autofocus
+                                >
+                                <div class = "tw-text-red" v-if = "error['radius'] != undefined">
+                                    <span> {{this.error['radius'].toString()}} </span>   
+                                </div> 
+                            </div>
+                        </div>
+
                         <!-- Description -->
                         <div class = "form-group row">
                             <label for="description" class="col-md-4 col-form-label text-md-right">
@@ -162,6 +183,10 @@
                             <div v-else class = "col-md-6">
                                 <div class = "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden" style="width:400px; height:200px">
                                     <img :src = "form.image" class = "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center" />
+
+                                    <div class = "tw-text-red" v-if = "error['image'] != undefined">
+                                        <span> {{this.error['image'].toString()}} </span>   
+                                    </div>
                                 </div>
                                 
                                 <button class = "btn btn-primary" @click = "removeImage">
@@ -231,11 +256,18 @@
                     time: '',
                     postalCode:'',      
                     image: '',
+                    radius: '',
                     selectedFile: null,
                 }
                
             }
         }, 
+
+        computed:{
+            isDengue(){
+                return this.form.crisisType === 'Dengue';
+            }
+        },
 
         methods: {
 
@@ -254,6 +286,8 @@
                 fd.append('location', this.form.location);
                 fd.append('description', this.form.description);
                 fd.append('crisisType', this.form.crisisType);
+                if(this.form.crisisType == 'Dengue')
+                    fd.append('radius', this.form.radius);
 
                 const config = {
                     headers: { 'content-type': 'multipart/form-data' }
@@ -342,7 +376,7 @@
                 var scope = this;
 
                 if (place.id) { 
-                      var matchPostalCode;
+                    var matchPostalCode;
                     place.address_components.forEach(address_component => {
                         if(address_component.types[0] == 'postal_code'){
                             matchPostalCode = address_component.long_name;
