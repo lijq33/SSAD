@@ -107,7 +107,7 @@
                             <div class = "col-md-6">
                                 <div class = "card" style = "height:304px">
                                     <div class = "card-body">
-                                        <h5 class = "card-title">Location</h5>
+                                        <h5 class = "card-title">Location<b-button size="sm" @click="showModal">Open Map</b-button></h5>
                                         <div class = "form-group row">
                                             <label for = "" class = "col-md-4 col-form-label">
                                                 Location:
@@ -219,7 +219,7 @@
                                         <h5 class = "card-title"> Type of Crisis:</h5>
                                         <b-form-select v-model = "form.crisisType" :options = "options" 
                                             :class = "{ 'tw-border-red-light' : error['crisisType'] != undefined}"
-                                            disabled
+                                           
                                         />
                                         <div class = "tw-text-red" v-if = "error['crisisType'] != undefined">
                                             <span> {{this.error['crisisType'].toString()}} </span>   
@@ -248,21 +248,7 @@
                                 </div>
                             </div>
 
-                             <b-alert
-            :show="dismissCountDown"
-            dismissible
-            variant="success"
-            @dismissed="dismissCountDown=0"
-            @dismiss-count-down="countDownChanged"
-            >
-            <p>This alert will dismiss after {{ dismissCountDown }} seconds...</p>
-            <b-progress
-                variant="success"
-                :max="dismissSecs"
-                :value="dismissCountDown"
-                height="4px"
-            ></b-progress>
-            </b-alert>
+           
 
                         </div>
                     </div>
@@ -270,7 +256,12 @@
             </div>
         </div>
 
-        <crisis-map/>
+    <b-modal ref="map-modal" hide-footer no-close-on-backdrop no-close-on-esc size="xl" title="Crisis Location">
+       <crisis-map @get-new-crisis-location="handleNewCrisisLocation" />
+      
+    </b-modal>
+
+       
 
     </div>
 </template>
@@ -279,7 +270,7 @@
     import 'vue-popperjs/dist/css/vue-popper.css';
     import Popper from 'vue-popperjs';
     import moment from 'moment';
-    import CrisisMap from './BaseMap';
+    import CrisisMap from './NewBaseMap';
 
     export default {
          props: ["geoCodeAddress","selectedCrisis"],
@@ -295,10 +286,6 @@
         
         data() {
             return{
-                isAddressLoading:true,
-               dismissSecs: 5,
-                dismissCountDown: 0,
-                showDismissibleAlert: false,
                 date: moment().format("DD/MM/YYYY"),
 
                 options: [
@@ -310,8 +297,6 @@
                 message: '',    
                 isLoading: false,
                 error: [],
-
-                showModal: null,
                 dengue: null,
                 
                 image: '',
@@ -323,7 +308,7 @@
                     telephoneNumber:'',
                     date:'',
                     time:'',
-                    address:'loading...',
+                    address:'',
                     postalCode:'',
                     description: '',
                     assistanceRequired: [],
@@ -334,13 +319,18 @@
         },
 
         methods: {
-            countDownChanged(dismissCountDown) {
-                this.dismissCountDown = dismissCountDown
+            handleNewCrisisLocation(crisisLocation){
+                    this.form.address = crisisLocation.full_address;
+                    this.form.postalCode = crisisLocation.postal_code;
+                    console.log(crisisLocation);
+                    this.hideModal();
             },
-            showAlert() {
-                this.dismissCountDown = this.dismissSecs
-            },
-
+             showModal() {
+                    this.$refs['map-modal'].show()
+                },
+                hideModal() {
+                    this.$refs['map-modal'].hide()
+                }, 
             submitCrisis() {
                  this.isLoading = true;
                 this.message = "";                
@@ -366,14 +356,13 @@
                 axios.post('/api/ccopercrisis', fd, config)
                 .then(response => {
                     this.message = response.data.message;
-                    //$('html, body').animate({ scrollTop: 0 }, 'slow');
-                    this.dismissCountDown = this.dismissSecs
+                    $('html, body').animate({ scrollTop: 0 }, 'slow');
                     this.isLoading = false;
                     console.log("save crisis to db!")
-                    //this.resetFields();
+                    this.resetFields();
                 })
                 .catch((error) => {
-                    //this.error = error.response.data.errors;
+                    this.error = error.response.data.errors;
                     this.isLoading = false;
                 });
             },
@@ -390,14 +379,6 @@
 
                 
                 this.form.assistanceRequired= [];
-            },
-
-            displayModal() {
-				this.showModal = true;
-			},
-
-			hideModal() {
-				this.showModal = false;
             },
             
             //Images related methods
