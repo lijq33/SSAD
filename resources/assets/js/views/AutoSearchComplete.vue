@@ -87,11 +87,8 @@ export default {
       console.log(res.data)
       
       //append google latlng
-
-      if(googleLatLng != null){
-        res.data["googleLatLng"] =googleLatLng;
-      }
-
+        res.data.lat = googleLatLng.lat;
+        res.data.lng = googleLatLng.lng;
 
 			 this.$emit("get-search-data",res.data);
        this.form.address = res.data.full_address;

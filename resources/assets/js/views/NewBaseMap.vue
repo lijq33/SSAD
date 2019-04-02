@@ -539,12 +539,14 @@ export default {
           lat:latLng.lat(),
           lng:latLng.lng()
         }
+
         scope.searchMarkerFullAddress = fullAddressPos;
 
         });
 
         } else {
           //just change latlng
+        
           this.searchMarker.setPosition(pos);
         }
       });
