@@ -3,7 +3,7 @@
 export const routes = [
     {
         path : '/',
-        component: require('./views/Home.vue')
+        component: require('./views/BaseMap.vue')
     },
     {
         path : '/report/crisis',
@@ -21,6 +21,7 @@ export const routes = [
         path : '/unsubscribe',
         component: require('./views/Unsubscribe.vue')
     },  
+    
     //account manager
     {
         path : '/account/register',

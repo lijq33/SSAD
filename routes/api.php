@@ -26,10 +26,6 @@ Route::get('crisis/dengue', 'CrisisController@dengueCrisis');
 Route::get('crisis', 'CrisisController@index');
 
 Route::post('report/crisis', 'ReportCrisisController@store');
-
-Route::get('email',function() {
-    return view('SendEmail');
- });
  
 Route::post('sendemail', 'SendEmailController@send');
 
@@ -59,7 +55,9 @@ Route::group(['middleware' => 'auth.crisismanager'], function ($router) {
 });
 
 Route::group(['middleware' => 'auth.accountmanager'], function ($router) {
-    Route::resource('register', 'RegisterController', ['except' => ['create', 'edit']]);
+    Route::patch('register/{user}', 'RegisterController@update');
+    Route::delete('register/{user}', 'RegisterController@destroy');
+    Route::resource('register', 'RegisterController', ['except' => ['create', 'destroy', 'edit']]);
 });
 
 // 'auth.user'

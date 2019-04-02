@@ -21,6 +21,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->integer('telephone_number');
             $table->string('roles');
+
+            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
         });

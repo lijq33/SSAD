@@ -38,7 +38,7 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::withTrashed()->get();
 
         return response()->json([
             'users' => $users,
@@ -113,8 +113,38 @@ class RegisterController extends Controller
     }
 
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update($id)
+    {
+        var_dump($id);
+        $user = User::onlyTrashed()->whereId($id)->first();
+        
+        if ($user !== null)
+            $user->restore();
 
+        return response()->json([
+            'message' => 'This account has been successfully enabled!',
+        ], 200);
+    }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(User $user)
+    {
+        $user->delete();
 
-
+        return response()->json([
+            'message' => 'You have disable this account.',
+        ], 200);
+    }
 }

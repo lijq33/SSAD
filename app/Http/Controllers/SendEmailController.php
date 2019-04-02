@@ -20,6 +20,6 @@ class SendEmailController extends Controller
 
         $pdf = PDF::loadView('pdf.template', $data)->save(public_path().'/KeyIndicators.pdf');
 
-        \Mail::to('lijq333@gmail.com')->send(new TeamTenReport());
+        \Mail::to('itsjianhao@gmail.com')->send(new TeamTenReport());
     }
 }
