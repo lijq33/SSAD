@@ -122,7 +122,6 @@ class RegisterController extends Controller
      */
     public function update($id)
     {
-        var_dump($id);
         $user = User::onlyTrashed()->whereId($id)->first();
         
         if ($user !== null)

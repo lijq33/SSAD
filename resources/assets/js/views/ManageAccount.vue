@@ -31,6 +31,7 @@
                                 </button>
                             </popper>
                         </span>
+                        
                         <span class = "tw-flex tw-justify-around tw-items-center" v-else>
                             <popper trigger="hover" :options = "{placement: 'bottom'}">
                                 <div class="popper tw-font-hairline tw-text-grey-dark">
