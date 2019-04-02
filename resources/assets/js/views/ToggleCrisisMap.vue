@@ -104,21 +104,24 @@
           type:'circle',
           center:{lat:1.349245,lng:103.763015},
           radius:3000,
-          fillColor:"#E84B3C"
+          fillColor:"#E84B3C",
+          strokeColor:"#E84B3C"
         },
         {
           id:2,
           type:'circle',
           center:{lat:1.335515,lng:103.844727},
           radius:5000,
-          fillColor:"##8E43AD"
+          fillColor:"#8E43AD",
+           strokeColor:"#8E43AD",
         },
         {
           id:3,
           type:'circle',
           center:{lat:1.380822,lng:103.851595},
           radius:2000,
-          fillColor:"#F39C19"
+          fillColor:"#F39C19",
+           strokeColor:"#F39C19",
         }
       ];
 

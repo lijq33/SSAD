@@ -42,6 +42,7 @@
         >
 
           <draw-tool
+            :dengue-polygon="polygon.dengueData"
             :gas-leak-markers="markers.gasLeakMarkers"
             :fire-markers="markers.fireMarkers"
             :base-map-all-shape="baseMapAllShape"
@@ -307,7 +308,7 @@ export default {
 
        if (this.selectedShape) {
         if (this.selectedShape.type !== "marker") {
-       
+         this.selectedShape.setMap(null);
           
         }else{
 
@@ -740,16 +741,30 @@ export default {
       //    fillColor: circleData.circleFillColor,
       //    strokeColor: circleData.circleFillColor
       //    });
-
-      this.baseMapAllShape.forEach((element, index) => {
+          var scope = this;
+           this.$refs.mapRef.$mapPromise.then(map => {
+      this.polygon.dengueData.forEach((element, index) => {
         //set rest shape editable false
 
-        if (element.overlay.id === circleData.id) {
-          element.overlay.setOptions(circleData);
+        if (element.db_data.id === circleData.id) {
+            element.setOptions({
+              editable:true,
+              strokeColor: circleData.strokeColor,
+              strokeOpacity: 1,
+              strokeWeight: 1,
+              fillColor: circleData.fillColor,
+              fillOpacity: 0.35,
+              radius: circleData.radius,
+              center:circleData.center,
+            });
+
+
         } else {
-          element.overlay.setOptions({ editable: false });
+          element.setOptions({ editable: false });
         }
       });
+
+           });
     },
     removeMarkers(removeMarkersType) {
       console.log("remove ");
@@ -780,7 +795,8 @@ export default {
               fillOpacity: 0.35,
               map: map,
               center: element.center,
-              radius: element.radius
+              radius: element.radius,
+              db_data:element
             });
 
             scope.polygon.dengueData.push(temp);
