@@ -56,6 +56,20 @@ import ToggleMap from "./ToggleCrisisMap";
 
 export default {
 
+   mounted(){
+     var scope = this;
+     this.$refs.mapRef.$mapPromise.then(map => {
+
+     
+      scope.markerInfoWindow = new google.maps.InfoWindow({
+        content: ""
+      });
+
+      
+       });
+
+  },
+
   components: {
     drawTool: DrawTool,
     autoSearch: AutoSearchComplete,
@@ -539,12 +553,14 @@ export default {
           lat:latLng.lat(),
           lng:latLng.lng()
         }
+
         scope.searchMarkerFullAddress = fullAddressPos;
 
         });
 
         } else {
           //just change latlng
+        
           this.searchMarker.setPosition(pos);
         }
       });
@@ -796,6 +812,7 @@ export default {
         }
 
         google.maps.event.addListener(temp, "mouseover", function() {
+          
           scope.markerInfoWindow.setContent(contentString);
           scope.markerInfoWindow.open(map, this);
         });
