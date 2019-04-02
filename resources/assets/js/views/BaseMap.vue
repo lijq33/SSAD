@@ -6,8 +6,9 @@
         <b-col cols="8">
           <!--autosearch -->
           <auto-search
-            :circle-full-address="drawCircle.circleFullAddress"
+            :query-full-address="searchMarkerFullAddress"
             @get-search-data="handleSearchData"
+            @confirm-address="handleConfirmAddress"
             @clear-Search="clearSearch"
           />
         </b-col>
@@ -36,40 +37,12 @@
           </GmapMap>
         </b-col>
 
-        <b-col
-          cols="6"
-          md="4"
-        >
-
-          <draw-tool
-            :dengue-polygon="polygon.dengueData"
-            :gas-leak-markers="markers.gasLeakMarkers"
-            :fire-markers="markers.fireMarkers"
-            :base-map-all-shape="baseMapAllShape"
-            :selected-shape="selectedShape"
-            :enable-drawing="enableDrawingToolsExtension"
-            :circle-drawing-center="localDrawCircle.center"
-            :circle-drawing-radius="localDrawCircle.radius"
-            :marker-drawing="localDrawMarker.position"
-            @get-updated-circle-drawing="handleCircleData"
-            @get-updated-fire-drawing="handleFireData"
-            @get-updated-gas-drawing="handleGasLeakData"
-            @get-backend-data="handleBackendData"
-            @cancel-drawing-creation="handleCancelDrawingCreation"
-            @change-marker-icon="handleChangeMarkerIcon"
-          >
-          </draw-tool>
-
-        </b-col>
+         
 
       </b-row>
 
     </div>
-
-    <button
-      id="delete-button"
-      @click="deleteSelectedShape"
-    >Delete Selected Shape</button>
+ 
 
   </div>
 </template>
@@ -82,161 +55,18 @@ import AutoSearchComplete from "./AutoSearchComplete";
 import ToggleMap from "./ToggleCrisisMap";
 
 export default {
-  mounted() {
-    var scope = this;
-    //  this.$refs.mapRef.$mapPromise.then(map => {
-    //   map.data.setControls(['Point', 'LineString', 'Polygon']);
-    //   map.data.setStyle({
-    //     editable: true,
-    //     draggable: true
-    //   });
 
-    //   scope.bindDataLayerListeners(map.data);
-    //  });
+   mounted(){
+     var scope = this;
+     this.$refs.mapRef.$mapPromise.then(map => {
 
-   
-
-    
-    this.$refs.mapRef.$mapPromise.then(map => {
-
-       if(scope.isCallCenterOperator){
+     
       scope.markerInfoWindow = new google.maps.InfoWindow({
         content: ""
       });
 
-      var polyOptions = {
-        strokeColor: "#E84B3C",
-        fillColor: "#E84B3C",
-        strokeWeight: 1,
-        fillOpacity: 0.35,
-        editable: true,
-        draggable: true
-      };
-
-      scope.drawingManager = new google.maps.drawing.DrawingManager({
-        drawingMode: google.maps.drawing.OverlayType.null,
-        drawingControlOptions: {
-          position: google.maps.ControlPosition.TOP_CENTER
-        },
-        markerOptions: {
-          draggable: true
-        },
-        polylineOptions: {
-          editable: true,
-          draggable: true
-        },
-        rectangleOptions: polyOptions,
-        circleOptions: polyOptions,
-        polygonOptions: polyOptions,
-        map: map
-      });
-
-      google.maps.event.addListener(
-        scope.drawingManager,
-        "overlaycomplete",
-        function(e) {
-          var newShape = e.overlay;
-
-          newShape.type = e.type;
-
-          // To hide:
-          scope.drawingManager.setOptions({
-            drawingControl: false
-          });
-
-          //push any shape to baseMapAllshape
-          e.overlay["id"] = scope.baseMapAllShape.length;
-          scope.baseMapAllShape.push(e);
-
-          console.log(e);
-
-          // Switch back to non-drawing mode after drawing a shape, inclcude marker
-          scope.drawingManager.setDrawingMode(null);
-
-          if (e.type !== google.maps.drawing.OverlayType.MARKER) {
-            // Add an event listener that selects the newly-drawn shape when the user
-            // mouses down on it.
-            google.maps.event.addListener(newShape, "click", function(e) {
-              if (e.vertex !== undefined) {
-                if (newShape.type === google.maps.drawing.OverlayType.POLYGON) {
-                  var path = newShape.getPaths().getAt(e.path);
-                  path.removeAt(e.vertex);
-                  if (path.length < 3) {
-                    newShape.setMap(null);
-                  }
-                }
-                if (
-                  newShape.type === google.maps.drawing.OverlayType.POLYLINE
-                ) {
-                  var path = newShape.getPath();
-                  path.removeAt(e.vertex);
-                  if (path.length < 2) {
-                    newShape.setMap(null);
-                  }
-                }
-              }
-              scope.setSelection(newShape);
-            });
-
-            // //add radius listener
-            // google.maps.event.addListener(newShape , 'radius_changed', function(event) {
-            //  scope.localDrawCircle.radius = newShape.radius;
-            // });
-
-            // //add re-center listener
-            // google.maps.event.addListener(newShape, 'center_changed', function(event) {
-
-            // scope.localDrawCircle.center = newShape.center;
-
-            // });
-
-            scope.setSelection(newShape);
-          } else {
-            //marker selection99
-
-            //attach infowindow
-
-            //  var contentString = '<div id="iw-container">' +
-            //     '<div class="iw-title">'+"sdfsdf"+'</div>' +
-            //     '<div class="iw-content">' +
-            //       '<div class="iw-subTitle">'+"8899"+'</div>' +
-            //     '</div>' +
-            //     '<div class="iw-bottom-gradient"></div>' +
-            //   '</div>';
-
-            //   google.maps.event.addListener(newShape, 'click', function() {
-            //   scope.markerInfoWindow.setContent(contentString);
-            //   scope.markerInfoWindow.open(map, this);
-            // });
-
-            //   google.maps.event.addListener(newShape, 'click', function (e) {
-            //       scope.setSelection(newShape);
-            //   });
-
-            //    google.maps.event.addListener(newShape, "dragend", function(e) {
-
-            //       scope.localDrawMarker.position=e.latLng;
-            //    });
-
-            scope.setSelection(newShape);
-          }
-
-          // Clear the current selection when the drawing mode is changed, or when the
-          // map is clicked.
-          google.maps.event.addListener(
-            scope.drawingManager,
-            "drawingmode_changed",
-            scope.clearSelection
-          );
-          //google.maps.event.addListener(map, "click", scope.clearSelection);
-          //google.maps.event.addDomListener(document.getElementById('delete-button'), 'click', deleteSelectedShape);
-        }
-      );
-
-       }
-    });
-
-     
+      
+       });
 
   },
 
@@ -253,6 +83,7 @@ export default {
       geoJson: [],
       markerInfoWindow: null,
       searchMarker: null,
+      searchMarkerFullAddress:null,
       drawCircle: {
         marker: null,
         circle: null,
@@ -279,6 +110,10 @@ export default {
     };
   },
   methods: {
+
+    handleConfirmAddress(confirmAddress){
+     this.$emit("get-new-crisis-location",confirmAddress);
+    },
 
     handleChangeMarkerIcon(iconUrl){
 
@@ -642,7 +477,60 @@ export default {
       }
     },
     handleSearchData(searchData) {
-      var pos = {
+
+      // var scope = this;
+
+      // var pos = {
+      //   lat: searchData.lat,
+      //   lng: searchData.lng
+      // };
+
+      // this.$refs.mapRef.$mapPromise.then(map => {
+      //   if (!this.searchMarker) {
+      //     //create search marker
+      //     this.searchMarker = new google.maps.Marker({
+      //       draggable: true,
+      //       position: pos,
+      //       map: map
+      //     });
+ 
+      //     //add drag listener
+
+      //   google.maps.event.addListener(this.searchMarker, "dragend", function(e) {
+      //   var latLng = e.latLng;
+
+      //   var fullAddressPos = {
+      //     lat:latLng.lat(),
+      //     lng:latLng.lng()
+      //   }
+      //   scope.searchMarkerFullAddress = fullAddressPos;
+
+      //   });
+
+      //   this.panMap(searchData.lat,searchData.lng);
+
+
+      //   } else {
+      //     console.log(searchData)
+      //     //just change latlng
+
+      //     if(searchData.googleLatLng == null){
+      //       this.searchMarker.setPosition(pos);
+      //     this.panMap(searchData.lat,searchData.lng);
+      //     }else{
+      //     this.searchMarker.setPosition(searchData.googleLatLng);
+      //     this.panMap(searchData.googleLatLng.lat,searchData.googleLatLng.lng);
+      //     }
+    
+      //   }
+      // });
+
+      
+      // this.setMapZoomLvl(17)
+
+      var scope = this;
+
+       var pos = {
         lat: searchData.lat,
         lng: searchData.lng
       };
@@ -655,8 +543,24 @@ export default {
             position: pos,
             map: map
           });
+
+          //add drag listener
+
+        google.maps.event.addListener(this.searchMarker, "dragend", function(e) {
+        var latLng = e.latLng;
+
+        var fullAddressPos = {
+          lat:latLng.lat(),
+          lng:latLng.lng()
+        }
+
+        scope.searchMarkerFullAddress = fullAddressPos;
+
+        });
+
         } else {
           //just change latlng
+        
           this.searchMarker.setPosition(pos);
         }
       });
@@ -908,6 +812,7 @@ export default {
         }
 
         google.maps.event.addListener(temp, "mouseover", function() {
+          
           scope.markerInfoWindow.setContent(contentString);
           scope.markerInfoWindow.open(map, this);
         });
