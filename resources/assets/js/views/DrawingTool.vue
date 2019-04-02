@@ -97,6 +97,24 @@
           <b-button type="button" variant="secondary" @click="cancelCreateMarkers">Cancel</b-button>
         </b-form>
 
+
+        
+        <!-- create dengue form -->
+        
+        <b-form @submit.prevent="submitDengue" v-if="enableCreateDengueForm">
+       
+          <b-form-group id="createDengueFormId" label="Create Crisis Type:" label-for="createDengueFormId-3">
+            <b-form-select
+              id="createDengueFormId-3"
+              v-model="selectedDengueOpion"
+              :options="createDengueTypeOptions"
+              required
+            ></b-form-select>
+          </b-form-group> 
+          <b-button type="submit" variant="primary" >Create</b-button>
+          <b-button type="button" variant="secondary" @click="cancelDengueShape">Cancel</b-button>
+        </b-form>
+
         <!--fire edit-->
         <b-tab
           v-if="enableFireDrawing"
@@ -258,8 +276,7 @@
             @click="saveCircleData"
           >Save</b-button>
           <b-button
-            variant="primary"
-            @click="saveCircleData"
+            @click="undoCircleData"
           >Undo</b-button>
         </b-tab>
       </b-tabs>
@@ -296,7 +313,8 @@ export default {
     "markerDrawing",
     "baseMapAllShape",
     "fireMarkers",
-    "gasLeakMarkers"
+    "gasLeakMarkers",
+    "denguePolygon"
   ],
 
   mounted() {
@@ -337,8 +355,14 @@ export default {
       selectedMarkerOpion:null,
       createCrisisTypeOptions: [{ text: 'Select One', value: null }, 'Fire Outbreak', 'Gas Leak'],
       myClass: "backColor",
+
+      //circle form
+       enableCreateDengueForm:false,
+      selectedDengueOpion:null,
+      createDengueTypeOptions: [{ text: 'Select One', value: null }, 'Dengue'],
+
       //circle
-      circleColumns: ["id", "radius", "zIndex"],
+      circleColumns: ["id", "radius", "fillColor"],
       circleData: [],
       tempCircle: null,
       enableCircleDrawing: false,
@@ -407,6 +431,44 @@ export default {
   },
 
   methods: {
+    cancelDengueShape(){
+
+        this.enableCreateDengueForm = false;
+     this.localSelectedShape=null;
+     this.selectedMarkerOpion=null;
+
+      this.$emit('cancel-drawing-creation',this.localSelectedShape);
+
+    },
+    submitDengue(){
+      console.log("submt dengue")
+    },
+    undoCircleData(){
+      console.log(this.tempCircle)
+
+      var scope = this;
+      //get id from tempcircle and retrieve original value from circleData
+      var circleId = this.tempCircle.id;
+
+        this.circleData.forEach((element, index) => {
+         
+
+          if(element.id == circleId){
+             Object.assign(scope.tempCircle, element);
+               Object.assign(scope.circleProperty, element);
+             
+             scope.tempCircle["db_data"] ={id:circleId};
+             
+           this.$emit("get-updated-circle-drawing", scope.tempCircle);
+          }
+
+        });
+ 
+      
+      
+      
+    },
+
     showModal() {
         this.$refs['my-modal'].show()
       },
@@ -506,12 +568,16 @@ export default {
     circleRowSelected(rowObject) {
       //update data circle var
       //Object.assign(target, source);
+      console.log(rowObject)
 
-      this.tempCircle = this.circleProperty;
+    //temp circle obj
+      this.tempCircle = rowObject;
       Object.assign(this.circleProperty, rowObject.row);
-
+      //tempCircle["db_data"] = rowObject.row.db_data;
       //enable editing
       this.enableCircleDrawing = true;
+      this.enableGasDrawing = false;
+       this.enableFireDrawing = false;
 
       //select map circle shape
 
@@ -579,15 +645,20 @@ export default {
       }
     },
     passDataToBaseMap() {
-      this.$emit("get-updated-drawing", this.drawCircle);
+      //this.$emit("get-updated-drawing", this.drawCircle);
     },
     changeCircleColor(color) {
-      this.drawCircle.circleFillColor = color;
-      this.passDataToBaseMap();
+     this.circleProperty.fillColor = color;
+      this.circleProperty.strokeColor = color;
+     //take temp circle obj
+       Object.assign(this.tempCircle, this.circleProperty);
+        this.$emit("get-updated-circle-drawing", this.tempCircle);
     },
     changeCircleRadius(radius) {
-      this.drawCircle.circleRadiusValue = radius;
-      this.passDataToBaseMap();
+      
+      this.circleProperty.radius = radius;
+       Object.assign(this.tempCircle, this.circleProperty);
+      this.$emit("get-updated-circle-drawing", this.tempCircle);
     }
   },
   watch: {
@@ -596,6 +667,18 @@ export default {
         this.$emit('change-marker-icon','https://cdn0.iconfinder.com/data/icons/fatcow/32/fire.png')
       }else{
         this.$emit('change-marker-icon','https://images.vexels.com/media/users/3/150012/isolated/preview/bf8475104937ca2ee44090829f4efa3a-small-gas-cylinder-icon-by-vexels.png')
+      }
+    },
+    denguePolygon(dengueDrawing){
+       var scope = this;
+      console.log(dengueDrawing);
+      if (dengueDrawing.length == 0) {
+        scope.circleData = [];
+        scope.enableCircleDrawing = false;
+      } else {
+        dengueDrawing.forEach((element, index) => {
+          scope.circleData.push(element.db_data);
+        });
       }
     },
     gasLeakMarkers(marker) {
@@ -670,9 +753,28 @@ export default {
         // this.drawCircle.enableCircleDrawing = false;
       // this.enableMarkerDrawing = false;
       }else  if (newValue.type == "circle") {
-       this.drawCircle.enableCircleDrawing = true;
-       this.enableMarkerDrawing = false;
-       this.processCircleDrawing(newValue);
+        this.enableCreateDengueForm = true;
+
+
+      Object.assign(this.circleProperty, newValue.overlay);
+
+      //  var temp = {
+      //     id: lastShape.overlay.id,
+      //     type: lastShape.overlay.type,
+      //     visible: lastShape.overlay.visible,
+      //     zIndex: lastShape.overlay.zIndex,
+      //     draggable: lastShape.overlay.draggable,
+      //     editable: lastShape.overlay.editable,
+      //     fillColor: lastShape.overlay.fillColor,
+      //     fillOpacity: lastShape.overlay.fillOpacity,
+      //     radius: lastShape.overlay.radius,
+      //     strokeColor: lastShape.overlay.strokeColor,
+      //     strokeWeight: lastShape.overlay.strokeColor,
+      //     center: lastShape.overlay.center
+      //   };
+
+      // this.enableMarkerDrawing = false;
+       //this.processCircleDrawing(newValue);
       }else if (newValue.type == "marker"){
         this.enableCreateMarkerForm = true;
         this.geoCodeAddress = newValue
