@@ -6,7 +6,7 @@ use App\ReportCrisis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\User;
-use App\Http\Controllers\CrisisController;
+use App\Events\CrisisCreated;
 use App\Crisis;
 
 class ReportCrisisController extends Controller
@@ -69,24 +69,22 @@ class ReportCrisisController extends Controller
 
         $user = new User();
 
-        var_dump($reportCrisis['date']);
-
         $data['id'] = $user->fetchUser()['id'];
         $data['date'] = $reportCrisis->date;
         $data['time'] = $reportCrisis['time'];
         $data['name'] = $reportCrisis['name'];
-        $data['telephone_number'] = $reportCrisis['telephoneNumber'];
-        $data['postal_code'] = $reportCrisis['postalCode'];
+        $data['telephoneNumber'] = $reportCrisis['telephone_number'];
+        $data['postalCode'] = $reportCrisis['postal_code'];
         $data['address'] = $reportCrisis['address'];
-        $data['crisis_type'] = $reportCrisis['crisisType'];
+        $data['crisisType'] = $reportCrisis['crisis_type'];
         $data['radius'] = $reportCrisis['radius'];
-        $data['image'] = $reportCrisis['image'];
+        
+        if($reportCrisis['image'] !== null)
+            $data['image'] = $reportCrisis['image'];
 
         $crisis = Crisis::newCrisis($data);
 
-        $assistances = explode(',', $data['assistanceRequired']);
-
-        foreach($assistances as $assistance){
+        foreach($data['assistanceRequired'] as $assistance){
             $crisis->agency()->attach($assistance);
         }
 

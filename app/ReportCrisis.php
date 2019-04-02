@@ -17,7 +17,6 @@ class ReportCrisis extends Model
         'time' => 'required',
         'location' => 'required',
         'crisisType' => 'required|in:Fire Outbreak,Dengue,Gas Leak',
-        // 'image' => 'mimes:jpeg,bmp,png',
         'radius' => 'required_if:crisisType,Dengue'
     ];
 
@@ -35,7 +34,7 @@ class ReportCrisis extends Model
 
         $imageName = null;
 
-        if ($data['image'] !== "null"){        
+        if (array_key_exists('image', $data)){        
             $imageName = str_random(40);
             $image = Image::make($data['image']->getRealPath());
             // $image->resize(320, 240);

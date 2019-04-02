@@ -65,6 +65,7 @@
             approveCrisis(){
                 axios.patch('/api/report/crisis/'+this.crisis.id, {
                     description : this.description,
+                    assistanceRequired : this.assistanceRequired,
                 })
                 .then((res) => {
                     this.$emit('approveSuccess');

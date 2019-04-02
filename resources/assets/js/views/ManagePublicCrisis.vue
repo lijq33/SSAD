@@ -11,6 +11,7 @@
                     <th>Crisis Type</th>
                     <th>Description</th>
                     <th>Location</th>
+                    <th>Radius</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -23,6 +24,7 @@
                     <td>{{crisis.crisis_type}}</td>
                     <td>{{crisis.description}}</td>
                     <td>{{crisis.address}}</td>
+                    <td>{{crisis.radius}}m</td>
                     <td> 
                         <div class = "tw-flex tw-justify-around">
                             <span>

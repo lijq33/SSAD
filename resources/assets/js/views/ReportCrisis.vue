@@ -277,7 +277,8 @@
                 this.error = [];
                 const fd = new FormData();
                 
-                fd.append('image', this.form.selectedFile);
+                if(this.form.selectedFile !== null)
+                    fd.append('image', this.form.selectedFile);
                 fd.append('name', this.form.name);
                 fd.append('telephoneNumber', this.form.telephoneNumber);
                 fd.append('date', this.form.date);
@@ -288,6 +289,8 @@
                 fd.append('crisisType', this.form.crisisType);
                 if(this.form.crisisType == 'Dengue')
                     fd.append('radius', this.form.radius);
+                else
+                    fd.append('radius', 0);
 
                 const config = {
                     headers: { 'content-type': 'multipart/form-data' }

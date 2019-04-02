@@ -73,7 +73,7 @@ class Crisis extends Model
 
         $imageName = null;
 
-        if ($data['image'] !== null){        
+        if (array_key_exists('image', $data)){        
             $imageName = str_random(40);
             $image = Image::make($data['image']->getRealPath());
             // $image->resize(320, 240);

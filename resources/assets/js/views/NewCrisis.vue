@@ -256,12 +256,10 @@
             </div>
         </div>
 
-    <b-modal ref="map-modal" hide-footer no-close-on-backdrop no-close-on-esc size="xl" title="Crisis Location">
-       <crisis-map @get-new-crisis-location="handleNewCrisisLocation" />
-      
-    </b-modal>
-
-       
+        <b-modal ref="map-modal" hide-footer no-close-on-backdrop no-close-on-esc size="xl" title="Crisis Location">
+        <crisis-map @get-new-crisis-location="handleNewCrisisLocation" />
+        
+        </b-modal>
 
     </div>
 </template>
@@ -338,7 +336,9 @@
 
                 const fd = new FormData();
 
-                fd.append('image', this.selectedFile);
+                if(this.selectedFile !== null)
+                    fd.append('image', this.selectedFile);
+
                 fd.append('name', this.form.name);
                 fd.append('telephoneNumber', this.form.telephoneNumber);
                 fd.append('date', this.form.date);
