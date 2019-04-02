@@ -103,12 +103,14 @@ class ReportCrisisController extends Controller
      * @param  \App\ReportCrisis  $reportCrisis
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ReportCrisis $reportCrisis)
+    public function destroy($id)
     {
+
+        $reportCrisis = ReportCrisis::whereId($id)->first(); 
         $reportCrisis->delete();
 
         return response()->json([
-            'message' => 'Crisis has been archived'
+            'message' => 'Crisis has been rejected'
         ]);
     }
 }

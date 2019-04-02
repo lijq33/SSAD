@@ -99,10 +99,22 @@
         },
 
         methods: {
-            approve(crisis)
-            {
+            approve(crisis) {
                 this.$refs.approveModalRef.show()
                 this.approveCrisis = crisis;
+            },
+
+            reject(crisis) {
+                axios.delete('/api/report/crisis/'+crisis.id)
+                .then((res) => {
+                    this.message = res.data.message;
+                })
+                .catch((error) => {
+                    this.error = error.response.data.errors;
+                })
+
+                this.crises = [];
+                this.getCrisis();
             },
 
             getCrisis() {
