@@ -1,15 +1,12 @@
 <template>
-    <div class = "container-fluid" id="myForm">
+    <div class = "container-fluid" id="myForm"> 
         <div class = "row">
             <div class = "col-xl">
                 <div class = "card">
 
                     <flash :message = "message"></flash>
 
-                    <div class = "card-header tw-text-grey-darker">
-                        Register a New Crisis
-                    </div>
-
+                     
                     <!-- Personal Particular & Crisis Info -->
                     <div class = "card-body">
                         <div class = "form-group row">
@@ -115,20 +112,13 @@
                                             <label for = "" class = "col-md-4 col-form-label">
                                                 Location:
                                             </label>
-                                            <div class = "col-md-6">
-                                                <div v-if= "form.crisisType == 'Dengue'" >
-                                                    <!-- dengue -->
-                                                    <button class = "btn btn-primary" style = "margin-right:5px;" @click = "displayModal">
-                                                        Open Map
-                                                    </button>
-                                                </div>
-                                                <div v-else>
-                                                    <GmapAutocomplete
-                                                        class="tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64"
-                                                        @place_changed="setPlace"
-                                                        ref="autocomplete"
-                                                    ></GmapAutocomplete>
-                                                </div>
+                                            <div class = "col-md-8"> 
+                                                <textarea 
+                                                    v-model = "form.address"
+                                                    class = "form-control" rows = "2" style = "max-width:100%; resize:none"
+                                                    :class = "{ 'tw-border-red-light' : error['address'] != undefined}"
+                                                    disabled
+                                                />  
                                             </div>
                                         </div>
 
@@ -229,6 +219,7 @@
                                         <h5 class = "card-title"> Type of Crisis:</h5>
                                         <b-form-select v-model = "form.crisisType" :options = "options" 
                                             :class = "{ 'tw-border-red-light' : error['crisisType'] != undefined}"
+                                            disabled
                                         />
                                         <div class = "tw-text-red" v-if = "error['crisisType'] != undefined">
                                             <span> {{this.error['crisisType'].toString()}} </span>   
@@ -256,23 +247,28 @@
                                     </div>
                                 </div>
                             </div>
+
+                             <b-alert
+            :show="dismissCountDown"
+            dismissible
+            variant="success"
+            @dismissed="dismissCountDown=0"
+            @dismiss-count-down="countDownChanged"
+            >
+            <p>This alert will dismiss after {{ dismissCountDown }} seconds...</p>
+            <b-progress
+                variant="success"
+                :max="dismissSecs"
+                :value="dismissCountDown"
+                height="4px"
+            ></b-progress>
+            </b-alert>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!--just a postal code helper without map reference -->
-        <div id="service-helper"></div>
-
-        <!-- dengue map -->
-        	<div>
-			<map-modal
-				:dengue = "dengue"
-				:show-modal = "showModal"
-				@hideModal = "hideModal"
-			></map-modal>
-		</div>
 
     </div>
 </template>
@@ -281,18 +277,24 @@
     import 'vue-popperjs/dist/css/vue-popper.css';
     import Popper from 'vue-popperjs';
     import moment from 'moment';
-    import MapModal from '../components/MapModal.vue';
     
     export default {
+         props: ["geoCodeAddress","selectedCrisis"],
         name: "NewCrisis",
 
         components: {
             'popper': Popper,
-			'map-modal': MapModal,
+        },
+        mounted(){
+            console.log("mounted")
         },
         
         data() {
             return{
+                isAddressLoading:true,
+               dismissSecs: 5,
+                dismissCountDown: 0,
+                showDismissibleAlert: false,
                 date: moment().format("DD/MM/YYYY"),
 
                 options: [
@@ -313,74 +315,30 @@
                 //data to be submitted
                 selectedFile: null,
                 form:{
-                     name:'',
+                    name:'',
                     telephoneNumber:'',
                     date:'',
                     time:'',
-                    address:'',
+                    address:'loading...',
                     postalCode:'',
                     description: '',
                     assistanceRequired: [],
                     crisisType: null,
-                }
+                },
+                tempFullAddres:null
             }
         },
 
         methods: {
-            bestAddressMatch(geocoder, pos, serviceFormatedAddress,matchPostalCode){ 
-                var scope = this;
-                var foundBestMatch = false;
-                
-                geocoder.geocode({ location: pos }, function(results, status) {
-                    if (status === "OK") {
-                        results.forEach(element => {
-                            if(element.formatted_address.includes(matchPostalCode)){
-                                    foundBestMatch = true;
-                                if(element.formatted_address.length > serviceFormatedAddress.length){
-                                    scope.form.address = element.formatted_address; 
-                                }else{
-                                    scope.form.address = serviceFormatedAddress; 
-                                }  
-                            } 
-                        });  
-
-                        if(!foundBestMatch){
-                            scope.form.address = serviceFormatedAddress; 
-                        }
-
-                    }
-                });
+            countDownChanged(dismissCountDown) {
+                this.dismissCountDown = dismissCountDown
             },
-
-            setPlace(place) {  
-                var scope = this;
-
-                if (place.id) { 
-                    var matchPostalCode;
-                    place.address_components.forEach(address_component => {
-                        if(address_component.types[0] == 'postal_code'){
-                            matchPostalCode = address_component.long_name;
-                            scope.form.postalCode = address_component.short_name;
-                        }
-                    });
-
-                    var pos = {
-                        lat: place.geometry.location.lat(),
-                        lng: place.geometry.location.lng()
-                    }; 
-
-                    var service = new google.maps.places.PlacesService($('#service-helper').get(0)); 
-
-                    service.getDetails({ placeId: place.place_id }, function(place, status) {
-                        if (status === google.maps.places.PlacesServiceStatus.OK) {
-                            scope.bestAddressMatch(new google.maps.Geocoder(), pos, place.formatted_address, matchPostalCode); 
-                        }
-                    });
-                }
+            showAlert() {
+                this.dismissCountDown = this.dismissSecs
             },
 
             submitCrisis() {
-                // this.isLoading = true;
+                 this.isLoading = true;
                 this.message = "";                
                 this.error = [];
 
@@ -404,17 +362,20 @@
                 axios.post('/api/ccopercrisis', fd, config)
                 .then(response => {
                     this.message = response.data.message;
-                    $('html, body').animate({ scrollTop: 0 }, 'slow');
+                    //$('html, body').animate({ scrollTop: 0 }, 'slow');
+                    this.dismissCountDown = this.dismissSecs
                     this.isLoading = false;
-                    this.resetFields();
+                    console.log("save crisis to db!")
+                    //this.resetFields();
                 })
                 .catch((error) => {
-                    this.error = error.response.data.errors;
+                    //this.error = error.response.data.errors;
                     this.isLoading = false;
                 });
             },
 
             resetFields() {
+ 
                 var scope = this; 
                 
                 this.$refs.autocomplete.$el.value = '';
@@ -423,7 +384,7 @@
                     scope.form[key] = '';
                 });
 
-                this.form.crisisType= null;
+                
                 this.form.assistanceRequired= [];
             },
 
@@ -464,9 +425,68 @@
                 this.selectedFile = files[0];
                 
                 this.createImage(this.selectedFile);
-            }
+            },
+               retrieveAddressFromBackEnd(postalCode) {
+                   var scope = this;
+
+                    axios.get('/api/address/postal_code/'+postalCode+'.json')
+                        .then((res) => {	
+                           
+                            scope.form.address = res.data.full_address;
+                            
+                            //retry if no address found
+                             if(res.data.full_address === undefined){
+                                   scope.form.address= scope.tempFullAddres 
+                             }
+
+                             scope.isAddressLoading = false;
+                            
+                        }).catch((error) => {
+                            console.log(error)
+                        }).then(() => {
+                    });
+                    },
 
         },
+
+        watch:{
+            geoCodeAddress(newValue){
+                var scope = this;
+                 var pos = {
+                        lat: newValue.position.lat(),
+                        lng: newValue.position.lng()
+                    }; 
+
+                  new google.maps.Geocoder().geocode({ location: pos }, function(results, status) {
+                    if (status === "OK") { 
+
+                        //google formatted address
+                         scope.tempFullAddres=results[0].formatted_address
+                         
+                         //get postal code from best result
+                        var postalCode = results[0].address_components[results[0].address_components.length - 1].long_name;
+                         
+                        if(postalCode == "Singapore"){
+                            //no postal code available
+                            console.log("no postal code found")
+                            scope.form.address = "No Postal Code Found";
+
+                        }else{
+                             console.log( results[0].formatted_address);
+                             scope.form.postalCode = postalCode;
+                            
+                            scope.retrieveAddressFromBackEnd(postalCode)
+                        } 
+                           
+                    }
+                });
+            },
+
+            selectedCrisis(value){
+                this.options.value = value;
+                this.form.crisisType = value;
+            }
+        }
     }
 </script>
                 

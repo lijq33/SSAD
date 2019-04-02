@@ -55,6 +55,7 @@
             @get-updated-gas-drawing="handleGasLeakData"
             @get-backend-data="handleBackendData"
             @cancel-drawing-creation="handleCancelDrawingCreation"
+            @change-marker-icon="handleChangeMarkerIcon"
           >
           </draw-tool>
 
@@ -277,6 +278,30 @@ export default {
     };
   },
   methods: {
+
+    handleChangeMarkerIcon(iconUrl){
+
+      var scope = this;
+
+         if (this.selectedShape) {
+        if (this.selectedShape.type !== "marker") {
+       
+          
+        }else{ 
+          this.selectedShape.setIcon({url:iconUrl,scaledSize: new google.maps.Size(32, 32)});
+            this.selectedShape.setAnimation(google.maps.Animation.BOUNCE);
+            setTimeout(function() {
+              if(scope.selectedShape){
+                 scope.selectedShape.setAnimation(null);
+              }
+             
+            }, 5000);
+
+        } 
+       
+      }
+
+    },
     handleCancelDrawingCreation(cancelDrawingType){
       console.log("clear393837")
 
@@ -634,6 +659,11 @@ export default {
           this.searchMarker.setPosition(pos);
         }
       });
+
+      this.panMap(searchData.lat,searchData.lng);
+      this.setMapZoomLvl(17)
+
+
     },
     retrieveAddressFromBackEnd(postalCode) {
       axios
