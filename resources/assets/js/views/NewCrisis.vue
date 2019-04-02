@@ -270,6 +270,8 @@
             </div>
         </div>
 
+        <crisis-map/>
+
     </div>
 </template>
 
@@ -277,13 +279,15 @@
     import 'vue-popperjs/dist/css/vue-popper.css';
     import Popper from 'vue-popperjs';
     import moment from 'moment';
-    
+    import CrisisMap from './BaseMap';
+
     export default {
          props: ["geoCodeAddress","selectedCrisis"],
         name: "NewCrisis",
 
         components: {
             'popper': Popper,
+            'crisis-map':CrisisMap
         },
         mounted(){
             console.log("mounted")
