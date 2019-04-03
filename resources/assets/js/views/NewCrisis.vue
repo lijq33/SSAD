@@ -271,7 +271,8 @@
     import CrisisMap from './NewBaseMap';
 
     export default {
-         props: ["geoCodeAddress","selectedCrisis"],
+        props: ["geoCodeAddress","selectedCrisis"],
+        
         name: "NewCrisis",
 
         components: {
@@ -312,6 +313,7 @@
                     assistanceRequired: [],
                     crisisType: null,
                 },
+
                 tempFullAddres:null
             }
         },
@@ -323,14 +325,17 @@
                     console.log(crisisLocation);
                     this.hideModal();
             },
-             showModal() {
-                    this.$refs['map-modal'].show()
-                },
-                hideModal() {
-                    this.$refs['map-modal'].hide()
-                }, 
+
+            showModal() {
+                this.$refs['map-modal'].show()
+            },
+            
+            hideModal() {
+                this.$refs['map-modal'].hide()
+            }, 
+            
             submitCrisis() {
-                 this.isLoading = true;
+                this.isLoading = true;
                 this.message = "";                
                 this.error = [];
 
@@ -380,12 +385,10 @@
                 Object.keys(this.form).forEach(function(key,index) {
                     scope.form[key] = '';
                 });
-
                 
                 this.form.assistanceRequired= [];
             },
             
-            //Images related methods
             uploadImage(e) {
                 document.querySelector('.upload-image-input').click();
             },
@@ -404,7 +407,6 @@
                 reader.readAsDataURL(file);
             },
 
-
             onFileSelected (event) {
                 let files = event.target.files || event.dataTransfer.files;
 
@@ -415,27 +417,25 @@
                 
                 this.createImage(this.selectedFile);
             },
-               retrieveAddressFromBackEnd(postalCode) {
-                   var scope = this;
 
-                    axios.get('/api/address/postal_code/'+postalCode+'.json')
-                        .then((res) => {	
-                           
-                            scope.form.address = res.data.full_address;
-                            
-                            //retry if no address found
-                             if(res.data.full_address === undefined){
-                                   scope.form.address= scope.tempFullAddres 
-                             }
+            retrieveAddressFromBackEnd(postalCode) {
+                var scope = this;
 
-                             scope.isAddressLoading = false;
-                            
-                        }).catch((error) => {
-                            console.log(error)
-                        }).then(() => {
-                    });
-                    },
+                axios.get('/api/address/postal_code/'+postalCode+'.json')
+                .then((res) => {	
+                    scope.form.address = res.data.full_address;
+                        
+                    //retry if no address found
+                    if(res.data.full_address === undefined){
+                        scope.form.address= scope.tempFullAddres 
+                    }
 
+                    scope.isAddressLoading = false;
+                        
+                }).catch((error) => {
+                    console.log(error)
+                })
+            },
         },
 
         watch:{
