@@ -317,6 +317,7 @@
                     description: '',
                     assistanceRequired: [],
                     crisisType: null,
+                    radius:''
                 },
 
                 tempFullAddres:null
@@ -336,6 +337,7 @@
                 this.form.postalCode = crisisLocation.postal_code;
 
                   if(crisisLocation.radius != null){
+                      this.form.radius = crisisLocation.radius;
                     console.log("have radius");
                     console.log(crisisLocation.radius)
                 }
