@@ -22,6 +22,23 @@
         </b-col>
       </b-row>
 
+        <div v-if="hideDrawingMap" class="form-group row">
+        <label
+          for="Address"
+          class="col-md-1 col-form-label"
+        >
+          Radius:
+        </label>
+        <div class="col-md-5">
+          <input type = "text"
+              class = "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic"
+              v-model = "newCircleRadius"
+              disabled
+          >
+           
+        </div>
+      </div>
+
       <b-row>
         <b-col
           cols="12"
@@ -55,7 +72,7 @@ import AutoSearchComplete from "./AutoSearchComplete";
 import ToggleMap from "./ToggleCrisisMap";
 
 export default {
-  props:["hideToggleWindow"],
+  props:["hideToggleWindow","hideDrawingWindow"],
    mounted(){
      var scope = this;
      this.$refs.mapRef.$mapPromise.then(map => {
@@ -78,6 +95,8 @@ export default {
 
   data() {
     return {
+      newCircleRadius:'',
+      hideDrawingMap:false,
       hideToggleMap:false,
       localFireData: null,
       baseMapAllShape: [],
@@ -545,6 +564,11 @@ export default {
             map: map
           });
 
+          //if is circle
+          if(scope.hideDrawingMap){
+            console.log("is drawing on new crisis")
+          }
+
           //add drag listener
 
         google.maps.event.addListener(this.searchMarker, "dragend", function(e) {
@@ -865,6 +889,9 @@ export default {
   watch: {
        hideToggleWindow(value){
       this.hideToggleMap = value;
+    },
+    hideDrawingWindow(value){
+      this.hideDrawingMap = value;
     },
   },
   computed: {

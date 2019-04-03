@@ -7,9 +7,10 @@
           <!--autosearch -->
           <auto-search
             :query-full-address="searchMarkerFullAddress"
+            :clear-search-result-value="clearSearchVal"
             @get-search-data="handleSearchData"
             @confirm-address="handleConfirmAddress"
-            @clear-Search="clearSearch"
+           
           />
         </b-col>
 
@@ -21,6 +22,23 @@
           />
         </b-col>
       </b-row>
+
+        <div v-if="hideDrawingMap" class="form-group row">
+        <label
+          for="Address"
+          class="col-md-1 col-form-label"
+        >
+          Radius:
+        </label>
+        <div class="col-md-5">
+          <input type = "text"
+              class = "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic"
+              v-model = "newCircleRadius"
+              disabled
+          >
+           
+        </div>
+      </div>
 
       <b-row>
         <b-col
@@ -55,7 +73,7 @@ import AutoSearchComplete from "./AutoSearchComplete";
 import ToggleMap from "./ToggleCrisisMap";
 
 export default {
-  props:["hideToggleWindow"],
+  props:["hideToggleWindow","hideDrawingWindow","clearSearchResult"],
    mounted(){
      var scope = this;
      this.$refs.mapRef.$mapPromise.then(map => {
@@ -78,6 +96,9 @@ export default {
 
   data() {
     return {
+      clearSearchVal:false,
+      newCircleRadius:'',
+      hideDrawingMap:false,
       hideToggleMap:false,
       localFireData: null,
       baseMapAllShape: [],
@@ -538,12 +559,38 @@ export default {
 
       this.$refs.mapRef.$mapPromise.then(map => {
         if (!this.searchMarker) {
-          //create search marker
+
+              //create search marker
           this.searchMarker = new google.maps.Marker({
             draggable: true,
             position: pos,
             map: map
           });
+        
+
+          //if is circle
+          if(scope.clearSearchVal === "Dengue"){
+
+           var circle = new google.maps.Circle({
+              path: google.maps.SymbolPath.CIRCLE,
+              strokeColor: '#E84B3C',
+              strokeOpacity: 1,
+              strokeWeight: 1,
+              fillColor: '#E84B3C',
+              fillOpacity: 0.35,
+              map: map,
+              center: pos,
+              radius: 1000,
+              editable: true
+            });
+
+             circle.bindTo('center', this.searchMarker, 'position');
+            
+          }else{
+
+          
+
+          }
 
           //add drag listener
 
@@ -863,8 +910,22 @@ export default {
     }
   },
   watch: {
+    clearSearchResult(value){
+
+       console.log("clear1")
+      if(this.searchMarker){
+         this.searchMarker.setMap(null);
+        this.searchMarker = null;
+        this.searchMarkerFullAddress=null;
+        this.clearSearchVal = value;
+       
+      }
+    },
        hideToggleWindow(value){
       this.hideToggleMap = value;
+    },
+    hideDrawingWindow(value){
+      this.hideDrawingMap = value;
     },
   },
   computed: {

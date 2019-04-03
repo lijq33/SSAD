@@ -61,7 +61,7 @@
 <script>
 
 export default {
- 	props: ["queryFullAddress"],
+ 	props: ["queryFullAddress","clearSearchResultValue"],
  
   data() {
     return {
@@ -208,6 +208,14 @@ export default {
   watch:{
       queryFullAddress(newValue) {
         this.geoCodeAddress(newValue)
+    },
+    clearSearchResultValue(newValue){
+      this.isLoading = false;
+      this.form.address = ""; 
+      this.$refs.autocomplete.$el.value = ""; 
+      this.confirmAddress.full_address = null;
+      this.confirmAddress.postal_code = null;
+      console.log("clear 2")
     }
   }
 };
