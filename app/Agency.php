@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Agency extends Model
 {
-    protected $fillable = ['name', 'slug'];
 
     public function crisis()
     {

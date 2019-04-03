@@ -348,12 +348,16 @@
                 fd.append('description', this.form.description);
                 fd.append('assistanceRequired', this.form.assistanceRequired);
                 fd.append('crisisType', this.form.crisisType);
-
+                if(this.form.crisisType == 'Dengue')
+                    fd.append('radius', this.form.radius);
+                else
+                    fd.append('radius', 0);
+                    
                 const config = {
                     headers: { 'content-type': 'multipart/form-data' }
                 };
 
-                axios.post('/api/ccopercrisis', fd, config)
+                axios.post('/api/crisis', fd, config)
                 .then(response => {
                     this.message = response.data.message;
                     $('html, body').animate({ scrollTop: 0 }, 'slow');

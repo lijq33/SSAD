@@ -41,7 +41,8 @@ class ArchiveCrisisTest extends TestCase
             'address' => '12312 S Michigan Ave, Chicago, IL 60628, USA',
             'description' => 'This is a short description about the crisis4',
             'crisisType' => 'Fire Outbreak', 
-            'assistanceRequired' => ["1"],
+            'assistanceRequired' => '1',
+            'radius' => '0'
         ]);
 
         $response = $this->post('/api/auth/logout');

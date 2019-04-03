@@ -39,11 +39,11 @@ Route::group(['prefix' => 'auth'], function ($router) {
 });
 
 Route::group(['middleware' => 'auth.ccoperator'], function ($router) {
-    Route::post('ccopercrisis', 'CrisisController@store');
+    Route::post('crisis', 'CrisisController@store');
 });
 
 Route::group(['middleware' => 'auth.crisismanager'], function ($router) {
-    Route::post('crisis', 'CrisisController@store');
+    // Route::post('crisis', 'CrisisController@store');
     // Route::get('crisis', 'CrisisController@index');
     Route::get('crisis/archive', 'CrisisController@archive');
     Route::post('crisis/{crisis}', 'CrisisController@update');

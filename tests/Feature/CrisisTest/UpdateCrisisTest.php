@@ -59,7 +59,6 @@ class UpdateCrisisTest extends TestCase
             'description' => 'updated description',
         ]);
 
-
         $response->assertStatus(200);
 
         $this->assertDatabaseHas('crises', [

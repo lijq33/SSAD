@@ -6,13 +6,10 @@ use Tests\TestCase;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-use App\Crisis;
 use App\Events\CrisisCreated;
 use Illuminate\Support\Facades\Event;
 
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class NewCrisisTest extends TestCase
 {
@@ -24,7 +21,7 @@ class NewCrisisTest extends TestCase
     {
         parent::setUp();
 
-        // Event::fake();
+        Event::fake();
     }
 
 
@@ -58,10 +55,13 @@ class NewCrisisTest extends TestCase
             'date' => '19/03/2019',
             'time' => '1:30 PM',
             'address' => '12312 S Michigan Ave, Chicago, IL 60628, USA',
-            'description' => 'This is a short description about the crisis4',
+            'description' => 'This is a short description about the crisis',
             'crisisType' => 'Fire Outbreak', 
-            'assistanceRequired' => ["1"],
+            'assistanceRequired' => '1',
+            'radius' => '0',
         ]);
+
+        var_dump($response->JSON([]));
 
         $response->assertStatus(200);
 

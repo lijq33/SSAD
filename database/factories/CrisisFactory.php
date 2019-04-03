@@ -14,7 +14,7 @@ $factory->define(App\Crisis::class, function (Faker $faker) {
         'crisis_type' => 'Fire Outbreak', 
         'status' => 'registered', 
         'description' => 'this is a short description of the crisis', 
-        'twitter_post_id' => null, 
+        // 'twitter_post_id' => null, 
         'facebook_post_id' => null
     ];
 });
