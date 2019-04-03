@@ -99,19 +99,11 @@
                             <div class = "col-md-6">
                                 <div class = "card" style = "height:304px">
                                     <div class = "card-body">
-                                        <div v-if="form.crisisType != 'Dengue'">
-                                        
-                                        <h5 class = "card-title"> More Infomation<b-button size="sm" @click="showModal">Open Map</b-button></h5>
-                                        </div>
+                                        <h5 class = "card-title"> More Infomation</h5>
 
-                                        <div v-else>
-
-                                            <h5 class = "card-title"> More Infomation<b-button size="sm" @click="showDrawCricleTool">Open Map</b-button></h5>
-                                        </div>
-                                        
                                         <div class = "form-group row">
                                             <label for = "" class = "col-md-4 col-form-label">
-                                                Location:
+                                                Address:
                                             </label>
                                             <div class = "col-md-8"> 
                                                 <textarea 
@@ -120,8 +112,13 @@
                                                     :class = "{ 'tw-border-red-light' : error['address'] != undefined}"
                                                     disabled
                                                 />
+                                                <div v-if="form.crisisType != 'Dengue'">
+                                                    <b-button size="sm" @click="showModal">Open Map</b-button>
+                                                </div>
 
-                                                <b-button size="xl" @click="showModal">Open Map</b-button>
+                                                <div v-else>
+                                                    <b-button size="sm" @click="showDrawCricleTool">Open Map</b-button>
+                                                </div>
                                             </div>
                                         </div>
 
