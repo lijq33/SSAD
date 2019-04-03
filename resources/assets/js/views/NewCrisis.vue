@@ -256,8 +256,8 @@
             </div>
         </div>
 
-        <b-modal ref="map-modal" hide-footer no-close-on-backdrop no-close-on-esc size="xl" title="Crisis Location">
-        <crisis-map @get-new-crisis-location="handleNewCrisisLocation" :hide-toggle-window="hideToggleWindow" :hide-drawing-window="hideDrawingWindow" />
+        <b-modal ref="map-modal" hide-footer no-close-on-backdrop no-close-on-esc size="xl" title="Crisis Location" @hidden="hiddenModal">
+        <crisis-map @get-new-crisis-location="handleNewCrisisLocation" :hide-toggle-window="hideToggleWindow" :hide-drawing-window="hideDrawingWindow" :clear-search-result="clearSearchResult" />
         
         </b-modal>
 
@@ -269,6 +269,8 @@
     import Popper from 'vue-popperjs';
     import moment from 'moment';
     import CrisisMap from './NewBaseMap';
+
+   
 
     export default {
         props: ["geoCodeAddress","selectedCrisis"],
@@ -285,6 +287,7 @@
         
         data() {
             return{
+                clearSearchResult:null,
                 hideDrawingWindow:false,
                 hideToggleWindow:false,
                 date: moment().format("DD/MM/YYYY"),
@@ -321,8 +324,12 @@
         },
 
         methods: {
+            hiddenModal(){
+               
+            },
             showDrawCricleTool(){
                 this.hideDrawingWindow = true;
+                this.showModal();
             },
             handleNewCrisisLocation(crisisLocation){
                 this.form.address = crisisLocation.full_address;
@@ -332,13 +339,15 @@
             },
 
             showModal() {
+
                 this.$refs['map-modal'].show();
-                this.hideToggleWindow = true;
+                //this.hideToggleWindow = true;
             },
             
             hideModal() {
                 this.$refs['map-modal'].hide();
-                this.hideToggleWindow = false;
+                //this.hideToggleWindow = false;
+                //this.hideDrawingWindow = false;
             }, 
             
             submitCrisis() {
@@ -446,6 +455,24 @@
         },
 
         watch:{
+            'form.crisisType'(value){
+
+                 this.hideToggleWindow = true;
+
+                if(this.form.crisisType !== "Dengue"){
+                    
+                 this.hideDrawingWindow = false;
+                  console.log("clear not dengue") 
+                }else{
+                   
+                    this.hideDrawingWindow = true;
+                    console.log("clear dengue") 
+                }
+
+                //clear search
+                this.clearSearchResult = this.form.crisisType;
+                this.form.address = '';
+            },
             geoCodeAddress(newValue){
                 var scope = this;
                  var pos = {
