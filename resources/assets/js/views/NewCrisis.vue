@@ -6,11 +6,12 @@
 
                     <flash :message = "message"></flash>
 
-                    <!-- Personal Particular & Crisis Info -->
                     <div class = "card-body">
-                        <div class = "form-group row">
-                            <div class = "col-md-6">
 
+                        <div class = "form-group row">
+                            
+                            <!-- Personal Particulars -->
+                            <div class = "col-md-6">
                                 <div class = "card">
                                     <div class = "card-body">
                                         <h5 class = "card-title">Personal Particulars</h5>
@@ -43,18 +44,10 @@
                                             </div>
                                         </div>
 
-                                        <!-- Contact -->
+                                        <!-- telephone -->
                                         <div class = "form-group row">
                                             <label for = "Mobile Number" class = "col-md-4 col-form-label">
                                                 Mobile Number:
-                                                <popper trigger = "hover" :options = "{placement: 'bottom'}">
-                                                    <div class = "popper tw-font-hairline tw-text-grey-dark">
-                                                        Phone/Mobile No.
-                                                    </div>
-                                                    <button slot="reference">   
-                                                        <i class = "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"></i>
-                                                    </button>
-                                                </popper> 
                                             </label>
 
                                             <div class = "col-md-6">
@@ -106,7 +99,9 @@
                             <div class = "col-md-6">
                                 <div class = "card" style = "height:304px">
                                     <div class = "card-body">
-                                        <h5 class = "card-title">Location<b-button size="sm" @click="showModal">Open Map</b-button></h5>
+                                        <h5 class = "card-title">
+                                            More Infomation
+                                        </h5>
                                         <div class = "form-group row">
                                             <label for = "" class = "col-md-4 col-form-label">
                                                 Location:
@@ -117,7 +112,9 @@
                                                     class = "form-control" rows = "2" style = "max-width:100%; resize:none"
                                                     :class = "{ 'tw-border-red-light' : error['address'] != undefined}"
                                                     disabled
-                                                />  
+                                                />
+
+                                                <b-button size="xl" @click="showModal">Open Map</b-button>
                                             </div>
                                         </div>
 
@@ -157,7 +154,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- end of location column -->
 
                             <!-- beginning of crisis type column -->
                             <div class = "col-md-6">
@@ -257,8 +253,7 @@
         </div>
 
         <b-modal ref="map-modal" hide-footer no-close-on-backdrop no-close-on-esc size="xl" title="Crisis Location">
-        <crisis-map @get-new-crisis-location="handleNewCrisisLocation" />
-        
+            <crisis-map @get-new-crisis-location="handleNewCrisisLocation" />
         </b-modal>
 
     </div>
@@ -272,7 +267,7 @@
 
     export default {
         props: ["geoCodeAddress","selectedCrisis"],
-        
+
         name: "NewCrisis",
 
         components: {
@@ -320,10 +315,10 @@
 
         methods: {
             handleNewCrisisLocation(crisisLocation){
-                    this.form.address = crisisLocation.full_address;
-                    this.form.postalCode = crisisLocation.postal_code;
-                    console.log(crisisLocation);
-                    this.hideModal();
+                this.form.address = crisisLocation.full_address;
+                this.form.postalCode = crisisLocation.postal_code;
+                console.log(crisisLocation);
+                this.hideModal();
             },
 
             showModal() {
