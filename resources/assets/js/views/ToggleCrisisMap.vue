@@ -191,13 +191,14 @@
         }  
       },
       selectDengue(){
-        var request = sampleData;
-       
+        var request = "/api/crisis/dengue";
+        var markerIconUrl = 'https://www.sumitomo-chemical.co.uk/wp-content/uploads/icon-mosquito.png';
+        //https://rtectreecare.com/wp-content/uploads/2016/05/mosquito-no-background.gif
 
          if(this.selectDengue.includes("show")){
-           request["displayId"] = this.selectDengue; 
-           this.$emit("get-toggle-data", request);
-           //this.getCrisisDataFromBackEnd('',this.selectDengue,'');
+           //request["displayId"] = this.selectDengue; 
+           //this.$emit("get-toggle-data", request);
+           this.getCrisisDataFromBackEnd(request,this.selectDengue,markerIconUrl);
         }else{
           this.removeCrisisDataFromFrontend(this.selectDengue);
         } 

@@ -117,7 +117,7 @@ export default {
       zoom_lvl: 12,
       sgcoord: { lat: 1.3521, lng: 103.8198 },
       markers: { twoHrWeatherMarkers: [], fireMarkers: [], gasLeakMarkers: [] },
-      polygon: { dengueData: [] },
+      polygon: { dengueData: [],dengueMarkerData:[] },
       enableDrawingToolsExtension: false,
       drawingTool: null,
       localDrawCircle: {
@@ -213,8 +213,15 @@ export default {
     handleClearToggleData(clearToggleData) {
       //empty markers
       if (clearToggleData === "hideDengueData") {
+
+        //clear circle
         this.removePolygon(clearToggleData, this.polygon.dengueData);
         this.polygon.dengueData = [];
+
+        //clear marker
+        this.removePolygon(clearToggleData, this.polygon.dengueMarkerData);
+        this.polygon.dengueMarkerData = [];
+
       } else if (clearToggleData === "hideFireData") {
         this.removeMarkers(this.markers.fireMarkers);
         this.markers.fireMarkers = [];
@@ -741,33 +748,73 @@ export default {
       }
     },
     showDengueData(dengue) {
+
       var scope = this;
       this.$refs.mapRef.$mapPromise.then(map => {
-        dengue.forEach((element, index) => {
-          //     strokeColor: '#E84B3C',
-          //     fillColor: '#E84B3C',
-          //     strokeWeight: 1,
-          //     fillOpacity: 0.35,
-          //     clickable: false,
-          //     editable: true,
-          //     zIndex: 1
+        dengue.crises.forEach((element, index) => {
+          
 
-          if (element.type == "circle") {
+          var pos = {
+                      lat: element.lat,
+                      lng: element.lng
+                    };
+
+
+                  //create dengue search marker
+         var tempDengueMarker = new google.maps.Marker({
+            icon: {
+              url: dengue.iconUrl,
+              scaledSize: new google.maps.Size(64, 64)
+            },
+            draggable: false,
+            position: pos,
+            map: map
+          });
+        
+  
+ 
             var temp = new google.maps.Circle({
               path: google.maps.SymbolPath.CIRCLE,
-              strokeColor: element.fillColor,
+              strokeColor: '#E84B3C',
               strokeOpacity: 1,
               strokeWeight: 1,
-              fillColor: element.fillColor,
+              fillColor: '#E84B3C',
               fillOpacity: 0.35,
               map: map,
-              center: element.center,
+              center: pos,
               radius: element.radius,
-              db_data:element
             });
+            
+           temp.bindTo('center', tempDengueMarker, 'position');
 
-            scope.polygon.dengueData.push(temp);
-          }
+            //attach infowindow
+          var contentString =
+            '<div id="iw-container">' +
+            '<div class="iw-title">' +
+            element.name +
+            "</div>" +
+            '<div class="iw-content">' +
+            '<div class="iw-subTitle">' +
+            element.description +
+            "</div>" +
+            '<img src = "/crisis/' +
+            element.image +
+            '" alt="dengue image"/>' +
+            "</div>";
+          '<div class="iw-bottom-gradient"></div>' + "</div>";
+             
+           google.maps.event.addListener(temp, "mouseover", function() {
+          
+          scope.markerInfoWindow.setContent(contentString);
+           scope.markerInfoWindow.setPosition(pos);
+          scope.markerInfoWindow.open(map, this);
+        });
+
+         
+        scope.polygon.dengueData.push(temp);
+         scope.polygon.dengueMarkerData.push(tempDengueMarker);
+
+           
         });
       });
     },

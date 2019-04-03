@@ -335,6 +335,7 @@
             handleNewCrisisLocation(crisisLocation){
                 this.form.address = crisisLocation.full_address;
                 this.form.postalCode = crisisLocation.postal_code;
+                console.log(crisisLocation)
 
                   if(crisisLocation.radius != null){
                       this.form.radius = crisisLocation.radius;
