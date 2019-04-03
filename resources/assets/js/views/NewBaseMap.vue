@@ -34,7 +34,6 @@
           <input type = "text"
               class = "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic"
               v-model = "newCircleRadius"
-              disabled
           >
            
         </div>
@@ -96,6 +95,7 @@ export default {
 
   data() {
     return {
+      newCircle:null,
       clearSearchVal:false,
       newCircleRadius:'',
       hideDrawingMap:false,
@@ -134,6 +134,10 @@ export default {
   methods: {
 
     handleConfirmAddress(confirmAddress){
+
+      if(this.newCircleRadius){
+        confirmAddress["radius"]=this.newCircleRadius;
+      }
      this.$emit("get-new-crisis-location",confirmAddress);
     },
 
@@ -569,9 +573,10 @@ export default {
         
 
           //if is circle
-          if(scope.clearSearchVal === "Dengue"){
+          if(scope.hideDrawingMap){
+            console.log("create dengue dengue")
 
-           var circle = new google.maps.Circle({
+          scope.newCircle = new google.maps.Circle({
               path: google.maps.SymbolPath.CIRCLE,
               strokeColor: '#E84B3C',
               strokeOpacity: 1,
@@ -580,11 +585,21 @@ export default {
               fillOpacity: 0.35,
               map: map,
               center: pos,
-              radius: 1000,
+              radius: 150,
               editable: true
             });
 
-             circle.bindTo('center', this.searchMarker, 'position');
+             scope.newCircle.bindTo('center', this.searchMarker, 'position');
+
+             scope.newCircleRadius = 150;
+
+              google.maps.event.addListener(scope.newCircle, "radius_changed", function(e) {
+               
+                scope.newCircleRadius =  parseFloat(scope.newCircle.radius);
+              });
+
+
+             
             
           }else{
 
@@ -910,6 +925,19 @@ export default {
     }
   },
   watch: {
+
+    newCircleRadius(){
+        if(this.newCircle){
+           
+          if(isNaN(this.newCircleRadius)){
+       
+            this.newCircleRadius = 0;
+          }     
+          this.newCircle.setOptions({radius:parseFloat(this.newCircleRadius)});
+
+        }
+         
+    },
     clearSearchResult(value){
 
        console.log("clear1")
@@ -918,6 +946,10 @@ export default {
         this.searchMarker = null;
         this.searchMarkerFullAddress=null;
         this.clearSearchVal = value;
+
+        if(this.hideDrawingMap){
+          this.newCircle.setMap(null);
+        }
        
       }
     },

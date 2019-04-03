@@ -334,7 +334,11 @@
             handleNewCrisisLocation(crisisLocation){
                 this.form.address = crisisLocation.full_address;
                 this.form.postalCode = crisisLocation.postal_code;
-                console.log(crisisLocation);
+
+                  if(crisisLocation.radius != null){
+                    console.log("have radius");
+                    console.log(crisisLocation.radius)
+                }
                 this.hideModal();
             },
 
@@ -507,7 +511,8 @@
 
             selectedCrisis(value){
                 this.options.value = value;
-                this.form.crisisType = value;
+                this.form.crisisType = value; 
+              
             }
         }
     }

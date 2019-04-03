@@ -7,9 +7,10 @@
           <!--autosearch -->
           <auto-search
             :query-full-address="searchMarkerFullAddress"
+            :clear-search-result-value="clearSearchVal"
             @get-search-data="handleSearchData"
             @confirm-address="handleConfirmAddress"
-            @clear-Search="clearSearch"
+           
           />
         </b-col>
 
@@ -33,7 +34,6 @@
           <input type = "text"
               class = "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic"
               v-model = "newCircleRadius"
-              disabled
           >
            
         </div>
@@ -72,7 +72,7 @@ import AutoSearchComplete from "./AutoSearchComplete";
 import ToggleMap from "./ToggleCrisisMap";
 
 export default {
-  props:["hideToggleWindow","hideDrawingWindow"],
+  props:["hideToggleWindow","hideDrawingWindow","clearSearchResult"],
    mounted(){
      var scope = this;
      this.$refs.mapRef.$mapPromise.then(map => {
@@ -95,6 +95,8 @@ export default {
 
   data() {
     return {
+      newCircle:null,
+      clearSearchVal:false,
       newCircleRadius:'',
       hideDrawingMap:false,
       hideToggleMap:false,
@@ -132,6 +134,10 @@ export default {
   methods: {
 
     handleConfirmAddress(confirmAddress){
+
+      if(this.newCircleRadius){
+        confirmAddress["radius"]=this.newCircleRadius;
+      }
      this.$emit("get-new-crisis-location",confirmAddress);
     },
 
@@ -557,16 +563,48 @@ export default {
 
       this.$refs.mapRef.$mapPromise.then(map => {
         if (!this.searchMarker) {
-          //create search marker
+
+              //create search marker
           this.searchMarker = new google.maps.Marker({
             draggable: true,
             position: pos,
             map: map
           });
+        
 
           //if is circle
           if(scope.hideDrawingMap){
-            console.log("is drawing on new crisis")
+            console.log("create dengue dengue")
+
+          scope.newCircle = new google.maps.Circle({
+              path: google.maps.SymbolPath.CIRCLE,
+              strokeColor: '#E84B3C',
+              strokeOpacity: 1,
+              strokeWeight: 1,
+              fillColor: '#E84B3C',
+              fillOpacity: 0.35,
+              map: map,
+              center: pos,
+              radius: 150,
+              editable: true
+            });
+
+             scope.newCircle.bindTo('center', this.searchMarker, 'position');
+
+             scope.newCircleRadius = 150;
+
+              google.maps.event.addListener(scope.newCircle, "radius_changed", function(e) {
+               
+                scope.newCircleRadius =  parseFloat(scope.newCircle.radius);
+              });
+
+
+             
+            
+          }else{
+
+          
+
           }
 
           //add drag listener
@@ -887,6 +925,34 @@ export default {
     }
   },
   watch: {
+
+    newCircleRadius(){
+        if(this.newCircle){
+           
+          if(isNaN(this.newCircleRadius)){
+       
+            this.newCircleRadius = 0;
+          }     
+          this.newCircle.setOptions({radius:parseFloat(this.newCircleRadius)});
+
+        }
+         
+    },
+    clearSearchResult(value){
+
+       console.log("clear1")
+      if(this.searchMarker){
+         this.searchMarker.setMap(null);
+        this.searchMarker = null;
+        this.searchMarkerFullAddress=null;
+        this.clearSearchVal = value;
+
+        if(this.hideDrawingMap){
+          this.newCircle.setMap(null);
+        }
+       
+      }
+    },
        hideToggleWindow(value){
       this.hideToggleMap = value;
     },
