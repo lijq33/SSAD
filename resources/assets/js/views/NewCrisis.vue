@@ -6,11 +6,12 @@
 
                     <flash :message = "message"></flash>
 
-                    <!-- Personal Particular & Crisis Info -->
                     <div class = "card-body">
-                        <div class = "form-group row">
-                            <div class = "col-md-6">
 
+                        <div class = "form-group row">
+                            
+                            <!-- Personal Particulars -->
+                            <div class = "col-md-6">
                                 <div class = "card">
                                     <div class = "card-body">
                                         <h5 class = "card-title">Personal Particulars</h5>
@@ -43,18 +44,10 @@
                                             </div>
                                         </div>
 
-                                        <!-- Contact -->
+                                        <!-- telephone -->
                                         <div class = "form-group row">
                                             <label for = "Mobile Number" class = "col-md-4 col-form-label">
                                                 Mobile Number:
-                                                <popper trigger = "hover" :options = "{placement: 'bottom'}">
-                                                    <div class = "popper tw-font-hairline tw-text-grey-dark">
-                                                        Phone/Mobile No.
-                                                    </div>
-                                                    <button slot="reference">   
-                                                        <i class = "fas fa-question-circle tw-text-grey-dark tw-cursor-pointer"></i>
-                                                    </button>
-                                                </popper> 
                                             </label>
 
                                             <div class = "col-md-6">
@@ -108,12 +101,12 @@
                                     <div class = "card-body">
                                         <div v-if="form.crisisType != 'Dengue'">
                                         
-                                        <h5 class = "card-title">Location<b-button size="sm" @click="showModal">Open Map</b-button></h5>
+                                        <h5 class = "card-title"> More Infomation<b-button size="sm" @click="showModal">Open Map</b-button></h5>
                                         </div>
 
                                         <div v-else>
 
-                                            <h5 class = "card-title">Location<b-button size="sm" @click="showDrawCricleTool">Open Map</b-button></h5>
+                                            <h5 class = "card-title"> More Infomation<b-button size="sm" @click="showDrawCricleTool">Open Map</b-button></h5>
                                         </div>
                                         
                                         <div class = "form-group row">
@@ -126,7 +119,9 @@
                                                     class = "form-control" rows = "2" style = "max-width:100%; resize:none"
                                                     :class = "{ 'tw-border-red-light' : error['address'] != undefined}"
                                                     disabled
-                                                />  
+                                                />
+
+                                                <b-button size="xl" @click="showModal">Open Map</b-button>
                                             </div>
                                         </div>
 
@@ -166,7 +161,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- end of location column -->
 
                             <!-- beginning of crisis type column -->
                             <div class = "col-md-6">
@@ -281,7 +275,7 @@
 
     export default {
         props: ["geoCodeAddress","selectedCrisis"],
-        
+
         name: "NewCrisis",
 
         components: {
@@ -334,10 +328,10 @@
                 this.hideDrawingWindow = true;
             },
             handleNewCrisisLocation(crisisLocation){
-                    this.form.address = crisisLocation.full_address;
-                    this.form.postalCode = crisisLocation.postal_code;
-                    console.log(crisisLocation);
-                    this.hideModal();
+                this.form.address = crisisLocation.full_address;
+                this.form.postalCode = crisisLocation.postal_code;
+                console.log(crisisLocation);
+                this.hideModal();
             },
 
             showModal() {
