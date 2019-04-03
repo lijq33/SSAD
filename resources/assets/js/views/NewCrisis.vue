@@ -106,7 +106,16 @@
                             <div class = "col-md-6">
                                 <div class = "card" style = "height:304px">
                                     <div class = "card-body">
+                                        <div v-if="form.crisisType != 'Dengue'">
+                                        
                                         <h5 class = "card-title">Location<b-button size="sm" @click="showModal">Open Map</b-button></h5>
+                                        </div>
+
+                                        <div v-else>
+
+                                            <h5 class = "card-title">Location<b-button size="sm" @click="showDrawCricleTool">Open Map</b-button></h5>
+                                        </div>
+                                        
                                         <div class = "form-group row">
                                             <label for = "" class = "col-md-4 col-form-label">
                                                 Location:
@@ -257,7 +266,7 @@
         </div>
 
         <b-modal ref="map-modal" hide-footer no-close-on-backdrop no-close-on-esc size="xl" title="Crisis Location">
-        <crisis-map @get-new-crisis-location="handleNewCrisisLocation" />
+        <crisis-map @get-new-crisis-location="handleNewCrisisLocation" :hide-toggle-window="hideToggleWindow" :hide-drawing-window="hideDrawingWindow" />
         
         </b-modal>
 
@@ -285,6 +294,8 @@
         
         data() {
             return{
+                hideDrawingWindow:false,
+                hideToggleWindow:false,
                 date: moment().format("DD/MM/YYYY"),
 
                 options: [
@@ -319,6 +330,9 @@
         },
 
         methods: {
+            showDrawCricleTool(){
+                this.hideDrawingWindow = true;
+            },
             handleNewCrisisLocation(crisisLocation){
                     this.form.address = crisisLocation.full_address;
                     this.form.postalCode = crisisLocation.postal_code;
@@ -327,11 +341,13 @@
             },
 
             showModal() {
-                this.$refs['map-modal'].show()
+                this.$refs['map-modal'].show();
+                this.hideToggleWindow = true;
             },
             
             hideModal() {
-                this.$refs['map-modal'].hide()
+                this.$refs['map-modal'].hide();
+                this.hideToggleWindow = false;
             }, 
             
             submitCrisis() {

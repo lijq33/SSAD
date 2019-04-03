@@ -15,7 +15,7 @@
 
         <b-col cols="4">
           <!-- crisis -->
-          <toggle-map
+          <toggle-map v-if="!hideToggleMap"
             @get-toggle-data="handleToggleData"
             @clear-toggle-data="handleClearToggleData"
           />
@@ -25,7 +25,7 @@
       <b-row>
         <b-col
           cols="12"
-          md="8"
+          md="12"
         >
           <!-- google base map -->
           <GmapMap
@@ -55,7 +55,7 @@ import AutoSearchComplete from "./AutoSearchComplete";
 import ToggleMap from "./ToggleCrisisMap";
 
 export default {
-
+  props:["hideToggleWindow"],
    mounted(){
      var scope = this;
      this.$refs.mapRef.$mapPromise.then(map => {
@@ -78,6 +78,7 @@ export default {
 
   data() {
     return {
+      hideToggleMap:false,
       localFireData: null,
       baseMapAllShape: [],
       geoJson: [],
@@ -861,8 +862,13 @@ export default {
       this.zoom_lvl = zoomlvl;
     }
   },
-  watch: {},
+  watch: {
+       hideToggleWindow(value){
+      this.hideToggleMap = value;
+    },
+  },
   computed: {
+ 
     computedGeoJson: function() {
       console.log("computed");
       return this.geoJson;

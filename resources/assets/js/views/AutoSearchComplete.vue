@@ -38,14 +38,13 @@
                <b-form-textarea
                   id="textarea-state"
                   v-model="form.address"
-                  :state="form.address != 'Invalid Address'"
                   placeholder=""
                   rows="2"
                   disabled
                   style = "resize:none"
                 ></b-form-textarea>
 
-                 <b-button v-if="form.address != 'Invalid Address'" variant="primary" @click="confirmAddressBtn">Confirm</b-button>
+                 <b-button v-if="form.address != ''" variant="primary" @click="confirmAddressBtn">Confirm</b-button>
 
             </div>
            <div v-else>
@@ -71,7 +70,7 @@ export default {
        isLoading: false,
       tempFullAddres:'',
       form: {
-            address: "Invalid Address"
+            address: ""
           },
     };
   },
@@ -133,7 +132,7 @@ export default {
               if(!foundBestMatch){
                   scope.form.address = serviceFormatedAddress; 
                    scope.confirmAddress.full_address =serviceFormatedAddress; 
-                    scope.form.address = "Invalid Address"
+                    scope.form.address = ""
               }
 
              
@@ -192,7 +191,7 @@ export default {
                         if(postalCode == "Singapore"){
                             //no postal code available
                             console.log("no postal code found")
-                            scope.form.address = "Invalid Address";
+                            scope.form.address = "";
                              scope.isLoading = false;
 
                         }else{
