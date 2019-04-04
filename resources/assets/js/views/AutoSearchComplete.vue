@@ -1,222 +1,241 @@
 <template>
-  <div>
-    <!-- search -->
+    <div>
 
-       <div class="form-group row">
-        <label
-          for="search"
-          class="col-md-1 col-form-label"
-        >
-          Search:
-        </label>
-        <div class="col-md-10">
-          <div> <GmapAutocomplete
-        class="tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64"
-        @place_changed="setPlace"
-        ref="autocomplete"
-        style="z-index:2147483647"
-      ></GmapAutocomplete>
-
-        <!-- <b-button @click="clearSearch">Clear Search</b-button> -->
-      </div>
+        <!-- search -->
+        <div class="form-group row">
+            <label
+                for="search"
+                class="col-md-1 col-form-label"
+            >
+                Search:
+            </label>
+            <div class="col-md-10">
+                <div>
+                    <GmapAutocomplete
+                        class="tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64"
+                        @place_changed="setPlace"
+                        ref="autocomplete"
+                        style="z-index:2147483647"
+                    ></GmapAutocomplete>
+                </div>
+            </div>
         </div>
-      </div>
- 
-	 <!-- Address -->
-      <div class="form-group row">
-        <label
-          for="Address"
-          class="col-md-1 col-form-label"
-        >
-          Address:
-        </label>
-        <div class="col-md-5">
 
-           <div v-if = "!isLoading">
-           
+        <!-- Address -->
+        <div class="form-group row">
+            <label
+                for="Address"
+                class="col-md-1 col-form-label"
+            >
+                Address:
+            </label>
+            <div class="col-md-5">
 
-               <b-form-textarea
-                  id="textarea-state"
-                  v-model="form.address"
-                  placeholder=""
-                  rows="2"
-                  disabled
-                  style = "resize:none"
-                ></b-form-textarea>
+                <div v-if="!isLoading">
 
-                 <b-button v-if="form.address != ''" variant="primary" @click="confirmAddressBtn">Confirm</b-button>
+                    <b-form-textarea
+                        id="textarea-state"
+                        v-model="form.address"
+                        placeholder=""
+                        rows="2"
+                        disabled
+                        style="resize:none"
+                    ></b-form-textarea>
+
+                    <b-button
+                        v-if="form.address != ''"
+                        variant="primary"
+                        @click="confirmAddressBtn"
+                    >Confirm</b-button>
+
+                </div>
+                <div v-else>
+                    <img
+                        src="/assets/img/loader.gif"
+                        alt="Loading..."
+                    >
+                </div>
 
             </div>
-           <div v-else>
-              <img src = "/assets/img/loader.gif" alt = "Loading...">
-          </div>
-        
         </div>
-      </div>
         <!--just a postal code helper without map reference -->
         <div id="service-helper"></div>
-  </div>
+    </div>
 </template>
 
 <script>
-
 export default {
- 	props: ["queryFullAddress","clearSearchResultValue"],
- 
-  data() {
-    return {
-      confirmAddress:{full_address:null,postal_code:null},
-      tempPostalCode:null,
-       isLoading: false,
-      tempFullAddres:'',
-      form: {
-            address: ""
-          },
-    };
-  },
-  methods: {
-    confirmAddressBtn(){
-      this.$emit('confirm-address',this.confirmAddress);
+    props: ["queryFullAddress", "clearSearchResultValue"],
+
+    data() {
+        return {
+            confirmAddress: { full_address: null, postal_code: null },
+            tempPostalCode: null,
+            isLoading: false,
+            tempFullAddres: "",
+            form: {
+                address: ""
+            }
+        };
     },
-    retrieveAddressFromBackEnd(postalCode,googleLatLng) {
-      var scope = this;
+    methods: {
+        confirmAddressBtn() {
+            this.$emit("confirm-address", this.confirmAddress);
+        },
+        retrieveAddressFromBackEnd(postalCode, googleLatLng) {
+            var scope = this;
 
-	axios.get('/api/address/postal_code/'+postalCode+'.json')
-		.then((res) => {	
-      console.log(res.data)
-      
-      //append google latlng
-        res.data.lat = googleLatLng.lat;
-        res.data.lng = googleLatLng.lng;
+            axios
+                .get("/api/address/postal_code/" + postalCode + ".json")
+                .then(res => {
+                    console.log(res.data);
 
-			 this.$emit("get-search-data",res.data);
-       this.form.address = res.data.full_address;
-       this.confirmAddress=res.data;
-       
-       //use google address
-        if(res.data.full_address === undefined){
-              scope.form.address= scope.tempFullAddres;
-               this.confirmAddress["full_address"] = scope.tempFullAddres;
-              this.confirmAddress["postal_code"] = this.tempPostalCode;
-        }
+                    //append google latlng
+                    res.data.lat = googleLatLng.lat;
+                    res.data.lng = googleLatLng.lng;
 
-        scope.isLoading = false;
+                    this.$emit("get-search-data", res.data);
+                    this.form.address = res.data.full_address;
+                    this.confirmAddress = res.data;
 
-         
-			
-		}).catch((error) => {
-			console.log(error)
-		}).then(() => {
-	});
-  },
-    bestAddressMatch(geocoder, pos, serviceFormatedAddress,matchPostalCode){ 
-      var scope = this;
-      var foundBestMatch = false;
-      
-      geocoder.geocode({ location: pos }, function(results, status) {
-          if (status === "OK") {
-              results.forEach(element => {
-                  if(element.formatted_address.includes(matchPostalCode)){
-                          foundBestMatch = true;
-                      if(element.formatted_address.length > serviceFormatedAddress.length){
-                          scope.form.address = element.formatted_address; 
-                          scope.confirmAddress.full_address = element.formatted_address; 
-                           scope.confirmAddress.postal_code = matchPostalCode;
-                      }else{
-                          scope.form.address = serviceFormatedAddress; 
-                          scope.confirmAddress.full_address =serviceFormatedAddress; 
-                      }  
-                  } 
-              });  
+                    //use google address
+                    if (res.data.full_address === undefined) {
+                        scope.form.address = scope.tempFullAddres;
+                        this.confirmAddress["full_address"] =
+                            scope.tempFullAddres;
+                        this.confirmAddress[
+                            "postal_code"
+                        ] = this.tempPostalCode;
+                    }
 
-              if(!foundBestMatch){
-                  scope.form.address = serviceFormatedAddress; 
-                   scope.confirmAddress.full_address =serviceFormatedAddress; 
-                    scope.form.address = ""
-              }
+                    scope.isLoading = false;
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .then(() => {});
+        },
+        bestAddressMatch(
+            geocoder,
+            pos,
+            serviceFormatedAddress,
+            matchPostalCode
+        ) {
+            var scope = this;
+            var foundBestMatch = false;
 
-             
-
-          }
-      })},
-     setPlace(place) {  
-                var scope = this;
-
-                if (place.id) { 
-                    var matchPostalCode;
-                    place.address_components.forEach(address_component => {
-                        if(address_component.types[0] == 'postal_code'){
-                            matchPostalCode = address_component.long_name;
-                            scope.form.postalCode = address_component.short_name;
+            geocoder.geocode({ location: pos }, function(results, status) {
+                if (status === "OK") {
+                    results.forEach(element => {
+                        if (
+                            element.formatted_address.includes(matchPostalCode)
+                        ) {
+                            foundBestMatch = true;
+                            if (
+                                element.formatted_address.length >
+                                serviceFormatedAddress.length
+                            ) {
+                                scope.form.address = element.formatted_address;
+                                scope.confirmAddress.full_address =
+                                    element.formatted_address;
+                                scope.confirmAddress.postal_code = matchPostalCode;
+                            } else {
+                                scope.form.address = serviceFormatedAddress;
+                                scope.confirmAddress.full_address = serviceFormatedAddress;
+                            }
                         }
                     });
 
-                    var pos = {
-                        lat: place.geometry.location.lat(),
-                        lng: place.geometry.location.lng()
-                    }; 
+                    if (!foundBestMatch) {
+                        scope.form.address = serviceFormatedAddress;
+                        scope.confirmAddress.full_address = serviceFormatedAddress;
+                        scope.form.address = "";
+                    }
+                }
+            });
+        },
+        setPlace(place) {
+            var scope = this;
 
-                     this.$emit("get-search-data",pos);
-
-
-                    var service = new google.maps.places.PlacesService($('#service-helper').get(0)); 
-
-                    service.getDetails({ placeId: place.place_id }, function(place, status) {
-                        if (status === google.maps.places.PlacesServiceStatus.OK) {
-                            scope.bestAddressMatch(new google.maps.Geocoder(), pos, place.formatted_address, matchPostalCode); 
-                        }
-                    });
-                }},
-    clearSearch() {
-		     //clear search text
-		this.form.address = ""; 
-      this.$refs.autocomplete.$el.value = ""; 
-		this.$emit("clear-Search");
-      
-    },
-    geoCodeAddress(pos){
-      var scope = this;
-      scope.isLoading = true;
-          new google.maps.Geocoder().geocode({ location: pos }, function(results, status) {
-                    if (status === "OK") { 
-
-                        //google formatted address
-                         scope.tempFullAddres=results[0].formatted_address
-                        
-                         
-                         //get postal code from best result
-                        var postalCode = results[0].address_components[results[0].address_components.length - 1].long_name;
-                          scope.tempPostalCode = postalCode;
-
-                        if(postalCode == "Singapore"){
-                            //no postal code available
-                            console.log("no postal code found")
-                            scope.form.address = "";
-                             scope.isLoading = false;
-
-                        }else{
-                             console.log( results[0].formatted_address);
-                             scope.form.postalCode = postalCode;
-                            
-                            scope.retrieveAddressFromBackEnd(postalCode,pos)
-                        } 
-                           
+            if (place.id) {
+                var matchPostalCode;
+                place.address_components.forEach(address_component => {
+                    if (address_component.types[0] == "postal_code") {
+                        matchPostalCode = address_component.long_name;
+                        scope.form.postalCode = address_component.short_name;
                     }
                 });
-    }
-  },
-  watch:{
-      queryFullAddress(newValue) {
-        this.geoCodeAddress(newValue)
+
+                var pos = {
+                    lat: place.geometry.location.lat(),
+                    lng: place.geometry.location.lng()
+                };
+
+                this.$emit("get-search-data", pos);
+
+                var service = new google.maps.places.PlacesService(
+                    $("#service-helper").get(0)
+                );
+
+                service.getDetails({ placeId: place.place_id }, function(
+                    place,
+                    status
+                ) {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        scope.bestAddressMatch(
+                            new google.maps.Geocoder(),
+                            pos,
+                            place.formatted_address,
+                            matchPostalCode
+                        );
+                    }
+                });
+            }
+        },
+        geoCodeAddress(pos) {
+            var scope = this;
+            scope.isLoading = true;
+            new google.maps.Geocoder().geocode({ location: pos }, function(
+                results,
+                status
+            ) {
+                if (status === "OK") {
+                    //google formatted address
+                    scope.tempFullAddres = results[0].formatted_address;
+
+                    //get postal code from best result
+                    var postalCode =
+                        results[0].address_components[
+                            results[0].address_components.length - 1
+                        ].long_name;
+                    scope.tempPostalCode = postalCode;
+
+                    if (postalCode == "Singapore") {
+                        //no postal code available
+                        console.log("no postal code found");
+                        scope.form.address = "";
+                        scope.isLoading = false;
+                    } else {
+                        console.log(results[0].formatted_address);
+                        scope.form.postalCode = postalCode;
+
+                        scope.retrieveAddressFromBackEnd(postalCode, pos);
+                    }
+                }
+            });
+        }
     },
-    clearSearchResultValue(newValue){
-      this.isLoading = false;
-      this.form.address = ""; 
-      this.$refs.autocomplete.$el.value = ""; 
-      this.confirmAddress.full_address = null;
-      this.confirmAddress.postal_code = null;
-      console.log("clear 2")
+    watch: {
+        queryFullAddress(newValue) {
+            this.geoCodeAddress(newValue);
+        },
+        clearSearchResultValue(newValue) {
+            this.isLoading = false;
+            this.form.address = "";
+            this.$refs.autocomplete.$el.value = "";
+            this.confirmAddress.full_address = null;
+            this.confirmAddress.postal_code = null;
+        }
     }
-  }
 };
 </script>
