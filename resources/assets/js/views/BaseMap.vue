@@ -48,6 +48,7 @@
                     cols="12"
                     md="12"
                 >
+
                     <!-- google base map -->
                     <GmapMap
                         ref="mapRef"
@@ -56,11 +57,43 @@
                         :center="sgcoord"
                     >
                     </GmapMap>
-                </b-col>
-
-            </b-row>
-
+                </b-col> 
+            </b-row>  
         </div>
+
+		<div v-if="legendType == 'showTwoHrWeatherData'">
+				<b-button v-b-toggle.collapse-1 variant="outline-primary">Legend+</b-button>
+				<b-collapse id="collapse-1" class="mt-2">
+					<b-card>
+					  <b-row v-for="(item, index) in legendArray" :key="index">
+					    <b-col>
+							<img
+							class="image"
+							:src="item.iconUrl"
+							:alt="item.forevast"
+							>{{item.forecast}}
+						</b-col>
+
+						<!-- <b-col>
+							<img
+							class="image"
+							src="https://www.nea.gov.sg/assets/images/icons/weather/pc.png"
+							alt="Partly Cloudy Day icon"
+							>Partly Cloudy (Day)
+						</b-col>
+
+						<b-col>
+							<img
+							class="image"
+							src="https://www.nea.gov.sg/assets/images/icons/weather/tl.png"
+							alt="Thunder Showering icon"
+							>Thundery Showers
+						</b-col> -->
+						 
+					</b-row>
+					</b-card>
+				</b-collapse>
+		</div>
 
     </div>
 </template>
@@ -69,6 +102,7 @@
 import { Modal } from "bootstrap-vue/es/components";
 import AutoSearchComplete from "./AutoSearchComplete";
 import ToggleMap from "./ToggleCrisisMap";
+import Collapse from 'bootstrap-vue/es/components/collapse'
 
 export default {
     props: ["hideToggleWindow", "hideDrawingWindow", "clearSearchResult"],
@@ -90,24 +124,17 @@ export default {
 
     data() {
         return {
+            weatherForecastCenterControl:null,
+            legendArray:[],
+			legendType:null,
             newCircle: null,
             clearSearchVal: false,
             newCircleRadius: "",
             hideDrawingMap: false,
             hideToggleMap: false,
-            localFireData: null,
-            baseMapAllShape: [],
-            geoJson: [],
             markerInfoWindow: null,
             searchMarker: null,
             searchMarkerFullAddress: null,
-            drawCircle: {
-                marker: null,
-                circle: null,
-                draggableMarkerListener: null,
-                clickMarkerListener: null,
-                circleFullAddress: ""
-            },
             isLoading: false,
             zoom_lvl: 12,
             sgcoord: { lat: 1.3521, lng: 103.8198 },
@@ -117,17 +144,6 @@ export default {
                 gasLeakMarkers: []
             },
             polygon: { dengueData: [], dengueMarkerData: [] },
-            enableDrawingToolsExtension: false,
-            drawingTool: null,
-            localDrawCircle: {
-                center: null,
-                radius: null,
-                localCircleRadiusListener: null,
-                localCircleCenterListener: null
-            },
-            drawingManager: null,
-            selectedShape: null,
-            localDrawMarker: { position: null }
         };
     },
     methods: {
@@ -146,6 +162,7 @@ export default {
             this.$emit("get-new-crisis-location", confirmAddress);
         },
         handleClearToggleData(clearToggleData) {
+
             //empty markers
             if (clearToggleData === "hideDengueData") {
                 //clear circle
@@ -170,7 +187,16 @@ export default {
                 scope.showRainData(element);
             } else if (clearToggleData === "hideTwoHrWeatherData") {
                 this.removeMarkers(this.markers.twoHrWeatherMarkers);
-                this.markers.twoHrWeatherMarkers = [];
+				this.markers.twoHrWeatherMarkers = [];
+				//hide legend
+                this.legendType = '';
+                //hide control
+
+                 this.$refs.mapRef.$mapPromise.then(map => { 
+                     map.controls[google.maps.ControlPosition.TOP_CENTER].clear(); 
+                    this.weatherForecastCenterControl = null;
+                 });
+                
             }
         },
         handleToggleData(toggleData) {
@@ -185,41 +211,64 @@ export default {
             } else if (toggleData.displayId === "showRainData") {
                 //scope.showRainData(element);
             } else if (toggleData.displayId === "showTwoHrWeatherData") {
+				this.legendType = toggleData.displayId;
                 this.showTwoHrWeatherData(toggleData);
-            }
-        },
-        clearSelection() {
-            if (this.selectedShape) {
-                if (this.selectedShape.type !== "marker") {
-                    console.log("not marker");
-                    this.selectedShape.setEditable(false);
-                }
+                
+                //filter out duplicates
+                var tempArray = this.legendArray;
+                this.legendArray=Object.values(tempArray.reduce((acc,cur)=>Object.assign(acc,{[cur.forecast]:cur}),{}));
 
-                this.selectedShape = null;
-            }
-        },
-        setSelection(shape) {
-            if (shape.type !== "marker") {
-                console.log("998");
-                this.clearSelection();
-                shape.setEditable(true);
 
-                //selectColor(shape.get('fillColor') || shape.get('strokeColor'));
-            }
+				// console.log(toggleData.items[0].valid_period.start.slice(11,16))
+				var validTime = "Valid Period: "+
+				toggleData.items[0].valid_period.start.slice(11,16)+
+				" - "+
+				toggleData.items[0].valid_period.end.slice(11,16);
 
-            this.selectedShape = shape;
-        },
-        enableDrawingTool() {
-            var scope = this;
 
-            if (!this.enableDrawingToolsExtension) {
-                this.enableDrawingToolsExtension = true;
-            } else {
-                this.enableDrawingToolsExtension = false;
-            }
+				 this.$refs.mapRef.$mapPromise.then(map => {
+					 	//set up custom control
+					var centerControlDiv = document.createElement('div');
+					this.weatherForecastCenterControl = new this.weatherCenterControl(centerControlDiv, map,validTime);
 
-            //this.tabs.push(this.tabCounter++)
-        },
+					centerControlDiv.index = 1;
+					map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+		   
+				 }); 
+		 
+		 }
+		},
+		weatherCenterControl(controlDiv, map,updatedTime) {
+
+        // Set CSS for the control border.
+        var controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.border = '2px solid #fff';
+        controlUI.style.borderRadius = '3px';
+        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginBottom = '22px';
+        controlUI.style.textAlign = 'center';
+        controlUI.title = 'Click to recenter the map';
+        controlDiv.appendChild(controlUI);
+
+        // Set CSS for the control interior.
+        var controlText = document.createElement('div');
+        controlText.style.color = 'rgb(25,25,25)';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '16px';
+        controlText.style.lineHeight = '38px';
+        controlText.style.paddingLeft = '5px';
+        controlText.style.paddingRight = '5px';
+        controlText.innerHTML = updatedTime;
+        controlUI.appendChild(controlText);
+
+        // Setup the click event listeners: simply set the map to Chicago.
+        controlUI.addEventListener('click', function() {
+          map.setCenter(chicago);
+        });
+
+      },
         handleSearchData(searchData) {
             var scope = this;
 
@@ -301,7 +350,6 @@ export default {
             this.setMapZoomLvl(17);
         },
         removeMarkers(removeMarkersType) {
-            console.log("remove ");
 
             for (var i = 0; i < removeMarkersType.length; i++) {
                 removeMarkersType[i].setMap(null);
@@ -478,14 +526,35 @@ export default {
             });
         },
         showTwoHrWeatherData(data) {
-            var scope = this;
+			var scope = this;
+			
+			var iconUrl='';
 
             data.area_metadata.forEach((element, index) => {
+
+                var forcast = data.items[0].forecasts[index].forecast;
+
+				if( forcast == "Showers"){
+					iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/SH.png'
+				}else if(forcast == "Thundery Showers"){
+					iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/TL.png'
+				}else if(forcast == "Partly Cloudy (Day)"){
+					iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/PC.png'
+				}else if(forcast == "Heavy Thundery Showers with Gusty Winds"){
+                    iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/HG.png'
+                }
+                
+                //add to legend array
+                this.legendArray.push({
+                    iconUrl:iconUrl,
+                    forecast:data.items[0].forecasts[index].forecast
+                })
+
                 scope.addMarker(
                     "Array",
                     scope.markers.twoHrWeatherMarkers,
                     {
-                        icon: data.iconUrl,
+                        icon: iconUrl,
                         markerDisplayId: element.displayId,
                         position: {
                             lat: element.label_location.latitude,
