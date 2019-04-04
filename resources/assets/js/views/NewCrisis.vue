@@ -325,6 +325,7 @@
                     description: '',
                     assistanceRequired: [],
                     crisisType: null,
+                    radius:''
                 },
 
                 tempFullAddres:null
@@ -342,7 +343,13 @@
             handleNewCrisisLocation(crisisLocation){
                 this.form.address = crisisLocation.full_address;
                 this.form.postalCode = crisisLocation.postal_code;
-                console.log(crisisLocation);
+                console.log(crisisLocation)
+
+                  if(crisisLocation.radius != null){
+                      this.form.radius = crisisLocation.radius;
+                    console.log("have radius");
+                    console.log(crisisLocation.radius)
+                }
                 this.hideModal();
             },
 
@@ -512,7 +519,8 @@
 
             selectedCrisis(value){
                 this.options.value = value;
-                this.form.crisisType = value;
+                this.form.crisisType = value; 
+              
             }
         }
     }

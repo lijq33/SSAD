@@ -67,12 +67,6 @@
             "chmod -R 666 public",
             "php artisan cache:clear"
         ]
-        // "post-deploy-cmd": [
-        //     "chmod -R 755 bootstrap\/cache",
-        //     "chmod -R 777 public\/crisis",
-        //     "php artisan cache:clear"
-        // ]
-
     },
     "config": {
         "preferred-install": "dist",
