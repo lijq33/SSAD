@@ -1,4 +1,27 @@
 <template>
+<<<<<<< HEAD
+  <div>
+    <!-- search -->
+
+       <div class="form-group row">
+        <label
+          for="search"
+          class="col-md-1 col-form-label"
+        >
+          Search:
+        </label>
+        <div class="col-md-10 tw-z-50">
+          <div> 
+          
+          <GmapAutocomplete
+            class="tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64 tw-z-50"
+            @place_changed="setPlace"
+            ref="autocomplete"
+          ></GmapAutocomplete>
+
+        <!-- <b-button @click="clearSearch">Clear Search</b-button> -->
+      </div>
+=======
     <div>
 
         <!-- search -->
@@ -19,6 +42,7 @@
                     ></GmapAutocomplete>
                 </div>
             </div>
+>>>>>>> ab40a65326532c24f5e00d742bfa7067e42be52c
         </div>
 
         <!-- Address -->

@@ -4,7 +4,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
 /**
- * Class MailService
+ * Class MapService
  *
  * @package App\Services
  */
