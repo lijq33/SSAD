@@ -6,6 +6,7 @@ use App\Events\CrisisUpdated;
 use App\Crisis;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Http\Controllers\TwitterController;
 use Twitter;
 
 class SendTwitterCrisisUpdatedNotification
