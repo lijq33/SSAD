@@ -94,8 +94,61 @@
                             </div>
                         </div>
 
-                        <!-- Location and Crisis Type row -->
                         <div class = "form-group row">
+                            <!-- Crisis Type dropdown -->
+                            <div class = "col-md-6">
+                                <div class = "card tw-mb-6" style="height:130px">
+                                    <div class = "card-body">
+                                        <h5 class = "card-title"> Type of Crisis:</h5>
+                                        <b-form-select v-model = "form.crisisType" :options = "options" 
+                                            :class = "{ 'tw-border-red-light' : error['crisisType'] != undefined}"
+                                           
+                                        />
+                                        <div class = "tw-text-red" v-if = "error['crisisType'] != undefined">
+                                            <span> {{this.error['crisisType'].toString()}} </span>   
+                                        </div> 
+                                    </div>  
+                                </div>
+                            </div>
+
+                            <!-- Crisis Image -->
+                            <div class = "col-md-6">
+                                <div class = "card">
+                                    <div class = "card-body">
+                                        <h5 class = "card-title"> Crisis Image </h5>
+                                        
+                                        <div class="form-group row">
+                                            <label class="col-md-7 col-form-label">
+                                                Please upload an image of the crisis:
+                                            </label>
+
+                                            <div v-if = "image === ''" >
+                                                <input accept = "image/*" type = "file" class = "upload-image-input tw-hidden" @change = "onFileSelected" >
+
+                                                <button class = "btn btn-primary" 
+                                                    @click = "uploadImage">
+                                                    Select An Image
+                                                </button>
+                                            </div>
+                                        
+                                            <div v-else class = "col-md-6">
+                                                <div class = "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden" style="width:500px; height:300px">
+                                                    <img :src = "image" class = "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center" />
+                                                </div>
+
+                                                <button class = "btn btn-primary" 
+                                                    @click = "removeImage">
+                                                    Choose Another Image
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Location and Crisis Type row -->
+                        <div class = "form-group row" v-show ="form.crisisType != null">
                             <div class = "col-md-6">
                                 <div class = "card" style = "height:304px">
                                     <div class = "card-body">
@@ -112,19 +165,21 @@
                                                     :class = "{ 'tw-border-red-light' : error['address'] != undefined}"
                                                     disabled
                                                 />
-                                                <div v-if="form.crisisType != 'Dengue'">
-                                                    <b-button size="sm" @click="showModal">Open Map</b-button>
-                                                </div>
+                                                <div class="tw-flex tw-justify-end tw-pt-2">
+                                                    <div v-if="form.crisisType != 'Dengue'">
+                                                        <button class="btn btn-primary" @click="showModal">Open Map</button>
+                                                    </div>
 
-                                                <div v-else>
-                                                    <b-button size="sm" @click="showDrawCricleTool">Open Map</b-button>
+                                                    <div v-else>
+                                                        <button class="btn btn-primary" @click="showDrawCricleTool">Open Map</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- Date -->
                                         <div class = "form-group row">
-                                            <label for = "date" class = "col-md-4 col-form-label">
+                                            <label for = "date" class = "col-md-4 col-form-label tw-mr-4">
                                                 Date:
                                             </label>
                                             <div class = "tw-w-1/2">
@@ -141,7 +196,7 @@
 
                                         <!-- Time -->
                                         <div class = "form-group row">
-                                            <label for = "time" class = "col-md-4 col-form-label">
+                                            <label for = "time" class = "col-md-4 col-form-label tw-mr-4">
                                                 Time:
                                             </label>
                                             <div class = "tw-w-1/2">
@@ -179,57 +234,6 @@
                             </div>
                         </div>
 
-                        <div class = "form-group row">
-                            <div class = "col-md-6">
-                                 <div class = "card">
-                                    <div class = "card-body">
-                                        <h5 class = "card-title"> Crisis Image </h5>
-                                        <div class="form-group row">
-                                        <label class="col-md-7 col-form-label">
-                                            Please upload an image of the crisis:
-                                            </label>
-                                        <div v-if = "image === ''" >
-                                            <input accept = "image/*" type = "file" class = "upload-image-input tw-hidden" @change = "onFileSelected" >
-
-                                            <button class = "btn btn-primary" 
-                                                @click = "uploadImage">
-                                                Select An Image
-                                            </button>
-                                        </div>
-                                        
-                                        <div v-else class = "col-md-6">
-                                            <div class = "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden" style="width:500px; height:300px">
-                                                <img :src = "image" class = "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center" />
-                                            </div>
-
-                                            <button class = "btn btn-primary" 
-                                                @click = "removeImage">
-                                                Choose Another Image
-                                            </button>
-                                        </div>
-                                    </div>
-                                    </div>
-                                 </div>
-                            </div>
-
-                            <!-- Crisis Type dropdown -->
-                            <div class = "col-md-6">
-                                <div class = "card tw-mb-6" style="height:130px">
-                                    <div class = "card-body">
-                                        <h5 class = "card-title"> Type of Crisis:</h5>
-                                        <b-form-select v-model = "form.crisisType" :options = "options" 
-                                            :class = "{ 'tw-border-red-light' : error['crisisType'] != undefined}"
-                                           
-                                        />
-                                        <div class = "tw-text-red" v-if = "error['crisisType'] != undefined">
-                                            <span> {{this.error['crisisType'].toString()}} </span>   
-                                        </div> 
-                                    </div>  
-                                </div>
-                            </div>
-                        </div>
-
-
                         <!-- button group -->
                         <div class = "form-group row tw-my-6">
                             <div class = "tw-w-full">
@@ -257,8 +261,11 @@
         </div>
 
         <b-modal ref="map-modal" hide-footer no-close-on-backdrop no-close-on-esc size="xl" title="Crisis Location" @hidden="hiddenModal">
-        <crisis-map @get-new-crisis-location="handleNewCrisisLocation" :hide-toggle-window="hideToggleWindow" :hide-drawing-window="hideDrawingWindow" :clear-search-result="clearSearchResult" />
-        
+            <crisis-map @get-new-crisis-location = " handleNewCrisisLocation" 
+                    :hide-toggle-window = "hideToggleWindow" 
+                    :hide-drawing-window = "hideDrawingWindow" 
+                    :clear-search-result = "clearSearchResult" 
+            />
         </b-modal>
 
     </div>
@@ -298,6 +305,7 @@
                     { value: 'Dengue', text: 'Dengue' },
                     { value: 'Gas Leak', text: 'Gas Leak' }
                 ],
+
                 message: '',    
                 isLoading: false,
                 error: [],
@@ -383,7 +391,6 @@
                     this.message = response.data.message;
                     $('html, body').animate({ scrollTop: 0 }, 'slow');
                     this.isLoading = false;
-                    console.log("save crisis to db!")
                     this.resetFields();
                 })
                 .catch((error) => {
@@ -393,16 +400,14 @@
             },
 
             resetFields() {
- 
                 var scope = this; 
                 
-                this.$refs.autocomplete.$el.value = '';
-
                 Object.keys(this.form).forEach(function(key,index) {
                     scope.form[key] = '';
                 });
                 
-                this.form.assistanceRequired= [];
+                this.form.assistanceRequired = [];
+                this.form.crisisType = null;
             },
             
             uploadImage(e) {
@@ -512,5 +517,21 @@
         }
     }
 </script>
-                
        
+<style>
+.pac-container {
+    background-color: #FFF;
+    z-index: 20 !important;
+    position: fixed;
+    display: inline-block;
+    float: left;
+}
+
+.modal-backdrop{
+    z-index: 10 !important;       
+}​
+
+.modal{
+    z-index: 20 !important;  
+}
+</style>

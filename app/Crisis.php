@@ -77,7 +77,7 @@ class Crisis extends Model
             $imageName = str_random(40);
             $image = Image::make($data['image']->getRealPath());
             // $image->resize(320, 240);
-            $image->save(public_path('crisis\\') .  $imageName . ".{$data['image']->getClientOriginalExtension()}"); // Original Image
+            $image->save('crisis/'.  $imageName . ".{$data['image']->getClientOriginalExtension()}"); // Original Image
             $imageName = $imageName.".".$data['image']->getClientOriginalExtension();
         }
 

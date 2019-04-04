@@ -9,13 +9,14 @@
         >
           Search:
         </label>
-        <div class="col-md-10">
-          <div> <GmapAutocomplete
-        class="tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64"
-        @place_changed="setPlace"
-        ref="autocomplete"
-        style="z-index:2147483647"
-      ></GmapAutocomplete>
+        <div class="col-md-10 tw-z-50">
+          <div> 
+          
+          <GmapAutocomplete
+            class="tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64 tw-z-50"
+            @place_changed="setPlace"
+            ref="autocomplete"
+          ></GmapAutocomplete>
 
         <!-- <b-button @click="clearSearch">Clear Search</b-button> -->
       </div>
