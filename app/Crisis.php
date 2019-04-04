@@ -64,7 +64,7 @@ class Crisis extends Model
      * @var array
     */
     protected $fillable = ['user_id', 'name', 'telephone_number', 'postal_code', 'date', 'time', 'address',
-                            'crisis_type', 'status', 'description', 'image', 'facebook_post_id', 'radius'];
+                            'crisis_type', 'status', 'description', 'image', 'facebook_post_id','twitter_post_id' , 'radius'];
 
     public static function newCrisis($data){
 
