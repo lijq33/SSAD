@@ -9,6 +9,8 @@
                     <div class = "card-body">
 
                         <div class = "form-group row">
+
+                            
                             
                             <!-- Personal Particulars -->
                             <div class = "col-md-6">

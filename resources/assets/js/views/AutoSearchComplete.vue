@@ -15,7 +15,6 @@
                         class="tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64"
                         @place_changed="setPlace"
                         ref="autocomplete"
-                        style="z-index:2147483647"
                     ></GmapAutocomplete>
                 </div>
             </div>
@@ -42,8 +41,9 @@
                         style="resize:none"
                     ></b-form-textarea>
 
+
                     <b-button
-                        v-if="form.address != ''"
+                        v-if="form.address != '' && currentUser.roles == 'CallCenterOperator'"
                         variant="primary"
                         @click="confirmAddressBtn"
                     >Confirm</b-button>
@@ -236,6 +236,31 @@ export default {
             this.confirmAddress.full_address = null;
             this.confirmAddress.postal_code = null;
         }
+    },
+    computed:{
+           currentUser() {
+            return this.$store.getters.currentUser;
+        },
+
+        isCallCenterOperator() {
+            if (!this.currentUser) return false;
+            return this.currentUser.roles == "CallCenterOperator";
+        },
+
+        isCrisisManager() {
+            if (!this.currentUser) return false;
+            return this.currentUser.roles == "CrisisManager";
+        },
+
+        isAccountManager() {
+            if (!this.currentUser) return false;
+            return this.currentUser.roles == "AccountManager";
+        }
     }
 };
 </script>
+
+<style>
+.pac-container.pac-logo { z-index: 999999; }
+.pac-container { z-index: 999999 !important;}
+</style>

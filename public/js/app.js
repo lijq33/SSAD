@@ -26341,6 +26341,10 @@ var OBSERVER_CONFIG = {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(477)
+}
 var normalizeComponent = __webpack_require__(4)
 /* script */
 var __vue_script__ = __webpack_require__(360)
@@ -26349,7 +26353,7 @@ var __vue_template__ = __webpack_require__(361)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -87486,6 +87490,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.confirmAddress.full_address = null;
             this.confirmAddress.postal_code = null;
         }
+    },
+    computed: {
+        currentUser: function currentUser() {
+            return this.$store.getters.currentUser;
+        },
+        isCallCenterOperator: function isCallCenterOperator() {
+            if (!this.currentUser) return false;
+            return this.currentUser.roles == "CallCenterOperator";
+        },
+        isCrisisManager: function isCrisisManager() {
+            if (!this.currentUser) return false;
+            return this.currentUser.roles == "CrisisManager";
+        },
+        isAccountManager: function isAccountManager() {
+            if (!this.currentUser) return false;
+            return this.currentUser.roles == "AccountManager";
+        }
     }
 });
 
@@ -87513,7 +87534,6 @@ var render = function() {
               ref: "autocomplete",
               staticClass:
                 "tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64",
-              staticStyle: { "z-index": "2147483647" },
               on: { place_changed: _vm.setPlace }
             })
           ],
@@ -87551,7 +87571,8 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm.form.address != ""
+                _vm.form.address != "" &&
+                _vm.currentUser.roles == "CallCenterOperator"
                   ? _c(
                       "b-button",
                       {
@@ -92546,6 +92567,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_moment__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__NewBaseMap__ = __webpack_require__(391);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__NewBaseMap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__NewBaseMap__);
+//
+//
 //
 //
 //
@@ -101026,6 +101049,47 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 476 */,
+/* 477 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(478);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(18)("a9af5a8e", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-25c48cba\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AutoSearchComplete.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-25c48cba\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AutoSearchComplete.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 478 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(8)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.pac-container.pac-logo {\n  z-index: 999999;\n}\n.pac-container {\n  z-index: 999999 !important;\n}\n", ""]);
+
+// exports
+
 
 /***/ })
 /******/ ]);
