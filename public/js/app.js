@@ -87347,6 +87347,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ["queryFullAddress", "clearSearchResultValue"],
@@ -87489,6 +87490,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.confirmAddress.full_address = null;
             this.confirmAddress.postal_code = null;
         }
+    },
+    computed: {
+        currentUser: function currentUser() {
+            return this.$store.getters.currentUser;
+        },
+        isCallCenterOperator: function isCallCenterOperator() {
+            if (!this.currentUser) return false;
+            return this.currentUser.roles == "CallCenterOperator";
+        },
+        isCrisisManager: function isCrisisManager() {
+            if (!this.currentUser) return false;
+            return this.currentUser.roles == "CrisisManager";
+        },
+        isAccountManager: function isAccountManager() {
+            if (!this.currentUser) return false;
+            return this.currentUser.roles == "AccountManager";
+        }
     }
 });
 
@@ -87553,7 +87571,8 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm.form.address != ""
+                _vm.form.address != "" &&
+                _vm.currentUser.roles == "CallCenterOperator"
                   ? _c(
                       "b-button",
                       {
@@ -101067,7 +101086,7 @@ exports = module.exports = __webpack_require__(8)(false);
 
 
 // module
-exports.push([module.i, "\n.pac-container {\n  z-index: 9999999 !important;\n}\n", ""]);
+exports.push([module.i, "\n.pac-container.pac-logo {\n  z-index: 999999;\n}\n.pac-container {\n  z-index: 999999 !important;\n}\n", ""]);
 
 // exports
 
