@@ -77469,8 +77469,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             this.$refs.mapRef.$mapPromise.then(function (map) {
                 dengue.crises.forEach(function (element, index) {
                     var pos = {
-                        lat: element.lat,
-                        lng: element.lng
+                        lat: parseFloat(element.lat),
+                        lng: parseFloat(element.lng)
                     };
 
                     //create dengue search marker
@@ -87327,7 +87327,7 @@ exports = module.exports = __webpack_require__(8)(false);
 
 
 // module
-exports.push([module.i, "\n.pac-container.pac-logo {\n  z-index: 999999;\n}\n.pac-container {\n  z-index: 999999 !important;\n}\n", ""]);
+exports.push([module.i, "\n.pac-container {\n  z-index: 999999 !important;\n}\n", ""]);
 
 // exports
 
