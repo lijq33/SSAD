@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use App\Agency;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Map;
-use Intervention\Image\Facades\Image;
 
 
 class Crisis extends Model

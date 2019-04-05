@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Crisis;
 use App\User;
 use App\Events\CrisisCreated;
+use Intervention\Image\Facades\Image;
 use App\Events\CrisisUpdated;
 
 class CrisisController extends Controller
