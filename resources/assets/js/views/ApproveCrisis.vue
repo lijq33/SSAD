@@ -73,7 +73,7 @@
                 .catch((error) => {
                     this.error = error.response;
                 })
-            
+                
             },
 
             hideModal() {
