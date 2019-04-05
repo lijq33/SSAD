@@ -25,8 +25,8 @@ Start Mysql Service
 
 #Creating all UserType.
 php artisan db:seed --class=UsersTableSeeder
-php artisan db:seed --class=SubscribersTableSeeder
 php artisan db:seed --class=AgenciesTableSeeder
+php artisan db:seed --class=SubscribersTableSeeder
 
 ##Type of user
 role 1 - Call Center Operator - able to register a new crisis
