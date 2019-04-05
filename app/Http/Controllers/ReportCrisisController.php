@@ -79,8 +79,17 @@ class ReportCrisisController extends Controller
         $data['crisisType'] = $reportCrisis['crisis_type'];
         $data['radius'] = $reportCrisis['radius'];
         
-        if($reportCrisis['image'] !== null)
-            $data['image'] = $reportCrisis['image'];
+        $imageName = null;
+
+        if (array_key_exists('image', $reportCrisis)){        
+            $imageName = str_random(40);
+            $image = Image::make($reportCrisis['image']->getRealPath());
+            // $image->resize(320, 240);
+            $image->save('crisis/'.  $imageName . ".{$reportCrisis['image']->getClientOriginalExtension()}"); // Original Image
+            $imageName = $imageName.".".$reportCrisis['image']->getClientOriginalExtension();
+        }
+
+        $data['image'] = $imageName;
 
         $crisis = Crisis::newCrisis($data);
 

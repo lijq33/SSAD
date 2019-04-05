@@ -71,16 +71,6 @@ class Crisis extends Model
         $data['date'] = (Carbon::parse($data['date'])->format('Y/m/d'));
         $data['time'] = (Carbon::parse($data['time'])->format('H:i:s'));
 
-        $imageName = null;
-
-        if (array_key_exists('image', $data)){        
-            $imageName = str_random(40);
-            $image = Image::make($data['image']->getRealPath());
-            // $image->resize(320, 240);
-            $image->save('crisis/'.  $imageName . ".{$data['image']->getClientOriginalExtension()}"); // Original Image
-            $imageName = $imageName.".".$data['image']->getClientOriginalExtension();
-        }
-
         $crisis = Crisis::create([
             'name' => $data['name'],
             'user_id' => $data['id'],
@@ -95,7 +85,7 @@ class Crisis extends Model
             'status' => 'registered',
             'description' => $data['description'],
             'radius' => $data['radius'],
-            'image' => $imageName
+            'image' => $data['image']
         ]);
 
         return $crisis;
