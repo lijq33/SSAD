@@ -4,6 +4,7 @@ Composer Update
 npm install
 Open mysql, create a schema name 'ssad'
 
+cloud_sql_proxy -instances=teamten:asia-east2:ssad=tcp:3306
 
 #starting the services
 composer require guzzlehttp/guzzle
