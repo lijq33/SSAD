@@ -29,7 +29,7 @@ class GraphController extends Controller
         try{
 
             if($imageName !=null){
-                $img = $this->api->fileToUpload(public_path('crisis\\').$imageName);
+                $img = $this->api->fileToUpload(public_path().'/'.'crisis/'.$imageName);
                 $post= $this->api->post('/'.env('FACEBOOK_PAGE_ID').'/photos',array('message' => $message, 'attached_media' => $img)
                 ,env('FACEBOOK_ACCESS_TOKEN'));
             }else{
@@ -55,7 +55,7 @@ class GraphController extends Controller
             }
             else{
                 
-                    $img = $this->api->fileToUpload(public_path().'\crisis\\'.$imageName);
+                    $img = $this->api->fileToUpload(public_path().'/'.'crisis/'.$imageName);
             
                     $post= $this->api->post('/'.$post_id.'/comments',array('message' => $message,'attached_media'=>$img)
                     ,env('FACEBOOK_ACCESS_TOKEN'));
