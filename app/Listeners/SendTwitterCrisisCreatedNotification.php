@@ -36,13 +36,12 @@ class SendTwitterCrisisCreatedNotification
         $graph = new TwitterController();
         $crisis = $event->crisis;
 
-
         $message = "On  ".$crisis->date. " at ".$crisis->time . " there is a " . $crisis->crisis_type
          . " at " . $crisis->address. ". " . $crisis->description;
         
         $image = $crisis->image;
 
-        $twit_id = $graph->tweet($message,$image);
+        $twit_id = $graph->tweet($message, $image);
 
         $updateCrisis = Crisis::whereId($crisis->id)->first();
         $updateCrisis->update(['twitter_post_id' => $twit_id]);
