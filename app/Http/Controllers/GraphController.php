@@ -33,7 +33,7 @@ class GraphController extends Controller
                 $post= $this->api->post('/'.env('FACEBOOK_PAGE_ID').'/photos',array('message' => $message, 'attached_media' => $img)
                 ,env('FACEBOOK_ACCESS_TOKEN'));
             }else{
-                $post= $this->api->post('/'.env('FACEBOOK_PAGE_ID').'/photos',array('message' => $message)
+                $post= $this->api->post('/'.env('FACEBOOK_PAGE_ID').'/feed',array('message' => $message)
                 ,env('FACEBOOK_ACCESS_TOKEN'));
             }
 

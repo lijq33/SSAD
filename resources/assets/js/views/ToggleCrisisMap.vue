@@ -63,6 +63,23 @@
                         </b-form-group>
                     </b-tab>
 
+                     <!--bomb sheleter-->
+                    <b-tab title="Bomb Shelter">
+
+                        <b-form-group>
+                            <b-form-checkbox
+                                id="showBombShelterDataId"
+                                name="showBombShelterDataId"
+                                v-model="selectBombShelter"
+                                value="showBombShelterData"
+                                unchecked-value="hideBombShelterData"
+                            >
+                                Bomb Shelter
+                            </b-form-checkbox>
+ 
+                        </b-form-group>
+                    </b-tab>
+
                 </b-tabs>
             </b-card>
         </div>
@@ -79,7 +96,8 @@ export default {
             selectTwoHrWeather: "",
             selectDengue: "",
             selectFire: "",
-            selectGasLeak: ""
+            selectGasLeak: "",
+            selectBombShelter:""
         };
     },
     methods: {
@@ -105,6 +123,39 @@ export default {
         }
     },
     watch: {
+        selectBombShelter(){
+            console.log("sfsaf")
+
+            var data = {
+                resource_id: '4ee17930-4780-403b-b6d4-b963c7bb1c09', // the resource id
+                limit: 5, // get 5 results
+                q: 'jones' // query for 'jones'
+                };
+
+              $.ajax({
+               type:'GET',
+               url:'https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b6d4-b963c7bb1c09&limit=574',
+               success:function(data) {
+                  console.log(data)
+               }
+            });
+
+
+            // var request = "https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b6d4-b963c7bb1c09";
+            // var markerIconUrl = "/assets/img/bomb-shelter.png";
+            //     //https://www.scdf.gov.sg/images/default-source/scdf-images/cd-shelter-logo-01711c5eafc0a84b29afa7c5a52c2cfe7a.png?sfvrsn=d000c2ba_0
+
+            // if (this.selectBombShelter.includes("show")) {
+            //     this.getCrisisDataFromBackEnd(
+            //         request,
+            //         this.selectBombShelter,
+            //         markerIconUrl
+            //     );
+            // } else {
+            //     this.removeCrisisDataFromFrontend(this.selectBombShelter);
+            // }
+
+        },
         selectGasLeak() {
             var request = "/api/crisis/gasLeak";
             var markerIconUrl =
