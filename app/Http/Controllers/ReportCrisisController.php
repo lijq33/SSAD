@@ -78,18 +78,7 @@ class ReportCrisisController extends Controller
         $data['address'] = $reportCrisis['address'];
         $data['crisisType'] = $reportCrisis['crisis_type'];
         $data['radius'] = $reportCrisis['radius'];
-        
-        $imageName = null;
-
-        if (array_key_exists('image', $reportCrisis)){        
-            $imageName = str_random(40);
-            $image = Image::make($reportCrisis['image']->getRealPath());
-            // $image->resize(320, 240);
-            $image->save('crisis/'.  $imageName . ".{$reportCrisis['image']->getClientOriginalExtension()}"); // Original Image
-            $imageName = $imageName.".".$reportCrisis['image']->getClientOriginalExtension();
-        }
-
-        $data['image'] = $imageName;
+        $data['image'] = $reportCrisis['image'];
 
         $crisis = Crisis::newCrisis($data);
 
@@ -97,9 +86,9 @@ class ReportCrisisController extends Controller
             $crisis->agency()->attach($assistance);
         }
 
-        event(new CrisisCreated($crisis));
-
         $reportCrisis->delete();
+
+        event(new CrisisCreated($crisis));
 
         return response()->json([
             'message' => 'You have successfully registered a new crisis!',
@@ -114,7 +103,6 @@ class ReportCrisisController extends Controller
      */
     public function destroy($id)
     {
-
         $reportCrisis = ReportCrisis::whereId($id)->first(); 
         $reportCrisis->delete();
 
