@@ -22,10 +22,6 @@
     $thirty_total = $thirty_min_dengue->count() + $thirty_min_fire_outbreak->count() + $thirty_min_gas_leak->count();
     $twenty_four_total = $twenty_four_hours_dengue->count() + $twenty_four_hours_fire_outbreak->count() + $twenty_four_hours_gas_leak->count();
     $one_week_total = $one_week_dengue->count() + $one_week_fire_outbreak->count() + $one_week_gas_leak->count();
-
-    $fireAddr =  $dengue->where("created_at", '>=', '2019-03-21 15:00:00');
-    $firePostal =  $fire_outbreak->where("created_at", '>=', '2019-03-21 15:00:00');
-    $thirty_min_gas_leak =  $gas_leak->where("created_at", '>=', '2019-03-21 15:00:00');
 ?>
 {{-- 
 $startTime = date("Y-m-d H:i:s");
@@ -107,41 +103,80 @@ echo 'Converted Time (added 1 day, 1 hour, 30 minutes  & 45 seconds): '.$cenvert
 <div>
     Fire Outbreak Incident Breakdown
     <table>
-        <tr>
-            <th>No.</th>
-            <th>Address</th>
-            <th>Postal Code</th>
-            <th>Date</th>
-            <th>Time</th>
-        </tr>
-        <tr>
-            <td>30-minutes</td>
-            <td>{{$twenty_four_hours_fire_outbreak->pluck('address')}}</td>
-            <td>{{$thirty_min_fire_outbreak->count()}}</td>
-            <td>{{$thirty_min_gas_leak->count()}}</td>
-            <td>{{$thirty_min_dengue->count()}}</td>
-        </tr>
-        <tr>
-            <td>24-hours</td>
-            <td>{{$twenty_four_total}}</td>
-            <td>{{$twenty_four_hours_fire_outbreak->count()}}</td>
-            <td>{{$twenty_four_hours_gas_leak->count()}}</td>
-            <td>{{$twenty_four_hours_dengue->count()}}</td>
-        </tr>
-        <tr>
-            <td>Week</td>
-            <td>{{$one_week_total}}</td>
-            <td>{{$one_week_fire_outbreak->count()}}</td>
-            <td>{{$one_week_gas_leak->count()}}</td>
-            <td>{{$one_week_dengue->count()}}</td>
-        </tr>
+        @if ($fire_outbreak->count() != 0)
+            <tr>
+                <th>No.</th>
+                <th>Address</th>
+                <th>Postal Code</th>
+                <th>Date</th>
+                <th>Time</th>
+            </tr>
+        @endif
+        @forelse($fire_outbreak as $fireEvent)
+            <tr>
+                <td>{{$fireEvent->id}}</td>
+                <td>{{$fireEvent->address}}</td>
+                <td>{{$fireEvent->postal_code}}</td>
+                <td>{{$fireEvent->date}}</td>
+                <td>{{$fireEvent->time}}</td>
+            </tr>
+        @empty
+            <b>No Fire Outbreak event was reported today.</b>
+        @endforelse
     </table>
 </div>
-{{-- line chart --}}
-{{-- line chart --}}
-{{-- Crisis type, affected area --}}
-{{-- pie chart %fire %gas %dengue --}}
-{{-- status chart today --}}
+<br/>
+<div>
+    Gas Leak Incident Breakdown
+    <table>
+        @if ($gas_leak->count() != 0)
+            <tr>
+                <th>No.</th>
+                <th>Address</th>
+                <th>Postal Code</th>
+                <th>Date</th>
+                <th>Time</th>
+            </tr>
+        @endif
+        @forelse($gas_leak as $gasLeakEvent)
+            <tr>
+                <td>{{$gasLeakEvent->id}}</td>
+                <td>{{$gasLeakEvent->address}}</td>
+                <td>{{$gasLeakEvent->postal_code}}</td>
+                <td>{{$gasLeakEvent->date}}</td>
+                <td>{{$gasLeakEvent->time}}</td>
+            </tr>
+        @empty
+            <b>No Gas Leak event was reported today.</b>
+        @endforelse
+    </table>
+</div>
+<br/>
+<div>
+    Dengue Incident Breakdown
+    <table>
+        @if ($dengue->count() != 0)
+            <tr>
+                <th>No.</th>
+                <th>Address</th>
+                <th>Postal Code</th>
+                <th>Date</th>
+                <th>Time</th>
+            </tr>
+        @endif
+        @forelse($dengue as $dengueEvent)
+            <tr>
+                <td>{{$dengueEvent->id}}</td>
+                <td>{{$dengueEvent->address}}</td>
+                <td>{{$dengueEvent->postal_code}}</td>
+                <td>{{$dengueEvent->date}}</td>
+                <td>{{$dengueEvent->time}}</td>
+            </tr>
+        @empty
+            <b>No Dengue event was reported today.</b>
+        @endforelse
+    </table>
+</div>
 
 <style>
     table {
