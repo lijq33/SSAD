@@ -77254,7 +77254,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             markers: {
                 twoHrWeatherMarkers: [],
                 fireMarkers: [],
-                gasLeakMarkers: []
+                gasLeakMarkers: [],
+                bombShelterMarkers: []
             },
             polygon: { dengueData: [], dengueMarkerData: [] }
         };
@@ -77344,6 +77345,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                     centerControlDiv.index = 1;
                     map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
                 });
+            } else if (toggleData.displayId === "showBombShelterData") {
+                this.showBombShelterData(toggleData);
             }
         },
         weatherCenterControl: function weatherCenterControl(controlDiv, map, updatedTime) {
@@ -77448,6 +77451,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             for (var i = 0; i < removeMarkersType.length; i++) {
                 removeMarkersType[i].setMap(null);
             }
+        },
+        showBombShelterData: function showBombShelterData(bombShelterData) {
+
+            var scope = this;
+
+            bombShelterData.crises.forEach(function (element, index) {
+                scope.addMarker("Array", scope.markers.bombShelterMarkers, {
+                    icon: gasLeakData.iconUrl,
+                    markerDisplayId: element.id,
+                    position: { lat: element.lat, lng: element.lng }
+                }, { infoWindowTitle: element.name, infoWindowBody: element }, element);
+            });
         },
         showDengueData: function showDengueData(dengue) {
             var scope = this;
@@ -87685,6 +87700,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -87695,7 +87727,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             selectTwoHrWeather: "",
             selectDengue: "",
             selectFire: "",
-            selectGasLeak: ""
+            selectGasLeak: "",
+            selectBombShelter: ""
         };
     },
 
@@ -87722,6 +87755,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     watch: {
+        selectBombShelter: function selectBombShelter() {
+            console.log("sfsaf");
+
+            var data = {
+                resource_id: '4ee17930-4780-403b-b6d4-b963c7bb1c09', // the resource id
+                limit: 5, // get 5 results
+                q: 'jones' // query for 'jones'
+            };
+
+            $.ajax({
+                type: 'GET',
+                url: 'https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b6d4-b963c7bb1c09&limit=574',
+                success: function success(data) {
+                    console.log(data);
+                }
+            });
+
+            // var request = "https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b6d4-b963c7bb1c09";
+            // var markerIconUrl = "/assets/img/bomb-shelter.png";
+            //     //https://www.scdf.gov.sg/images/default-source/scdf-images/cd-shelter-logo-01711c5eafc0a84b29afa7c5a52c2cfe7a.png?sfvrsn=d000c2ba_0
+
+            // if (this.selectBombShelter.includes("show")) {
+            //     this.getCrisisDataFromBackEnd(
+            //         request,
+            //         this.selectBombShelter,
+            //         markerIconUrl
+            //     );
+            // } else {
+            //     this.removeCrisisDataFromFrontend(this.selectBombShelter);
+            // }
+        },
         selectGasLeak: function selectGasLeak() {
             var request = "/api/crisis/gasLeak";
             var markerIconUrl = "https://images.vexels.com/media/users/3/150012/isolated/preview/bf8475104937ca2ee44090829f4efa3a-small-gas-cylinder-icon-by-vexels.png";
@@ -87906,6 +87970,43 @@ var render = function() {
                     )
                   ],
                   1
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-tab",
+                  { attrs: { title: "Bomb Shelter" } },
+                  [
+                    _c(
+                      "b-form-group",
+                      [
+                        _c(
+                          "b-form-checkbox",
+                          {
+                            attrs: {
+                              id: "showBombShelterDataId",
+                              name: "showBombShelterDataId",
+                              value: "showBombShelterData",
+                              "unchecked-value": "hideBombShelterData"
+                            },
+                            model: {
+                              value: _vm.selectBombShelter,
+                              callback: function($$v) {
+                                _vm.selectBombShelter = $$v
+                              },
+                              expression: "selectBombShelter"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            Bomb Shelter\n                        "
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
                 )
               ],
               1
@@ -87945,7 +88046,7 @@ var render = function() {
           [
             _c(
               "b-col",
-              { attrs: { cols: "8" } },
+              { attrs: { cols: "7" } },
               [
                 _c("auto-search", {
                   attrs: {
@@ -87963,7 +88064,7 @@ var render = function() {
             _vm._v(" "),
             _c(
               "b-col",
-              { attrs: { cols: "4" } },
+              { attrs: { cols: "5" } },
               [
                 !_vm.hideToggleMap
                   ? _c("toggle-map", {

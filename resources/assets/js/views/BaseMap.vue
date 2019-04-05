@@ -3,7 +3,7 @@
 
         <div>
             <b-row>
-                <b-col cols="8">
+                <b-col cols="7">
                     <!--autosearch -->
                     <auto-search
                         :query-full-address="searchMarkerFullAddress"
@@ -13,7 +13,7 @@
                     />
                 </b-col>
 
-                <b-col cols="4">
+                <b-col cols="5">
                     <!-- show and hide various crisis -->
                     <toggle-map
                         v-if="!hideToggleMap"
@@ -141,7 +141,8 @@ export default {
             markers: {
                 twoHrWeatherMarkers: [],
                 fireMarkers: [],
-                gasLeakMarkers: []
+                gasLeakMarkers: [],
+                bombShelterMarkers:[]
             },
             polygon: { dengueData: [], dengueMarkerData: [] },
         };
@@ -236,7 +237,10 @@ export default {
 		   
 				 }); 
 		 
-		 }
+		 }else if(toggleData.displayId === "showBombShelterData"){
+             this.showBombShelterData(toggleData);
+
+         }
 		},
 		weatherCenterControl(controlDiv, map,updatedTime) {
 
@@ -354,6 +358,25 @@ export default {
             for (var i = 0; i < removeMarkersType.length; i++) {
                 removeMarkersType[i].setMap(null);
             }
+        },
+        showBombShelterData(bombShelterData){
+
+               var scope = this;
+
+        bombShelterData.crises.forEach((element, index) => {
+            scope.addMarker(
+                "Array",
+                scope.markers.bombShelterMarkers,
+                {
+                    icon: gasLeakData.iconUrl,
+                    markerDisplayId: element.id,
+                    position: { lat: element.lat, lng: element.lng }
+                },
+                { infoWindowTitle: element.name, infoWindowBody: element },
+                element
+            );
+        });
+
         },
         showDengueData(dengue) {
             var scope = this;
