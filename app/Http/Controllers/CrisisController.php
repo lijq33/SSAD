@@ -8,6 +8,7 @@ use App\Crisis;
 use App\User;
 use App\Events\CrisisCreated;
 use App\Events\CrisisUpdated;
+use Intervention\Image\Facades\Image;
 
 class CrisisController extends Controller
 {

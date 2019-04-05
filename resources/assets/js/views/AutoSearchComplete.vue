@@ -261,6 +261,5 @@ export default {
 </script>
 
 <style>
-.pac-container.pac-logo { z-index: 999999; }
 .pac-container { z-index: 999999 !important;}
 </style>

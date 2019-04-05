@@ -383,8 +383,8 @@ export default {
             this.$refs.mapRef.$mapPromise.then(map => {
                 dengue.crises.forEach((element, index) => {
                     var pos = {
-                        lat: element.lat,
-                        lng: element.lng
+                        lat: parseFloat(element.lat),
+                        lng: parseFloat(element.lng)
                     };
 
                     //create dengue search marker
