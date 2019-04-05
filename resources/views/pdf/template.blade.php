@@ -1,23 +1,42 @@
 
 <?php
-    $time = date("h:i:s"); 
-    $convertedTime = date('H:i:s',strtotime('+20 hour',strtotime($time))); 
+    $date = date("Y-m-d");
+    $minus1Day = date('Y-m-d',strtotime('-1 day',strtotime($date))); 
+    $minus1Week = date('Y-m-d',strtotime('-1 week',strtotime($date))); 
+
+    $time = date("H:i:s");
+    $minus30mins = date("H:i:s",strtotime('-30 minutes',strtotime($time)));
 
     $dengue = $crises->where('crisis_type', "Dengue");
     $fire_outbreak = $crises->where('crisis_type', "Fire Outbreak");
     $gas_leak = $crises->where('crisis_type', "Gas Leak");
 
-    $thirty_min_dengue =  $dengue->where("created_at", '>=', '2019-03-21 15:00:00');
-    $thirty_min_fire_outbreak =  $fire_outbreak->where("created_at", '>=', '2019-03-21 15:00:00');
-    $thirty_min_gas_leak =  $gas_leak->where("created_at", '>=', '2019-03-21 15:00:00');
+    $thirty_min_dengue_before =  $dengue->where("created_at", '>=', $date.' '.$minus30mins);
+    $thirty_min_dengue =  $thirty_min_dengue_before->where("created_at", '<=', $date.' '.$time);
 
-    $twenty_four_hours_dengue =  $dengue->where("created_at", '>=', '2019-03-21 15:00:00');
-    $twenty_four_hours_fire_outbreak =  $fire_outbreak->where("created_at", '>=', '2019-03-21 15:00:00');
-    $twenty_four_hours_gas_leak =  $gas_leak->where("created_at", '>=', '2019-03-21 15:00:00');
+    $thirty_min_fire_outbreak_before =  $fire_outbreak->where("created_at", '>=', $date.' '.$minus30mins);
+    $thirty_min_fire_outbreak =  $thirty_min_fire_outbreak_before->where("created_at", '<=', $date.' '.$time);
 
-    $one_week_dengue =  $dengue->where("created_at", '>=', '2019-03-21 15:00:00');
-    $one_week_fire_outbreak =  $fire_outbreak->where("created_at", '>=', '2019-03-21 15:00:00');
-    $one_week_gas_leak =  $gas_leak->where("created_at", '>=', '2019-03-21 15:00:00');
+    $thirty_min_gas_leak_before =  $gas_leak->where("created_at", '>=', $date.' '.$minus30mins);
+    $thirty_min_gas_leak =  $thirty_min_gas_leak_before->where("created_at", '<=', $date.' '.$time);
+
+    $twenty_four_hours_dengue_before =  $dengue->where("created_at", '>=', $minus1Day.' 00:00:00');
+    $twenty_four_hours_dengue =  $twenty_four_hours_dengue_before->where("created_at", '<=', $date.' 00:00:00');
+
+    $twenty_four_hours_fire_outbreak_before =  $fire_outbreak->where("created_at", '>=', $minus1Day.' 00:00:00');
+    $twenty_four_hours_fire_outbreak =  $twenty_four_hours_fire_outbreak_before->where("created_at", '<=', $date.' 00:00:00');
+
+    $twenty_four_hours_gas_leak_before =  $gas_leak->where("created_at", '>=', $minus1Day.' 00:00:00');
+    $twenty_four_hours_gas_leak =  $twenty_four_hours_gas_leak_before->where("created_at", '<=', $date.' 00:00:00');
+
+    $one_week_dengue_before =  $dengue->where("created_at", '>=', $minus1Week.' 00:00:00');
+    $one_week_dengue =  $one_week_dengue_before->where("created_at", '<=', $date.' 00:00:00');
+
+    $one_week_fire_outbreak_before =  $fire_outbreak->where("created_at", '>=', $minus1Week.' 00:00:00');
+    $one_week_fire_outbreak =  $one_week_fire_outbreak_before->where("created_at", '<=', $date.' 00:00:00');
+
+    $one_week_gas_leak_before =  $gas_leak->where("created_at", '>=', $minus1Week.' 00:00:00');
+    $one_week_gas_leak =  $one_week_gas_leak_before->where("created_at", '<=', $date.' 00:00:00');
 
     $thirty_total = $thirty_min_dengue->count() + $thirty_min_fire_outbreak->count() + $thirty_min_gas_leak->count();
     $twenty_four_total = $twenty_four_hours_dengue->count() + $twenty_four_hours_fire_outbreak->count() + $twenty_four_hours_gas_leak->count();
@@ -58,7 +77,7 @@ echo 'Converted Time (added 1 day, 1 hour, 30 minutes  & 45 seconds): '.$cenvert
 <div style="">
    <span style="align-items: center; font-style: italic; text-transform: uppercase; font-size: 1.125rem;">TEAM </span> 
    <img src = "assets\img\TL.jpg" style="width:50px;height:50px;"/> 
-   Report generated on {{$convertedTime}} {{date("d/m/Y")}}
+   Report generated on {{date("H:i:s")}} {{date("d/m/Y")}}
 </div>
 {{-- Header --}}
 
