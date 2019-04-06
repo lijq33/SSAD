@@ -38,6 +38,9 @@ class SendTwitterCrisisUpdatedNotification
         
         $image = $crisis->image;
 
-        $graph->postRt($crisis->twitter_post_id,$message,$image);
+        $twit_id = $graph->postRt($crisis->twitter_post_id,$message,$image);
+
+        $updateCrisis = Crisis::whereId($crisis->id)->first();
+        $updateCrisis->update(['twitter_post_id' => $twit_id]);
     }
 }
