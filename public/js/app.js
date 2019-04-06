@@ -77467,7 +77467,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         showDengueData: function showDengueData(dengue) {
             var scope = this;
             this.$refs.mapRef.$mapPromise.then(function (map) {
-                dengue.crises.forEach(function (element, index) {
+                dengue.forEach(function (element, index) {
                     var pos = {
                         lat: parseFloat(element.lat),
                         lng: parseFloat(element.lng)
@@ -77516,7 +77516,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         showFireData: function showFireData(fireData) {
             var scope = this;
 
-            fireData.crises.forEach(function (element, index) {
+            console.log(fireData);
+
+            fireData.forEach(function (element, index) {
                 scope.addMarker("Array", scope.markers.fireMarkers, {
                     icon: fireData.iconUrl,
                     markerDisplayId: element.id,
@@ -77530,7 +77532,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         },
         showGasLeakData: function showGasLeakData(gasLeakData) {
             var scope = this;
-            gasLeakData.crises.forEach(function (element, index) {
+            gasLeakData.forEach(function (element, index) {
                 scope.addMarker("Array", scope.markers.gasLeakMarkers, {
                     icon: gasLeakData.iconUrl,
                     markerDisplayId: element.id,
@@ -87769,41 +87771,66 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    mounted: function mounted() {
+        this.getAllCrisis();
+        this.disableFireData = true;
+        this.disableDengueData = true;
+        this.disableGasLeakData = true;
+    },
     data: function data() {
         return {
             selectTwoHrWeather: "",
             selectDengue: "",
             selectFire: "",
             selectGasLeak: "",
-            selectBombShelter: ""
+            selectBombShelter: "",
+            dengueData: [],
+            fireData: [],
+            gasData: [],
+            disableFireData: false,
+            disableDengueData: false,
+            disableGasLeakData: false
         };
     },
 
     methods: {
+        getAllCrisis: function getAllCrisis() {
+            var _this = this;
+
+            axios.get("/api/crisis/all").then(function (res) {
+                _this.dengueData = res.data.dengue;
+                _this.fireData = res.data.fire;
+                _this.gasData = res.data.gas;
+
+                if (_this.disableFireData) {
+                    _this.disableFireData = false;
+                }
+                if (_this.disableDengueData) {
+                    _this.disableDengueData = false;
+                }
+                if (_this.disableGasLeakData) {
+                    _this.disableGasLeakData = false;
+                }
+            }).catch(function (error) {
+                console.log("error loading all crisis from backend.");
+            });
+        },
         removeCrisisDataFromFrontend: function removeCrisisDataFromFrontend(removeData) {
             this.$emit("clear-toggle-data", removeData);
         },
-        getCrisisDataFromBackEnd: function getCrisisDataFromBackEnd(url, display_id, icon_url) {
-            var scope = this;
-
-            $.ajax({
-                url: url,
-                type: "GET",
-                success: function success(data, status, jqXHR) {
-                    data["displayId"] = display_id;
-                    data["iconUrl"] = icon_url;
-                    scope.$emit("get-toggle-data", data);
-                },
-                error: function error(jqXHR, status, err) {
-                    console.log(err);
-                },
-                complete: function complete(jqXHR, status) {}
-            });
+        appendCrisisDataFromBackEnd: function appendCrisisDataFromBackEnd(data, display_id, icon_url) {
+            data["displayId"] = display_id;
+            data["iconUrl"] = icon_url;
+            this.$emit("get-toggle-data", data);
         }
     },
     watch: {
@@ -87811,14 +87838,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             console.log("sfsaf");
 
             var data = {
-                resource_id: '4ee17930-4780-403b-b6d4-b963c7bb1c09', // the resource id
+                resource_id: "4ee17930-4780-403b-b6d4-b963c7bb1c09", // the resource id
                 limit: 5, // get 5 results
-                q: 'jones' // query for 'jones'
+                q: "jones" // query for 'jones'
             };
 
             $.ajax({
-                type: 'GET',
-                url: 'https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b6d4-b963c7bb1c09&limit=574',
+                type: "GET",
+                url: "https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b6d4-b963c7bb1c09&limit=574",
                 success: function success(data) {
                     console.log(data);
                 }
@@ -87839,32 +87866,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // }
         },
         selectGasLeak: function selectGasLeak() {
-            var request = "/api/crisis/gasLeak";
-            var markerIconUrl = "https://images.vexels.com/media/users/3/150012/isolated/preview/bf8475104937ca2ee44090829f4efa3a-small-gas-cylinder-icon-by-vexels.png";
+            var request = this.gasData;
+            var markerIconUrl = "/assets/img/gasleak.png";
 
             if (this.selectGasLeak.includes("show")) {
-                this.getCrisisDataFromBackEnd(request, this.selectGasLeak, markerIconUrl);
+                this.appendCrisisDataFromBackEnd(request, this.selectGasLeak, markerIconUrl);
             } else {
+                this.disableGasLeakData = true;
+                this.getAllCrisis();
                 this.removeCrisisDataFromFrontend(this.selectGasLeak);
             }
         },
         selectFire: function selectFire() {
-            var request = "/api/crisis/fire";
-            var markerIconUrl = "https://cdn0.iconfinder.com/data/icons/fatcow/32/fire.png";
+            var request = this.fireData;
+            var markerIconUrl = "/assets/img/fire.png";
 
             if (this.selectFire.includes("show")) {
-                this.getCrisisDataFromBackEnd(request, this.selectFire, markerIconUrl);
+                this.appendCrisisDataFromBackEnd(request, this.selectFire, markerIconUrl);
             } else {
+                this.disableFireData = true;
+                this.getAllCrisis();
                 this.removeCrisisDataFromFrontend(this.selectFire);
             }
         },
         selectDengue: function selectDengue() {
-            var request = "/api/crisis/dengue";
-            var markerIconUrl = "https://www.sumitomo-chemical.co.uk/wp-content/uploads/icon-mosquito.png";
+            var request = this.dengueData;
+            var markerIconUrl = "/assets/img/icon-mosquito.png";
 
             if (this.selectDengue.includes("show")) {
-                this.getCrisisDataFromBackEnd(request, this.selectDengue, markerIconUrl);
+                this.appendCrisisDataFromBackEnd(request, this.selectDengue, markerIconUrl);
             } else {
+                this.disableDengueData = true;
+                this.getAllCrisis();
                 this.removeCrisisDataFromFrontend(this.selectDengue);
             }
         },
@@ -87916,7 +87949,8 @@ var render = function() {
                               id: "showDengueDataId",
                               name: "showDengueDataId",
                               value: "showDegueData",
-                              "unchecked-value": "hideDengueData"
+                              "unchecked-value": "hideDengueData",
+                              disabled: _vm.disableDengueData
                             },
                             model: {
                               value: _vm.selectDengue,
@@ -87940,7 +87974,8 @@ var render = function() {
                               id: "showFireDataId",
                               name: "showFireDataId",
                               value: "showFireData",
-                              "unchecked-value": "hideFireData"
+                              "unchecked-value": "hideFireData",
+                              disabled: _vm.disableFireData
                             },
                             model: {
                               value: _vm.selectFire,
@@ -87964,7 +87999,8 @@ var render = function() {
                               id: "showGasLeakDataId",
                               name: "showGasLeakDataId",
                               value: "showGasLeakData",
-                              "unchecked-value": "hideGasLeakData"
+                              "unchecked-value": "hideGasLeakData",
+                              disabled: _vm.disableGasLeakData
                             },
                             model: {
                               value: _vm.selectGasLeak,

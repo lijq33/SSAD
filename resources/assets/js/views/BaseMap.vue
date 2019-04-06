@@ -381,7 +381,7 @@ export default {
         showDengueData(dengue) {
             var scope = this;
             this.$refs.mapRef.$mapPromise.then(map => {
-                dengue.crises.forEach((element, index) => {
+                dengue.forEach((element, index) => {
                     var pos = {
                         lat: parseFloat(element.lat),
                         lng: parseFloat(element.lng)
@@ -446,7 +446,9 @@ export default {
         showFireData(fireData) {
             var scope = this;
 
-            fireData.crises.forEach((element, index) => {
+            console.log(fireData)
+
+            fireData.forEach((element, index) => {
                 scope.addMarker(
                     "Array",
                     scope.markers.fireMarkers,
@@ -466,7 +468,7 @@ export default {
         },
         showGasLeakData(gasLeakData) {
             var scope = this;
-            gasLeakData.crises.forEach((element, index) => {
+            gasLeakData.forEach((element, index) => {
                 scope.addMarker(
                     "Array",
                     scope.markers.gasLeakMarkers,
