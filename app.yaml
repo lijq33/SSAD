@@ -3,6 +3,7 @@ env: flex
 
 runtime_config:
   document_root: public
+  skip_lockdown_document_root: true
 
 # Ensure we skip ".env", which is only for local development
 skip_files:
@@ -19,16 +20,18 @@ env_variables:
   SESSION_DRIVER: file
   
   MAIL_DRIVER: smtp
-  MAIL_HOST: smtp.mailtrap.io
-  MAIL_PORT: 2525
-  MAIL_USERNAME: 71c1e33fbd3437
-  MAIL_PASSWORD: a8f2cd13afae47
-  MAIL_ENCRYPTION: tls
+  MAIL_HOST: smtp.googlemail.com
+  MAIL_PORT: 465
+  MAIL_USERNAME: lijq333@gmail.com
+  MAIL_PASSWORD: 1q3e5tab
+  MAIL_ENCRYPTION: ssl
+  MAIL_FROM_ADDRESS: admin@teamten.com
+  MAIL_FROM_NAME: TeamTen
 
   JWT_SECRET: y5c3PjWWYf2czAxFjDChefeZd7zRmgpp
 
-  NEXMO_API_KEY: 6e2a812f
-  NEXMO_API_SECRET: bWjtpcyA22k3yjlq
+  NEXMO_API_KEY: 9fffbcad
+  NEXMO_API_SECRET: hBtcmVM7JgEmOpwc
 
   BUGSNAG_API_KEY: 9ee055d7d91335afdfefd7e8cdedbefb
 

@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use App\Agency;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Map;
-use Intervention\Image\Facades\Image;
 
 
 class Crisis extends Model
@@ -64,22 +63,12 @@ class Crisis extends Model
      * @var array
     */
     protected $fillable = ['user_id', 'name', 'telephone_number', 'postal_code', 'date', 'time', 'address',
-                            'crisis_type', 'status', 'description', 'image', 'facebook_post_id', 'radius'];
+                            'crisis_type', 'status', 'description', 'image', 'facebook_post_id','twitter_post_id' , 'radius'];
 
     public static function newCrisis($data){
 
         $data['date'] = (Carbon::parse($data['date'])->format('Y/m/d'));
         $data['time'] = (Carbon::parse($data['time'])->format('H:i:s'));
-
-        $imageName = null;
-
-        if (array_key_exists('image', $data)){        
-            $imageName = str_random(40);
-            $image = Image::make($data['image']->getRealPath());
-            // $image->resize(320, 240);
-            $image->save(public_path('crisis\\') .  $imageName . ".{$data['image']->getClientOriginalExtension()}"); // Original Image
-            $imageName = $imageName.".".$data['image']->getClientOriginalExtension();
-        }
 
         $crisis = Crisis::create([
             'name' => $data['name'],
@@ -95,7 +84,7 @@ class Crisis extends Model
             'status' => 'registered',
             'description' => $data['description'],
             'radius' => $data['radius'],
-            'image' => $imageName
+            'image' => $data['image']
         ]);
 
         return $crisis;

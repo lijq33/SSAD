@@ -4,6 +4,7 @@ Composer Update
 npm install
 Open mysql, create a schema name 'ssad'
 
+cloud_sql_proxy -instances=teamten:asia-east2:ssad=tcp:3306
 
 #starting the services
 composer require guzzlehttp/guzzle
@@ -25,8 +26,8 @@ Start Mysql Service
 
 #Creating all UserType.
 php artisan db:seed --class=UsersTableSeeder
-php artisan db:seed --class=SubscribersTableSeeder
 php artisan db:seed --class=AgenciesTableSeeder
+php artisan db:seed --class=SubscribersTableSeeder
 
 ##Type of user
 role 1 - Call Center Operator - able to register a new crisis

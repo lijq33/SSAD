@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Intervention\Image\Facades\Image;
+use App\Services\GoogleCloudService;
 
 class ReportCrisis extends Model
 {  
@@ -37,8 +38,10 @@ class ReportCrisis extends Model
         if (array_key_exists('image', $data)){        
             $imageName = str_random(40);
             $image = Image::make($data['image']->getRealPath());
-            // $image->resize(320, 240);
-            $image->save(public_path('crisis\\') .  $imageName . ".{$data['image']->getClientOriginalExtension()}"); // Original Image
+
+            $image->save(public_path().'/'.'crisis/'.  $imageName . ".{$data['image']->getClientOriginalExtension()}");
+            
+            // $image->save('/app/public/crisis/' .  $imageName . ".{$data['image']->getClientOriginalExtension()}");
             $imageName = $imageName.".".$data['image']->getClientOriginalExtension();
         }
 

@@ -3,8 +3,10 @@
 namespace App\Listeners;
 
 use App\Events\CrisisUpdated;
+use App\Crisis;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Http\Controllers\TwitterController;
 use Twitter;
 
 class SendTwitterCrisisUpdatedNotification
@@ -27,8 +29,15 @@ class SendTwitterCrisisUpdatedNotification
      */
     public function handle(CrisisUpdated $event)
     {
+        $graph = new TwitterController();
         $crisis = $event->crisis;
-        $content = "There is currently a " . $crisis->crisis_type . " at " . $crisis->address;
-		Twitter::postTweet(array('status' => $content, 'format' => 'json'));
+
+
+        $message = "Update for the ".$crisis->crisis_type. " on ".$crisis->date 
+        . " at " . $crisis->address. ", " . $crisis->description;
+        
+        $image = $crisis->image;
+
+        $graph->postRt($crisis->twitter_post_id,$message,$image);
     }
 }

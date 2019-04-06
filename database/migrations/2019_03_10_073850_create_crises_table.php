@@ -32,6 +32,7 @@ class CreateCrisesTable extends Migration
 
             $table->string('image')->nullable(); 
             $table->string('facebook_post_id')->nullable();
+            $table->string('twitter_post_id')->nullable();
             $table->integer('radius')->unsigned()->nullable();
 
             $table->softDeletes();

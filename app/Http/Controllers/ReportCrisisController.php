@@ -78,9 +78,7 @@ class ReportCrisisController extends Controller
         $data['address'] = $reportCrisis['address'];
         $data['crisisType'] = $reportCrisis['crisis_type'];
         $data['radius'] = $reportCrisis['radius'];
-        
-        if($reportCrisis['image'] !== null)
-            $data['image'] = $reportCrisis['image'];
+        $data['image'] = $reportCrisis['image'];
 
         $crisis = Crisis::newCrisis($data);
 
@@ -88,9 +86,9 @@ class ReportCrisisController extends Controller
             $crisis->agency()->attach($assistance);
         }
 
-        event(new CrisisCreated($crisis));
-
         $reportCrisis->delete();
+
+        event(new CrisisCreated($crisis));
 
         return response()->json([
             'message' => 'You have successfully registered a new crisis!',
@@ -105,7 +103,6 @@ class ReportCrisisController extends Controller
      */
     public function destroy($id)
     {
-
         $reportCrisis = ReportCrisis::whereId($id)->first(); 
         $reportCrisis->delete();
 

@@ -29,7 +29,7 @@ class GraphController extends Controller
         try{
 
             if($imageName !=null){
-                $img = $this->api->fileToUpload(public_path('crisis\\').$imageName);
+                $img = $this->api->fileToUpload(public_path().'/'.'crisis/'.$imageName);
                 $post= $this->api->post('/'.env('FACEBOOK_PAGE_ID').'/photos',array('message' => $message, 'attached_media' => $img)
                 ,env('FACEBOOK_ACCESS_TOKEN'));
             }else{
@@ -48,19 +48,18 @@ class GraphController extends Controller
     public function updatePost($message,$post_id,$imageName){
         try{
             if($imageName == null){ 
-            $post= $this->api->post('/'.$post_id.'/comments',array('message' => $message)
-            ,env('FACEBOOK_ACCESS_TOKEN'));
+                $post= $this->api->post('/'.$post_id.'/comments',array('message' => $message)
+                ,env('FACEBOOK_ACCESS_TOKEN'));
 
-            $post= $post->getGraphNode()->asArray();
+                $post= $post->getGraphNode()->asArray();
             }
             else{
-                
-                    $img = $this->api->fileToUpload(public_path().'\crisis\\'.$imageName);
-            
-                    $post= $this->api->post('/'.$post_id.'/comments',array('message' => $message,'attached_media'=>$img)
-                    ,env('FACEBOOK_ACCESS_TOKEN'));
+                $img = $this->api->fileToUpload(public_path().'/'.'crisis/'.$imageName);
         
-                    $post= $post->getGraphNode()->asArray();
+                $post= $this->api->post('/'.$post_id.'/comments',array('message' => $message,'attached_media'=>$img)
+                ,env('FACEBOOK_ACCESS_TOKEN'));
+    
+                $post= $post->getGraphNode()->asArray();
             }
             
         }catch (FacebookSDKException $e){

@@ -8,6 +8,7 @@ use App\Crisis;
 use App\User;
 use App\Events\CrisisCreated;
 use App\Events\CrisisUpdated;
+use Intervention\Image\Facades\Image;
 
 class CrisisController extends Controller
 {
@@ -64,6 +65,17 @@ class CrisisController extends Controller
         $data['date'] = \Carbon\Carbon::createFromFormat('d/m/Y', $data['date']);
         $data['time'] = \Carbon\Carbon::createFromFormat('g:i A', $data['time']);
      
+        $imageName = null;
+
+        if (array_key_exists('image', $data)){        
+            $imageName = str_random(40);
+            $image = Image::make($data['image']->getRealPath());
+            $image->save('crisis/'.  $imageName . ".{$data['image']->getClientOriginalExtension()}"); // Original Image
+            $imageName = $imageName.".".$data['image']->getClientOriginalExtension();
+        }
+
+        $data['image'] = $imageName;
+
         $crisis = Crisis::newCrisis($data);
 
         $assistances = explode(',', $data['assistanceRequired']);
