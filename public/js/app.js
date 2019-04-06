@@ -77227,6 +77227,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -87462,7 +87463,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ["queryFullAddress", "clearSearchResultValue"],
+    props: ["queryFullAddress", "clearSearchResultValue", "hideConfirmButton"],
 
     data: function data() {
         return {
@@ -87705,7 +87706,7 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      !_vm.isLoading
+      !_vm.isLoading && _vm.hideConfirmButton
         ? _c(
             "div",
             { staticClass: "col-md-5" },
@@ -88270,7 +88271,8 @@ var render = function() {
                     _c("auto-search", {
                       attrs: {
                         "query-full-address": _vm.searchMarkerFullAddress,
-                        "clear-search-result-value": _vm.clearSearchVal
+                        "clear-search-result-value": _vm.clearSearchVal,
+                        "hide-confirm-button": _vm.hideToggleMap
                       },
                       on: {
                         "get-search-data": _vm.handleSearchData,
