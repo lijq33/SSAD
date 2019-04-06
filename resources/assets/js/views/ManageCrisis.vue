@@ -21,7 +21,7 @@
                     <td>{{crisis.time}}</td>
                     <td>{{crisis.crisis_type}}</td>
                     <td>{{crisis.description}}</td>
-                    <td>{{crisis.address}} {{crisis.postal_code}}</td>
+                    <td>{{crisis.address}}</td>
                     <td class = "tw-capitalize">{{crisis.status}}</td>
                     <td>{{crisis.name}}</td>
                     <td>{{crisis.user.name}}</td>
