@@ -2,45 +2,53 @@
     <div class="tw-w-full">
 
         <div>
-            <b-row>
-                <b-col cols="7">
-                    <!--autosearch -->
-                    <auto-search
-                        :query-full-address="searchMarkerFullAddress"
-                        :clear-search-result-value="clearSearchVal"
-                        @get-search-data="handleSearchData"
-                        @confirm-address="handleConfirmAddress"
-                    />
-                </b-col>
-
-                <b-col cols="5">
-                    <!-- show and hide various crisis -->
-                    <toggle-map
-                        v-if="!hideToggleMap"
-                        @get-toggle-data="handleToggleData"
-                        @clear-toggle-data="handleClearToggleData"
-                    />
-                </b-col>
-            </b-row>
+            <div>
+                <b-row>
+                    <b-col>
+                        <!--autosearch -->
+                        <auto-search
+                            :query-full-address="searchMarkerFullAddress"
+                            :clear-search-result-value="clearSearchVal"
+                            @get-search-data="handleSearchData"
+                            @confirm-address="handleConfirmAddress"
+                        />
+                    </b-col>
+                    
+                    <b-col cols="5">
+                        <!-- show and hide various crisis -->
+                        <toggle-map
+                            v-if="!hideToggleMap"
+                            @get-toggle-data="handleToggleData"
+                            @clear-toggle-data="handleClearToggleData"
+                        />
+                    </b-col>
+                </b-row>
+            </div>
 
             <div
                 v-if="hideDrawingMap"
-                class="form-group row"
+                class="tw-flex col-md-10 tw-pb-4"
             >
-                <label
-                    for="Address"
-                    class="col-md-1 col-form-label"
-                >
-                    Radius:
-                </label>
-                <div class="col-md-5">
-                    <input
-                        type="text"
-                        class="tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic"
-                        v-model="newCircleRadius"
+                <div class="tw-flex">
+                    <label
+                        for="Address"
+                        class="col-md-4 col-form-label tw-mr-2 tw-pt-2"
                     >
+                        Radius:
+                    </label>
+                    <div class="col-md-5">
+                        <input
+                            type="text"
+                            class= "tw-border-grey-light tw-border-2 tw-rounded tw-p-2 tw-w-64"
+                            v-model="newCircleRadius"
+                        >
 
+                    </div>
                 </div>
+                <b-col cols="5">
+                </b-col> 
+                <div class="col-md-5" >
+                </div> 
             </div>
 
             <b-row>
