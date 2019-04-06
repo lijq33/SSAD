@@ -36,6 +36,7 @@ class SendFacebookCrisisCreatedNotification
 
         $image = $crisis->image;
         $postid = $graph->publishToPage($message,  $image);
+
         $updateCrisis = Crisis::whereId($crisis->id)->first();
         $updateCrisis->update(['facebook_post_id' => $postid]);
     }

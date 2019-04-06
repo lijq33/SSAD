@@ -24,11 +24,10 @@ class GraphController extends Controller
         $this->api = $fb;
     }
  
-    public function publishToPage($message, $imageName=null){
-      
+    public function publishToPage($message, $imageName){
         try{
 
-            if($imageName !=null){
+            if($imageName != null){
                 $img = $this->api->fileToUpload(public_path().'/'.'crisis/'.$imageName);
                 $post= $this->api->post('/'.env('FACEBOOK_PAGE_ID').'/photos',array('message' => $message, 'attached_media' => $img)
                 ,env('FACEBOOK_ACCESS_TOKEN'));
@@ -38,14 +37,13 @@ class GraphController extends Controller
             }
 
             $post= $post->getGraphNode()->asArray();
-           
             return $post['id'];
         }catch (FacebookSDKException $e){
             dd($e); // handle exception
         }
     }
 
-    public function updatePost($message,$post_id,$imageName){
+    public function updatePost($message, $post_id, $imageName){
         try{
             if($imageName == null){ 
                 $post= $this->api->post('/'.$post_id.'/comments',array('message' => $message)

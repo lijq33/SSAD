@@ -33,9 +33,12 @@ class SendFacebookCrisisUpdatedNotification
         //
         $graph = new GraphController();
         $crisis = $event->crisis;
+
         $message = "Update for the ".$crisis->crisis_type. " on ".$crisis->date 
          . " at " . $crisis->address. ", " . $crisis->description;
+        
         $imageName = $crisis->image;
+        
         $graph->updatePost($message,$crisis->facebook_post_id,$imageName);
     }
 }

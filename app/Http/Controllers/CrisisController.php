@@ -80,9 +80,10 @@ class CrisisController extends Controller
 
         $assistances = explode(',', $data['assistanceRequired']);
 
-        
-        foreach($assistances as $assistance){
-            $crisis->agency()->attach($assistance);
+        if($assistances == ""){
+            foreach($assistances as $assistance){
+                $crisis->agency()->attach($assistance);
+            }
         }
 
         event(new CrisisCreated($crisis));
@@ -148,40 +149,16 @@ class CrisisController extends Controller
      *
      * @return \Illuminate\Http\Response
     */
-    public function dengueCrisis()
+    public function crisis()
     {
-        $crises = Crisis::where('crisis_type', 'Dengue')->get();
+        $dengue = Crisis::where('crisis_type', 'Dengue')->get();
+        $fire = Crisis::where('crisis_type', 'Fire Outbreak')->get();
+        $gas = Crisis::where('crisis_type', 'Gas Leak')->get();
 
         return response()->json([
-            'crises' => $crises,
-        ], 200);
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-    */
-    public function fireCrisis()
-    {
-        $crises = Crisis::where('crisis_type', 'Fire Outbreak')->get();
-
-        return response()->json([
-            'crises' => $crises,
-        ], 200);
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-    */
-    public function gasLeakCrisis()
-    {
-        $crises = Crisis::where('crisis_type', 'Gas Leak')->get();
-
-        return response()->json([
-            'crises' => $crises,
+            'dengue' => $dengue,
+            'fire' => $fire,
+            'gas' => $gas,
         ], 200);
     }
 

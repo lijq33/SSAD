@@ -19,12 +19,10 @@ Route::get('address/postal_code/{id}.json', ['as' => 'json.postal_code', 'uses' 
 Route::get('address/autocomplete/{id}.json', ['as' => 'json.autocomplete.address', 'uses' => 'MapsController@autocomplete']);
 Route::get('address/geocode/{query}.json', ['as' => 'json.geocode.address', 'uses' => 'MapsController@geocode']);
 
-
-Route::get('crisis/gasLeak', 'CrisisController@gasLeakCrisis');
-Route::get('crisis/fire', 'CrisisController@fireCrisis');
-Route::get('crisis/dengue', 'CrisisController@dengueCrisis');
+Route::get('crisis/all', 'CrisisController@crisis');
 Route::get('crisis', 'CrisisController@index');
 
+Route::get('weather/all', 'CrisisController@weather');
 Route::post('report/crisis', 'ReportCrisisController@store');
  
 Route::post('sendemail', 'SendEmailController@send');
@@ -43,8 +41,6 @@ Route::group(['middleware' => 'auth.ccoperator'], function ($router) {
 });
 
 Route::group(['middleware' => 'auth.crisismanager'], function ($router) {
-    // Route::post('crisis', 'CrisisController@store');
-    // Route::get('crisis', 'CrisisController@index');
     Route::get('crisis/archive', 'CrisisController@archive');
     Route::post('crisis/{crisis}', 'CrisisController@update');
     Route::delete('crisis/{crisis}', 'CrisisController@destroy');
@@ -59,8 +55,3 @@ Route::group(['middleware' => 'auth.accountmanager'], function ($router) {
     Route::delete('register/{user}', 'RegisterController@destroy');
     Route::resource('register', 'RegisterController', ['except' => ['create', 'destroy', 'edit']]);
 });
-
-// 'auth.user'
-// 'auth.ccoperator'
-// 'auth.crisismanager'
-// 'auth.accountmanager'

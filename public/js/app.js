@@ -95245,6 +95245,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.updateCrisis = crisis;
             this.crisisStatus = crisis.status;
             this.crisisDesc = crisis.description;
+            this.crisis = [];
+            this.getcrisis();
         },
         updateSuccess: function updateSuccess() {
             this.message = "We've successfully update the crisis details!";

@@ -154,6 +154,8 @@
                 this.updateCrisis = crisis;
                 this.crisisStatus = crisis.status;
                 this.crisisDesc = crisis.description;
+                this.crisis = [];
+                this.getcrisis();
             },
 
 

@@ -53,7 +53,6 @@ class Crisis extends Model
         'time' => 'required',
         'address' => 'required',
         'crisisType' => 'required|in:Fire Outbreak,Dengue,Gas Leak',
-        // 'image' => 'mimes:jpeg,bmp,png',
         'radius' => 'required_if:crisisType,Dengue'
     ];
 
