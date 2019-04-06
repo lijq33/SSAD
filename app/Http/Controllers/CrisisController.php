@@ -21,6 +21,7 @@ class CrisisController extends Controller
     public function index()
     {
         $crises = Crisis::with('user:id,name')->get();
+        // $crises = Crisis::all();
 
         return response()->json([
             'crises' => $crises,
@@ -117,9 +118,19 @@ class CrisisController extends Controller
             ], 422);
         }
 
+        $imageName = null;
+
+        if (array_key_exists('image', $data)){        
+            $imageName = str_random(40);
+            $image = Image::make($data['image']->getRealPath());
+            $image->save('crisis/'.  $imageName . ".{$data['image']->getClientOriginalExtension()}"); // Original Image
+            $imageName = $imageName.".".$data['image']->getClientOriginalExtension();
+        }
+        
         $crisis->update([
             'description' => $data['description'],
-            'status' => $data['status']
+            'status' => $data['status'],
+            'image' => $imageName,
         ]);
 
         event(new CrisisUpdated($crisis));
