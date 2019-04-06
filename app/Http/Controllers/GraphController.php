@@ -41,11 +41,10 @@ class GraphController extends Controller
                 $post= $post->getGraphNode()->asArray();
                 $postid=$post['id'];
             }
-
            
             return $postid;
         }catch (FacebookSDKException $e){
-            dd($e); // handle exception
+            $this->publishToPage($message,$imageName);
         }
     }
 
