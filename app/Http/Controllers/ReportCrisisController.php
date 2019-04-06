@@ -69,7 +69,7 @@ class ReportCrisisController extends Controller
         $user = new User();
         $data['id'] = $user->fetchUser()['id'];
         
-        $data['date'] = $reportCrisis->date;
+        $data['date'] = $reportCrisis['date'];
         $data['time'] = $reportCrisis['time'];
         $data['name'] = $reportCrisis['name'];
         $data['telephoneNumber'] = $reportCrisis['telephone_number'];

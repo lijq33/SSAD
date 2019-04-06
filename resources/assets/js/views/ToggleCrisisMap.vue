@@ -108,8 +108,8 @@ import FormCheckbox from "bootstrap-vue/es/components/form-checkbox";
 
 export default {
     mounted() {
-        this.getAllCrisis();
         this.getBombShelter();
+        this.getAllCrisis();
         this.disableFireData = true;
         this.disableDengueData = true;
         this.disableGasLeakData = true;
