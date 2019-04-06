@@ -61,10 +61,22 @@
                                 value="showTwoHrWeatherData"
                                 unchecked-value="hideTwoHrWeatherData"
                             >
-                                (2H) Weather Forecast
+                                Weather Forecast
                             </b-form-checkbox>
 
-                        </b-form-group>
+                             <b-form-checkbox
+                                id="showTemperatureDataId"
+                                name="showTemperatureDataId"
+                                v-model="selectTemperature"
+                                value="showTemperatureDataId"
+                                unchecked-value="hideTemperatureData"
+                            >
+                                Temperature
+                            </b-form-checkbox>
+
+
+                        </b-form-group> 
+
                     </b-tab>
 
                     <!--bomb sheleter-->
@@ -108,12 +120,13 @@ export default {
             selectFire: "",
             selectGasLeak: "",
             selectBombShelter: "",
+            selectTemperature:"",
             dengueData: [],
             fireData: [],
             gasData: [],
             disableFireData: false,
             disableDengueData: false,
-            disableGasLeakData: false
+            disableGasLeakData: false,
         };
     },
     methods: {
@@ -146,9 +159,28 @@ export default {
             data["displayId"] = display_id;
             data["iconUrl"] = icon_url;
             this.$emit("get-toggle-data", data);
-        }
+        },
+         getCrisisDataFromBackEnd(url, display_id, icon_url) {
+            var scope = this;
+
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function(data, status, jqXHR) {
+                    data["displayId"] = display_id;
+                    data["iconUrl"] = icon_url;
+                    scope.$emit("get-toggle-data", data);
+                },
+                error: function(jqXHR, status, err) {
+                    console.log(err);
+                },
+                complete: function(jqXHR, status) {}
+            });
+
+         }
     },
     watch: {
+ 
         selectBombShelter() {
             console.log("sfsaf");
 
@@ -244,7 +276,24 @@ export default {
             } else {
                 this.removeCrisisDataFromFrontend(this.selectTwoHrWeather);
             }
-        }
+        },
+        selectTemperature(){
+            var request =
+                "https://api.data.gov.sg/v1/environment/air-temperature";
+            var markerIconUrl =
+                "https://www.nea.gov.sg/assets/images/icons/weather-bg/PC.png";
+
+            if (this.selectTwoHrWeather.includes("show")) {
+                this.getCrisisDataFromBackEnd(
+                    request,
+                    this.selectTwoHrWeather,
+                    markerIconUrl
+                );
+            } else {
+                this.removeCrisisDataFromFrontend(this.selectTwoHrWeather);
+            }
+
+        },
     }
 };
 </script>

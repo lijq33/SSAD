@@ -77210,6 +77210,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -77302,7 +77311,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 this.removeMarkers(this.markers.twoHrWeatherMarkers);
                 this.markers.twoHrWeatherMarkers = [];
                 //hide legend
-                this.legendType = '';
+                this.legendType = "";
                 //hide control
 
                 this.$refs.mapRef.$mapPromise.then(function (map) {
@@ -77339,7 +77348,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
                 this.$refs.mapRef.$mapPromise.then(function (map) {
                     //set up custom control
-                    var centerControlDiv = document.createElement('div');
+                    var centerControlDiv = document.createElement("div");
                     _this2.weatherForecastCenterControl = new _this2.weatherCenterControl(centerControlDiv, map, validTime);
 
                     centerControlDiv.index = 1;
@@ -77350,32 +77359,31 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             }
         },
         weatherCenterControl: function weatherCenterControl(controlDiv, map, updatedTime) {
-
             // Set CSS for the control border.
-            var controlUI = document.createElement('div');
-            controlUI.style.backgroundColor = '#fff';
-            controlUI.style.border = '2px solid #fff';
-            controlUI.style.borderRadius = '3px';
-            controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-            controlUI.style.cursor = 'pointer';
-            controlUI.style.marginBottom = '22px';
-            controlUI.style.textAlign = 'center';
-            controlUI.title = 'Click to recenter the map';
+            var controlUI = document.createElement("div");
+            controlUI.style.backgroundColor = "#fff";
+            controlUI.style.border = "2px solid #fff";
+            controlUI.style.borderRadius = "3px";
+            controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+            controlUI.style.cursor = "pointer";
+            controlUI.style.marginBottom = "22px";
+            controlUI.style.textAlign = "center";
+            controlUI.title = "Click to recenter the map";
             controlDiv.appendChild(controlUI);
 
             // Set CSS for the control interior.
-            var controlText = document.createElement('div');
-            controlText.style.color = 'rgb(25,25,25)';
-            controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-            controlText.style.fontSize = '16px';
-            controlText.style.lineHeight = '38px';
-            controlText.style.paddingLeft = '5px';
-            controlText.style.paddingRight = '5px';
+            var controlText = document.createElement("div");
+            controlText.style.color = "rgb(25,25,25)";
+            controlText.style.fontFamily = "Roboto,Arial,sans-serif";
+            controlText.style.fontSize = "16px";
+            controlText.style.lineHeight = "38px";
+            controlText.style.paddingLeft = "5px";
+            controlText.style.paddingRight = "5px";
             controlText.innerHTML = updatedTime;
             controlUI.appendChild(controlText);
 
             // Setup the click event listeners: simply set the map to Chicago.
-            controlUI.addEventListener('click', function () {
+            controlUI.addEventListener("click", function () {
                 map.setCenter(chicago);
             });
         },
@@ -77447,13 +77455,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             this.setMapZoomLvl(17);
         },
         removeMarkers: function removeMarkers(removeMarkersType) {
-
             for (var i = 0; i < removeMarkersType.length; i++) {
                 removeMarkersType[i].setMap(null);
             }
         },
         showBombShelterData: function showBombShelterData(bombShelterData) {
-
             var scope = this;
 
             bombShelterData.crises.forEach(function (element, index) {
@@ -77590,32 +77596,58 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
             var scope = this;
 
-            var iconUrl = '';
+            var iconUrl = "";
 
             data.area_metadata.forEach(function (element, index) {
-
                 var forecast = data.items[0].forecasts[index].forecast;
 
-                // if( forcast == "Showers"){
-                // 	iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/SH.png'
-                // }else if(forcast == "Thundery Showers"){
-                // 	iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/TL.png'
-                // }else if(forcast == "Partly Cloudy (Day)"){
-                // 	iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/PC.png'
-                // }else if(forcast == "Heavy Thundery Showers with Gusty Winds"){
-                //     iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/HG.png'
-                // }
-
                 if (forecast == "Fair (Day)") {
-                    iconUrl = 'http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-fair-day-sm.png';
+                    //done
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-fair-day-sm.png";
                 } else if (forecast == "Fair (Night)") {
-                    iconUrl = 'http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-fair-night-sm.png';
-                } else if (forecast == "Thundary Showers") {
-                    iconUrl = 'http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-thundery-showers.png';
-                } else if (forecast == "Showers") {
-                    iconUrl = 'http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-shower.png';
+                    //done
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-fair-night-sm.png";
+                } else if (forecast == "Fair & Warm") {
+
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-fair-warm-sm.png";
+                } else if (forecast == "Partly Cloudy (Day)") {
+                    //done
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-partly-cloudy-day-sm.png";
+                } else if (forecast == "Partly Cloudy (Night)") {
+                    //done
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-partly-cloudy-night-sm.png";
+                } else if (forecast == "Cloudy") {
+
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-cloudy-sm.png";
+                } else if (forecast == "Hazy") {
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-hazy-sm.png";
+                } else if (forecast == "Slightly Hazy") {
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-slightly-hazy-sm.png";
+                } else if (forecast == "Windy") {
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-windy-sm.png";
+                } else if (forecast == "Mist") {
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-mist-sm.png";
+                } else if (forecast == "Light Rain") {
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-light-rain-sm.png";
+                } else if (forecast == "Moderate Rain") {
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-moderate-rain-sm.png";
+                } else if (forecast == "Heavy Rain") {
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-heavy-rain-sm.png";
+                } else if (forecast == "Passing Showers") {
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-passing-shower-sm.png";
                 } else if (forecast == "Light Showers") {
-                    iconUrl = 'http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-light-shower.png';
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-light-shower-sm.png";
+                } else if (forecast == "Showers") {
+                    //done
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-shower-sm.png";
+                } else if (forecast == "Heavy Showers") {
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-heavy-showers-sm.png";
+                } else if (forecast == "Thundary Showers") {
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-thundery-showers-sm.png";
+                } else if (forecast == "Heavy Thundary Showers") {
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-heavy-thundery-showers-sm.png";
+                } else if (forecast == "Heavy Thundary Showers with Gusty Winds") {
+                    iconUrl = "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-heavy-thundery-showers-with-gusty-winds-sm.png";
                 }
 
                 //add to legend array
@@ -87775,6 +87807,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -87793,6 +87837,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             selectFire: "",
             selectGasLeak: "",
             selectBombShelter: "",
+            selectTemperature: "",
             dengueData: [],
             fireData: [],
             gasData: [],
@@ -87831,6 +87876,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             data["displayId"] = display_id;
             data["iconUrl"] = icon_url;
             this.$emit("get-toggle-data", data);
+        },
+        getCrisisDataFromBackEnd: function getCrisisDataFromBackEnd(url, display_id, icon_url) {
+            var scope = this;
+
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function success(data, status, jqXHR) {
+                    data["displayId"] = display_id;
+                    data["iconUrl"] = icon_url;
+                    scope.$emit("get-toggle-data", data);
+                },
+                error: function error(jqXHR, status, err) {
+                    console.log(err);
+                },
+                complete: function complete(jqXHR, status) {}
+            });
         }
     },
     watch: {
@@ -87903,6 +87965,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         selectTwoHrWeather: function selectTwoHrWeather() {
             var request = "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast";
+            var markerIconUrl = "https://www.nea.gov.sg/assets/images/icons/weather-bg/PC.png";
+
+            if (this.selectTwoHrWeather.includes("show")) {
+                this.getCrisisDataFromBackEnd(request, this.selectTwoHrWeather, markerIconUrl);
+            } else {
+                this.removeCrisisDataFromFrontend(this.selectTwoHrWeather);
+            }
+        },
+        selectTemperature: function selectTemperature() {
+            var request = "https://api.data.gov.sg/v1/environment/air-temperature";
             var markerIconUrl = "https://www.nea.gov.sg/assets/images/icons/weather-bg/PC.png";
 
             if (this.selectTwoHrWeather.includes("show")) {
@@ -88049,7 +88121,31 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n                            (2H) Weather Forecast\n                        "
+                              "\n                            Weather Forecast\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-checkbox",
+                          {
+                            attrs: {
+                              id: "showTemperatureDataId",
+                              name: "showTemperatureDataId",
+                              value: "showTemperatureDataId",
+                              "unchecked-value": "hideTemperatureData"
+                            },
+                            model: {
+                              value: _vm.selectTemperature,
+                              callback: function($$v) {
+                                _vm.selectTemperature = $$v
+                              },
+                              expression: "selectTemperature"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            Temperature\n                        "
                             )
                           ]
                         )
@@ -88264,7 +88360,9 @@ var render = function() {
                             staticClass: "image",
                             attrs: { src: item.iconUrl, alt: item.forevast }
                           }),
-                          _vm._v(_vm._s(item.forecast) + "\n\t\t\t\t\t\t")
+                          _vm._v(
+                            _vm._s(item.forecast) + "\n                        "
+                          )
                         ])
                       ],
                       1
@@ -92737,7 +92835,7 @@ exports = module.exports = __webpack_require__(8)(false);
 
 
 // module
-exports.push([module.i, "\n.pac-container {\n  background-color: #fff;\n  z-index: 20 !important;\n  position: fixed;\n  display: inline-block;\n  float: left;\n}\n.modal-backdrop {\n  z-index: 10 !important;\n}\n​\r\n\r\n.modal {\n  z-index: 20 !important;\n}\n", ""]);
+exports.push([module.i, "\n.pac-container.pac-logo {\n  z-index: 999999;\n}\n.pac-container {\n  z-index: 999999 !important;\n}\n.modal-backdrop {\n  z-index: 10 !important;\n}\n​\r\n\r\n.modal {\n  z-index: 20 !important;\n}\n", ""]);
 
 // exports
 
@@ -92754,10 +92852,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_popperjs__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__NewBaseMap__ = __webpack_require__(393);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__NewBaseMap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__NewBaseMap__);
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__BaseMap__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__BaseMap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__BaseMap__);
 //
 //
 //
@@ -93044,7 +93140,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     components: {
         'popper': __WEBPACK_IMPORTED_MODULE_1_vue_popperjs___default.a,
-        'crisis-map': __WEBPACK_IMPORTED_MODULE_3__NewBaseMap___default.a
+        'crisis-map': __WEBPACK_IMPORTED_MODULE_3__BaseMap___default.a
     },
     mounted: function mounted() {
         console.log("mounted");
@@ -93259,844 +93355,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 393 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(394)
-}
-var normalizeComponent = __webpack_require__(4)
-/* script */
-var __vue_script__ = __webpack_require__(396)
-/* template */
-var __vue_template__ = __webpack_require__(397)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/views/NewBaseMap.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7420939e", Component.options)
-  } else {
-    hotAPI.reload("data-v-7420939e", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 394 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(395);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(16)("4273e354", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7420939e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./NewBaseMap.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7420939e\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./NewBaseMap.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 395 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(8)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.mapClass {\n  width: 20%;\n}\n#iw-container .iw-title {\n  font-family: \"Open Sans Condensed\", sans-serif;\n  font-size: 22px;\n  font-weight: 400;\n  padding: 10px;\n  background-color: #48b5e9;\n  color: white;\n  margin: 0;\n  border-radius: 2px 2px 0 0;\n}\n#iw-container .iw-content {\n  font-size: 13px;\n  line-height: 18px;\n  font-weight: 400;\n  margin-right: 1px;\n  padding: 15px 5px 20px 15px;\n  max-height: 140px;\n  overflow-y: auto;\n  overflow-x: hidden;\n}\n.iw-content img {\n  float: right;\n  margin: 0 5px 5px 10px;\n}\n.iw-subTitle {\n  font-size: 16px;\n  font-weight: 700;\n  padding: 5px 0;\n}\n.iw-bottom-gradient {\n  position: absolute;\n  width: 326px;\n  height: 25px;\n  bottom: 10px;\n  right: 18px;\n  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(rgba(255, 255, 255, 1)));\n  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);\n  background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 396 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bootstrap_vue_es_components__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__AutoSearchComplete__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__AutoSearchComplete___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__AutoSearchComplete__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ToggleCrisisMap__ = __webpack_require__(90);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ToggleCrisisMap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__ToggleCrisisMap__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bootstrap_vue_es_components_collapse__ = __webpack_require__(32);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ["hideToggleWindow", "hideDrawingWindow", "clearSearchResult"],
-    mounted: function mounted() {
-        var scope = this;
-
-        //initialize a single infowindow for all markers
-        this.$refs.mapRef.$mapPromise.then(function (map) {
-            scope.markerInfoWindow = new google.maps.InfoWindow({
-                content: ""
-            });
-        });
-    },
-
-
-    components: {
-        toggleMap: __WEBPACK_IMPORTED_MODULE_2__ToggleCrisisMap___default.a,
-        "auto-search": __WEBPACK_IMPORTED_MODULE_1__AutoSearchComplete___default.a
-    },
-
-    data: function data() {
-        return {
-            weatherForecastCenterControl: null,
-            legendArray: [],
-            legendType: null,
-            newCircle: null,
-            clearSearchVal: false,
-            newCircleRadius: "",
-            hideDrawingMap: false,
-            hideToggleMap: false,
-            markerInfoWindow: null,
-            searchMarker: null,
-            searchMarkerFullAddress: null,
-            isLoading: false,
-            zoom_lvl: 12,
-            sgcoord: { lat: 1.3521, lng: 103.8198 },
-            markers: {
-                twoHrWeatherMarkers: [],
-                fireMarkers: [],
-                gasLeakMarkers: []
-            },
-            polygon: { dengueData: [], dengueMarkerData: [] }
-        };
-    },
-
-    methods: {
-        removePolygon: function removePolygon(polygonVar, polygonData) {
-            for (var i = 0; i < polygonData.length; i++) {
-                if (polygonVar == "hideDengueData") {
-                    polygonData[i].setMap(null);
-                }
-            }
-        },
-        handleConfirmAddress: function handleConfirmAddress(confirmAddress) {
-            //add additonal property if is a circle
-            if (this.newCircleRadius) {
-                confirmAddress["radius"] = this.newCircleRadius;
-            }
-            this.$emit("get-new-crisis-location", confirmAddress);
-        },
-        handleClearToggleData: function handleClearToggleData(clearToggleData) {
-            var _this = this;
-
-            //empty markers
-            if (clearToggleData === "hideDengueData") {
-                //clear circle
-                this.removePolygon(clearToggleData, this.polygon.dengueData);
-                this.polygon.dengueData = [];
-
-                //clear marker
-                this.removePolygon(clearToggleData, this.polygon.dengueMarkerData);
-                this.polygon.dengueMarkerData = [];
-            } else if (clearToggleData === "hideFireData") {
-                this.removeMarkers(this.markers.fireMarkers);
-                this.markers.fireMarkers = [];
-            } else if (clearToggleData === "hideGasLeakData") {
-                this.removeMarkers(this.markers.gasLeakMarkers);
-                this.markers.gasLeakMarkers = [];
-            } else if (clearToggleData === "hideHazeData") {
-                scope.showHazeData(element);
-            } else if (clearToggleData === "hideRainData") {
-                scope.showRainData(element);
-            } else if (clearToggleData === "hideTwoHrWeatherData") {
-                this.removeMarkers(this.markers.twoHrWeatherMarkers);
-                this.markers.twoHrWeatherMarkers = [];
-                //hide legend
-                this.legendType = '';
-                //hide control
-
-                this.$refs.mapRef.$mapPromise.then(function (map) {
-                    map.controls[google.maps.ControlPosition.TOP_CENTER].clear();
-                    _this.weatherForecastCenterControl = null;
-                });
-            }
-        },
-        handleToggleData: function handleToggleData(toggleData) {
-            var _this2 = this;
-
-            if (toggleData.displayId === "showDegueData") {
-                this.showDengueData(toggleData);
-            } else if (toggleData.displayId === "showFireData") {
-                this.showFireData(toggleData);
-            } else if (toggleData.displayId === "showGasLeakData") {
-                this.showGasLeakData(toggleData);
-            } else if (toggleData.displayId === "showHazeData") {
-                //scope.showHazeData(element);
-            } else if (toggleData.displayId === "showRainData") {
-                //scope.showRainData(element);
-            } else if (toggleData.displayId === "showTwoHrWeatherData") {
-                this.legendType = toggleData.displayId;
-                this.showTwoHrWeatherData(toggleData);
-
-                //filter out duplicates
-                var tempArray = this.legendArray;
-                this.legendArray = Object.values(tempArray.reduce(function (acc, cur) {
-                    return Object.assign(acc, _defineProperty({}, cur.forecast, cur));
-                }, {}));
-
-                // console.log(toggleData.items[0].valid_period.start.slice(11,16))
-                var validTime = "Valid Period: " + toggleData.items[0].valid_period.start.slice(11, 16) + " - " + toggleData.items[0].valid_period.end.slice(11, 16);
-
-                this.$refs.mapRef.$mapPromise.then(function (map) {
-                    //set up custom control
-                    var centerControlDiv = document.createElement('div');
-                    _this2.weatherForecastCenterControl = new _this2.weatherCenterControl(centerControlDiv, map, validTime);
-
-                    centerControlDiv.index = 1;
-                    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
-                });
-            }
-        },
-        weatherCenterControl: function weatherCenterControl(controlDiv, map, updatedTime) {
-
-            // Set CSS for the control border.
-            var controlUI = document.createElement('div');
-            controlUI.style.backgroundColor = '#fff';
-            controlUI.style.border = '2px solid #fff';
-            controlUI.style.borderRadius = '3px';
-            controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-            controlUI.style.cursor = 'pointer';
-            controlUI.style.marginBottom = '22px';
-            controlUI.style.textAlign = 'center';
-            controlUI.title = 'Click to recenter the map';
-            controlDiv.appendChild(controlUI);
-
-            // Set CSS for the control interior.
-            var controlText = document.createElement('div');
-            controlText.style.color = 'rgb(25,25,25)';
-            controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-            controlText.style.fontSize = '16px';
-            controlText.style.lineHeight = '38px';
-            controlText.style.paddingLeft = '5px';
-            controlText.style.paddingRight = '5px';
-            controlText.innerHTML = updatedTime;
-            controlUI.appendChild(controlText);
-
-            // Setup the click event listeners: simply set the map to Chicago.
-            controlUI.addEventListener('click', function () {
-                map.setCenter(chicago);
-            });
-        },
-        handleSearchData: function handleSearchData(searchData) {
-            var _this3 = this;
-
-            var scope = this;
-
-            var pos = {
-                lat: searchData.lat,
-                lng: searchData.lng
-            };
-
-            this.$refs.mapRef.$mapPromise.then(function (map) {
-                if (!_this3.searchMarker) {
-                    //create search marker
-                    _this3.searchMarker = new google.maps.Marker({
-                        draggable: true,
-                        position: pos,
-                        map: map
-                    });
-
-                    //if is circle
-                    if (scope.hideDrawingMap) {
-                        console.log("create dengue dengue");
-
-                        scope.newCircle = new google.maps.Circle({
-                            path: google.maps.SymbolPath.CIRCLE,
-                            strokeColor: "#E84B3C",
-                            strokeOpacity: 1,
-                            strokeWeight: 1,
-                            fillColor: "#E84B3C",
-                            fillOpacity: 0.35,
-                            map: map,
-                            center: pos,
-                            radius: 150,
-                            editable: true
-                        });
-
-                        scope.newCircle.bindTo("center", _this3.searchMarker, "position");
-
-                        scope.newCircleRadius = 150;
-
-                        google.maps.event.addListener(scope.newCircle, "radius_changed", function (e) {
-                            scope.newCircleRadius = parseFloat(scope.newCircle.radius);
-                        });
-                    } else {}
-
-                    //add drag listener
-
-                    google.maps.event.addListener(_this3.searchMarker, "dragend", function (e) {
-                        var latLng = e.latLng;
-
-                        var fullAddressPos = {
-                            lat: latLng.lat(),
-                            lng: latLng.lng()
-                        };
-
-                        scope.searchMarkerFullAddress = fullAddressPos;
-                    });
-                } else {
-                    //just change latlng
-
-                    _this3.searchMarker.setPosition(pos);
-                }
-            });
-
-            this.panMap(searchData.lat, searchData.lng);
-            this.setMapZoomLvl(17);
-        },
-        removeMarkers: function removeMarkers(removeMarkersType) {
-
-            for (var i = 0; i < removeMarkersType.length; i++) {
-                removeMarkersType[i].setMap(null);
-            }
-        },
-        showDengueData: function showDengueData(dengue) {
-            var scope = this;
-            this.$refs.mapRef.$mapPromise.then(function (map) {
-                dengue.crises.forEach(function (element, index) {
-                    var pos = {
-                        lat: element.lat,
-                        lng: element.lng
-                    };
-
-                    //create dengue search marker
-                    var tempDengueMarker = new google.maps.Marker({
-                        icon: {
-                            url: dengue.iconUrl,
-                            scaledSize: new google.maps.Size(64, 64)
-                        },
-                        draggable: false,
-                        position: pos,
-                        map: map
-                    });
-
-                    var temp = new google.maps.Circle({
-                        path: google.maps.SymbolPath.CIRCLE,
-                        strokeColor: "#E84B3C",
-                        strokeOpacity: 1,
-                        strokeWeight: 1,
-                        fillColor: "#E84B3C",
-                        fillOpacity: 0.35,
-                        map: map,
-                        center: pos,
-                        radius: element.radius
-                    });
-
-                    temp.bindTo("center", tempDengueMarker, "position");
-
-                    //attach infowindow
-                    var contentString = '<div id="iw-container">' + '<div class="iw-title">' + element.name + "</div>" + '<div class="iw-content">' + '<div class="iw-subTitle">' + element.description + "</div>" + '<img src = "/crisis/' + element.image + '" alt="dengue image"/>' + "</div>";
-                    '<div class="iw-bottom-gradient"></div>' + "</div>";
-
-                    google.maps.event.addListener(temp, "mouseover", function () {
-                        scope.markerInfoWindow.setContent(contentString);
-                        scope.markerInfoWindow.setPosition(pos);
-                        scope.markerInfoWindow.open(map, this);
-                    });
-
-                    scope.polygon.dengueData.push(temp);
-                    scope.polygon.dengueMarkerData.push(tempDengueMarker);
-                });
-            });
-        },
-        showFireData: function showFireData(fireData) {
-            var scope = this;
-
-            fireData.crises.forEach(function (element, index) {
-                scope.addMarker("Array", scope.markers.fireMarkers, {
-                    icon: fireData.iconUrl,
-                    markerDisplayId: element.id,
-                    position: { lat: element.lat, lng: element.lng }
-                }, {
-                    infoWindowTitle: element.name,
-                    infoWindowBody: element,
-                    imageAvailable: false
-                }, element);
-            });
-        },
-        showGasLeakData: function showGasLeakData(gasLeakData) {
-            var scope = this;
-            gasLeakData.crises.forEach(function (element, index) {
-                scope.addMarker("Array", scope.markers.gasLeakMarkers, {
-                    icon: gasLeakData.iconUrl,
-                    markerDisplayId: element.id,
-                    position: { lat: element.lat, lng: element.lng }
-                }, { infoWindowTitle: element.name, infoWindowBody: element }, element);
-            });
-        },
-        showHazeData: function showHazeData() {},
-        showRainData: function showRainData() {},
-        addMarker: function addMarker(markerVarType, markerVar, element, infowindow, db_data) {
-            var scope = this;
-
-            this.$refs.mapRef.$mapPromise.then(function (map) {
-                //new marker
-                var temp = new google.maps.Marker({
-                    icon: {
-                        url: element.icon ? element.icon : "",
-                        scaledSize: new google.maps.Size(32, 32)
-                    },
-                    draggable: element.draggable ? element.draggable : false,
-                    markerDisplayId: element.displayId ? element.displayId : "",
-                    animation: element.animation ? element.animation : google.maps.Animation.DROP,
-                    position: element.position,
-                    map: map,
-                    label: element.label ? element.label : "",
-                    visible: element.visible ? element.visible : true,
-                    zIndex: element.zIndex ? element.zIndex : 1,
-                    clickable: element.clickable ? element.clickable : true,
-                    opacity: element.opacity ? element.opacity : 1
-                });
-
-                if (typeof infowindow.infoWindowBody.image !== "undefined") {
-                    //attach infowindow
-                    var contentString = '<div id="iw-container">' + '<div class="iw-title">' + infowindow.infoWindowTitle + "</div>" + '<div class="iw-content">' + '<div class="iw-subTitle">' + infowindow.infoWindowBody.description + "</div>" + '<img src = "/crisis/' + infowindow.infoWindowBody.image + '" alt="fire image"/>' + "</div>";
-                    '<div class="iw-bottom-gradient"></div>' + "</div>";
-                } else {
-                    var contentString = '<div id="iw-container">' + '<div class="iw-title">' + infowindow.infoWindowTitle + "</div>" + '<div class="iw-content">' + '<div class="iw-subTitle">' + infowindow.infoWindowBody + "</div>" + "</div>";
-                    '<div class="iw-bottom-gradient"></div>' + "</div>";
-                }
-
-                google.maps.event.addListener(temp, "mouseover", function () {
-                    scope.markerInfoWindow.setContent(contentString);
-                    scope.markerInfoWindow.open(map, this);
-                });
-
-                // if want to assign to a array
-                if (markerVarType === "Array") {
-                    temp["db_data"] = db_data;
-                    markerVar.push(temp);
-                }
-            });
-        },
-        showTwoHrWeatherData: function showTwoHrWeatherData(data) {
-            var _this4 = this;
-
-            var scope = this;
-
-            var iconUrl = '';
-
-            data.area_metadata.forEach(function (element, index) {
-
-                var forcast = data.items[0].forecasts[index].forecast;
-
-                if (forcast == "Showers") {
-                    iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/SH.png';
-                } else if (forcast == "Thundery Showers") {
-                    iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/TL.png';
-                } else if (forcast == "Partly Cloudy (Day)") {
-                    iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/PC.png';
-                } else if (forcast == "Heavy Thundery Showers with Gusty Winds") {
-                    iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/HG.png';
-                }
-
-                //add to legend array
-                _this4.legendArray.push({
-                    iconUrl: iconUrl,
-                    forecast: data.items[0].forecasts[index].forecast
-                });
-
-                scope.addMarker("Array", scope.markers.twoHrWeatherMarkers, {
-                    icon: iconUrl,
-                    markerDisplayId: element.displayId,
-                    position: {
-                        lat: element.label_location.latitude,
-                        lng: element.label_location.longitude
-                    }
-                }, {
-                    infoWindowTitle: element.name,
-                    infoWindowBody: data.items[0].forecasts[index].forecast,
-                    imageAvailable: true
-                }, null);
-            });
-        },
-        panMap: function panMap(lat, lng) {
-            //pan to any location on the map by giving lat and lng coordinates
-            this.$refs.mapRef.$mapPromise.then(function (map) {
-                map.panTo({ lat: lat, lng: lng });
-            });
-        },
-        setMapZoomLvl: function setMapZoomLvl(zoomlvl) {
-            this.zoom_lvl = zoomlvl;
-        }
-    },
-    watch: {
-        newCircleRadius: function newCircleRadius() {
-            if (this.newCircle) {
-                if (isNaN(this.newCircleRadius)) {
-                    this.newCircleRadius = 0;
-                }
-                this.newCircle.setOptions({
-                    radius: parseFloat(this.newCircleRadius)
-                });
-            }
-        },
-        clearSearchResult: function clearSearchResult(value) {
-            console.log("clear1");
-            if (this.searchMarker) {
-                this.searchMarker.setMap(null);
-                this.searchMarker = null;
-                this.searchMarkerFullAddress = null;
-                this.clearSearchVal = value;
-
-                if (this.hideDrawingMap) {
-                    this.newCircle.setMap(null);
-                }
-            }
-        },
-        hideToggleWindow: function hideToggleWindow(value) {
-            this.hideToggleMap = value;
-        },
-        hideDrawingWindow: function hideDrawingWindow(value) {
-            this.hideDrawingMap = value;
-        }
-    },
-    computed: {
-        currentUser: function currentUser() {
-            return this.$store.getters.currentUser;
-        },
-        isCallCenterOperator: function isCallCenterOperator() {
-            if (!this.currentUser) return false;
-            return this.currentUser.roles == "CallCenterOperator";
-        },
-        isCrisisManager: function isCrisisManager() {
-            if (!this.currentUser) return false;
-            return this.currentUser.roles == "CrisisManager";
-        },
-        isAccountManager: function isAccountManager() {
-            if (!this.currentUser) return false;
-            return this.currentUser.roles == "AccountManager";
-        }
-    }
-});
-
-/***/ }),
-/* 397 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "tw-w-full" }, [
-    _c(
-      "div",
-      [
-        _c(
-          "b-row",
-          [
-            _c(
-              "b-col",
-              { attrs: { cols: "8" } },
-              [
-                _c("auto-search", {
-                  attrs: {
-                    "query-full-address": _vm.searchMarkerFullAddress,
-                    "clear-search-result-value": _vm.clearSearchVal
-                  },
-                  on: {
-                    "get-search-data": _vm.handleSearchData,
-                    "confirm-address": _vm.handleConfirmAddress
-                  }
-                })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "b-col",
-              { attrs: { cols: "4" } },
-              [
-                !_vm.hideToggleMap
-                  ? _c("toggle-map", {
-                      on: {
-                        "get-toggle-data": _vm.handleToggleData,
-                        "clear-toggle-data": _vm.handleClearToggleData
-                      }
-                    })
-                  : _vm._e()
-              ],
-              1
-            )
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _vm.hideDrawingMap
-          ? _c("div", { staticClass: "form-group row" }, [
-              _c(
-                "label",
-                {
-                  staticClass: "col-md-1 col-form-label",
-                  attrs: { for: "Address" }
-                },
-                [_vm._v("\n                    Radius:\n                ")]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-5" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.newCircleRadius,
-                      expression: "newCircleRadius"
-                    }
-                  ],
-                  staticClass:
-                    "tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic",
-                  attrs: { type: "text" },
-                  domProps: { value: _vm.newCircleRadius },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.newCircleRadius = $event.target.value
-                    }
-                  }
-                })
-              ])
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _c(
-          "b-row",
-          [
-            _c(
-              "b-col",
-              { attrs: { cols: "12", md: "12" } },
-              [
-                _c("GmapMap", {
-                  ref: "mapRef",
-                  staticStyle: { width: "auto", height: "600px" },
-                  attrs: { zoom: _vm.zoom_lvl, center: _vm.sgcoord }
-                })
-              ],
-              1
-            )
-          ],
-          1
-        )
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _vm.legendType == "showTwoHrWeatherData"
-      ? _c(
-          "div",
-          [
-            _c(
-              "b-button",
-              {
-                directives: [
-                  {
-                    name: "b-toggle",
-                    rawName: "v-b-toggle.collapse-1",
-                    modifiers: { "collapse-1": true }
-                  }
-                ],
-                attrs: { variant: "outline-primary" }
-              },
-              [_vm._v("Legend+")]
-            ),
-            _vm._v(" "),
-            _c(
-              "b-collapse",
-              { staticClass: "mt-2", attrs: { id: "collapse-1" } },
-              [
-                _c(
-                  "b-card",
-                  _vm._l(_vm.legendArray, function(item, index) {
-                    return _c(
-                      "b-row",
-                      { key: index },
-                      [
-                        _c("b-col", [
-                          _c("img", {
-                            staticClass: "image",
-                            attrs: { src: item.iconUrl, alt: item.forevast }
-                          }),
-                          _vm._v(_vm._s(item.forecast) + "\n\t\t\t\t\t\t")
-                        ])
-                      ],
-                      1
-                    )
-                  }),
-                  1
-                )
-              ],
-              1
-            )
-          ],
-          1
-        )
-      : _vm._e()
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7420939e", module.exports)
-  }
-}
-
-/***/ }),
+/* 393 */,
+/* 394 */,
+/* 395 */,
+/* 396 */,
+/* 397 */,
 /* 398 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -94693,11 +93956,7 @@ var render = function() {
                                   "div",
                                   {
                                     staticClass:
-                                      "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden",
-                                    staticStyle: {
-                                      width: "500px",
-                                      height: "300px"
-                                    }
+                                      "tw-h-24 tw-mb-6 tw-overflow-hidden"
                                   },
                                   [
                                     _c("img", {

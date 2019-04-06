@@ -134,7 +134,7 @@
                                             </div>
                                         
                                             <div v-else class = "col-md-6">
-                                                <div class = "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden" style="width:500px; height:300px">
+                                                <div class = "tw-h-24 tw-mb-6 tw-overflow-hidden">
                                                     <img :src = "image" class = "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center" />
                                                 </div>
 
@@ -254,8 +254,6 @@
                                 </div>
                             </div>
 
-           
-
                         </div>
                     </div>
                 </div>
@@ -277,9 +275,7 @@
     import 'vue-popperjs/dist/css/vue-popper.css';
     import Popper from 'vue-popperjs';
     import moment from 'moment';
-    import CrisisMap from './NewBaseMap';
-
-   
+    import CrisisMap from './BaseMap';
 
     export default {
         props: ["geoCodeAddress","selectedCrisis"],
@@ -529,13 +525,9 @@
 </script>
        
 <style>
-.pac-container {
-    background-color: #FFF;
-    z-index: 20 !important;
-    position: fixed;
-    display: inline-block;
-    float: left;
-}
+
+.pac-container.pac-logo { z-index: 999999; }
+.pac-container { z-index: 999999 !important;}
 
 .modal-backdrop{
     z-index: 10 !important;       
