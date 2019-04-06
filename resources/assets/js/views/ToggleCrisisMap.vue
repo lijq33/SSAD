@@ -109,6 +109,7 @@ import FormCheckbox from "bootstrap-vue/es/components/form-checkbox";
 export default {
     mounted() {
         this.getAllCrisis();
+        this.getBombShelter();
         this.disableFireData = true;
         this.disableDengueData = true;
         this.disableGasLeakData = true;
@@ -130,6 +131,17 @@ export default {
         };
     },
     methods: {
+        getBombShelter() {
+             axios
+                .get("/api/bombshelter")
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(error => {
+                    console.log("error loading all bombshelter from backend.");
+                });
+        },
+
         getAllCrisis() {
             axios
                 .get("/api/crisis/all")

@@ -52,7 +52,7 @@
                 </div>
 
             </div>
-            <div v-if="!isLoading" class="col-md-5">
+            <div v-if="!isLoading && hideConfirmButton" class="col-md-5">
                 <b-button
                     v-if="form.address != '' && currentUser.roles == 'CallCenterOperator'"
                     variant="primary"
@@ -68,7 +68,7 @@
 
 <script>
 export default {
-    props: ["queryFullAddress", "clearSearchResultValue"],
+    props: ["queryFullAddress", "clearSearchResultValue","hideConfirmButton"],
 
     data() {
         return {
@@ -238,7 +238,8 @@ export default {
             this.$refs.autocomplete.$el.value = "";
             this.confirmAddress.full_address = null;
             this.confirmAddress.postal_code = null;
-        }
+        },
+       
     },
     computed: {
         currentUser() {

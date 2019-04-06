@@ -9,6 +9,7 @@
                         <auto-search
                             :query-full-address="searchMarkerFullAddress"
                             :clear-search-result-value="clearSearchVal"
+                            :hide-confirm-button="hideToggleMap"
                             @get-search-data="handleSearchData"
                             @confirm-address="handleConfirmAddress"
                         />

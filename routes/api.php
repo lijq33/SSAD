@@ -23,6 +23,8 @@ Route::get('crisis/all', 'CrisisController@crisis');
 Route::get('crisis', 'CrisisController@index');
 
 Route::get('weather/all', 'CrisisController@weather');
+Route::get('bombshelter', 'APIController@bombshelter');
+
 Route::post('report/crisis', 'ReportCrisisController@store');
  
 Route::post('sendemail', 'SendEmailController@send');

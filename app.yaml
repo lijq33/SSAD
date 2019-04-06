@@ -52,8 +52,8 @@ env_variables:
   DB_DATABASE: ssad
   DB_USERNAME: root
   DB_PASSWORD: HfPwsztd3D7cwltv
-  DB_SOCKET: "/cloudsql/teamten:us-central1-a:ssad1"
+  DB_SOCKET: "/cloudsql/teamten:us-central1:ssad1"
 
 beta_settings:
     # e.g. "project:region:cloudsql-instance"
-    cloud_sql_instances: "teamten:us-central1-a:ssad1"
+    cloud_sql_instances: "teamten:us-central1:ssad1"
