@@ -62,14 +62,13 @@ class ReportCrisisController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //update
         $data = request()->all();
 
         $reportCrisis = ReportCrisis::whereId($id)->first();
 
         $user = new User();
-
         $data['id'] = $user->fetchUser()['id'];
+        
         $data['date'] = $reportCrisis->date;
         $data['time'] = $reportCrisis['time'];
         $data['name'] = $reportCrisis['name'];
@@ -81,7 +80,7 @@ class ReportCrisisController extends Controller
         $data['image'] = $reportCrisis['image'];
 
         $crisis = Crisis::newCrisis($data);
-
+        
         foreach($data['assistanceRequired'] as $assistance){
             $crisis->agency()->attach($assistance);
         }

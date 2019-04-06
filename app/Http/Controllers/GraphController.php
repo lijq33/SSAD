@@ -45,7 +45,7 @@ class GraphController extends Controller
            
             return $postid;
         }catch (FacebookSDKException $e){
-            dd($e); // handle exception
+            $this->publishToPage($message, $imageName);
         }
     }
 

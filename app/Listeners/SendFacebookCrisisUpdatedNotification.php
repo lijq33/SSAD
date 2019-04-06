@@ -39,6 +39,6 @@ class SendFacebookCrisisUpdatedNotification
         
         $imageName = $crisis->image;
         
-        $graph->updatePost($message,$crisis->facebook_post_id,$imageName);
+        $graph->updatePost($message, $crisis->facebook_post_id, $imageName);
     }
 }
