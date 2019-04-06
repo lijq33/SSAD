@@ -10,23 +10,26 @@
 
                         <!--dengue-->
                         <b-form-group>
+
                             <b-form-checkbox
                                 id="showDengueDataId"
                                 name="showDengueDataId"
                                 v-model="selectDengue"
                                 value="showDegueData"
                                 unchecked-value="hideDengueData"
+                                :disabled="disableDengueData"
                             >
                                 Dengue
                             </b-form-checkbox>
-
                             <!--Fire-->
+
                             <b-form-checkbox
                                 id="showFireDataId"
                                 name="showFireDataId"
                                 v-model="selectFire"
                                 value="showFireData"
                                 unchecked-value="hideFireData"
+                                :disabled="disableFireData"
                             >
                                 Fire
                             </b-form-checkbox>
@@ -38,6 +41,7 @@
                                 v-model="selectGasLeak"
                                 value="showGasLeakData"
                                 unchecked-value="hideGasLeakData"
+                                :disabled="disableGasLeakData"
                             >
                                 Gas Leakage
                             </b-form-checkbox>
@@ -59,11 +63,11 @@
                             >
                                 (2H) Weather Forecast
                             </b-form-checkbox>
- 
+
                         </b-form-group>
                     </b-tab>
 
-                     <!--bomb sheleter-->
+                    <!--bomb sheleter-->
                     <b-tab title="Bomb Shelter">
 
                         <b-form-group>
@@ -76,7 +80,7 @@
                             >
                                 Bomb Shelter
                             </b-form-checkbox>
- 
+
                         </b-form-group>
                     </b-tab>
 
@@ -91,55 +95,77 @@ import Tabs from "bootstrap-vue/es/components";
 import FormCheckbox from "bootstrap-vue/es/components/form-checkbox";
 
 export default {
+    mounted() {
+        this.getAllCrisis();
+        this.disableFireData = true;
+        this.disableDengueData = true;
+        this.disableGasLeakData = true;
+    },
     data() {
         return {
             selectTwoHrWeather: "",
             selectDengue: "",
             selectFire: "",
             selectGasLeak: "",
-            selectBombShelter:""
+            selectBombShelter: "",
+            dengueData: [],
+            fireData: [],
+            gasData: [],
+            disableFireData: false,
+            disableDengueData: false,
+            disableGasLeakData: false
         };
     },
     methods: {
+        getAllCrisis() {
+            axios
+                .get("/api/crisis/all")
+                .then(res => {
+                    this.dengueData = res.data.dengue;
+                    this.fireData = res.data.fire;
+                    this.gasData = res.data.gas;
+
+                    if (this.disableFireData) {
+                        this.disableFireData = false;
+                    }
+                    if (this.disableDengueData) {
+                        this.disableDengueData = false;
+                    }
+                    if (this.disableGasLeakData) {
+                        this.disableGasLeakData = false;
+                    }
+                })
+                .catch(error => {
+                    console.log("error loading all crisis from backend.");
+                });
+        },
         removeCrisisDataFromFrontend(removeData) {
             this.$emit("clear-toggle-data", removeData);
         },
-        getCrisisDataFromBackEnd(url, display_id, icon_url) {
-            var scope = this;
-
-            $.ajax({
-                url: url,
-                type: "GET",
-                success: function(data, status, jqXHR) {
-                    data["displayId"] = display_id;
-                    data["iconUrl"] = icon_url;
-                    scope.$emit("get-toggle-data", data);
-                },
-                error: function(jqXHR, status, err) {
-                    console.log(err);
-                },
-                complete: function(jqXHR, status) {}
-            });
+        appendCrisisDataFromBackEnd(data, display_id, icon_url) {
+            data["displayId"] = display_id;
+            data["iconUrl"] = icon_url;
+            this.$emit("get-toggle-data", data);
         }
     },
     watch: {
-        selectBombShelter(){
-            console.log("sfsaf")
+        selectBombShelter() {
+            console.log("sfsaf");
 
             var data = {
-                resource_id: '4ee17930-4780-403b-b6d4-b963c7bb1c09', // the resource id
+                resource_id: "4ee17930-4780-403b-b6d4-b963c7bb1c09", // the resource id
                 limit: 5, // get 5 results
-                q: 'jones' // query for 'jones'
-                };
+                q: "jones" // query for 'jones'
+            };
 
-              $.ajax({
-               type:'GET',
-               url:'https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b6d4-b963c7bb1c09&limit=574',
-               success:function(data) {
-                  console.log(data)
-               }
+            $.ajax({
+                type: "GET",
+                url:
+                    "https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b6d4-b963c7bb1c09&limit=574",
+                success: function(data) {
+                    console.log(data);
+                }
             });
-
 
             // var request = "https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b6d4-b963c7bb1c09";
             // var markerIconUrl = "/assets/img/bomb-shelter.png";
@@ -154,50 +180,52 @@ export default {
             // } else {
             //     this.removeCrisisDataFromFrontend(this.selectBombShelter);
             // }
-
         },
         selectGasLeak() {
-            var request = "/api/crisis/gasLeak";
-            var markerIconUrl =
-                "https://images.vexels.com/media/users/3/150012/isolated/preview/bf8475104937ca2ee44090829f4efa3a-small-gas-cylinder-icon-by-vexels.png";
+            var request = this.gasData;
+            var markerIconUrl = "/assets/img/gasleak.png";
 
             if (this.selectGasLeak.includes("show")) {
-                this.getCrisisDataFromBackEnd(
+                this.appendCrisisDataFromBackEnd(
                     request,
                     this.selectGasLeak,
                     markerIconUrl
                 );
             } else {
+                this.disableGasLeakData = true;
+                this.getAllCrisis();
                 this.removeCrisisDataFromFrontend(this.selectGasLeak);
             }
         },
         selectFire() {
-            var request = "/api/crisis/fire";
-            var markerIconUrl =
-                "https://cdn0.iconfinder.com/data/icons/fatcow/32/fire.png";
+            var request = this.fireData;
+            var markerIconUrl = "/assets/img/fire.png";
 
             if (this.selectFire.includes("show")) {
-                this.getCrisisDataFromBackEnd(
+                this.appendCrisisDataFromBackEnd(
                     request,
                     this.selectFire,
                     markerIconUrl
                 );
             } else {
+                this.disableFireData = true;
+                this.getAllCrisis();
                 this.removeCrisisDataFromFrontend(this.selectFire);
             }
         },
         selectDengue() {
-            var request = "/api/crisis/dengue";
-            var markerIconUrl =
-                "https://www.sumitomo-chemical.co.uk/wp-content/uploads/icon-mosquito.png";
+            var request = this.dengueData;
+            var markerIconUrl = "/assets/img/icon-mosquito.png";
 
             if (this.selectDengue.includes("show")) {
-                this.getCrisisDataFromBackEnd(
+                this.appendCrisisDataFromBackEnd(
                     request,
                     this.selectDengue,
                     markerIconUrl
                 );
             } else {
+                this.disableDengueData = true;
+                this.getAllCrisis();
                 this.removeCrisisDataFromFrontend(this.selectDengue);
             }
         },

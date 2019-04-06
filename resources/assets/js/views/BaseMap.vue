@@ -381,7 +381,7 @@ export default {
         showDengueData(dengue) {
             var scope = this;
             this.$refs.mapRef.$mapPromise.then(map => {
-                dengue.crises.forEach((element, index) => {
+                dengue.forEach((element, index) => {
                     var pos = {
                         lat: parseFloat(element.lat),
                         lng: parseFloat(element.lng)
@@ -446,7 +446,9 @@ export default {
         showFireData(fireData) {
             var scope = this;
 
-            fireData.crises.forEach((element, index) => {
+            console.log(fireData)
+
+            fireData.forEach((element, index) => {
                 scope.addMarker(
                     "Array",
                     scope.markers.fireMarkers,
@@ -466,7 +468,7 @@ export default {
         },
         showGasLeakData(gasLeakData) {
             var scope = this;
-            gasLeakData.crises.forEach((element, index) => {
+            gasLeakData.forEach((element, index) => {
                 scope.addMarker(
                     "Array",
                     scope.markers.gasLeakMarkers,
@@ -555,16 +557,30 @@ export default {
 
             data.area_metadata.forEach((element, index) => {
 
-                var forcast = data.items[0].forecasts[index].forecast;
+                var forecast = data.items[0].forecasts[index].forecast;
 
-				if( forcast == "Showers"){
-					iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/SH.png'
-				}else if(forcast == "Thundery Showers"){
-					iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/TL.png'
-				}else if(forcast == "Partly Cloudy (Day)"){
-					iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/PC.png'
-				}else if(forcast == "Heavy Thundery Showers with Gusty Winds"){
-                    iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/HG.png'
+				// if( forcast == "Showers"){
+				// 	iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/SH.png'
+				// }else if(forcast == "Thundery Showers"){
+				// 	iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/TL.png'
+				// }else if(forcast == "Partly Cloudy (Day)"){
+				// 	iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/PC.png'
+				// }else if(forcast == "Heavy Thundery Showers with Gusty Winds"){
+                //     iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/HG.png'
+                // }
+
+                if(forecast == "Fair (Day)"){
+                     iconUrl = 'http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-fair-day-sm.png'
+                }else if(forecast == "Fair (Night)"){
+                    iconUrl = 'http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-fair-night-sm.png'
+                }else if(forecast == "Thundary Showers"){
+                    iconUrl = 'http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-thundery-showers.png'
+                }
+                else if(forecast == "Showers"){
+                    iconUrl = 'http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-shower.png'
+                }
+                else if(forecast == "Light Showers"){
+                    iconUrl = 'http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-light-shower.png'
                 }
                 
                 //add to legend array
