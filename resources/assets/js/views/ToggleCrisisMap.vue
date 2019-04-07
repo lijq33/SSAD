@@ -64,7 +64,7 @@
                                 Weather Forecast
                             </b-form-checkbox>
 
-                             <b-form-checkbox
+                             <!-- <b-form-checkbox
                                 id="showTemperatureDataId"
                                 name="showTemperatureDataId"
                                 v-model="selectTemperature"
@@ -72,7 +72,7 @@
                                 unchecked-value="hideTemperatureData"
                             >
                                 Temperature
-                            </b-form-checkbox>
+                            </b-form-checkbox> -->
 
 
                         </b-form-group> 
@@ -89,7 +89,6 @@
                                 v-model="selectBombShelter"
                                 value="showBombShelterData"
                                 unchecked-value="hideBombShelterData"
-                                :disabled="disableBombShelterData"
                             >
                                 Bomb Shelter
                             </b-form-checkbox>
@@ -106,15 +105,14 @@
 <script>
 import Tabs from "bootstrap-vue/es/components";
 import FormCheckbox from "bootstrap-vue/es/components/form-checkbox";
+import BombShelterJson from '../../bombShelter.json';
 
 export default {
     mounted() {
-        this.getBombShelter();
         this.getAllCrisis();
         this.disableFireData = true;
         this.disableDengueData = true;
         this.disableGasLeakData = true;
-        this.disableBombShelterData = true;
     },
     data() {
         return {
@@ -127,32 +125,13 @@ export default {
             dengueData: [],
             fireData: [],
             gasData: [],
-            bombShelterData:[],
+            bombShelterData:BombShelterJson,
             disableFireData: false,
             disableDengueData: false,
             disableGasLeakData: false,
-            disableBombShelterData:false
         };
     },
     methods: {
-        getBombShelter() {
-            var scope = this;
-             axios
-                .get("/api/bombshelter")
-                .then(res => {
-                    console.log(res);
-
-                     res.data.bombshelter.forEach((element, index) => {
-                         element["id"] = element._id;
-                         this.bombShelterData.push(element); 
-                     });
-                })
-                .catch(error => {
-                    console.log("error loading all bombshelter from backend.");
-                }).then(function () {
-                    scope.disableBombShelterData = false;
-                });
-        },
 
         getAllCrisis() {
             axios
@@ -209,8 +188,7 @@ export default {
         selectBombShelter() { 
              var request = this.bombShelterData;
             var markerIconUrl = "/assets/img/bomb-shelter.png";
-                //https://www.scdf.gov.sg/images/default-source/scdf-images/cd-shelter-logo-01711c5eafc0a84b29afa7c5a52c2cfe7a.png?sfvrsn=d000c2ba_0
-
+            
             if (this.selectBombShelter.includes("show")) {
                 this.appendCrisisDataFromBackEnd(
                     request,

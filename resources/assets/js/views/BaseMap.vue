@@ -217,6 +217,10 @@ export default {
                     ].clear();
                     this.weatherForecastCenterControl = null;
                 });
+            }else if (clearToggleData === "hideBombShelterData") {
+                
+                    this.removeMarkers(this.markers.bombShelterMarkers);
+                    this.markers.bombShelterMarkers = [];
             }
         },
         handleToggleData(toggleData) {
@@ -421,8 +425,9 @@ export default {
         },
         showBombShelterData(bombShelterData) {
             var scope = this;
-
             bombShelterData.forEach((element, index) => {
+
+                
                 scope.addMarker(
                     "Array",
                     scope.markers.bombShelterMarkers,
@@ -431,8 +436,9 @@ export default {
                         markerDisplayId: element.id,
                         position: { lat: parseFloat(element.lat), lng: parseFloat(element.lng) }
                     },
-                    { infoWindowTitle: element.name, infoWindowBody: element },
-                    element
+                    { infoWindowTitle: element.name, infoWindowBody: element.description ,imageAvailable: true},
+                    element,
+                    null
                 );
             });
         },
@@ -579,7 +585,7 @@ export default {
                         "</div>" +
                         '<img src = "/crisis/' +
                         infowindow.infoWindowBody.image +
-                        '" alt="fire image"/>' +
+                        '" alt="image"/>' +
                         "</div>";
                     '<div class="iw-bottom-gradient"></div>' + "</div>";
                 } else {
