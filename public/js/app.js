@@ -38830,7 +38830,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vuex
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_7_vue2_google_maps__, {
     load: {
         key: 'AIzaSyAIAkiam90N9R-_Nh72fL6MpGJpKUBDWgQ',
-        libraries: 'places,drawing'
+        libraries: 'places,drawing,visualization'
     }
 });
 
@@ -77177,7 +77177,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 gasLeakMarkers: [],
                 bombShelterMarkers: []
             },
-            polygon: { dengueData: [], dengueMarkerData: [] }
+            polygon: { dengueData: [], dengueMarkerData: [] },
+            heatMap: { temperatureData: null }
         };
     },
 
@@ -77267,6 +77268,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 });
             } else if (toggleData.displayId === "showBombShelterData") {
                 this.showBombShelterData(toggleData);
+            } else if (toggleData.displayId === "showTemperatureData") {
+                this.showTemperatureData(toggleData);
             }
         },
         weatherCenterControl: function weatherCenterControl(controlDiv, map, updatedTime) {
@@ -77370,14 +77373,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 removeMarkersType[i].setMap(null);
             }
         },
+        showTemperatureData: function showTemperatureData(temperatureData) {
+            console.log(temperatureData);
+            var scope = this;
+
+            this.$refs.mapRef.$mapPromise.then(function (map) {
+
+                var heatmapData = [{ location: new google.maps.LatLng(37.782, -122.447), weight: 0.5 }, new google.maps.LatLng(37.782, -122.445), { location: new google.maps.LatLng(37.782, -122.443), weight: 2 }, { location: new google.maps.LatLng(37.782, -122.441), weight: 3 }, { location: new google.maps.LatLng(37.782, -122.439), weight: 2 }, new google.maps.LatLng(37.782, -122.437), { location: new google.maps.LatLng(37.782, -122.435), weight: 0.5 }, { location: new google.maps.LatLng(37.785, -122.447), weight: 3 }, { location: new google.maps.LatLng(37.785, -122.445), weight: 2 }, new google.maps.LatLng(37.785, -122.443), { location: new google.maps.LatLng(37.785, -122.441), weight: 0.5 }, new google.maps.LatLng(37.785, -122.439), { location: new google.maps.LatLng(37.785, -122.437), weight: 2 }, { location: new google.maps.LatLng(37.785, -122.435), weight: 3 }];
+
+                scope.heatMap.temperatureData = new google.maps.visualization.HeatmapLayer({
+                    data: heatmapData
+                });
+                scope.heatMap.temperatureData.setMap(map);
+            });
+        },
         showBombShelterData: function showBombShelterData(bombShelterData) {
             var scope = this;
 
-            bombShelterData.crises.forEach(function (element, index) {
+            bombShelterData.forEach(function (element, index) {
                 scope.addMarker("Array", scope.markers.bombShelterMarkers, {
-                    icon: gasLeakData.iconUrl,
+                    icon: bombShelterData.iconUrl,
                     markerDisplayId: element.id,
-                    position: { lat: element.lat, lng: element.lng }
+                    position: { lat: parseFloat(element.lat), lng: parseFloat(element.lng) }
                 }, { infoWindowTitle: element.name, infoWindowBody: element }, element);
             });
         },
@@ -77439,7 +77456,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 scope.addMarker("Array", scope.markers.fireMarkers, {
                     icon: fireData.iconUrl,
                     markerDisplayId: element.id,
-                    position: { lat: element.lat, lng: element.lng }
+                    position: { lat: parseFloat(element.lat), lng: parseFloat(element.lng) }
                 }, {
                     infoWindowTitle: element.name,
                     infoWindowBody: element,
@@ -77453,7 +77470,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 scope.addMarker("Array", scope.markers.gasLeakMarkers, {
                     icon: gasLeakData.iconUrl,
                     markerDisplayId: element.id,
-                    position: { lat: element.lat, lng: element.lng }
+                    position: { lat: parseFloat(element.lat), lng: parseFloat(element.lng) }
                 }, { infoWindowTitle: element.name, infoWindowBody: element }, element);
             });
         },
@@ -77491,6 +77508,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 }
 
                 google.maps.event.addListener(temp, "mouseover", function () {
+                    scope.markerInfoWindow.setContent(contentString);
+                    scope.markerInfoWindow.open(map, this);
+                });
+
+                google.maps.event.addListener(temp, "click", function () {
                     scope.markerInfoWindow.setContent(contentString);
                     scope.markerInfoWindow.open(map, this);
                 });
@@ -87853,6 +87875,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -87864,6 +87887,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.disableFireData = true;
         this.disableDengueData = true;
         this.disableGasLeakData = true;
+        this.disableBombShelterData = true;
     },
     data: function data() {
         return {
@@ -87876,36 +87900,48 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             dengueData: [],
             fireData: [],
             gasData: [],
+            bombShelterData: [],
             disableFireData: false,
             disableDengueData: false,
-            disableGasLeakData: false
+            disableGasLeakData: false,
+            disableBombShelterData: false
         };
     },
 
     methods: {
         getBombShelter: function getBombShelter() {
+            var _this = this;
+
+            var scope = this;
             axios.get("/api/bombshelter").then(function (res) {
                 console.log(res);
+
+                res.data.bombshelter.forEach(function (element, index) {
+                    element["id"] = element._id;
+                    _this.bombShelterData.push(element);
+                });
             }).catch(function (error) {
                 console.log("error loading all bombshelter from backend.");
+            }).then(function () {
+                scope.disableBombShelterData = false;
             });
         },
         getAllCrisis: function getAllCrisis() {
-            var _this = this;
+            var _this2 = this;
 
             axios.get("/api/crisis/all").then(function (res) {
-                _this.dengueData = res.data.dengue;
-                _this.fireData = res.data.fire;
-                _this.gasData = res.data.gas;
+                _this2.dengueData = res.data.dengue;
+                _this2.fireData = res.data.fire;
+                _this2.gasData = res.data.gas;
 
-                if (_this.disableFireData) {
-                    _this.disableFireData = false;
+                if (_this2.disableFireData) {
+                    _this2.disableFireData = false;
                 }
-                if (_this.disableDengueData) {
-                    _this.disableDengueData = false;
+                if (_this2.disableDengueData) {
+                    _this2.disableDengueData = false;
                 }
-                if (_this.disableGasLeakData) {
-                    _this.disableGasLeakData = false;
+                if (_this2.disableGasLeakData) {
+                    _this2.disableGasLeakData = false;
                 }
             }).catch(function (error) {
                 console.log("error loading all crisis from backend.");
@@ -87926,6 +87962,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 url: url,
                 type: "GET",
                 success: function success(data, status, jqXHR) {
+                    console.log(data);
                     data["displayId"] = display_id;
                     data["iconUrl"] = icon_url;
                     scope.$emit("get-toggle-data", data);
@@ -87939,35 +87976,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     watch: {
         selectBombShelter: function selectBombShelter() {
-            console.log("sfsaf");
+            var request = this.bombShelterData;
+            var markerIconUrl = "/assets/img/bomb-shelter.png";
+            //https://www.scdf.gov.sg/images/default-source/scdf-images/cd-shelter-logo-01711c5eafc0a84b29afa7c5a52c2cfe7a.png?sfvrsn=d000c2ba_0
 
-            var data = {
-                resource_id: "4ee17930-4780-403b-b6d4-b963c7bb1c09", // the resource id
-                limit: 5, // get 5 results
-                q: "jones" // query for 'jones'
-            };
-
-            $.ajax({
-                type: "GET",
-                url: "https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b6d4-b963c7bb1c09&limit=574",
-                success: function success(data) {
-                    console.log(data);
-                }
-            });
-
-            // var request = "https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b6d4-b963c7bb1c09";
-            // var markerIconUrl = "/assets/img/bomb-shelter.png";
-            //     //https://www.scdf.gov.sg/images/default-source/scdf-images/cd-shelter-logo-01711c5eafc0a84b29afa7c5a52c2cfe7a.png?sfvrsn=d000c2ba_0
-
-            // if (this.selectBombShelter.includes("show")) {
-            //     this.getCrisisDataFromBackEnd(
-            //         request,
-            //         this.selectBombShelter,
-            //         markerIconUrl
-            //     );
-            // } else {
-            //     this.removeCrisisDataFromFrontend(this.selectBombShelter);
-            // }
+            if (this.selectBombShelter.includes("show")) {
+                this.appendCrisisDataFromBackEnd(request, this.selectBombShelter, markerIconUrl);
+            } else {
+                this.removeCrisisDataFromFrontend(this.selectBombShelter);
+            }
         },
         selectGasLeak: function selectGasLeak() {
             var request = this.gasData;
@@ -88019,10 +88036,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var request = "https://api.data.gov.sg/v1/environment/air-temperature";
             var markerIconUrl = "https://www.nea.gov.sg/assets/images/icons/weather-bg/PC.png";
 
-            if (this.selectTwoHrWeather.includes("show")) {
-                this.getCrisisDataFromBackEnd(request, this.selectTwoHrWeather, markerIconUrl);
+            if (this.selectTemperature.includes("show")) {
+                this.getCrisisDataFromBackEnd(request, this.selectTemperature, markerIconUrl);
             } else {
-                this.removeCrisisDataFromFrontend(this.selectTwoHrWeather);
+                this.removeCrisisDataFromFrontend(this.selectTemperature);
             }
         }
     }
@@ -88174,7 +88191,7 @@ var render = function() {
                             attrs: {
                               id: "showTemperatureDataId",
                               name: "showTemperatureDataId",
-                              value: "showTemperatureDataId",
+                              value: "showTemperatureData",
                               "unchecked-value": "hideTemperatureData"
                             },
                             model: {
@@ -88212,7 +88229,8 @@ var render = function() {
                               id: "showBombShelterDataId",
                               name: "showBombShelterDataId",
                               value: "showBombShelterData",
-                              "unchecked-value": "hideBombShelterData"
+                              "unchecked-value": "hideBombShelterData",
+                              disabled: _vm.disableBombShelterData
                             },
                             model: {
                               value: _vm.selectBombShelter,

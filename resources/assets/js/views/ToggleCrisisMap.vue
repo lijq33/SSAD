@@ -68,7 +68,7 @@
                                 id="showTemperatureDataId"
                                 name="showTemperatureDataId"
                                 v-model="selectTemperature"
-                                value="showTemperatureDataId"
+                                value="showTemperatureData"
                                 unchecked-value="hideTemperatureData"
                             >
                                 Temperature
@@ -89,6 +89,7 @@
                                 v-model="selectBombShelter"
                                 value="showBombShelterData"
                                 unchecked-value="hideBombShelterData"
+                                :disabled="disableBombShelterData"
                             >
                                 Bomb Shelter
                             </b-form-checkbox>
@@ -113,6 +114,7 @@ export default {
         this.disableFireData = true;
         this.disableDengueData = true;
         this.disableGasLeakData = true;
+        this.disableBombShelterData = true;
     },
     data() {
         return {
@@ -125,20 +127,30 @@ export default {
             dengueData: [],
             fireData: [],
             gasData: [],
+            bombShelterData:[],
             disableFireData: false,
             disableDengueData: false,
             disableGasLeakData: false,
+            disableBombShelterData:false
         };
     },
     methods: {
         getBombShelter() {
+            var scope = this;
              axios
                 .get("/api/bombshelter")
                 .then(res => {
                     console.log(res);
+
+                     res.data.bombshelter.forEach((element, index) => {
+                         element["id"] = element._id;
+                         this.bombShelterData.push(element); 
+                     });
                 })
                 .catch(error => {
                     console.log("error loading all bombshelter from backend.");
+                }).then(function () {
+                    scope.disableBombShelterData = false;
                 });
         },
 
@@ -179,6 +191,7 @@ export default {
                 url: url,
                 type: "GET",
                 success: function(data, status, jqXHR) {
+                    console.log(data)
                     data["displayId"] = display_id;
                     data["iconUrl"] = icon_url;
                     scope.$emit("get-toggle-data", data);
@@ -193,37 +206,20 @@ export default {
     },
     watch: {
  
-        selectBombShelter() {
-            console.log("sfsaf");
+        selectBombShelter() { 
+             var request = this.bombShelterData;
+            var markerIconUrl = "/assets/img/bomb-shelter.png";
+                //https://www.scdf.gov.sg/images/default-source/scdf-images/cd-shelter-logo-01711c5eafc0a84b29afa7c5a52c2cfe7a.png?sfvrsn=d000c2ba_0
 
-            var data = {
-                resource_id: "4ee17930-4780-403b-b6d4-b963c7bb1c09", // the resource id
-                limit: 5, // get 5 results
-                q: "jones" // query for 'jones'
-            };
-
-            $.ajax({
-                type: "GET",
-                url:
-                    "https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b6d4-b963c7bb1c09&limit=574",
-                success: function(data) {
-                    console.log(data);
-                }
-            });
-
-            // var request = "https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b6d4-b963c7bb1c09";
-            // var markerIconUrl = "/assets/img/bomb-shelter.png";
-            //     //https://www.scdf.gov.sg/images/default-source/scdf-images/cd-shelter-logo-01711c5eafc0a84b29afa7c5a52c2cfe7a.png?sfvrsn=d000c2ba_0
-
-            // if (this.selectBombShelter.includes("show")) {
-            //     this.getCrisisDataFromBackEnd(
-            //         request,
-            //         this.selectBombShelter,
-            //         markerIconUrl
-            //     );
-            // } else {
-            //     this.removeCrisisDataFromFrontend(this.selectBombShelter);
-            // }
+            if (this.selectBombShelter.includes("show")) {
+                this.appendCrisisDataFromBackEnd(
+                    request,
+                    this.selectBombShelter,
+                    markerIconUrl
+                );
+            } else {
+                this.removeCrisisDataFromFrontend(this.selectBombShelter);
+            }
         },
         selectGasLeak() {
             var request = this.gasData;
@@ -295,14 +291,14 @@ export default {
             var markerIconUrl =
                 "https://www.nea.gov.sg/assets/images/icons/weather-bg/PC.png";
 
-            if (this.selectTwoHrWeather.includes("show")) {
+            if (this.selectTemperature.includes("show")) {
                 this.getCrisisDataFromBackEnd(
                     request,
-                    this.selectTwoHrWeather,
+                    this.selectTemperature,
                     markerIconUrl
                 );
             } else {
-                this.removeCrisisDataFromFrontend(this.selectTwoHrWeather);
+                this.removeCrisisDataFromFrontend(this.selectTemperature);
             }
 
         },
