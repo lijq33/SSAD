@@ -38,7 +38,7 @@ class SendSmsCrisisCreatedNotification
         }
         
         $crisis = $event->crisis;
-        $content = "There is currently a " . $crisis->crisis_type . " at " . $crisis->address. ". For more information, visit us at https://teamten.appspot.com ";
+        $content = "There is currently a " . $crisis->crisis_type . " at " . $crisis->address. ". For more information, visit us at https://teamcrisis.appspot.com ";
     
         foreach($subscribers as $subscriber){
             $telephone_number = $subscriber->telephone_number;
