@@ -321,7 +321,7 @@
                 this.form.crisisType= null;
             },
 
-             uploadImage(e) {
+            uploadImage(e) {
                 document.querySelector('.upload-image-input').click();
             },
 

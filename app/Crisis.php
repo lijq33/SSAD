@@ -12,21 +12,6 @@ use Map;
 class Crisis extends Model
 {
     use SoftDeletes;
-
-    protected $appends = ['lat', 'lng'];
-
-    
-    public function getLatAttribute(){
-        $response = Map::findLocation($this->attributes['postal_code']);
-        return $response['lat'];
-    }
-
-    
-    public function getLngAttribute(){
-        $response = Map::findLocation($this->attributes['postal_code']);
-        return $response['lng'];
-    }
-
     /**
      * Get the user that submitted the crisis.
      */
@@ -61,7 +46,7 @@ class Crisis extends Model
      *
      * @var array
     */
-    protected $fillable = ['user_id', 'name', 'telephone_number', 'postal_code', 'date', 'time', 'address',
+    protected $fillable = ['user_id', 'name', 'telephone_number', 'postal_code', 'date', 'time', 'address', 'lat', 'lng',
                             'crisis_type', 'status', 'description', 'image', 'facebook_post_id','twitter_post_id' , 'radius'];
 
     public static function newCrisis($data){
@@ -69,11 +54,15 @@ class Crisis extends Model
         $data['date'] = (Carbon::parse($data['date'])->format('Y/m/d'));
         $data['time'] = (Carbon::parse($data['time'])->format('H:i:s'));
 
+        $latlng = Map::findLocation($data['postalCode']);
+
         $crisis = Crisis::create([
             'name' => $data['name'],
             'user_id' => $data['id'],
             'telephone_number' => $data['telephoneNumber'],
             'postal_code' => $data['postalCode'],
+            'lat' => $latlng['lat'],
+            'lng' => $latlng['lng'],
             'address' => $data['address'],
             
             'crisis_type' => $data['crisisType'],

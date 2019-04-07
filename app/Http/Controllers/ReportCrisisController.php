@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\User;
 use App\Events\CrisisCreated;
 use App\Crisis;
+use Intervention\Image\Facades\Image;
 
 class ReportCrisisController extends Controller
 {
@@ -77,12 +78,31 @@ class ReportCrisisController extends Controller
         $data['address'] = $reportCrisis['address'];
         $data['crisisType'] = $reportCrisis['crisis_type'];
         $data['radius'] = $reportCrisis['radius'];
-        $data['image'] = $reportCrisis['image'];
+
+        if (!array_key_exists('description', $data)){        
+            $data['description'] = $reportCrisis['description'];
+        }
+        
+        $imageName = $reportCrisis['image'];
+        if (array_key_exists('image', $data)){        
+            $imageName = str_random(40);
+            $image = Image::make($data['image']->getRealPath());
+            $image->save('crisis/'.  $imageName . ".{$data['image']->getClientOriginalExtension()}"); // Original Image
+            $imageName = $imageName.".".$data['image']->getClientOriginalExtension();
+        }
+        $data['image'] = $imageName;
 
         $crisis = Crisis::newCrisis($data);
+
+        $assistances = explode(',', $data['assistanceRequired']);
+
         
-        foreach($data['assistanceRequired'] as $assistance){
-            $crisis->agency()->attach($assistance);
+        var_dump($assistances);
+
+        if($assistances[0] !== ""){
+            foreach($assistances as $assistance){
+                $crisis->agency()->attach($assistance);
+            }
         }
 
         $reportCrisis->delete();

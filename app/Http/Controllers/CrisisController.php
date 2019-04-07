@@ -21,7 +21,6 @@ class CrisisController extends Controller
     public function index()
     {
         $crises = Crisis::with('user:id,name')->get();
-        // $crises = Crisis::all();
 
         return response()->json([
             'crises' => $crises,
@@ -80,8 +79,8 @@ class CrisisController extends Controller
         $crisis = Crisis::newCrisis($data);
 
         $assistances = explode(',', $data['assistanceRequired']);
-
-        if($assistances == ""){
+        
+        if($assistances[0] !== ""){
             foreach($assistances as $assistance){
                 $crisis->agency()->attach($assistance);
             }

@@ -21,6 +21,8 @@ class CreateCrisesTable extends Migration
             $table->string('name');
             $table->integer('telephone_number');
             $table->integer('postal_code');
+            $table->string('lat')->nullable();
+            $table->string('lng')->nullable();
             $table->date('date');
             $table->time('time');
             

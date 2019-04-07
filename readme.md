@@ -82,7 +82,6 @@ https://data.gov.sg/api/action/datastore_search?resource_id=4ee17930-4780-403b-b
 
 
 ##COMMENTS
-uncomment eventserviceprovided to get sms to work.
 remove test
 
 
@@ -100,32 +99,6 @@ PDF Generator - DOMPDF
 
 Central Processing Unit 
 CallCentreUI
-
-
-
-
-
-
-#things to do
-reporting crisis - public interface - prash
-facebook - post picture 
-map - xy
-graph - for crisis manager to view the stats of crisis
-https://madewithvuejs.com/charts
-graph - for email
-deployment to google
-
-
-
-
-
-
-##Design
-#facade design pattern
-Mapservice
-SMS 
-Mail
-
 
 
 

@@ -45,7 +45,7 @@
                         </div>
                     
                         <div v-else class = "col-md-6">
-                            <div class = "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden" style="width:500px; height:300px">
+                            <div class = "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden">
                                 <img :src = "image" class = "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center" />
                             </div>
 

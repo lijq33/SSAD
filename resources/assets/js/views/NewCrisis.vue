@@ -501,6 +501,7 @@ export default {
 
             this.form.assistanceRequired = [];
             this.form.crisisType = null;
+            this.removeImage();
         },
 
         uploadImage(e) {
