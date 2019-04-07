@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Event;
 
 use Illuminate\Foundation\Testing\WithFaker;
 
-class NewCrisisTest extends TestCase
+class ReportCrisisTest extends TestCase
 {
     use DatabaseMigrations, WithFaker;
 
