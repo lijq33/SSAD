@@ -162,10 +162,9 @@ class CrisisController extends Controller
     */
     public function crisis()
     {
-        $crisis = Crisis::get();
-        $dengue = $crisis->where('crisis_type', 'Dengue');
-        $fire = $crisis->where('crisis_type', 'Fire Outbreak');
-        $gas = $crisis->where('crisis_type', 'Gas Leak');
+        $dengue = Crisis::where('crisis_type', 'Dengue')->get();
+        $fire = Crisis::where('crisis_type', 'Fire Outbreak')->get();
+        $gas = Crisis::where('crisis_type', 'Gas Leak')->get();
 
         return response()->json([
             'dengue' => $dengue,

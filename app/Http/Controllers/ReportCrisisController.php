@@ -64,7 +64,7 @@ class ReportCrisisController extends Controller
     {
         $data = request()->all();
 
-        $reportCrisis = ReportCrisis::whereId($id)->first();
+        $reportCrisis = ReportCrisis::where('id', $id)->first();
 
         $user = new User();
         $data['id'] = $user->fetchUser()['id'];
