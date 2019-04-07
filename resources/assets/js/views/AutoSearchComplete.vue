@@ -1,60 +1,63 @@
 <template>
     <div>
-
-        <!-- search -->
-        <div class="form-group row">
-            <label
-                for="search"
-                class="col-md-1 col-form-label"
-            >
-                Search:
-            </label>
+        <div class = "tw-flex">
             <div class="col-md-10">
-                <div>
-                    <GmapAutocomplete
-                        class="tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64"
-                        @place_changed="setPlace"
-                        ref="autocomplete"
-                    ></GmapAutocomplete>
-                </div>
-            </div>
-        </div>
-
-        <!-- Address -->
-        <div class="form-group row">
-            <label
-                for="Address"
-                class="col-md-1 col-form-label"
-            >
-                Address:
-            </label>
-            <div class="col-md-5">
-
-                <div v-if="!isLoading">
-
-                    <b-form-textarea
-                        id="textarea-state"
-                        v-model="form.address"
-                        placeholder=""
-                        rows="2"
-                        disabled
-                        style="resize:none"
-                    ></b-form-textarea>
-
-
-                    <b-button
-                        v-if="form.address != '' && currentUser.roles == 'CallCenterOperator'"
-                        variant="primary"
-                        @click="confirmAddressBtn"
-                    >Confirm</b-button>
-
-                </div>
-                <div v-else>
-                    <img
-                        src="/assets/img/loader.gif"
-                        alt="Loading..."
+                <!-- search -->
+                <div class="tw-w-full tw-flex tw-mb-2">
+                    <label
+                        for="search"
+                        class="col-md-4 col-form-label"
                     >
+                        Search:
+                    </label>
+                    <div class="col-md-5">
+                        <div>
+                            <GmapAutocomplete
+                                class="tw-border-grey tw-border-2 tw-rounded tw-p-2 tw-w-64"
+                                @place_changed="setPlace"
+                                ref="autocomplete"
+                            ></GmapAutocomplete>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Address -->
+                <div class="tw-w-full tw-flex">
+                    <label
+                        for="Address"
+                        class="col-md-4 col-form-label"
+                    >
+                        Address:
+                    </label>
+                    <div class="col-md-5">
+
+                        <div v-if="!isLoading">
+                            <input 
+                                class = "tw-border-grey-light tw-bg-grey-light tw-border-2 tw-rounded tw-p-2 tw-w-64"
+                                type='text'
+                                v-model="form.address"
+                                placeholder=""
+                                disabled
+                                style="resize:none"
+                            />
+                        </div>
+                        <div v-else>
+                            <img
+                                src="/assets/img/loader.gif"
+                                alt="Loading..."
+                            >
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div v-if="!isLoading && hideConfirmButton" class="col-md-5">
+                <b-button
+                    v-if="form.address != '' && currentUser.roles == 'CallCenterOperator'"
+                    variant="primary"
+                    @click="confirmAddressBtn"
+                >Confirm</b-button>
 
             </div>
         </div>
@@ -65,7 +68,7 @@
 
 <script>
 export default {
-    props: ["queryFullAddress", "clearSearchResultValue"],
+    props: ["queryFullAddress", "clearSearchResultValue","hideConfirmButton"],
 
     data() {
         return {
@@ -235,10 +238,11 @@ export default {
             this.$refs.autocomplete.$el.value = "";
             this.confirmAddress.full_address = null;
             this.confirmAddress.postal_code = null;
-        }
+        },
+       
     },
-    computed:{
-           currentUser() {
+    computed: {
+        currentUser() {
             return this.$store.getters.currentUser;
         },
 
@@ -261,6 +265,10 @@ export default {
 </script>
 
 <style>
-.pac-container.pac-logo { z-index: 999999; }
-.pac-container { z-index: 999999 !important;}
+.pac-container.pac-logo {
+    z-index: 999999;
+}
+.pac-container {
+    z-index: 999999 !important;
+}
 </style>

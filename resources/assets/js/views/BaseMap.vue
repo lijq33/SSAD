@@ -2,45 +2,54 @@
     <div class="tw-w-full">
 
         <div>
-            <b-row>
-                <b-col cols="7">
-                    <!--autosearch -->
-                    <auto-search
-                        :query-full-address="searchMarkerFullAddress"
-                        :clear-search-result-value="clearSearchVal"
-                        @get-search-data="handleSearchData"
-                        @confirm-address="handleConfirmAddress"
-                    />
-                </b-col>
-
-                <b-col cols="5">
-                    <!-- show and hide various crisis -->
-                    <toggle-map
-                        v-if="!hideToggleMap"
-                        @get-toggle-data="handleToggleData"
-                        @clear-toggle-data="handleClearToggleData"
-                    />
-                </b-col>
-            </b-row>
+            <div>
+                <b-row>
+                    <b-col>
+                        <!--autosearch -->
+                        <auto-search
+                            :query-full-address="searchMarkerFullAddress"
+                            :clear-search-result-value="clearSearchVal"
+                            :hide-confirm-button="hideToggleMap"
+                            @get-search-data="handleSearchData"
+                            @confirm-address="handleConfirmAddress"
+                        />
+                    </b-col>
+                    
+                    <b-col cols="5">
+                        <!-- show and hide various crisis -->
+                        <toggle-map
+                            v-if="!hideToggleMap"
+                            @get-toggle-data="handleToggleData"
+                            @clear-toggle-data="handleClearToggleData"
+                        />
+                    </b-col>
+                </b-row>
+            </div>
 
             <div
                 v-if="hideDrawingMap"
-                class="form-group row"
+                class="tw-flex col-md-10 tw-pb-4"
             >
-                <label
-                    for="Address"
-                    class="col-md-1 col-form-label"
-                >
-                    Radius:
-                </label>
-                <div class="col-md-5">
-                    <input
-                        type="text"
-                        class="tw-border tw-rounded tw-p-2 tw-w-full tw-border-grey tw-italic"
-                        v-model="newCircleRadius"
+                <div class="tw-flex">
+                    <label
+                        for="Address"
+                        class="col-md-4 col-form-label tw-mr-2 tw-pt-2"
                     >
+                        Radius:
+                    </label>
+                    <div class="col-md-5">
+                        <input
+                            type="text"
+                            class= "tw-border-grey-light tw-border-2 tw-rounded tw-p-2 tw-w-64"
+                            v-model="newCircleRadius"
+                        >
 
+                    </div>
                 </div>
+                <b-col cols="5">
+                </b-col> 
+                <div class="col-md-5" >
+                </div> 
             </div>
 
             <b-row>
@@ -57,24 +66,33 @@
                         :center="sgcoord"
                     >
                     </GmapMap>
-                </b-col> 
-            </b-row>  
+                </b-col>
+            </b-row>
         </div>
 
-		<div v-if="legendType == 'showTwoHrWeatherData'">
-				<b-button v-b-toggle.collapse-1 variant="outline-primary">Legend+</b-button>
-				<b-collapse id="collapse-1" class="mt-2">
-					<b-card>
-					  <b-row v-for="(item, index) in legendArray" :key="index">
-					    <b-col>
-							<img
-							class="image"
-							:src="item.iconUrl"
-							:alt="item.forevast"
-							>{{item.forecast}}
-						</b-col>
+        <div v-if="legendType == 'showTwoHrWeatherData'">
+            <b-button
+                v-b-toggle.collapse-1
+                variant="outline-primary"
+            >Legend+</b-button>
+            <b-collapse
+                id="collapse-1"
+                class="mt-2"
+            >
+                <b-card>
+                    <b-row
+                        v-for="(item, index) in legendArray"
+                        :key="index"
+                    >
+                        <b-col>
+                            <img
+                                class="image"
+                                :src="item.iconUrl"
+                                :alt="item.forevast"
+                            >{{item.forecast}}
+                        </b-col>
 
-						<!-- <b-col>
+                        <!-- <b-col>
 							<img
 							class="image"
 							src="https://www.nea.gov.sg/assets/images/icons/weather/pc.png"
@@ -89,11 +107,11 @@
 							alt="Thunder Showering icon"
 							>Thundery Showers
 						</b-col> -->
-						 
-					</b-row>
-					</b-card>
-				</b-collapse>
-		</div>
+
+                    </b-row>
+                </b-card>
+            </b-collapse>
+        </div>
 
     </div>
 </template>
@@ -102,7 +120,7 @@
 import { Modal } from "bootstrap-vue/es/components";
 import AutoSearchComplete from "./AutoSearchComplete";
 import ToggleMap from "./ToggleCrisisMap";
-import Collapse from 'bootstrap-vue/es/components/collapse'
+import Collapse from "bootstrap-vue/es/components/collapse";
 
 export default {
     props: ["hideToggleWindow", "hideDrawingWindow", "clearSearchResult"],
@@ -124,9 +142,9 @@ export default {
 
     data() {
         return {
-            weatherForecastCenterControl:null,
-            legendArray:[],
-			legendType:null,
+            weatherForecastCenterControl: null,
+            legendArray: [],
+            legendType: null,
             newCircle: null,
             clearSearchVal: false,
             newCircleRadius: "",
@@ -142,9 +160,9 @@ export default {
                 twoHrWeatherMarkers: [],
                 fireMarkers: [],
                 gasLeakMarkers: [],
-                bombShelterMarkers:[]
+                bombShelterMarkers: []
             },
-            polygon: { dengueData: [], dengueMarkerData: [] },
+            polygon: { dengueData: [], dengueMarkerData: [] }
         };
     },
     methods: {
@@ -163,7 +181,6 @@ export default {
             this.$emit("get-new-crisis-location", confirmAddress);
         },
         handleClearToggleData(clearToggleData) {
-
             //empty markers
             if (clearToggleData === "hideDengueData") {
                 //clear circle
@@ -188,16 +205,17 @@ export default {
                 scope.showRainData(element);
             } else if (clearToggleData === "hideTwoHrWeatherData") {
                 this.removeMarkers(this.markers.twoHrWeatherMarkers);
-				this.markers.twoHrWeatherMarkers = [];
-				//hide legend
-                this.legendType = '';
+                this.markers.twoHrWeatherMarkers = [];
+                //hide legend
+                this.legendType = "";
                 //hide control
 
-                 this.$refs.mapRef.$mapPromise.then(map => { 
-                     map.controls[google.maps.ControlPosition.TOP_CENTER].clear(); 
+                this.$refs.mapRef.$mapPromise.then(map => {
+                    map.controls[
+                        google.maps.ControlPosition.TOP_CENTER
+                    ].clear();
                     this.weatherForecastCenterControl = null;
-                 });
-                
+                });
             }
         },
         handleToggleData(toggleData) {
@@ -212,67 +230,73 @@ export default {
             } else if (toggleData.displayId === "showRainData") {
                 //scope.showRainData(element);
             } else if (toggleData.displayId === "showTwoHrWeatherData") {
-				this.legendType = toggleData.displayId;
+                this.legendType = toggleData.displayId;
                 this.showTwoHrWeatherData(toggleData);
-                
+
                 //filter out duplicates
                 var tempArray = this.legendArray;
-                this.legendArray=Object.values(tempArray.reduce((acc,cur)=>Object.assign(acc,{[cur.forecast]:cur}),{}));
+                this.legendArray = Object.values(
+                    tempArray.reduce(
+                        (acc, cur) =>
+                            Object.assign(acc, { [cur.forecast]: cur }),
+                        {}
+                    )
+                );
 
+                // console.log(toggleData.items[0].valid_period.start.slice(11,16))
+                var validTime =
+                    "Valid Period: " +
+                    toggleData.items[0].valid_period.start.slice(11, 16) +
+                    " - " +
+                    toggleData.items[0].valid_period.end.slice(11, 16);
 
-				// console.log(toggleData.items[0].valid_period.start.slice(11,16))
-				var validTime = "Valid Period: "+
-				toggleData.items[0].valid_period.start.slice(11,16)+
-				" - "+
-				toggleData.items[0].valid_period.end.slice(11,16);
+                this.$refs.mapRef.$mapPromise.then(map => {
+                    //set up custom control
+                    var centerControlDiv = document.createElement("div");
+                    this.weatherForecastCenterControl = new this.weatherCenterControl(
+                        centerControlDiv,
+                        map,
+                        validTime
+                    );
 
+                    centerControlDiv.index = 1;
+                    map.controls[google.maps.ControlPosition.TOP_CENTER].push(
+                        centerControlDiv
+                    );
+                });
+            } else if (toggleData.displayId === "showBombShelterData") {
+                this.showBombShelterData(toggleData);
+            }
+        },
+        weatherCenterControl(controlDiv, map, updatedTime) {
+            // Set CSS for the control border.
+            var controlUI = document.createElement("div");
+            controlUI.style.backgroundColor = "#fff";
+            controlUI.style.border = "2px solid #fff";
+            controlUI.style.borderRadius = "3px";
+            controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+            controlUI.style.cursor = "pointer";
+            controlUI.style.marginBottom = "22px";
+            controlUI.style.textAlign = "center";
+            controlUI.title = "Click to recenter the map";
+            controlDiv.appendChild(controlUI);
 
-				 this.$refs.mapRef.$mapPromise.then(map => {
-					 	//set up custom control
-					var centerControlDiv = document.createElement('div');
-					this.weatherForecastCenterControl = new this.weatherCenterControl(centerControlDiv, map,validTime);
+            // Set CSS for the control interior.
+            var controlText = document.createElement("div");
+            controlText.style.color = "rgb(25,25,25)";
+            controlText.style.fontFamily = "Roboto,Arial,sans-serif";
+            controlText.style.fontSize = "16px";
+            controlText.style.lineHeight = "38px";
+            controlText.style.paddingLeft = "5px";
+            controlText.style.paddingRight = "5px";
+            controlText.innerHTML = updatedTime;
+            controlUI.appendChild(controlText);
 
-					centerControlDiv.index = 1;
-					map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
-		   
-				 }); 
-		 
-		 }else if(toggleData.displayId === "showBombShelterData"){
-             this.showBombShelterData(toggleData);
-
-         }
-		},
-		weatherCenterControl(controlDiv, map,updatedTime) {
-
-        // Set CSS for the control border.
-        var controlUI = document.createElement('div');
-        controlUI.style.backgroundColor = '#fff';
-        controlUI.style.border = '2px solid #fff';
-        controlUI.style.borderRadius = '3px';
-        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-        controlUI.style.cursor = 'pointer';
-        controlUI.style.marginBottom = '22px';
-        controlUI.style.textAlign = 'center';
-        controlUI.title = 'Click to recenter the map';
-        controlDiv.appendChild(controlUI);
-
-        // Set CSS for the control interior.
-        var controlText = document.createElement('div');
-        controlText.style.color = 'rgb(25,25,25)';
-        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-        controlText.style.fontSize = '16px';
-        controlText.style.lineHeight = '38px';
-        controlText.style.paddingLeft = '5px';
-        controlText.style.paddingRight = '5px';
-        controlText.innerHTML = updatedTime;
-        controlUI.appendChild(controlText);
-
-        // Setup the click event listeners: simply set the map to Chicago.
-        controlUI.addEventListener('click', function() {
-          map.setCenter(chicago);
-        });
-
-      },
+            // Setup the click event listeners: simply set the map to Chicago.
+            controlUI.addEventListener("click", function() {
+                map.setCenter(chicago);
+            });
+        },
         handleSearchData(searchData) {
             var scope = this;
 
@@ -354,29 +378,26 @@ export default {
             this.setMapZoomLvl(17);
         },
         removeMarkers(removeMarkersType) {
-
             for (var i = 0; i < removeMarkersType.length; i++) {
                 removeMarkersType[i].setMap(null);
             }
         },
-        showBombShelterData(bombShelterData){
+        showBombShelterData(bombShelterData) {
+            var scope = this;
 
-               var scope = this;
-
-        bombShelterData.crises.forEach((element, index) => {
-            scope.addMarker(
-                "Array",
-                scope.markers.bombShelterMarkers,
-                {
-                    icon: gasLeakData.iconUrl,
-                    markerDisplayId: element.id,
-                    position: { lat: element.lat, lng: element.lng }
-                },
-                { infoWindowTitle: element.name, infoWindowBody: element },
-                element
-            );
-        });
-
+            bombShelterData.crises.forEach((element, index) => {
+                scope.addMarker(
+                    "Array",
+                    scope.markers.bombShelterMarkers,
+                    {
+                        icon: gasLeakData.iconUrl,
+                        markerDisplayId: element.id,
+                        position: { lat: element.lat, lng: element.lng }
+                    },
+                    { infoWindowTitle: element.name, infoWindowBody: element },
+                    element
+                );
+            });
         },
         showDengueData(dengue) {
             var scope = this;
@@ -446,7 +467,7 @@ export default {
         showFireData(fireData) {
             var scope = this;
 
-            console.log(fireData)
+            console.log(fireData);
 
             fireData.forEach((element, index) => {
                 scope.addMarker(
@@ -551,43 +572,89 @@ export default {
             });
         },
         showTwoHrWeatherData(data) {
-			var scope = this;
-			
-			var iconUrl='';
+            var scope = this;
+
+            var iconUrl = "";
 
             data.area_metadata.forEach((element, index) => {
-
                 var forecast = data.items[0].forecasts[index].forecast;
 
-				// if( forcast == "Showers"){
-				// 	iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/SH.png'
-				// }else if(forcast == "Thundery Showers"){
-				// 	iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/TL.png'
-				// }else if(forcast == "Partly Cloudy (Day)"){
-				// 	iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/PC.png'
-				// }else if(forcast == "Heavy Thundery Showers with Gusty Winds"){
-                //     iconUrl = 'https://www.nea.gov.sg/assets/images/icons/weather-bg/HG.png'
-                // }
+                if (forecast == "Fair (Day)") { 
+                    //done
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-fair-day-sm.png";
+                } else if (forecast == "Fair (Night)") {
+                    //done
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-fair-night-sm.png";
+                } else if (forecast == "Fair & Warm") {
+                     
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-fair-warm-sm.png";
+                } else if (forecast == "Partly Cloudy (Day)") {
+                    //done
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-partly-cloudy-day-sm.png";
+                } else if (forecast == "Partly Cloudy (Night)") {
+                    //done
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-partly-cloudy-night-sm.png";
+                } else if (forecast == "Cloudy") {
+                     
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-cloudy-sm.png";
+                } else if (forecast == "Hazy") {
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-hazy-sm.png";
+                } else if (forecast == "Slightly Hazy") {
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-slightly-hazy-sm.png";
+                } else if (forecast == "Windy") {
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-windy-sm.png";
+                } else if (forecast == "Mist") {
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-mist-sm.png";
+                } else if (forecast == "Light Rain") {
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-light-rain-sm.png";
+                } else if (forecast == "Moderate Rain") {
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-moderate-rain-sm.png";
+                } else if (forecast == "Heavy Rain") {
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-heavy-rain-sm.png";
+                } else if (forecast == "Passing Showers") {
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-passing-shower-sm.png";
+                } else if (forecast == "Light Showers") {
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-light-shower-sm.png";
+                } else if (forecast == "Showers") {
+                    //done
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-shower-sm.png";
+                } else if (forecast == "Heavy Showers") {
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-heavy-showers-sm.png";
+                } else if (forecast == "Thundary Showers") {
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-thundery-showers-sm.png";
+                } else if (forecast == "Heavy Thundary Showers") {
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-heavy-thundery-showers-sm.png";
+                } else if (
+                    forecast == "Heavy Thundary Showers with Gusty Winds"
+                ) {
+                    iconUrl =
+                        "http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-heavy-thundery-showers-with-gusty-winds-sm.png";
+                }
 
-                if(forecast == "Fair (Day)"){
-                     iconUrl = 'http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-fair-day-sm.png'
-                }else if(forecast == "Fair (Night)"){
-                    iconUrl = 'http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-fair-night-sm.png'
-                }else if(forecast == "Thundary Showers"){
-                    iconUrl = 'http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-thundery-showers.png'
-                }
-                else if(forecast == "Showers"){
-                    iconUrl = 'http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-shower.png'
-                }
-                else if(forecast == "Light Showers"){
-                    iconUrl = 'http://www.weather.gov.sg/wp-content/themes/wiptheme/assets/img/icon-light-shower.png'
-                }
-                
                 //add to legend array
                 this.legendArray.push({
-                    iconUrl:iconUrl,
-                    forecast:data.items[0].forecasts[index].forecast
-                })
+                    iconUrl: iconUrl,
+                    forecast: data.items[0].forecasts[index].forecast
+                });
 
                 scope.addMarker(
                     "Array",
