@@ -61,8 +61,6 @@ class NewCrisisTest extends TestCase
             'radius' => '0',
         ]);
 
-        var_dump($response->JSON([]));
-
         $response->assertStatus(200);
 
         $this->assertDatabaseHas('crises', [

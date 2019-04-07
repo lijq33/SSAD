@@ -193,4 +193,51 @@ class NewCrisisTest extends TestCase
         $response->assertStatus(200);
     }
 
+    /** @test */
+    public function it_can_approve_a_reported_crisis()
+    {
+        Event::fake();
+
+        $user = factory(User::class)
+            ->states('CrisisManager')
+            ->create();
+
+        //login
+        $login = $this->post('/api/auth/login',[
+            'nric' => $user->nric,
+            'password' => '12345!qW',
+        ]);
+
+        //create a public crisis
+        $this->it_can_report_a_new_crisis();
+
+        $response = $this->post('/api/report/crisis/1',[
+            'assistanceRequired' => '1',
+        ]);
+
+        $response->assertStatus(200);
+    }
+    
+    /** @test */
+    public function it_can_reject_a_reported_crisis()
+    {
+        Event::fake();
+
+        $user = factory(User::class)
+            ->states('CrisisManager')
+            ->create();
+
+        //login
+        $login = $this->post('/api/auth/login',[
+            'nric' => $user->nric,
+            'password' => '12345!qW',
+        ]);
+
+        //create a public crisis
+        $this->it_can_report_a_new_crisis();
+
+        $response = $this->delete('/api/report/crisis/1');
+
+        $response->assertStatus(200);
+    }
 }
