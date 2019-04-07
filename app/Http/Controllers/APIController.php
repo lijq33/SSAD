@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use Map;
 
 use Illuminate\Http\Request;
 
@@ -21,10 +22,6 @@ class APIController extends Controller
         $request = $client->request('GET', 'action/datastore_search?resource_id=4ee17930-4780-403b-b6d4-b963c7bb1c09&limit=574');
 
         $response = json_decode($request->getBody());
-
-        foreach($response as $bombshelter){
-            var_dump($bombshelter);
-        }
 
         return response()->json([
             'bombshelter' => $response->result->records,
