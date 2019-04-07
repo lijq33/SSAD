@@ -89697,7 +89697,7 @@ var render = function() {
                         "div",
                         {
                           staticClass:
-                            "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden",
+                            "tw-h-24 tw-w-24 tw-mb-6 tw-overflow-hidden",
                           staticStyle: { width: "400px", height: "200px" }
                         },
                         [
@@ -89729,7 +89729,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                                Upload Another Image Instead\n                            "
+                            "\n                                Remove Image\n                            "
                           )
                         ]
                       )
@@ -92469,6 +92469,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['crisis'],
@@ -92623,69 +92628,79 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "col-md-6" }, [
-      _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-body" }, [
-          _c("h5", { staticClass: "card-title" }, [_vm._v(" Crisis Image ")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group row" }, [
-            _c("label", { staticClass: "col-md-7 col-form-label" }, [
-              _vm._v(
-                "\n                        Please upload an image of the crisis:\n                    "
-              )
-            ]),
-            _vm._v(" "),
-            _vm.image === ""
-              ? _c("div", [
-                  _c("input", {
-                    staticClass: "upload-image-input tw-hidden",
-                    attrs: { accept: "image/*", type: "file" },
-                    on: { change: _vm.onFileSelected }
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary",
-                      on: { click: _vm.uploadImage }
-                    },
-                    [
-                      _vm._v(
-                        "\n                            Select An Image\n                        "
-                      )
-                    ]
-                  )
-                ])
-              : _c("div", { staticClass: "col-md-6" }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden",
-                      staticStyle: { width: "500px", height: "300px" }
-                    },
-                    [
-                      _c("img", {
+    _c("div", { staticClass: "form-group row" }, [
+      _c("label", { staticClass: "col-md-4 col-form-label text-md-right" }, [
+        _vm._v("\n            Image :\n        ")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "form-group" }, [
+              _vm.image === ""
+                ? _c("div", [
+                    _c("input", {
+                      staticClass: "upload-image-input tw-hidden",
+                      attrs: { accept: "image/*", type: "file" },
+                      on: { change: _vm.onFileSelected }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        on: { click: _vm.uploadImage }
+                      },
+                      [
+                        _vm._v(
+                          "\n                                Select An Image\n                            "
+                        )
+                      ]
+                    )
+                  ])
+                : _c("div", { staticClass: "col-md-6" }, [
+                    _c(
+                      "div",
+                      {
                         staticClass:
-                          "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center",
-                        attrs: { src: _vm.image }
-                      })
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary",
-                      on: { click: _vm.removeImage }
-                    },
-                    [
-                      _vm._v(
-                        "\n                            Choose Another Image\n                        "
-                      )
-                    ]
-                  )
-                ])
+                          "tw-h-24 tw-w-24 tw-mb-6 tw-overflow-hidden",
+                        staticStyle: { width: "300px", height: "200px" }
+                      },
+                      [
+                        _c("img", {
+                          staticClass:
+                            "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center",
+                          attrs: { src: _vm.image }
+                        }),
+                        _vm._v(" "),
+                        _vm.error["image"] != undefined
+                          ? _c("div", { staticClass: "tw-text-red" }, [
+                              _c("span", [
+                                _vm._v(
+                                  " " +
+                                    _vm._s(this.error["image"].toString()) +
+                                    " "
+                                )
+                              ])
+                            ])
+                          : _vm._e()
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        on: { click: _vm.removeImage }
+                      },
+                      [
+                        _vm._v(
+                          "\n                                Remove Image\n                            "
+                        )
+                      ]
+                    )
+                  ])
+            ])
           ])
         ])
       ])
@@ -93569,6 +93584,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.form.assistanceRequired = [];
             this.form.crisisType = null;
+            this.removeImage();
         },
         uploadImage: function uploadImage(e) {
             document.querySelector(".upload-image-input").click();
@@ -95546,6 +95562,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['crisis'],
@@ -95554,7 +95610,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             assistanceRequired: [],
             description: '',
-            error: ''
+            error: '',
+            isLoading: false,
+            image: '',
+            selectedFile: null
         };
     },
 
@@ -95562,6 +95621,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     watch: {
         crisis: function crisis() {
             this.description = this.crisis.description;
+            this.image = this.crisis.image;
         }
     },
 
@@ -95569,17 +95629,56 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         approveCrisis: function approveCrisis() {
             var _this = this;
 
-            axios.patch('/api/report/crisis/' + this.crisis.id, {
-                description: this.description,
-                assistanceRequired: this.assistanceRequired
-            }).then(function (res) {
+            this.isLoading = true;
+            this.error = [];
+            var fd = new FormData();
+
+            if (this.selectedFile !== null) fd.append('image', this.selectedFile);
+
+            if (this.description !== null) fd.append('description', this.description);
+
+            fd.append('assistanceRequired', this.assistanceRequired);
+
+            var config = {
+                headers: { 'content-type': 'multipart/form-data' }
+            };
+
+            axios.post('/api/report/crisis/' + this.crisis.id, fd, config).then(function (res) {
                 _this.$emit('approveSuccess');
+                _this.isLoading = false;
             }).catch(function (error) {
-                _this.error = error.response;
+                _this.error = error.response.data.errors;
+                _this.isLoading = false;
             });
         },
         hideModal: function hideModal() {
             this.$emit('hideModal');
+        },
+        uploadImage: function uploadImage(e) {
+            document.querySelector('.upload-image-input').click();
+        },
+        removeImage: function removeImage() {
+            this.image = '';
+            this.selectedFile = null;
+        },
+        createImage: function createImage(file) {
+            var _this2 = this;
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                _this2.image = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
+        onFileSelected: function onFileSelected(event) {
+            var files = event.target.files || event.dataTransfer.files;
+
+            if (!files.length) return;
+
+            this.selectedFile = files[0];
+
+            this.createImage(this.selectedFile);
         }
     }
 
@@ -95830,43 +95929,129 @@ var render = function() {
       })
     ]),
     _vm._v(" "),
-    _c(
+    _c("div", { staticClass: "form-group" }, [
+      _c(
+        "label",
+        {
+          staticClass: "tw-font-bold tw-text-lg",
+          attrs: { id: "image", for: "image" }
+        },
+        [_vm._v("Image:")]
+      ),
+      _vm._v(" "),
+      _vm.image === ""
+        ? _c("div", { staticClass: "col-md-6" }, [
+            _c("input", {
+              staticClass: "upload-image-input tw-hidden",
+              attrs: { accept: "image/*", type: "file" },
+              on: { change: _vm.onFileSelected }
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                on: { click: _vm.uploadImage }
+              },
+              [_vm._v("\n                Select An Image\n            ")]
+            )
+          ])
+        : _c("div", { staticClass: "col-md-6" }, [
+            _c(
+              "div",
+              {
+                staticClass: "tw-h-24 tw-w-24 tw-mb-6 tw-overflow-hidden",
+                staticStyle: { width: "400px", height: "200px" }
+              },
+              [
+                _c("img", {
+                  staticClass:
+                    "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center",
+                  attrs: { src: _vm.image }
+                }),
+                _vm._v(" "),
+                _vm.error["image"] != undefined
+                  ? _c("div", { staticClass: "tw-text-red" }, [
+                      _c("span", [
+                        _vm._v(
+                          " " + _vm._s(this.error["image"].toString()) + " "
+                        )
+                      ])
+                    ])
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                on: { click: _vm.removeImage }
+              },
+              [_vm._v("\n                Remove Image\n            ")]
+            )
+          ])
+    ]),
+    _vm._v(" "),
+    !_vm.isLoading
+      ? _c("div", [
+          _c(
+            "div",
+            {
+              staticClass:
+                "tw-flex tw-justify-end tw-m-4 tw-border-t tw-border-grey tw-pt-4"
+            },
+            [
+              _c(
+                "button",
+                {
+                  staticClass: "tw-mr-2 btn btn-secondary",
+                  on: {
+                    click: function($event) {
+                      return _vm.hideModal()
+                    }
+                  }
+                },
+                [_vm._v("Cancel")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "tw-ml-2 btn btn-primary",
+                  on: {
+                    click: function($event) {
+                      return _vm.approveCrisis()
+                    }
+                  }
+                },
+                [_vm._v("Approve")]
+              )
+            ]
+          )
+        ])
+      : _c("div", [_vm._m(0)])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
       "div",
       {
         staticClass:
           "tw-flex tw-justify-end tw-m-4 tw-border-t tw-border-grey tw-pt-4"
       },
       [
-        _c(
-          "button",
-          {
-            staticClass: "tw-mr-2 btn btn-secondary",
-            on: {
-              click: function($event) {
-                return _vm.hideModal()
-              }
-            }
-          },
-          [_vm._v("Cancel")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "tw-ml-2 btn btn-primary",
-            on: {
-              click: function($event) {
-                return _vm.approveCrisis()
-              }
-            }
-          },
-          [_vm._v("Approve")]
-        )
+        _c("img", {
+          attrs: { src: "/assets/img/loader.gif", alt: "Loading..." }
+        })
       ]
     )
-  ])
-}
-var staticRenderFns = []
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

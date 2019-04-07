@@ -25,35 +25,40 @@
         </div>
 
         <!-- Crisis Image -->
-        <div class = "col-md-6">
-            <div class = "card">
-                <div class = "card-body">
-                    <h5 class = "card-title"> Crisis Image </h5>
-                    
-                    <div class="form-group row">
-                        <label class="col-md-7 col-form-label">
-                            Please upload an image of the crisis:
-                        </label>
+        <div class="form-group row">
+             <label class="col-md-4 col-form-label text-md-right">
+                Image :
+            </label>
 
-                        <div v-if = "image === ''" >
-                            <input accept = "image/*" type = "file" class = "upload-image-input tw-hidden" @change = "onFileSelected" >
-
-                            <button class = "btn btn-primary" 
-                                @click = "uploadImage">
-                                Select An Image
-                            </button>
-                        </div>
+            <div class="col-md-6">
+                <div class = "card">
+                    <div class = "card-body">
+                        <!-- Image upload -->
+                        <div class="form-group">
                     
-                        <div v-else class = "col-md-6">
-                            <div class = "tw-h-24 tw-w-24 tw-mb-6 tw-rounded-full tw-overflow-hidden" style="width:500px; height:300px">
-                                <img :src = "image" class = "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center" />
+                            <div v-if = "image === ''" >
+                                <input accept = "image/*" type = "file" class = "upload-image-input tw-hidden" @change = "onFileSelected">
+                                
+                                <button class = "btn btn-primary" 
+                                        @click = "uploadImage">
+                                    Select An Image
+                                </button>
                             </div>
+                        
+                            <div v-else class = "col-md-6">
+                                <div class = "tw-h-24 tw-w-24 tw-mb-6 tw-overflow-hidden" style="width:300px; height:200px">
+                                    <img :src = "image" class = "tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center" />
 
-                            <button class = "btn btn-primary" 
-                                @click = "removeImage">
-                                Choose Another Image
-                            </button>
-                        </div>
+                                    <div class = "tw-text-red" v-if = "error['image'] != undefined">
+                                        <span> {{this.error['image'].toString()}} </span>   
+                                    </div>
+                                </div>
+                                
+                                <button class = "btn btn-primary" @click = "removeImage">
+                                    Remove Image
+                                </button>
+                            </div>
+                        </div>  
                     </div>
                 </div>
             </div>

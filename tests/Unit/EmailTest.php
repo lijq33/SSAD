@@ -21,7 +21,7 @@ class EmailTest extends TestCase
     /** @test */
     public function it_can_send_email_to_the_correct_user(){
         \Mail::fake();
-        \Mail::to('test@testingemail.coms')->send(new TeamTenReport());
+        \Mail::to('test@testingemail.com')->send(new TeamTenReport());
         \Mail::assertSent(TeamTenReport::class, function($mail) {
             return $mail->hasTo('test@testingemail.com');
         });
