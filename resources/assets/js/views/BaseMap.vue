@@ -429,7 +429,7 @@ export default {
                     {
                         icon: bombShelterData.iconUrl,
                         markerDisplayId: element.id,
-                        position: { lat: element.lat, lng: element.lng }
+                        position: { lat: parseFloat(element.lat), lng: parseFloat(element.lng) }
                     },
                     { infoWindowTitle: element.name, infoWindowBody: element },
                     element
@@ -513,7 +513,7 @@ export default {
                     {
                         icon: fireData.iconUrl,
                         markerDisplayId: element.id,
-                        position: { lat: element.lat, lng: element.lng }
+                        position: { lat: parseFloat(element.lat), lng: parseFloat(element.lng) }
                     },
                     {
                         infoWindowTitle: element.name,
@@ -533,7 +533,7 @@ export default {
                     {
                         icon: gasLeakData.iconUrl,
                         markerDisplayId: element.id,
-                        position: { lat: element.lat, lng: element.lng }
+                        position: { lat: parseFloat(element.lat), lng: parseFloat(element.lng) }
                     },
                     { infoWindowTitle: element.name, infoWindowBody: element },
                     element
@@ -597,6 +597,11 @@ export default {
                 }
 
                 google.maps.event.addListener(temp, "mouseover", function() {
+                    scope.markerInfoWindow.setContent(contentString);
+                    scope.markerInfoWindow.open(map, this);
+                });
+
+                  google.maps.event.addListener(temp, "click", function() {
                     scope.markerInfoWindow.setContent(contentString);
                     scope.markerInfoWindow.open(map, this);
                 });

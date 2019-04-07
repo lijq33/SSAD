@@ -77394,7 +77394,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 scope.addMarker("Array", scope.markers.bombShelterMarkers, {
                     icon: bombShelterData.iconUrl,
                     markerDisplayId: element.id,
-                    position: { lat: element.lat, lng: element.lng }
+                    position: { lat: parseFloat(element.lat), lng: parseFloat(element.lng) }
                 }, { infoWindowTitle: element.name, infoWindowBody: element }, element);
             });
         },
@@ -77456,7 +77456,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 scope.addMarker("Array", scope.markers.fireMarkers, {
                     icon: fireData.iconUrl,
                     markerDisplayId: element.id,
-                    position: { lat: element.lat, lng: element.lng }
+                    position: { lat: parseFloat(element.lat), lng: parseFloat(element.lng) }
                 }, {
                     infoWindowTitle: element.name,
                     infoWindowBody: element,
@@ -77470,7 +77470,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 scope.addMarker("Array", scope.markers.gasLeakMarkers, {
                     icon: gasLeakData.iconUrl,
                     markerDisplayId: element.id,
-                    position: { lat: element.lat, lng: element.lng }
+                    position: { lat: parseFloat(element.lat), lng: parseFloat(element.lng) }
                 }, { infoWindowTitle: element.name, infoWindowBody: element }, element);
             });
         },
@@ -77508,6 +77508,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 }
 
                 google.maps.event.addListener(temp, "mouseover", function () {
+                    scope.markerInfoWindow.setContent(contentString);
+                    scope.markerInfoWindow.open(map, this);
+                });
+
+                google.maps.event.addListener(temp, "click", function () {
                     scope.markerInfoWindow.setContent(contentString);
                     scope.markerInfoWindow.open(map, this);
                 });
