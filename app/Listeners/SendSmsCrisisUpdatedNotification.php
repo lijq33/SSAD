@@ -40,7 +40,7 @@ class SendSmsCrisisUpdatedNotification
         //Crisis
         $crisis = $event->crisis;
 
-        $content = "Updates. The crisis" .$crisis->status. ". For more information, visit us at https://teamten.appspot.com ";
+        $content = "Updates. The crisis" .$crisis->status. ". For more information, visit us at https://teamcrisis.appspot.com ";
 
         foreach($subscribers as $subscriber){
             $telephone_number = $subscriber->telephone_number;

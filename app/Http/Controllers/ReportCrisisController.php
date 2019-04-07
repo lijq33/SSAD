@@ -82,8 +82,13 @@ class ReportCrisisController extends Controller
         if (!array_key_exists('description', $data)){        
             $data['description'] = $reportCrisis['description'];
         }
+
+        $imageName = null;
+
+        if (array_key_exists('image', $reportCrisis)){
+            $imageName = $reportCrisis['image'];
+        }
         
-        $imageName = $reportCrisis['image'];
         if (array_key_exists('image', $data)){        
             $imageName = str_random(40);
             $image = Image::make($data['image']->getRealPath());
@@ -95,9 +100,6 @@ class ReportCrisisController extends Controller
         $crisis = Crisis::newCrisis($data);
 
         $assistances = explode(',', $data['assistanceRequired']);
-
-        
-        var_dump($assistances);
 
         if($assistances[0] !== ""){
             foreach($assistances as $assistance){
