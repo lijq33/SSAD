@@ -140,8 +140,8 @@
                     axios.delete('/api/crisis/'+crisis.id)
                     .then((res) => {
                         scope.message = "We've successfully archive the crisis!";
-                        scope.crisis = [];
-                        scope.getcrisis();
+                        scope.crises = [];
+                        scope.getCrisis();
                     })
                     .catch((error) => {
                         scope.error = error.response;
@@ -154,16 +154,14 @@
                 this.updateCrisis = crisis;
                 this.crisisStatus = crisis.status;
                 this.crisisDesc = crisis.description;
-                this.crisis = [];
-                this.getcrisis();
             },
-
 
             updateSuccess(){
                 this.message = "We've successfully update the crisis details!";
-                this.hideModal();
+                this.$refs.myModalRef.hide()
+                this.crises = [];
                 this.getCrisis();
-                this.crisis = [];
+                this.message = "";
             },
          
             hideModal() {
