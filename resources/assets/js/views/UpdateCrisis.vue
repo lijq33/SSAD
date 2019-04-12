@@ -64,9 +64,18 @@
             </div>
         </div>
 
+
         <div class = "tw-flex tw-justify-end tw-m-4 tw-border-t tw-border-grey tw-pt-4">
-            <button class = "tw-mr-2 btn btn-secondary" @click = "hideModal()">Cancel</button>
-            <button class = "tw-ml-2 btn btn-primary" @click = "updateCrisis()">Update</button>
+            <div v-if ="!isLoading">
+                <button class = "tw-mr-2 btn btn-secondary" @click = "hideModal()">Cancel</button>
+                <button class = "tw-ml-2 btn btn-primary" @click = "updateCrisis()">Update</button>
+            </div>
+            <div v-else>
+                <img
+                    src="/assets/img/loader.gif"
+                    alt="Loading..."
+                >
+            </div>
         </div>
 
     </div>
@@ -91,7 +100,6 @@
                 selectedFile: null,
                 image: '',
                 isLoading: false,
-
             }
         },
    
@@ -110,6 +118,8 @@
 
                 const fd = new FormData();
 
+                var scope = this;
+
                 if(this.selectedFile !== null)
                     fd.append('image', this.selectedFile);
 
@@ -121,17 +131,13 @@
                 };
 
                 axios.post('/api/crisis/'+this.crisis.id, fd, config)
-                .then(response => {
-                    this.message = response.data.message;
+                .then((response) => {
                     $('html, body').animate({ scrollTop: 0 }, 'slow');
-                    this.isLoading = false;
-                    this.resetFields();
-                })
-                .then((res) => {
                     this.$emit('updateSuccess');
+                    this.isLoading = false;
                 })
                 .catch((error) => {
-                    this.error = error.response.data.errors;
+                    // this.error = error.response.data.errors;
                     this.isLoading = false;
                 });
             },
