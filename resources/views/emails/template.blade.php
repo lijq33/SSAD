@@ -14,7 +14,6 @@
         <br><br>
         With regards,<br>
         TeamTen
-        {{$_SERVER['REMOTE_ADDR']}}
 </body>
 
 </html>
