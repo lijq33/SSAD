@@ -1,3 +1,4 @@
+<!-- Author: Li JinQuan -->
 <template>
 	<div class = "alert alert-success" v-if = "show">
 		<span>

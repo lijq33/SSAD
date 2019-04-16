@@ -1,4 +1,6 @@
-<?php namespace App\Services;
+<?php 
+/* Author: Li JinQuan */
+namespace App\Services;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;

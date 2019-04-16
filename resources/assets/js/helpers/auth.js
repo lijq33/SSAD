@@ -1,3 +1,4 @@
+/* Author: Li JinQuan */
 import { setAuthorization } from "./general";
 
 export function login(credentials) {

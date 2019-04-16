@@ -1,3 +1,4 @@
+<!-- Author: Li JinQuan, Chen XingYu, Prashanth -->
 <template>
     <div class="container">
         <div class="row justify-content-center">

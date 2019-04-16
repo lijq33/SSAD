@@ -1,3 +1,4 @@
+/* Author: Li JinQuan */
 import { getLocalUser } from "./helpers/auth";
 
 const user = getLocalUser();

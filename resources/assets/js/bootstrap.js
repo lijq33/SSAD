@@ -1,3 +1,4 @@
+/* Author: Li JinQuan */
 
 window._ = require('lodash');
 

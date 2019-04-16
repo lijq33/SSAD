@@ -1,3 +1,5 @@
+/* Author: Li JinQuan */
+
 // import router from './routes';
 
 require('./bootstrap');

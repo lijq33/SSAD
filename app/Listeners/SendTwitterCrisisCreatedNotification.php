@@ -1,4 +1,5 @@
 <?php
+/* Author: VICKNESHVARAN */
 
 namespace App\Listeners;
 
@@ -17,9 +18,6 @@ class SendTwitterCrisisCreatedNotification
      *
      * @return void
      */
-	
-	
-
     public function __construct()
     {
       

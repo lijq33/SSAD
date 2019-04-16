@@ -1,4 +1,5 @@
 <?php
+/* Author: Li JinQuan */
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;

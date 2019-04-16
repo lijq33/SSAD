@@ -1,3 +1,4 @@
+<!-- Author: Li JinQuan -->
 <template>
     <div>
         <flash :message = "message"></flash>
