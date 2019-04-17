@@ -32,11 +32,6 @@ class SendEmail implements ShouldQueue
     public function handle()
     {
         //key indicators and trends
-        // generate graph 
-        // graph 1 
-        //y = total number of crisis 
-        //x = time
-        //graph 2
 
         $crises = \App\Crisis::get();
 
